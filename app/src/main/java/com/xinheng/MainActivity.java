@@ -3,6 +3,7 @@ package com.xinheng;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.MainFragment;
@@ -13,21 +14,37 @@ public class MainActivity extends BaseActivity
 {
     private SlidingMenu mSlidingMenu;
     private MainFragment mMainFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-         setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        configTitleLayout();
         initSlidingMenu();
         mMainFragment = MainFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content, mMainFragment).commit();
 //      requestGetDataFromUrl("https://blog.stylingandroid.com");
     }
+    private void configTitleLayout()
+    {
+       getCenterTitleView().setVisibility(View.GONE);
+        findViewById(R.id.iv_home_logo).setVisibility(View.VISIBLE);
+        findViewById(R.id.iv_right).setVisibility(View.VISIBLE);
+        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mSlidingMenu.toggle(true);
+            }
+        });
+    }
 
     @Override
     public boolean canDoRefresh()
     {
-        return  mMainFragment.canDoRefresh();
+        return mMainFragment.canDoRefresh();
     }
 
     private void initSlidingMenu()
@@ -45,9 +62,9 @@ public class MainActivity extends BaseActivity
             @Override
             public void transformCanvas(Canvas canvas, float percentOpen)
             {
-                float scale = (float) (percentOpen*0.25 + 0.75);
-                canvas.scale(scale, scale, canvas.getWidth()/2, canvas.getHeight()/2);
-               // canvas.scale(percentOpen, 1, 0, 0);
+                float scale = (float) (percentOpen * 0.25 + 0.75);
+                canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                // canvas.scale(percentOpen, 1, 0, 0);
             }
         });
         mSlidingMenu.setMenu(R.layout.layout_menu);
@@ -61,8 +78,6 @@ public class MainActivity extends BaseActivity
     {
         return getString(R.string.tv_activity_main);
     }
-
-
 
 
     @Override
@@ -79,13 +94,20 @@ public class MainActivity extends BaseActivity
             {
                 mSlidingMenu.showContent(true);
                 return true;
-            }
-            else
+            } else
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    public void closeMenu()
+    {
+        if (mSlidingMenu.isMenuShowing())
+        {
+            mSlidingMenu.showContent(true);
+        }
     }
 }

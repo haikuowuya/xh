@@ -32,17 +32,17 @@ public class CirclePageIndicator extends View
 	/**默认是否跳跃方式*/
 	private static final boolean DEFAULT_SNAP = false;
 	/**默认圆圈内部的颜色*/
-	private static final int DEFAULT_PAGE_COLOR = 0x88856934;
+	private static final int DEFAULT_PAGE_COLOR = 0xFF32B16C;
 	/**默认生成的圆圈的布局方向*/
 	private static final int DEFAULT_ORIENTATION = 0;
 	/**默认当前圆圈的填充颜色*/
-	private static final int DEFAULT_FILL_COLOR = 0xFFFFFFFF;
+	private static final int DEFAULT_FILL_COLOR = 0xFF7FF56B;
 	/**默认圆圈的边框颜色*/
 	private static final int DEFAULT_STROKE_COLOR =0x88856934;
 	/**默认圆圈边框的厚度*/
 	private static final float DEFAULT_STROKE_WIDTH = 1.f;
 	/**默认圆圈的半径*/
-	private static final float DEFAULT_RADIUS = 3.f;
+	private static final float DEFAULT_RADIUS = 4.f;
 	/** 圆圈的半径 */
 	private float mRadius;
 	/** 圆的默认填充颜色 */

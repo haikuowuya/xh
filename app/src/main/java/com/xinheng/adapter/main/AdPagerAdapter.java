@@ -47,14 +47,14 @@ public class AdPagerAdapter extends PagerAdapter
         final AdItem item = mData.get(position);
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageResource(R.mipmap.ic_launcher);
+        imageView.setImageResource(R.mipmap.ic_ad_banner);
         container.addView(imageView);
         String imageUrl = item.imageUrl;
         ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
         {
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
             {
-                imageView.setImageBitmap(loadedImage);
+              //  imageView.setImageBitmap(loadedImage);
             }
         });
         return imageView;

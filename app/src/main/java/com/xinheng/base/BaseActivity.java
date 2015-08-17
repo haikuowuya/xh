@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,11 +57,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      */
     private ImageView mIvBack;
 
+    /**
+     * 顶部的Title布局
+     */
+    private LinearLayout mLinearTitleContainer;
+
     public SharedPreferences getPreferences()
     {
         return mPreferences;
     }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -82,6 +88,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         ToastUtils.showCrouton(mActivity, text, getContentViewGroup());
     }
+    
+    public View getCenterTitleView()
+    {
+        return mTvCenterTitle;
+    }
+    public View getTitleContainer()
+    {
+        return mLinearTitleContainer;
+    }
 
     @Override
     public void setContentView(int layoutResID)
@@ -89,6 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         super.setContentView(R.layout.activity_base);   //TODO XXX
         mFrameContainer = (FrameLayout) findViewById(R.id.frame_container);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_container);
+        mLinearTitleContainer  = (LinearLayout) findViewById(R.id.linear_title_container); 
         mTvCenterTitle = (TextView) findViewById(R.id.tv_center_title);
         mIvBack = (ImageView) findViewById(R.id.iv_back);
         mTvCenterTitle.setText(getActivityTitle());
@@ -147,7 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     public boolean canDoRefresh()
     {
-        return true;
+        return false;
     }
 
     private class PtrHandlerImpl   implements PtrHandler

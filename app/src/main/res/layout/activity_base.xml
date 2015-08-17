@@ -7,29 +7,9 @@
               android:layout_height="match_parent"
               android:fitsSystemWindows="true"
               android:orientation="vertical">
+    <include layout="@layout/layout_title"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_title_height"
-        android:background="@color/color_title_background_color">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/dimen_title_height"
-            android:layout_height="@dimen/dimen_title_height"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/tv_center_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textColor="#FFFFFFFF"
-            android:textSize="16sp"
-            tools:text="标题"/>
-
-    </RelativeLayout>
+    
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         android:id="@+id/ptr_container"
 

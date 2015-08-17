@@ -16,7 +16,6 @@ import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
 import com.xinheng.mvp.model.HomeGridItem;
-import com.xinheng.util.DensityUtils;
 import com.xinheng.view.CustomGridView;
 import com.xinheng.view.InfiniteViewPagerIndicatorView;
 
@@ -45,7 +44,7 @@ public class MainFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_main, null);
+        View view = inflater.inflate(R.layout.fragment_main, null);//TODO
         initView(view);
         return view;
     }
@@ -57,7 +56,7 @@ public class MainFragment extends BaseFragment
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mInfiniteViewPagerIndicatorView.getLayoutParams();
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        layoutParams.height = DensityUtils.getScreenWidthInPx(mActivity) * 3 / 5;
+        layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_home_ad_height);
         mInfiniteViewPagerIndicatorView.setLayoutParams(layoutParams);
         mInfiniteViewPagerIndicatorView.setBackgroundColor(0xFFFF0000);
         mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter());
@@ -67,17 +66,24 @@ public class MainFragment extends BaseFragment
     private BaseAdapter genGridAdapter()
     {
         List<HomeGridItem> data = new LinkedList<>();
-        for (int i = 0; i < 8; i++)
-        {
-            data.add(new HomeGridItem(R.mipmap.ic_launcher, "栏目 " + (1 + i)));
-        }
+        data.add(new HomeGridItem(R.mipmap.ic_main_0, "症状自测"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_1, "预约挂号"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_2, "便捷检查"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_3, "在线售药"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_4, "安心用药"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_5, "疾病预防"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_6, "就医指南"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_7, "健康咨询"));
+        data.add(new HomeGridItem(R.mipmap.ic_main_8, "医患交流"));
+
         GridAdapter gridAdapter = new GridAdapter(mActivity, data);
         return gridAdapter;
     }
 
     public boolean canDoRefresh()
     {
-        return false;//mScrollView.getScrollY() == 0;
+//        return  mScrollView.getScrollY() == 0;
+        return false;
     }
 
     private PagerAdapter genAdapter()
