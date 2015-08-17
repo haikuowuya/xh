@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity
             }
             else
             {
-                onBackPressed();
+                XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
             }
         }
