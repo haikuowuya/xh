@@ -6,9 +6,11 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.xinheng.DepartmentNavActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.main.AdPagerAdapter;
 import com.xinheng.adapter.main.GridAdapter;
@@ -64,6 +66,23 @@ public class MainFragment extends BaseFragment
         mCustomGridView.setAdapter(genGridAdapter());
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(position ==1)
+                {
+                    DepartmentNavActivity.actionDepartmentNav(mActivity);
+                }
+            }
+        });
+    }
+
     private BaseAdapter genGridAdapter()
     {
         List<HomeGridItem> data = new LinkedList<>();
@@ -82,7 +101,7 @@ public class MainFragment extends BaseFragment
 
     public boolean canDoRefresh()
     {
-//          return  mScrollView.getScrollY() == 0;
+//   return  mScrollView.getScrollY() == 0;
         return false;
     }
 

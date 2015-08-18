@@ -10,4 +10,27 @@
         <item>@string/tv_activity_department_nav</item>
         <item>@string/tv_activity_tab_viewpager</item>
     </string-array>
+
+    <string-array name="array_department_left">
+        <item>国家重点级专科</item>
+        <item>省级重点级专科</item>
+        <item>内科系统</item>
+        <item>外科系统</item>
+        <item>其他科室</item>
+        <item>医技科室</item>
+
+    </string-array>
+
+
+    <string-array name="array_department_right">
+        <item>肺病科</item>
+        <item>皮肤科</item>
+        <item>脾胃病肝病内科</item>
+        <item>妇科</item>
+        <item>肾病内科</item>
+        <item>急诊科</item>
+        <item>贵州省骨伤医院</item>
+        <item>ICU</item>
+
+    </string-array>
 </resources>

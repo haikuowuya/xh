@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- <item android:drawable="@color/color_department_left_activated_color"
+           android:state_activated="true"
+         />-->
+    <item android:state_activated="true">
+        <layer-list>
+            <item android:drawable="@color/color_department_right_text_color"
+                  android:top="12dp"
+                  android:bottom="12dp"
+                
+                
+                ></item>
+            <item android:drawable="@color/color_department_right_default_color"
+                  android:top="12dp"
+                  android:bottom="12dp"
+                  android:left="4dp"></item>
+
+        </layer-list>
+
+    </item>
+    <item android:drawable="@color/color_department_right_default_color"/>
+</selector>
+ 

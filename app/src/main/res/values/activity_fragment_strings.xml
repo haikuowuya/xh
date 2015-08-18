@@ -6,7 +6,7 @@
     <string name="tv_fragment_main">首页内容</string>
     <string name="tv_fragment_ptr_list">下拉刷新列表</string>
     <string name="tv_activity_register">注册</string>
-    <string name="tv_activity_department_nav">department</string>
+    <string name="tv_activity_department_nav">科室导航</string>
     <string name="tv_activity_sliding_menu">侧滑菜单</string>
     <string name="tv_activity_tab_viewpager">tab_viewpager</string>
 </resources>

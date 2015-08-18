@@ -2,6 +2,7 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,11 +30,13 @@ public class DepartmentNavActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_department_nav);
+        setContentView(R.layout.activity_department_nav);//TODO
         initView();
-        mLeftListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mRightListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+        setIvRightVisibility(View.VISIBLE);
+        mLeftListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_left, R.layout.list_department_left_item));
+        mRightListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_right,  R.layout.list_department_right_item ));
         mLeftListView.setItemChecked(0, true);
+        mRightListView.setItemChecked(0, true);
     }
 
     private void initView()
@@ -41,6 +44,7 @@ public class DepartmentNavActivity extends BaseActivity
         mLeftListView = (ListView) findViewById(R.id.lv_left_listview);
         mRightListView = (ListView) findViewById(R.id.lv_right_listview);
         mLeftListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        mRightListView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
     }
 
     @Override

@@ -62,6 +62,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      * 左上角的返回按钮
      */
     private ImageView mIvBack;
+    /**
+     * 右上角的功能按钮
+     */
+    private ImageView mIvRight;
 
     /**
      * 顶部的Title布局
@@ -114,6 +118,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_container);
         mLinearTitleContainer  = (LinearLayout) findViewById(R.id.linear_title_container); 
         mTvCenterTitle = (TextView) findViewById(R.id.tv_center_title);
+        mIvRight = (ImageView) findViewById(R.id.iv_right);
         mIvBack = (ImageView) findViewById(R.id.iv_back);
         mTvCenterTitle.setText(getActivityTitle());
         View contentView = LayoutInflater.from(mActivity).inflate(layoutResID, null);
@@ -170,7 +175,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_container, MenuFragment.newInstance()).commit();
 
     }
-
+    public void setIvRightVisibility(int visibility)
+    {
+        mIvRight.setVisibility(visibility);
+    }
     public ViewGroup getContentViewGroup()
     {
         return mFrameContainer;

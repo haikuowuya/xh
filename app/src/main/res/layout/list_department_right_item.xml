@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<TextView android:id="@+id/tv_text"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:background="@drawable/activated_department_right_background_selector"
+          android:gravity="center_vertical"
+          android:paddingLeft="8dp"
+        
+          android:textColor="@drawable/list_department_right_text_color_selector"
+          android:textSize="16sp"
+          android:textAppearance="?android:attr/textAppearanceListItemSmall"
+          tools:text="文字"
+    />
