@@ -13,7 +13,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
  * 时间： 18:39
- * 说明：
+ * 说明：顶部广告下面的分类模块
  */
 public class GridAdapter extends BaseAdapter<HomeGridItem>
 {

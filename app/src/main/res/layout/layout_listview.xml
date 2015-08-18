@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:entries="@array/array_menu"
+
     android:scrollbars="none">
 
 

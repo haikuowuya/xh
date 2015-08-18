@@ -2,4 +2,6 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item name="selected_view" type="id"/>
+    <!--Activity的内容布局的顶层-->
+    <item name="frame_content_container" type="id"/>
 </resources>

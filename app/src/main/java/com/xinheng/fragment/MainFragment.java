@@ -26,7 +26,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
  * 时间： 17:38
- * 说明：
+ * 说明： 首页内容
  */
 public class MainFragment extends BaseFragment
 {
@@ -52,14 +52,15 @@ public class MainFragment extends BaseFragment
     private void initView(View view)
     {
         mInfiniteViewPagerIndicatorView = (InfiniteViewPagerIndicatorView) view.findViewById(R.id.infinite_viewpager);
+        mInfiniteViewPagerIndicatorView.requestDisallowInterceptTouchEvent(true);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mInfiniteViewPagerIndicatorView.getLayoutParams();
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_home_ad_height);
         mInfiniteViewPagerIndicatorView.setLayoutParams(layoutParams);
-        mInfiniteViewPagerIndicatorView.setBackgroundColor(0xFFFF0000);
         mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter());
+        mInfiniteViewPagerIndicatorView.startAutoCycle();
         mCustomGridView.setAdapter(genGridAdapter());
     }
 
@@ -75,14 +76,13 @@ public class MainFragment extends BaseFragment
         data.add(new HomeGridItem(R.mipmap.ic_main_6, "就医指南"));
         data.add(new HomeGridItem(R.mipmap.ic_main_7, "健康咨询"));
         data.add(new HomeGridItem(R.mipmap.ic_main_8, "医患交流"));
-
         GridAdapter gridAdapter = new GridAdapter(mActivity, data);
         return gridAdapter;
     }
 
     public boolean canDoRefresh()
     {
-//        return  mScrollView.getScrollY() == 0;
+//          return  mScrollView.getScrollY() == 0;
         return false;
     }
 

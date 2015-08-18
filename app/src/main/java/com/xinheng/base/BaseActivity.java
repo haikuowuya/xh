@@ -3,8 +3,10 @@ package com.xinheng.base;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +21,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.xinheng.MainActivity;
 import com.xinheng.R;
 import com.xinheng.XHApplication;
 import com.xinheng.drawable.DrawerArrowDrawable;
+import com.xinheng.fragment.MenuFragment;
 import com.xinheng.http.VolleyUtils;
+import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.IntentUtils;
 import com.xinheng.util.ToastUtils;
 import com.xinheng.util.ViewUtils;
@@ -36,6 +41,7 @@ import in.srain.cube.views.ptr.PtrHandler;
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle
 {
+    protected SlidingMenu mSlidingMenu;
     /**
      * Activity的一个实例{@link  BaseActivity#onCreate(Bundle) }
      */
@@ -72,6 +78,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         super.onCreate(savedInstanceState);
         mActivity = this;
+        XHApplication application = (XHApplication) getApplication();
+        application.recordActivity(mActivity);
         mPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -124,9 +132,43 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 onBackPressed();
             }
         });
+
+        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mSlidingMenu.toggle(true);
+            }
+        });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
-        XHApplication application = (XHApplication) getApplication();
-        application.recordActivity(mActivity);
+        initSlidingMenu();
+    }
+
+    private void initSlidingMenu()
+    {
+        mSlidingMenu = new SlidingMenu(mActivity);
+        mSlidingMenu.setMode(SlidingMenu.RIGHT);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        mSlidingMenu.setShadowWidthRes(R.dimen.dimen_slidingmenu_shadow_width);
+        mSlidingMenu.setShadowDrawable(R.drawable.shape_slidingmenu_shadow);
+        mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);
+        mSlidingMenu.setFadeDegree(0.65f);
+        mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+        mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
+        {
+            @Override
+            public void transformCanvas(Canvas canvas, float percentOpen)
+            {
+                float scale = (float) (percentOpen * 0.25 + 0.75);
+                canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                // canvas.scale(percentOpen, 1, 0, 0);
+            }
+        });
+        mSlidingMenu.setMenu(R.layout.layout_menu);
+        // 设置隐藏在AboveMenu菜单后面的菜单
+        getSupportFragmentManager().beginTransaction().replace(R.id.menu_container, MenuFragment.newInstance()).commit();
+
     }
 
     public ViewGroup getContentViewGroup()
@@ -139,6 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         ListenerImpl listener = new ListenerImpl();
         Request request = new StringRequest(Request.Method.GET, url, listener, listener);
         VolleyUtils.addRequest(mActivity, request);
+
     }
 
     public void onGetDataSuccess(String string)
@@ -166,7 +209,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return false;
     }
 
-    private class PtrHandlerImpl   implements PtrHandler
+    private class PtrHandlerImpl  implements PtrHandler
     {
         @Override
         public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view1)
@@ -185,6 +228,37 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                         mPtrClassicFrameLayout.refreshComplete();
                     }
                 }, 2000L);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_MENU)
+        {
+            mSlidingMenu.toggle(true);
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if (mSlidingMenu.isMenuShowing())
+            {
+                mSlidingMenu.showContent(true);
+                return true;
+            }
+            else if(mActivity instanceof MainActivity)
+            {
+                XHApplication.getInstance().showExitDialog(mActivity);
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void closeMenu()
+    {
+        if (mSlidingMenu.isMenuShowing())
+        {
+            mSlidingMenu.showContent(true);
         }
     }
 

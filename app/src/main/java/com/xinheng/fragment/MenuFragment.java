@@ -10,27 +10,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.xinheng.MainActivity;
+import com.xinheng.DepartmentNavActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
+import com.xinheng.TabViewPagerActivity;
 import com.xinheng.base.BaseFragment;
 
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
  * 时间： 16:53
- * 说明：
+ * 说明： 首页右边侧滑菜单的内容
  */
 public class MenuFragment extends BaseFragment
 {
+
+    private ListView mListView;
 
     public static MenuFragment newInstance()
     {
         MenuFragment fragment = new MenuFragment();
         return fragment;
     }
-
-    private ListView mListView;
 
     @Nullable
     @Override
@@ -51,7 +52,6 @@ public class MenuFragment extends BaseFragment
     {
         super.onActivityCreated(savedInstanceState);
         mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_1));
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -62,24 +62,24 @@ public class MenuFragment extends BaseFragment
                 {
                     public void run()
                     {
-
                         if (getString(R.string.tv_activity_register).equals(text))//  注册
                         {
-
                             RegisterActivity.actionRegister(mActivity);
                         }
-
+                        else if (getString(R.string.tv_activity_department_nav).equals(text))
+                        {
+                            DepartmentNavActivity.actionDepartmentNav(mActivity);
+                        }
+                        else if(getString(R.string.tv_activity_tab_viewpager).equals(text))
+                        {
+                            TabViewPagerActivity.actionTabViewPager(mActivity);
+                        }
                     }
                 }, 200L);
+                mActivity.closeMenu();
 
-                if (mActivity instanceof MainActivity)
-                {
-                    MainActivity mainActivity = (MainActivity) mActivity;
-                    mainActivity.closeMenu();
-                }
             }
         });
-
 
     }
 
