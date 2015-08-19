@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_list_single_item_height"
-    android:background="@color/color_white_color"
+    android:background="@drawable/list_linear_item_selector"
     android:orientation="vertical"
     >
 
