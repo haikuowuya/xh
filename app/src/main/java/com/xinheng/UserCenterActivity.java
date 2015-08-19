@@ -68,14 +68,17 @@ public class UserCenterActivity extends BaseActivity
                 ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
                 textView.setText(text);
                 imageView.setImageResource(iconId);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                int height = (int) getResources().getDimension(R.dimen.dimen_user_list_single_item_height);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,  height);
                 mLinearListContainer.addView(view, layoutParams);
                 view.setOnClickListener(new OnLinearItemClickListenerImpl(new IconTextItem(iconId, text)));
             }
             else
             {
                 View view = new View(mActivity);
-                mLinearListContainer.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtils.dpToPx(mActivity, 10.f)));
+                int height = DensityUtils.dpToPx(mActivity, 20.f);
+                view.setBackgroundColor(0xFFEBEBEB);
+                mLinearListContainer.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height));
             }
         }
     }
@@ -122,7 +125,19 @@ public class UserCenterActivity extends BaseActivity
          @Override
          public void onClick(View v)
          {
-             ToastUtils.showCrouton(mActivity, mIconTextItem.text);
+//             ToastUtils.showCrouton(mActivity, mIconTextItem.text);
+             if(getString(R.string.tv_activity_user_counsel).equals(mIconTextItem.text))
+             {
+                 UserCounselActivity.actionUserCounsel(mActivity);
+             }
+             else if(getString(R.string.tv_activity_user_remind).equals(mIconTextItem.text))
+             {
+                 UserRemindActivity.actionUserRemind(mActivity);
+             }
+             else if(getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
+             {
+                 UserSubscribeActivity.actionUserSubscribe(mActivity);
+             }
          }
      }
 

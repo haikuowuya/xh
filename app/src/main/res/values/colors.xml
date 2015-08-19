@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_main_text_color">#FF2FAD68</color>
     <color name="color_title_background_color">#FF3AB773</color>
-    <color name="color_content_background_color">#FFF2F2F2</color>
+    <color name="color_content_background_color">#FFF0F0F0</color>
     <color name="color_white_color">#FFFFFFFF</color>
     <color name="color_department_left_default_color">#FF2FAD68</color>
     <color name="color_department_left_activated_color">#FF238D53</color>

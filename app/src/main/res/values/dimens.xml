@@ -10,6 +10,8 @@
     <dimen name="dimen_home_ad_height">144dp</dimen>
 
     <dimen name="dimen_user_icon_height_width">64dp</dimen>
+       <!--个人中心 单行Item的默认高度-->
+    <dimen name="dimen_user_list_single_item_height">44dp</dimen>
        <!--网格/列表 单行Item的默认高度-->
     <dimen name="dimen_list_single_item_height">44dp</dimen>
     <dimen  name="dimen_line_width_height">0.5dp</dimen>

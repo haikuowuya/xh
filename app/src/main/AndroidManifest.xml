@@ -38,6 +38,11 @@
         <activity
             android:name=".UserCenterActivity"
             android:label="@string/tv_activity_user_center"/>
+        <activity
+            android:name=".UserCounselActivity"
+            android:label="@string/tv_activity_user_counsel"/>
+        <activity android:name=".UserRemindActivity" android:label="@string/tv_activity_user_remind"/>
+        <activity android:name=".UserSubscribeActivity" android:label="@string/tv_activity_user_subscribe"/>
 
     </application>
 

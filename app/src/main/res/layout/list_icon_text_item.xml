@@ -23,7 +23,7 @@
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/dimen_list_single_item_height"
             android:layout_height="match_parent"
-            android:padding="8dp"
+            android:padding="12dp"
             tools:src="@mipmap/ic_launcher"/>
 
         <TextView
@@ -39,10 +39,11 @@
         <ImageView
             android:id="@+id/iv_arrow"
             android:padding="10dp"
-            android:visibility="gone"
-            android:layout_width="@dimen/dimen_list_single_item_height"
+            android:src="@mipmap/ic_user_arrow"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            tools:src="@mipmap/ic_department_right_arrow"/>
+            tools:src="@mipmap/ic_user_arrow"/>
     </LinearLayout>
+    <include layout="@layout/layout_line"/>
 
 </LinearLayout>

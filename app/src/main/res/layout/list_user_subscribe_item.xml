@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_linear_item_selector"
+
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_linear_item_selector"
+        android:orientation="vertical"
+        android:paddingRight="10dp"
+        >
+
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_list_single_item_height">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_list_single_item_height"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:src="@mipmap/ic_launcher"
+                tools:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_sub_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="#FF666666"
+                tools:text="预约时间:2014-05-12 14:30"
+                tools:textColor="#FF666666"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="预约成功"
+                android:textColor="@color/color_main_text_color"
+                tools:text="预约成功"
+                tools:textColor="@color/color_main_text_color"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_list_single_item_height">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_list_single_item_height"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:src="@mipmap/ic_launcher"
+                tools:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_hospital_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="#FF666666"
+                tools:text="就诊机构:苏州市中医院"
+                tools:textColor="#FF666666"/>
+
+            <ImageView
+                android:layout_width="@dimen/dimen_list_single_item_height"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:src="@mipmap/ic_launcher"
+                tools:src="@mipmap/ic_launcher"/>
+
+            <TextView
+
+                android:id="@+id/tv_dept_name"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="#FF666666"
+                tools:text="内分泌科/张三"
+                tools:textColor="#FF666666"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+
+            android:layout_height="66dp">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_list_single_item_height"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:src="@mipmap/ic_launcher"
+
+                tools:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:maxLines="3"
+                android:textColor="#FF666666"
+                tools:text="就诊机构:苏州市中医院\n就诊机构:苏州市中医院\n就诊机构:苏州市中医院"
+                tools:textColor="#FF666666"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_list_single_item_height">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_list_single_item_height"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:src="@mipmap/ic_launcher"
+                tools:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_appo_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="#FF666666"
+                tools:text="申请时间:2014-05-12 14:30"
+                tools:textColor="#FF666666"/>
+
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+
+                android:text="查看详情"
+                android:textColor="@color/color_main_text_color"
+                tools:text="查看详情"
+                tools:textColor="@color/color_main_text_color"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

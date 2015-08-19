@@ -7,20 +7,25 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:paddingBottom="20dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+             android:background="#FFEBEBEB"
+            android:paddingBottom="50dp"
             android:orientation="vertical">
+
             <include layout="@layout/layout_user_header"/>
 
             <LinearLayout
                 android:id="@+id/linear_list_container"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                    android:background="@color/color_white_color"
+                android:orientation="vertical"/>
         </LinearLayout>
 
     </ScrollView>

@@ -47,21 +47,21 @@
 
 
     <string-array name="array_user_grid_nav">
-    <item>ic_launcher~栏目1</item>
-    <item>ic_launcher~栏目2</item>
-    <item>ic_launcher~栏目3</item>
+    <item>ic_user_counsel~我的咨询</item>
+    <item>ic_user_subscribe~我的预约</item>
+    <item>ic_user_remind~我的提醒</item>
     </string-array>
     <string-array name="array_user_list_nav">
-        <item>ic_launcher~栏目名称1</item>
-        <item>ic_launcher~栏目名称1</item>
-        <item>ic_launcher~栏目名称1</item>
+        <item>ic_user_doctor~我的医生</item>
+        <item>ic_user_order~我的订单</item>
+        <item>ic_user_medical~我的病历</item>
         <item></item>
-        <item>ic_launcher~栏目名称2</item>
-        <item>ic_launcher~栏目名称2</item>
-        <item>ic_launcher~栏目名称2</item>
+        <item>ic_user_report~我的报告</item>
+        <item>ic_user_check~我的检查</item>
+        <item>ic_user_recipe~我的处方</item>
         <item></item>
-        <item>ic_launcher~栏目名称3</item>
-        <item>ic_launcher~栏目名称3</item>
+        <item>ic_user_common~常用就诊人信息</item>
+        <item></item>
 
     </string-array>
 

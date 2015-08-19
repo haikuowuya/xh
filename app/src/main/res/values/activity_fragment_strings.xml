@@ -10,4 +10,7 @@
     <string name="tv_activity_sliding_menu">侧滑菜单</string>
     <string name="tv_activity_tab_viewpager">tab_viewpager</string>
     <string name="tv_activity_user_center">用户中心</string>
+    <string name="tv_activity_user_counsel">我的咨询</string>
+    <string name="tv_activity_user_remind">我的提醒</string>
+    <string name="tv_activity_user_subscribe">我的预约</string>
 </resources>

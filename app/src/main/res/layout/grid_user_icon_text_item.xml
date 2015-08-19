@@ -22,7 +22,7 @@
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/dimen_list_single_item_height"
             android:layout_height="match_parent"
-            android:padding="8dp"
+            android:padding="12dp"
             tools:src="@mipmap/ic_launcher"/>
 
         <TextView
