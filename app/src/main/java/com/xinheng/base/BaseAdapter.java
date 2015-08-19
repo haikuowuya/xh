@@ -68,6 +68,11 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 	{
 		return mPosition;
 	}
+
+	public boolean isLastPosition()
+	{
+		return  mPosition == mData.size() -1;
+	}
 	public abstract void bindDataToView(View convertView, T t);
 
 	public void setViewVisibility(View convertView, int viewId, int visibility)

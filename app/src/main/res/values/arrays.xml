@@ -9,6 +9,7 @@
         <item>注册</item>
         <item>@string/tv_activity_department_nav</item>
         <item>@string/tv_activity_tab_viewpager</item>
+        <item>@string/tv_activity_user_center</item>
     </string-array>
 
     <string-array name="array_department_left">
@@ -33,4 +34,35 @@
         <item>ICU</item>
 
     </string-array>
+
+
+
+
+
+
+
+
+
+
+
+
+    <string-array name="array_user_grid_nav">
+    <item>ic_launcher~栏目1</item>
+    <item>ic_launcher~栏目2</item>
+    <item>ic_launcher~栏目3</item>
+    </string-array>
+    <string-array name="array_user_list_nav">
+        <item>ic_launcher~栏目名称1</item>
+        <item>ic_launcher~栏目名称1</item>
+        <item>ic_launcher~栏目名称1</item>
+        <item></item>
+        <item>ic_launcher~栏目名称2</item>
+        <item>ic_launcher~栏目名称2</item>
+        <item>ic_launcher~栏目名称2</item>
+        <item></item>
+        <item>ic_launcher~栏目名称3</item>
+        <item>ic_launcher~栏目名称3</item>
+
+    </string-array>
+
 </resources>

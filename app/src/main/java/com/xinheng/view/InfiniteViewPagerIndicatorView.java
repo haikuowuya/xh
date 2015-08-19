@@ -308,7 +308,11 @@ public class InfiniteViewPagerIndicatorView extends RelativeLayout
                 pauseAutoCycle();
                 break;
         }
-        return false;
+//        return false; //DEFAULT
+
+        boolean isHandle = super.onInterceptTouchEvent(ev);
+        getParent().requestDisallowInterceptTouchEvent(isHandle);
+        return isHandle;
     }
 
     /**

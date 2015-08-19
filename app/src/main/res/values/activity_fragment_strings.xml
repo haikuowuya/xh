@@ -9,4 +9,5 @@
     <string name="tv_activity_department_nav">科室导航</string>
     <string name="tv_activity_sliding_menu">侧滑菜单</string>
     <string name="tv_activity_tab_viewpager">tab_viewpager</string>
+    <string name="tv_activity_user_center">用户中心</string>
 </resources>

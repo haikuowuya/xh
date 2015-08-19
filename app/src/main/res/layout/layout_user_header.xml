@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_title_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="168dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:alpha="0.8"
+
+        android:background="@color/color_title_background_color">
+
+        <com.xinheng.view.CircleImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="@dimen/dimen_user_icon_height_width"
+            android:layout_height="@dimen/dimen_user_icon_height_width"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+
+            app:border_color="@color/color_white_color"
+            app:border_width="1dp"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_photo"
+            android:layout_margin="10dp"
+            android:layout_toRightOf="@+id/iv_photo"
+            android:background="@drawable/shape_user_name"
+            android:gravity="center"
+            android:minWidth="48dp"
+            android:padding="4dp"
+            android:text="张三"
+            android:textColor="@color/color_white_color"
+            tools:text="张三"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_grid_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_title_background_color"
+        android:orientation="horizontal"/>
+
+
+
+</LinearLayout>

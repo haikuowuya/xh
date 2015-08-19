@@ -1826,6 +1826,15 @@ public class ViewPagerEx extends ViewGroup {
             ViewCompat.setLayerType(getChildAt(i), layerType, null);
         }
     }
+      //==========================ADD 2015/8/19========================
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        getParent().requestDisallowInterceptTouchEvent(true);
+        return super.dispatchTouchEvent(ev);
+    }
+
+      //==========================ADD 2015/8/19========================
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {

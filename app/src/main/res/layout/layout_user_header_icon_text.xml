@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_title_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        tools:src="@mipmap/ic_launcher"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        tools:text="文字文字"
+        tools:textColor="#FFFF0000"
+        android:textColor="@color/color_white_color"
+        android:layout_height="match_parent"/>
+
+
+
+</LinearLayout>

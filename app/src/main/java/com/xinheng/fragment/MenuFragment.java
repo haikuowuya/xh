@@ -14,6 +14,7 @@ import com.xinheng.DepartmentNavActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
 import com.xinheng.TabViewPagerActivity;
+import com.xinheng.UserCenterActivity;
 import com.xinheng.base.BaseFragment;
 
 /**
@@ -73,6 +74,10 @@ public class MenuFragment extends BaseFragment
                         else if(getString(R.string.tv_activity_tab_viewpager).equals(text))
                         {
                             TabViewPagerActivity.actionTabViewPager(mActivity);
+                        }
+                        else if(getString(R.string.tv_activity_user_center).equals(text))
+                        {
+                            UserCenterActivity.actionUserCenter(mActivity);
                         }
                     }
                 }, 200L);

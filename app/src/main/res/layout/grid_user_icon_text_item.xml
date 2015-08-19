@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_list_single_item_height"
+    android:background="#00000000"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="@dimen/dimen_list_single_item_height"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_white_color"
+            tools:text="文字文字"
+            tools:textColor="#FF666666"/>
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:layout_width="@dimen/dimen_list_single_item_height"
+            android:layout_height="match_parent"
+            tools:src="@mipmap/ic_department_right_arrow"/>
+
+    </LinearLayout>
+
+</LinearLayout>

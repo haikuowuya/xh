@@ -35,6 +35,9 @@
         <activity
             android:name=".TabViewPagerActivity"
             android:label="@string/tv_activity_tab_viewpager"/>
+        <activity
+            android:name=".UserCenterActivity"
+            android:label="@string/tv_activity_user_center"/>
 
     </application>
 
