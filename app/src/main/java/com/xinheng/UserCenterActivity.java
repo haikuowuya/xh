@@ -13,19 +13,17 @@ import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.IconTextItem;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.SplitUtils;
-import com.xinheng.util.ToastUtils;
 import com.xinheng.view.CircleImageView;
 
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/19 0019
  * 时间： 11:27
- * 说明：
+ * 说明：个人中心
  */
 public class UserCenterActivity extends BaseActivity
 {
     private LinearLayout mLinearListContainer;
-
     private LinearLayout mLinearGridContainer;
     /**
      * 用户头像
@@ -50,7 +48,12 @@ public class UserCenterActivity extends BaseActivity
         initView();
         fillLinearGridContainer();
         fillLinearListContainer();
+    }
 
+    @Override
+    public boolean canDoRefresh()
+    {
+        return  true;
     }
 
     private void fillLinearListContainer()

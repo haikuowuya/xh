@@ -37,7 +37,13 @@ public class PTRListFragment extends BaseFragment
     {
         View view = inflater.inflate(R.layout.fragment_ptr_list,null);
         initView(view);
+        mIsInit = true;
         return view;
+    }
+
+    public ListView getListView()
+    {
+        return mListView;
     }
 
     private void initView(View view)

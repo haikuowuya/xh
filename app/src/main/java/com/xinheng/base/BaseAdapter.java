@@ -26,10 +26,6 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 		mLayoutId = layoutId;
 		mInflater = LayoutInflater.from(mActivity);
 	}
-
-
-
-
 	public Activity getActivity()
 	{
 		return  mActivity;
@@ -61,6 +57,7 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 			convertView = mInflater.inflate(mLayoutId, null);
 		}
 		mPosition = position;
+
 		bindDataToView(convertView, mData.get(position));
 		return convertView;
 	}

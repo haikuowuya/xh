@@ -1,5 +1,6 @@
 package com.xinheng.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -17,16 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.xinheng.MainActivity;
 import com.xinheng.R;
 import com.xinheng.XHApplication;
 import com.xinheng.drawable.DrawerArrowDrawable;
 import com.xinheng.fragment.MenuFragment;
-import com.xinheng.http.VolleyUtils;
 import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.IntentUtils;
 import com.xinheng.util.ToastUtils;
@@ -72,11 +68,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      */
     private LinearLayout mLinearTitleContainer;
 
+    /**
+     * 网络加载时显示的进度框
+     */
+    private ProgressDialog mProgressDialog;
+
     public SharedPreferences getPreferences()
     {
         return mPreferences;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -89,6 +90,33 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         int statusCoclor = getResources().getColor(R.color.color_title_background_color);
         ViewUtils.alphaStatusBarAndNavBar(mActivity, statusCoclor, 0xFF000000);
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setMessage("正在获取数据中……");
+    }
+
+    public  void showProgressDialog()
+    {
+        if(!mProgressDialog.isShowing())
+        {
+            mProgressDialog.show();
+        }
+    }
+    public  void dismissProgressDialog()
+    {
+        if(mProgressDialog.isShowing())
+        {
+            mProgressDialog.dismiss();;
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if(mProgressDialog.isShowing())
+        {
+            mProgressDialog.dismiss();;
+        }
     }
 
     public void showToast(String text)
@@ -100,11 +128,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         ToastUtils.showCrouton(mActivity, text, getContentViewGroup());
     }
-    
+
     public View getCenterTitleView()
     {
         return mTvCenterTitle;
     }
+
     public View getTitleContainer()
     {
         return mLinearTitleContainer;
@@ -116,7 +145,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         super.setContentView(R.layout.activity_base);   //TODO XXX
         mFrameContainer = (FrameLayout) findViewById(R.id.frame_container);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_container);
-        mLinearTitleContainer  = (LinearLayout) findViewById(R.id.linear_title_container); 
+        mLinearTitleContainer = (LinearLayout) findViewById(R.id.linear_title_container);
         mTvCenterTitle = (TextView) findViewById(R.id.tv_center_title);
         mIvRight = (ImageView) findViewById(R.id.iv_right);
         mIvBack = (ImageView) findViewById(R.id.iv_back);
@@ -175,41 +204,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_container, MenuFragment.newInstance()).commit();
 
     }
+
     public void setIvRightVisibility(int visibility)
     {
         mIvRight.setVisibility(visibility);
     }
+
     public ViewGroup getContentViewGroup()
     {
         return mFrameContainer;
-    }
-
-    public void requestGetDataFromUrl(String url)
-    {
-        ListenerImpl listener = new ListenerImpl();
-        Request request = new StringRequest(Request.Method.GET, url, listener, listener);
-        VolleyUtils.addRequest(mActivity, request);
-
-    }
-
-    public void onGetDataSuccess(String string)
-    {
-        System.out.println("result string = " + string);
-    }
-
-    private class ListenerImpl implements Response.Listener, Response.ErrorListener
-    {
-        public void onErrorResponse(VolleyError error)
-        {
-
-        }
-
-        @Override
-        public void onResponse(Object response)
-        {
-            String result = (response != null) ? response.toString() : null;
-            onGetDataSuccess(result);
-        }
     }
 
     public boolean canDoRefresh()
@@ -217,27 +220,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return false;
     }
 
-    private class PtrHandlerImpl  implements PtrHandler
-    {
-        @Override
-        public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view1)
-        {
-            return canDoRefresh();
-        }
-
-        @Override
-        public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-        {
-            ptrFrameLayout.postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        mPtrClassicFrameLayout.refreshComplete();
-                    }
-                }, 2000L);
-        }
-    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -253,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 mSlidingMenu.showContent(true);
                 return true;
             }
-            else if(mActivity instanceof MainActivity)
+            else if (mActivity instanceof MainActivity)
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
@@ -270,5 +252,26 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
     }
 
+    private class PtrHandlerImpl implements PtrHandler
+    {
+        @Override
+        public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view1)
+        {
+            return canDoRefresh();
+        }
+
+        @Override
+        public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+        {
+            ptrFrameLayout.postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    mPtrClassicFrameLayout.refreshComplete();
+                }
+            }, 2000L);
+        }
+    }
 
 }

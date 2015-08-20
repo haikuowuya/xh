@@ -21,7 +21,6 @@ public class DebugUtils
     public static boolean isShowDebug(Context context)
     {
         boolean flag = DEBUG;
-
         return flag;
     }
 

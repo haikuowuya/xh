@@ -19,7 +19,6 @@ import com.xinheng.view.TabViewPagerIndicator;
  */
 public class TabViewPagerActivity extends BaseActivity
 {
-
     private TabViewPagerIndicator mTabViewPagerIndicator;
 
     public static void actionTabViewPager(BaseActivity activity)
@@ -38,9 +37,13 @@ public class TabViewPagerActivity extends BaseActivity
         mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
     }
 
+    public TabViewPagerIndicator getTabViewPagerIndicator()
+    {
+        return mTabViewPagerIndicator;
+    }
+
     private PagerAdapter genPagerAdapter()
     {
-
         FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
             @Override

@@ -10,7 +10,8 @@ import com.xinheng.mvp.model.UserSubscribeItem;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/8/19 0019.
+ * 我的预约列表适配器
+ *
  */
 public class SubscribeAdapter extends BaseAdapter<UserSubscribeItem>
 {
