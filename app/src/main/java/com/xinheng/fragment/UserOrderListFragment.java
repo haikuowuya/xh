@@ -1,16 +1,16 @@
 package com.xinheng.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserDoctorListAdapter;
-import com.xinheng.adapter.user.UserMedicalListAdapter;
+import com.xinheng.adapter.user.SubscribeAdapter;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserMedicalItem;
+import com.xinheng.mvp.model.UserSubscribeItem;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -22,25 +22,29 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  我的病历列表
+ * 说明：  我的订单列表
  */
-public class UserMedicalListFragment extends PTRListFragment implements DataView
+public class UserOrderListFragment extends PTRListFragment implements DataView
 {
-    private static final String DATA = UserMedicalItem.DEBUG_SUCCESS;
+    private static final String DATA = UserSubscribeItem.DEBUG_SUCCESS;
 
-    public static UserMedicalListFragment newInstance()
+    public static UserOrderListFragment newInstance()
     {
-        UserMedicalListFragment fragment = new UserMedicalListFragment();
+        UserOrderListFragment fragment = new UserOrderListFragment();
         return fragment;
     }
-    private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
-    private UserMedicalListAdapter mUserMedicalListAdapter;
+
+    private LinkedList<UserSubscribeItem> mUserSubscribeItems = new LinkedList<>();
+    private SubscribeAdapter mSubscribeAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+        getListView().setSelector(new ColorDrawable(0x00000000));
+        getListView().setDividerHeight(0);
+        getListView().setDivider(new ColorDrawable(0x00000000));
     }
 
     @Override
@@ -52,7 +56,7 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();
+        doGetData();
     }
 
     @Override
@@ -66,21 +70,18 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserMedicalItem>>()
+        Type type = new TypeToken<List<UserSubscribeItem>>()
         {
         }.getType();
-        List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        if (null != items)
+        List<UserSubscribeItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
+        mUserSubscribeItems.addAll(items);
+        if (null == mSubscribeAdapter)
         {
-            mUserMedicalItems.addAll(items);
-            if (null == mUserMedicalListAdapter)
-            {
-                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
-                getListView().setAdapter(mUserMedicalListAdapter);
-            } else
-            {
-                mUserMedicalListAdapter.notifyDataSetChanged();
-            }
+            mSubscribeAdapter = new SubscribeAdapter(mActivity, mUserSubscribeItems);
+            getListView().setAdapter(mSubscribeAdapter);
+        } else
+        {
+            mSubscribeAdapter.notifyDataSetChanged();
         }
     }
 

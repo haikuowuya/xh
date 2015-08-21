@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="10dp"
+                android:textColor="@color/color_main_text_gray_color"
                 tools:text="张三"/>
 
         </LinearLayout>
@@ -87,7 +88,7 @@
 
                 <RatingBar
                     style="@style/Custom.RatingBar.Indicator"
-                    android:layout_width="100dp"
+                    android:layout_width="132dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:numStars="5"
@@ -115,7 +116,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    tools:text="反馈"/>
+                    android:layout_margin="4dp"
+                    android:background="@drawable/user_subscribe_feedback_selector"
+                    android:textColor="@color/color_white_color"
+                    android:text="病情反馈"
+                    tools:text="病情反馈"/>
 
                 <TextView
                     android:id="@+id/tv_action_evaluation"
@@ -123,15 +128,23 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    tools:text="评价"/>
+                    android:textColor="@color/color_white_color"
+                    android:text="医生评价"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:layout_margin="4dp"
+                    tools:text="医生评价"/>
 
                 <TextView
                     android:id="@+id/tv_action_subscribe"
+                    android:layout_margin="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:textColor="@color/color_white_color"
                     android:gravity="center"
-                    tools:text="挂号"/>
+                    android:text="预约挂号"
+                    android:background="@drawable/user_subscribe_subscribe_selector"
+                    tools:text="预约挂号"/>
             </LinearLayout>
         </LinearLayout>
 

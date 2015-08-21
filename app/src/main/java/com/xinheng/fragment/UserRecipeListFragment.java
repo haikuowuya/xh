@@ -6,7 +6,6 @@ import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserDoctorListAdapter;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
@@ -22,15 +21,15 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  我的病历列表
+ * 说明：  我的处方列表
  */
-public class UserMedicalListFragment extends PTRListFragment implements DataView
+public class UserRecipeListFragment extends PTRListFragment implements DataView
 {
     private static final String DATA = UserMedicalItem.DEBUG_SUCCESS;
 
-    public static UserMedicalListFragment newInstance()
+    public static UserRecipeListFragment newInstance()
     {
-        UserMedicalListFragment fragment = new UserMedicalListFragment();
+        UserRecipeListFragment fragment = new UserRecipeListFragment();
         return fragment;
     }
     private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
@@ -52,9 +51,8 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();
+        doGetData();
     }
-
     @Override
     protected void doGetData()
     {

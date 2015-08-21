@@ -14,6 +14,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public class UserReportListFragment extends PTRListFragment implements DataView
         UserReportListFragment fragment = new UserReportListFragment();
         return fragment;
     }
+    private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
+    private UserMedicalListAdapter mUserMedicalListAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
@@ -46,6 +49,12 @@ public class UserReportListFragment extends PTRListFragment implements DataView
     }
 
     @Override
+    protected void doRefresh()
+    {
+        doGetData();
+    }
+
+    @Override
     protected void doGetData()
     {
         mActivity.showProgressDialog();
@@ -55,11 +64,23 @@ public class UserReportListFragment extends PTRListFragment implements DataView
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
+        refreshComplete();
         Type type = new TypeToken<List<UserMedicalItem>>()
         {
         }.getType();
         List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        getListView().setAdapter(new UserMedicalListAdapter(mActivity, items));
+        if (null != items)
+        {
+            mUserMedicalItems.addAll(items);
+            if (null == mUserMedicalListAdapter)
+            {
+                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
+                getListView().setAdapter(mUserMedicalListAdapter);
+            } else
+            {
+                mUserMedicalListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

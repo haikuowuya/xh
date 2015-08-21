@@ -16,7 +16,6 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         configTitleLayout();
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mMainFragment = MainFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mMainFragment).commit();
     }

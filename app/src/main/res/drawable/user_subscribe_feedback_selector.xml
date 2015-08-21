@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--我的医生-病情反馈按钮的状态-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="#88EAC16F"/>
+            <corners android:radius="4dp"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <solid android:color="#EAC16F"/>
+            <corners android:radius="4dp"/>
+        </shape>
+    </item>
+
+</selector>

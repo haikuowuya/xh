@@ -58,6 +58,16 @@
             android:name=".UserReportActivity"
             android:label="@string/tv_activity_user_report"/>
 
+  <activity
+            android:name=".UserRecipeActivity"
+            android:label="@string/tv_activity_user_recipe"/>
+ <activity
+            android:name=".UserCheckActivity"
+            android:label="@string/tv_activity_user_check"/>
+ <activity
+            android:name=".UserOrderActivity"
+            android:label="@string/tv_activity_user_order"/>
+
 
 
     </application>

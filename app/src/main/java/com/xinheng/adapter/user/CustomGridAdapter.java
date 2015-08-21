@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.IconTextItem;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class CustomGridAdapter extends BaseAdapter<IconTextItem>
 {
-    public CustomGridAdapter(Activity activity, List<IconTextItem> data)
+    public CustomGridAdapter(BaseActivity activity, List<IconTextItem> data)
     {
         super(activity, R.layout.grid_user_icon_text_item, data);
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.HomeGridItem;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public class GridAdapter extends BaseAdapter<HomeGridItem>
 {
-    public GridAdapter(Activity activity, List<HomeGridItem> data)
+    public GridAdapter(BaseActivity activity, List<HomeGridItem> data)
     {
         super(activity, R.layout.grid_home_item, data);
     }

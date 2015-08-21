@@ -26,16 +26,17 @@ public class PTRListFragment extends BaseFragment
     public static PTRListFragment newInstance()
     {
         PTRListFragment fragment = new PTRListFragment();
-        return  fragment;
+        return fragment;
     }
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_ptr_list,null);
+        View view = inflater.inflate(R.layout.fragment_ptr_list, null);
         initView(view);
         mIsInit = true;
         return view;
@@ -61,16 +62,29 @@ public class PTRListFragment extends BaseFragment
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
             {
-                ptrFrameLayout.postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        mPtrClassicFrameLayout.refreshComplete();
-                    }
-                }, 2000L);
+                doRefresh();
             }
         });
+    }
+
+    /**
+     * 重写此方法进行刷新请求
+     */
+    protected void doRefresh()
+    {
+
+        mPtrClassicFrameLayout.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                mPtrClassicFrameLayout.refreshComplete();
+            }
+        }, 2000L);
+    }
+    protected  void refreshComplete()
+    {
+        mPtrClassicFrameLayout.refreshComplete();
     }
 
     @Override

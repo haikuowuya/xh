@@ -6,11 +6,10 @@ import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserDoctorListAdapter;
-import com.xinheng.adapter.user.UserMedicalListAdapter;
+import com.xinheng.adapter.user.UserCounselListAdapter;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserMedicalItem;
+import com.xinheng.mvp.model.UserCounselItem;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -22,19 +21,20 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  我的病历列表
+ * 说明：  我的咨询列表
  */
-public class UserMedicalListFragment extends PTRListFragment implements DataView
+public class UserCounselListFragment extends PTRListFragment implements DataView
 {
-    private static final String DATA = UserMedicalItem.DEBUG_SUCCESS;
+    private static final String DATA = UserCounselItem.DEBUG_SUCCESS;
 
-    public static UserMedicalListFragment newInstance()
+    public static UserCounselListFragment newInstance()
     {
-        UserMedicalListFragment fragment = new UserMedicalListFragment();
+        UserCounselListFragment fragment = new UserCounselListFragment();
         return fragment;
     }
-    private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
-    private UserMedicalListAdapter mUserMedicalListAdapter;
+
+    private LinkedList<UserCounselItem> mUserCounselItems = new LinkedList<>();
+    private UserCounselListAdapter mUserCounselListAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
@@ -52,7 +52,7 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();
+        doGetData(); ;
     }
 
     @Override
@@ -66,20 +66,20 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserMedicalItem>>()
+        Type type = new TypeToken<List<UserCounselItem>>()
         {
         }.getType();
-        List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
+        List<UserCounselItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
         if (null != items)
         {
-            mUserMedicalItems.addAll(items);
-            if (null == mUserMedicalListAdapter)
+            mUserCounselItems.addAll(items);
+            if (null == mUserCounselListAdapter)
             {
-                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
-                getListView().setAdapter(mUserMedicalListAdapter);
+                mUserCounselListAdapter = new UserCounselListAdapter(mActivity, mUserCounselItems);
+                getListView().setAdapter(mUserCounselListAdapter);
             } else
             {
-                mUserMedicalListAdapter.notifyDataSetChanged();
+                mUserCounselListAdapter.notifyDataSetChanged();
             }
         }
     }

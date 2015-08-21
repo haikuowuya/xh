@@ -92,6 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         ViewUtils.alphaStatusBarAndNavBar(mActivity, statusCoclor, 0xFF000000);
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
+        mProgressDialog.setCanceledOnTouchOutside(false);
     }
 
     public  void showProgressDialog()
@@ -183,7 +184,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setShadowWidthRes(R.dimen.dimen_slidingmenu_shadow_width);
         mSlidingMenu.setShadowDrawable(R.drawable.shape_slidingmenu_shadow);
         mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);

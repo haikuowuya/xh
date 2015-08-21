@@ -8,19 +8,20 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.fragment.UserOrderListFragment;
 import com.xinheng.fragment.UserSubscribeListFragment;
 
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 13:48
- * 说明：我的预约
+ * 说明：我的订单
  */
-public class UserSubscribeActivity extends TabViewPagerActivity
+public class UserOrderActivity extends TabViewPagerActivity
 {
-    public static void actionUserSubscribe(BaseActivity activity)
+    public static void actionUserOrder(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, UserSubscribeActivity.class);
+        Intent intent = new Intent(activity, UserOrderActivity.class);
         activity.startActivity(intent);
     }
 
@@ -39,7 +40,7 @@ public class UserSubscribeActivity extends TabViewPagerActivity
             @Override
             public Fragment getItem(int position)
             {
-                return UserSubscribeListFragment.newInstance();
+                return UserOrderListFragment.newInstance();
             }
 
             @Override
@@ -66,6 +67,6 @@ public class UserSubscribeActivity extends TabViewPagerActivity
     @Override
     public CharSequence getActivityTitle()
     {
-        return getString(R.string.tv_activity_user_subscribe);
+        return getString(R.string.tv_activity_user_order);
     }
 }
