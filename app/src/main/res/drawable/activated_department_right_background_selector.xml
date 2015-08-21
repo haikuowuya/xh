@@ -9,13 +9,11 @@
             <item android:drawable="@color/color_department_right_text_color"
                   android:top="12dp"
                   android:bottom="12dp"
-                
-                
-                ></item>
+                />
             <item android:drawable="@color/color_department_right_default_color"
                   android:top="12dp"
                   android:bottom="12dp"
-                  android:left="4dp"></item>
+                  android:left="4dp"/>
 
         </layer-list>
 

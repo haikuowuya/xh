@@ -7,10 +7,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.xinheng.base.BaseActivity;
-import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DebugUtils;
-import com.xinheng.util.GsonUtils;
 
 /**
  * 作者： raiyi-suzhou
@@ -30,7 +28,7 @@ public class RequestUtils
                 final String result = (response != null) ? response.toString() : null;
                 if(DebugUtils.isShowDebug(activity))
                 {
-                    System.out.println("结果数据 = 【 "+result+" 】");
+                  //  System.out.println("结果数据 = 【 "+result+" 】");
                 }
                 //模拟网络请求
                 new Handler(activity.getMainLooper()).postDelayed(new Runnable()
@@ -39,9 +37,10 @@ public class RequestUtils
                     public void run()
                     {
                         activity.dismissProgressDialog();
-                        dataView.onGetDataSuccess(GsonUtils.jsonToClass(result, ResultItem.class));
+//                        dataView.onGetDataSuccess(GsonUtils.jsonToClass(result, ResultItem.class));
+                        dataView.onGetDataSuccess( null);
                     }
-                }, 4000L) ;
+                }, 2000L) ;
 
             }
         };

@@ -13,4 +13,7 @@
     <string name="tv_activity_user_counsel">我的咨询</string>
     <string name="tv_activity_user_remind">我的提醒</string>
     <string name="tv_activity_user_subscribe">我的预约</string>
+    <string name="tv_activity_user_doctor">我的医生</string>
+    <string name="tv_activity_user_medical">我的病历</string>
+    <string name="tv_activity_user_report">我的报告</string>
 </resources>

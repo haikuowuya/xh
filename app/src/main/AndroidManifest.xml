@@ -41,8 +41,24 @@
         <activity
             android:name=".UserCounselActivity"
             android:label="@string/tv_activity_user_counsel"/>
-        <activity android:name=".UserRemindActivity" android:label="@string/tv_activity_user_remind"/>
-        <activity android:name=".UserSubscribeActivity" android:label="@string/tv_activity_user_subscribe"/>
+        <activity
+            android:name=".UserRemindActivity"
+            android:label="@string/tv_activity_user_remind"/>
+        <activity
+            android:name=".UserSubscribeActivity"
+            android:label="@string/tv_activity_user_subscribe"/>
+        <activity
+            android:name=".UserDoctorActivity"
+            android:label="@string/tv_activity_user_doctor"/>
+        <activity
+            android:name=".UserMedicalActivity"
+            android:label="@string/tv_activity_user_medical"/>
+
+        <activity
+            android:name=".UserReportActivity"
+            android:label="@string/tv_activity_user_report"/>
+
+
 
     </application>
 

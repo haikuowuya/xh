@@ -20,14 +20,14 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：
+ * 说明：  我的预约列表
  */
 public class UserSubscribeListFragment extends PTRListFragment implements DataView
 {
     private static final String DATA = "{\n" +
             "    \"result\": \"1\",\n" +
             "    \"message\": \"获取预约信息成功\",\n" +
-            "    \"propertise\": [\n" +
+            "    \"properties\": [\n" +
             "        {\n" +
             "            \"id\": \"327327237667777\",\n" +
             "            \"createTime\": \"22222222222\",\n" +

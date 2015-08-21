@@ -49,7 +49,7 @@ public class AdPagerAdapter extends PagerAdapter
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         imageView.setImageResource(R.mipmap.ic_ad_banner);
         container.addView(imageView);
-        String imageUrl = item.imageUrl;
+        String imageUrl = item.img;
         ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
         {
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)

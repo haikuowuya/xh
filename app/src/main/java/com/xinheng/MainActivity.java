@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivity
     {
         getCenterTitleView().setVisibility(View.GONE);
         findViewById(R.id.iv_home_logo).setVisibility(View.VISIBLE);
-        setIvRightVisibility(View.VISIBLE);
+
     }
 
     @Override

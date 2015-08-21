@@ -28,8 +28,9 @@ public class GsonUtils
         }
         catch (Exception e)
         {
-            System.out.println("json to class 解析失败");
+            System.out.println("json to class【" + classOfT + "】 解析失败  " + e.getMessage());
         }
+        System.out.println("\n" + json);
         return t;
     }
 
@@ -50,8 +51,9 @@ public class GsonUtils
         }
         catch (Exception e)
         {
-            System.out.println("json to class 解析失败");
+            System.out.println("json to list 解析失败  " + e.getMessage());
         }
+        System.out.println("\n" + json);
         return items;
     }
 
@@ -81,27 +83,27 @@ public class GsonUtils
             ResultItem resultItem = GsonUtils.jsonToClass(json, ResultItem.class);
             if (null != resultItem)
             {
-                items = jsonToList(resultItem.propertise, typeOfT);
+                items = jsonToList(resultItem.properties, typeOfT);
             }
         }
         catch (Exception e)
         {
-            System.out.println("json to class 解析失败");
+            System.out.println("ResultItemToList  解析失败  " + e.getMessage());
         }
         return items;
     }
 
     /**
-     * 将一个{@link ResultItem}对象的{@link ResultItem#propertise}字段转化为一个List集合，
+     * 将一个{@link ResultItem}对象的{@link ResultItem#properties}字段转化为一个List集合，
      *
-     * @param json    :结果json字符串
-     * @param typeOfT 对象列表的 type
-     * @param <T>     要转化的对象
+     * @param resultItem :ResultItem对象
+     * @param typeOfT    对象列表的 type
+     * @param <T>        要转化的对象
      * @return
      */
     public static <T> List<T> resultItemToList(ResultItem resultItem, Type typeOfT)
     {
-        return jsonToList(resultItem.propertise, typeOfT);
+        return jsonToList(resultItem.properties, typeOfT);
 
     }
 

@@ -17,18 +17,19 @@
 
         android:background="@color/color_title_background_color">
 
-        <com.xinheng.view.CircleImageView
+        <com.xinheng.view.CircularImageView
             android:id="@+id/iv_photo"
             android:layout_width="@dimen/dimen_user_icon_height_width"
             android:layout_height="@dimen/dimen_user_icon_height_width"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher"
 
-            app:border_color="@color/color_white_color"
-            app:border_width="1dp"
-            tools:src="@mipmap/ic_launcher"/>
+            app:civ_borderColor="#FFFF0000"
+            app:civ_borderWidth="1dp"
+            android:src="@mipmap/ic_photo"
+            app:civ_shadowColor="@color/color_main_text_color"
+            tools:src="@mipmap/ic_photo"/>
 
         <TextView
             android:id="@+id/tv_username"

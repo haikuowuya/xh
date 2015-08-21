@@ -1,0 +1,10 @@
+<!--Activity通用的布局，适用于将Fragment作为View-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/frame_content_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+</FrameLayout>

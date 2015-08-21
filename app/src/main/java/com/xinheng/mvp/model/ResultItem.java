@@ -7,6 +7,6 @@ public class ResultItem extends  BaseEmptyItem
 {
     public String  result;
     public String  message;
-    public Object propertise;
+    public Object properties;
     
 }

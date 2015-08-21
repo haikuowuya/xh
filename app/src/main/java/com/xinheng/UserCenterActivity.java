@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.IconTextItem;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.SplitUtils;
-import com.xinheng.view.CircleImageView;
+import com.xinheng.view.CircularImageView;
 
 /**
  * 作者： raiyi-suzhou
@@ -28,11 +29,12 @@ public class UserCenterActivity extends BaseActivity
     /**
      * 用户头像
      */
-    private CircleImageView mIvPhoto;
+    private CircularImageView mIvPhoto;
     /***
      * 用户名称
      */
     private TextView mTvUserName;
+    private ScrollView mScrollView;
 
     public static void actionUserCenter(BaseActivity activity)
     {
@@ -53,7 +55,7 @@ public class UserCenterActivity extends BaseActivity
     @Override
     public boolean canDoRefresh()
     {
-        return  true;
+        return mScrollView.getScrollY() == 0;
     }
 
     private void fillLinearListContainer()
@@ -72,7 +74,7 @@ public class UserCenterActivity extends BaseActivity
                 textView.setText(text);
                 imageView.setImageResource(iconId);
                 int height = (int) getResources().getDimension(R.dimen.dimen_user_list_single_item_height);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,  height);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 mLinearListContainer.addView(view, layoutParams);
                 view.setOnClickListener(new OnLinearItemClickListenerImpl(new IconTextItem(iconId, text)));
             }
@@ -81,7 +83,7 @@ public class UserCenterActivity extends BaseActivity
                 View view = new View(mActivity);
                 int height = DensityUtils.dpToPx(mActivity, 20.f);
                 view.setBackgroundColor(0xFFEBEBEB);
-                mLinearListContainer.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height));
+                mLinearListContainer.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
             }
         }
     }
@@ -101,7 +103,7 @@ public class UserCenterActivity extends BaseActivity
                 ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
                 textView.setText(text);
                 imageView.setImageResource(iconId);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,1.f);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.f);
                 mLinearGridContainer.addView(view, layoutParams);
                 view.setOnClickListener(new OnLinearItemClickListenerImpl(new IconTextItem(iconId, text)));
             }
@@ -112,42 +114,54 @@ public class UserCenterActivity extends BaseActivity
     {
         mLinearListContainer = (LinearLayout) findViewById(R.id.linear_list_container);
         mLinearGridContainer = (LinearLayout) findViewById(R.id.linear_grid_container);
-        mIvPhoto = (CircleImageView) findViewById(R.id.iv_photo);
+        mIvPhoto = (CircularImageView) findViewById(R.id.iv_photo);
         mTvUserName = (TextView) findViewById(R.id.tv_username);
+        mScrollView = (ScrollView) findViewById(R.id.sv_scrollview);
     }
-
-     private class  OnLinearItemClickListenerImpl implements  View.OnClickListener
-     {
-         private IconTextItem mIconTextItem;
-
-         public OnLinearItemClickListenerImpl(IconTextItem iconTextItem)
-         {
-             mIconTextItem = iconTextItem;
-         }
-
-         @Override
-         public void onClick(View v)
-         {
-//             ToastUtils.showCrouton(mActivity, mIconTextItem.text);
-             if(getString(R.string.tv_activity_user_counsel).equals(mIconTextItem.text))
-             {
-                 UserCounselActivity.actionUserCounsel(mActivity);
-             }
-             else if(getString(R.string.tv_activity_user_remind).equals(mIconTextItem.text))
-             {
-                 UserRemindActivity.actionUserRemind(mActivity);
-             }
-             else if(getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
-             {
-                 UserSubscribeActivity.actionUserSubscribe(mActivity);
-             }
-         }
-     }
-
 
     @Override
     public CharSequence getActivityTitle()
     {
         return getString(R.string.tv_activity_user_center);
+    }
+
+    private class OnLinearItemClickListenerImpl implements View.OnClickListener
+    {
+        private IconTextItem mIconTextItem;
+
+        public OnLinearItemClickListenerImpl(IconTextItem iconTextItem)
+        {
+            mIconTextItem = iconTextItem;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+//             ToastUtils.showCrouton(mActivity, mIconTextItem.text);
+            if (getString(R.string.tv_activity_user_counsel).equals(mIconTextItem.text))
+            {
+                UserCounselActivity.actionUserCounsel(mActivity);
+            }
+            else if (getString(R.string.tv_activity_user_remind).equals(mIconTextItem.text))
+            {
+                UserRemindActivity.actionUserRemind(mActivity);
+            }
+            else if (getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
+            {
+                UserSubscribeActivity.actionUserSubscribe(mActivity);
+            }
+            else if (getString(R.string.tv_activity_user_doctor).equals(mIconTextItem.text))
+            {
+                UserDoctorActivity.actionUserDoctor(mActivity);
+            }
+            else if (getString(R.string.tv_activity_user_medical).equals(mIconTextItem.text))
+            {
+                UserMedicalActivity.actionUsermedical(mActivity);
+            }
+            else if (getString(R.string.tv_activity_user_report).equals(mIconTextItem.text))
+            {
+                 UserReportActivity.actionUserReport(mActivity);
+            }
+        }
     }
 }
