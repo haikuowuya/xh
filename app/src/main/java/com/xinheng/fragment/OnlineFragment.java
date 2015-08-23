@@ -10,17 +10,18 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.xinheng.DepartmentNavActivity;
-import com.xinheng.OnlineActivity;
 import com.xinheng.R;
+import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
-import com.xinheng.adapter.main.GridAdapter;
+import com.xinheng.adapter.online.OnlineGridAdapter;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
 import com.xinheng.mvp.model.HomeGridItem;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.view.CustomGridView;
 import com.xinheng.view.InfiniteViewPagerIndicatorView;
+import com.xinheng.view.TabViewPagerIndicator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,15 +32,30 @@ import java.util.List;
  * 时间： 17:38
  * 说明： 首页内容
  */
-public class MainFragment extends BaseFragment
+public class OnlineFragment extends BaseFragment
 {
+    /**
+     * 顶部的滚动广告位置
+     */
     private InfiniteViewPagerIndicatorView mInfiniteViewPagerIndicatorView;
     private ScrollView mScrollView;
+    /**
+     * 中间的四个功能按钮
+     */
     private CustomGridView mCustomGridView;
 
-    public static MainFragment newInstance()
+    /**
+     * 功能按钮下面的布局
+     */
+    private LinearLayout mLinearCenterContainer;
+    /**
+     * 最下面的左右滑动的布局
+     */
+    private TabViewPagerIndicator mTabViewPagerIndicator;
+
+    public static OnlineFragment newInstance()
     {
-        MainFragment fragment = new MainFragment();
+        OnlineFragment fragment = new OnlineFragment();
         return fragment;
     }
 
@@ -47,7 +63,7 @@ public class MainFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_main, null);//TODO
+        View view = inflater.inflate(R.layout.fragment_online, null);//TODO
         initView(view);
         return view;
     }
@@ -55,6 +71,8 @@ public class MainFragment extends BaseFragment
     private void initView(View view)
     {
         mInfiniteViewPagerIndicatorView = (InfiniteViewPagerIndicatorView) view.findViewById(R.id.infinite_viewpager);
+        mTabViewPagerIndicator = (TabViewPagerIndicator) view.findViewById(R.id.tab_viewpager_online_indicator);
+        mLinearCenterContainer = (LinearLayout) view.findViewById(R.id.linear_online_center_container);
         mInfiniteViewPagerIndicatorView.requestDisallowInterceptTouchEvent(true);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
@@ -65,6 +83,29 @@ public class MainFragment extends BaseFragment
         mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter());
         mInfiniteViewPagerIndicatorView.startAutoCycle();
         mCustomGridView.setAdapter(genGridAdapter());
+        fillCenterContainer();
+        fillTabViewPagerIndicator();
+    }
+
+    private void fillCenterContainer()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_online_center_item, null);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.bottomMargin = DensityUtils.dpToPx(mActivity, 10.f);
+            mLinearCenterContainer.addView(view, layoutParams);
+        }
+    }
+
+    private void fillTabViewPagerIndicator()
+    {
+     //   mTabViewPagerIndicator.setViewPagerAdapter(genIndicatorAdapter());
+    }
+
+    private PagerAdapter genIndicatorAdapter()
+    {
+        return null;
     }
 
     @Override
@@ -76,13 +117,9 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position ==1)
+                if (position == 3)//我的订单
                 {
-                    DepartmentNavActivity.actionDepartmentNav(mActivity);
-                }
-                else if(position ==3)
-                {
-                    OnlineActivity.actionOnline(mActivity);
+                    UserOrderActivity.actionUserOrder(mActivity);
                 }
             }
         });
@@ -91,16 +128,11 @@ public class MainFragment extends BaseFragment
     private BaseAdapter genGridAdapter()
     {
         List<HomeGridItem> data = new LinkedList<>();
-        data.add(new HomeGridItem(R.mipmap.ic_main_0, "症状自测"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_1, "预约挂号"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_2, "便捷检查"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_3, "在线售药"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_4, "安心用药"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_5, "疾病预防"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_6, "就医指南"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_7, "健康咨询"));
-        data.add(new HomeGridItem(R.mipmap.ic_main_8, "医患交流"));
-        GridAdapter gridAdapter = new GridAdapter(mActivity, data);
+        data.add(new HomeGridItem(R.mipmap.ic_online_0, "按方抓药"));
+        data.add(new HomeGridItem(R.mipmap.ic_online_1, "轻松找药"));
+        data.add(new HomeGridItem(R.mipmap.ic_online_2, "购物车"));
+        data.add(new HomeGridItem(R.mipmap.ic_online_3, "我的订单"));
+        OnlineGridAdapter gridAdapter = new OnlineGridAdapter(mActivity, data);
         return gridAdapter;
     }
 

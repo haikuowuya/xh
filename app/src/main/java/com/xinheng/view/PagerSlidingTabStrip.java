@@ -62,7 +62,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
 
 	private boolean checkedTabWidths = false;
 
-	private int indicatorColor = 0xFFF98904;
+	/**
+	 * 当前Tab 下面指示线的颜色值
+	 */
+	private int indicatorColor = 0xFF2FAD68;
 	private int underlineColor = 0x1A000000;
 	private int dividerColor = 0x1A000000;
 
@@ -70,7 +73,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
 	private boolean textAllCaps = true;
 
 	private int scrollOffset = 52;
-	private int indicatorHeight = 1;//dp
+	private int indicatorHeight = 4;//dp
 	private int underlineHeight = 1;//dp
 	private int dividerPadding = 12;
 	private int tabPadding = 24;
@@ -78,7 +81,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView
 
 	private int tabTextSize = 18;
 	private int tabTextColor = 0xFF666666;
-	private int tabCurrentTextColor = 0xFFF98904;
+	/**
+	 * 当前Tab text文字颜色值
+	 */
+	private int tabCurrentTextColor = 0xFF2FAD68;
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.NORMAL;
 	private int lastScrollX = 0;

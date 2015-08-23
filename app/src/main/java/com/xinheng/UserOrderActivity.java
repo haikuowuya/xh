@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.UserOrderListFragment;
-import com.xinheng.fragment.UserSubscribeListFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -35,32 +34,28 @@ public class UserOrderActivity extends TabViewPagerActivity
 
     private PagerAdapter genPagerAdapter()
     {
+        final String[] titles = getResources().getStringArray(R.array.array_order);
         FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
         {
             @Override
             public Fragment getItem(int position)
             {
-                return UserOrderListFragment.newInstance();
+                return UserOrderListFragment.newInstance( );
             }
 
             @Override
             public int getCount()
             {
-                return 2;
+                return titles.length;
             }
 
             @Override
             public CharSequence getPageTitle(int position)
             {
-                String title = "预约挂号";
-                if (position == 1)
-                {
-                    title = "预约加号";
-                }
-                return title;
+                
+                return titles[position];
             }
         };
-
         return pagerAdapter;
     }
 

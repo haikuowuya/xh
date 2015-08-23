@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.xinheng.DepartmentNavActivity;
+import com.xinheng.LoginActivity;
 import com.xinheng.R;
-import com.xinheng.RegisterActivity;
 import com.xinheng.TabViewPagerActivity;
 import com.xinheng.UserCenterActivity;
 import com.xinheng.base.BaseFragment;
@@ -64,9 +64,9 @@ public class MenuFragment extends BaseFragment
                 {
                     public void run()
                     {
-                        if (getString(R.string.tv_activity_register).equals(text))//  注册
+                        if (getString(R.string.tv_activity_login).equals(text))
                         {
-                            RegisterActivity.actionRegister(mActivity);
+                            LoginActivity.actionLogin(mActivity);
                         } else if (getString(R.string.tv_activity_department_nav).equals(text))
                         {
                             DepartmentNavActivity.actionDepartmentNav(mActivity);
@@ -79,7 +79,7 @@ public class MenuFragment extends BaseFragment
                         }
                     }
                 }, 360L);
-               
+
 
             }
         });

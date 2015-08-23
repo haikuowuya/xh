@@ -19,7 +19,7 @@ public class TabViewPagerIndicator extends LinearLayout
     private LayoutParams mParams2 = new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1);
     private LayoutParams mParams3 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     private OnPageChangeListener mOnPageChangeListener;
-    private int mMinHeight = 40;// dp
+    private int mMinHeight = 48;// dp
     private boolean mHasTab = false;
     private OnPageChangeListener mDefaultPageChangeListener = new OnPageChangeListener()
     {
@@ -135,4 +135,6 @@ public class TabViewPagerIndicator extends LinearLayout
     {
         return mTabStrip;
     }
+    
+    
 }

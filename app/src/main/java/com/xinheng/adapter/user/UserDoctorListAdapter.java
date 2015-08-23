@@ -1,8 +1,8 @@
 package com.xinheng.adapter.user;
 
-import android.app.Activity;
 import android.view.View;
 
+import com.xinheng.DoctorEvaluationActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
@@ -88,7 +88,8 @@ public class UserDoctorListAdapter extends BaseAdapter<UserDoctorItem>
 
         private void feedback()
         {
-            ToastUtils.showCrouton(getActivity(), "病情反馈");
+
+            getActivity().showCroutonToast("病情反馈");
         }
 
         /**
@@ -96,7 +97,11 @@ public class UserDoctorListAdapter extends BaseAdapter<UserDoctorItem>
          */
         private void evaluation()
         {
-            ToastUtils.showCrouton(getActivity(), "医生评价");
+
+//            getActivity().showCroutonToast("医生评价");
+            DoctorEvaluationActivity.actionDoctorEvaluation(getActivity(),userDoctorItem);
+
+
         }
     }
 }

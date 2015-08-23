@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.slidingmenu.SlidingMenu;
 
 /**
- * Created by Administrator on 2015/8/17 0017.
+ *  用户注册界面
  */
 public class RegisterActivity extends BaseActivity
     
@@ -23,15 +24,14 @@ public class RegisterActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);//TODO
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         configTitleLayout();
-        
     }
-
-   
 
     private void configTitleLayout()
     {
         getTitleContainer().setVisibility(View.GONE);
+        ((View)getContentViewGroup().getParent()).setPadding(0,0,0,0);
     }
 
     @Override

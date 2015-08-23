@@ -2,6 +2,7 @@ package com.xinheng.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
@@ -37,6 +38,11 @@ import in.srain.cube.views.ptr.PtrHandler;
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle
 {
+
+    /***
+     * Activity 跳转时通过Intent传值的KEY
+     */
+    protected static final String EXTRA_ITEM = "item";
     protected SlidingMenu mSlidingMenu;
     /**
      * Activity的一个实例{@link  BaseActivity#onCreate(Bundle) }
@@ -93,6 +99,20 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+            {
+                if(keyCode == KeyEvent.KEYCODE_BACK)
+                {
+                    mProgressDialog.dismiss();
+                    mActivity.finish();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public  void showProgressDialog()
@@ -185,6 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+//        mSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setShadowWidthRes(R.dimen.dimen_slidingmenu_shadow_width);
         mSlidingMenu.setShadowDrawable(R.drawable.shape_slidingmenu_shadow);
         mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);

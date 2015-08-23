@@ -27,12 +27,14 @@ import java.util.List;
 public class UserOrderListFragment extends PTRListFragment implements DataView
 {
     private static final String DATA = UserSubscribeItem.DEBUG_SUCCESS;
+ 
 
     public static UserOrderListFragment newInstance()
     {
         UserOrderListFragment fragment = new UserOrderListFragment();
         return fragment;
     }
+  
 
     private LinkedList<UserSubscribeItem> mUserSubscribeItems = new LinkedList<>();
     private SubscribeAdapter mSubscribeAdapter;
@@ -50,7 +52,8 @@ public class UserOrderListFragment extends PTRListFragment implements DataView
     @Override
     public String getFragmentTitle()
     {
-        return getString(R.string.tv_fragment_ptr_list);
+        
+        return "我的订单";
     }
 
     @Override
