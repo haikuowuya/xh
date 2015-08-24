@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.mvp.presenter.LoginPresenter;
+import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.slidingmenu.SlidingMenu;
 
 /**
@@ -33,7 +35,10 @@ public class LoginActivity extends BaseActivity
      */
     private Button mBtnForgetPwd;
 
-
+    /***
+     *  登录按钮  
+     */
+    private Button mBtnLogin;
     /***
      * 微博登录按钮container
      */
@@ -63,10 +68,9 @@ public class LoginActivity extends BaseActivity
     {
         mBtnForgetPwd = (Button) findViewById(R.id.btn_forget_pwd);
         mLinearWeiBoContainer = (LinearLayout) findViewById(R.id.linear_weibo_container);
+        mBtnLogin = (Button) findViewById(R.id.btn_login);
         mLinearWeiXinContainer = (LinearLayout) findViewById(R.id.linear_weixin_container);
         mBtnRegister = (Button) findViewById(R.id.btn_register);
-
-
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mBtnRegister.getText());
         UnderlineSpan span = new UnderlineSpan();
         spannableStringBuilder.setSpan(span, 0, spannableStringBuilder.length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -82,6 +86,7 @@ public class LoginActivity extends BaseActivity
         mBtnRegister.setOnClickListener(listener);
         mLinearWeiBoContainer.setOnClickListener(listener);
         mLinearWeiXinContainer.setOnClickListener(listener);
+        mBtnLogin.setOnClickListener(listener);
     }
 
     private void configTitleLayout()
@@ -92,7 +97,6 @@ public class LoginActivity extends BaseActivity
 
     private class OnViewClickListenerImpl implements View.OnClickListener
     {
-
         @Override
         public void onClick(View v)
         {
@@ -112,7 +116,19 @@ public class LoginActivity extends BaseActivity
                 case R.id.btn_forget_pwd:
                     forgetPwd();
                     break;
+                case R.id.btn_login:
+                    login();
+                    break;
             }
+        }
+
+        /***
+         * 登录
+         */
+        private void login()
+        {
+            LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity);
+            loginPresenter.doLogin("13915433160","110916");
         }
 
         /***

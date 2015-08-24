@@ -135,6 +135,4 @@ public class TabViewPagerIndicator extends LinearLayout
     {
         return mTabStrip;
     }
-    
-    
 }

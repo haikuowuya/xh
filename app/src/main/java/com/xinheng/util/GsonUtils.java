@@ -1,7 +1,5 @@
 package com.xinheng.util;
 
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 import com.xinheng.mvp.model.ResultItem;
 
@@ -69,6 +67,8 @@ public class GsonUtils
         return items;
     }
 
+
+
     /**
      * 将一个json字符串转化为一个List集合，中间经过一次转化为{@link ResultItem}对象的处理
      *
@@ -94,6 +94,8 @@ public class GsonUtils
         }
         return items;
     }
+
+
 
     /**
      * 将一个{@link ResultItem}对象的{@link ResultItem#properties}字段转化为一个List集合，

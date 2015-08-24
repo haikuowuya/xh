@@ -13,13 +13,13 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
  * 时间： 18:39
- * 说明：在线售药下面的分类模块
+ * 说明：在线售药最下面的grid
  */
-public class OnlineGridAdapter extends BaseAdapter<HomeGridItem>
+public class OnlineBottomGridAdapter extends BaseAdapter<HomeGridItem>
 {
-    public OnlineGridAdapter(BaseActivity activity, List<HomeGridItem> data)
+    public OnlineBottomGridAdapter(BaseActivity activity, List<HomeGridItem> data)
     {
-        super(activity, R.layout.grid_online_item, data);
+        super(activity, R.layout.grid_online_bottom_item, data);
     }
 
     @Override

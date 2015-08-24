@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_linear_item_selector"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_linear_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
+
+                android:padding="8dp"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_hospital_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="广东电子黄页客户端"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:textColor="#FFFFA800"
+                android:text="交易成功"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+            <FrameLayout
+                android:layout_width="96dp"
+                android:layout_height="wrap_content">
+
+                <com.xinheng.view.CircularImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="center"
+                    android:padding="20dp"
+                    android:src="@mipmap/ic_photo"/>
+            </FrameLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_durg_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+                        android:textColor="@color/color_main_text_gray_color"
+                        tools:text="历史\nkkk"/>
+
+                    <TextView
+                        android:id="@+id/tv_durg_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|right|bottom"
+                        android:singleLine="true"
+                        android:textColor="#FF000000"
+                        tools:text="$22.41"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_durg_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_list_single_item_height"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:maxLines="2"
+
+                        android:textColor="@color/color_main_text_gray_color"
+                        tools:text="上次时间\nkkk"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_durg_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_list_single_item_height"
+                        android:gravity="center_vertical|top"
+                        android:textColor="@color/color_main_text_gray_color"
+                        tools:text="x10"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_order_fee_info"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:text="医生评价"
+                android:textColor="@color/color_main_text_gray_color"
+                tools:text="医生评价"/>
+
+            <View
+
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFFF0000"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:layout_margin="4dp"
+
+                    android:gravity="center_vertical|right"
+                    android:text="医生评价"
+                    android:textColor="@color/color_main_text_gray_color"
+                    tools:text="医生评价"/>
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:layout_margin="4dp"
+
+                    android:gravity="center_vertical|right"
+                    android:text="医生评价"
+                    android:textColor="@color/color_main_text_gray_color"
+                    tools:text="医生评价"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

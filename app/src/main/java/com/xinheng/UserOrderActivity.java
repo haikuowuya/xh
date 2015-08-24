@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
-import android.view.View;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.UserOrderListFragment;
+import com.xinheng.fragment.UserOrderFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -28,7 +27,6 @@ public class UserOrderActivity extends TabViewPagerActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setIvRightVisibility(View.VISIBLE);
         getTabViewPagerIndicator().setViewPagerAdapter(genPagerAdapter());
     }
 
@@ -40,7 +38,7 @@ public class UserOrderActivity extends TabViewPagerActivity
             @Override
             public Fragment getItem(int position)
             {
-                return UserOrderListFragment.newInstance( );
+                return UserOrderFragment.newInstance();
             }
 
             @Override

@@ -8,4 +8,10 @@ package com.xinheng;
  */
 public class APIURL
 {
+
+    public static final String BASE_API_URL="http://139.196.24.205:8080/";
+    /**
+     * 用户登录URL
+     */
+    public static final String LOGIN_URL=BASE_API_URL+"interface/patient/user/login";
 }

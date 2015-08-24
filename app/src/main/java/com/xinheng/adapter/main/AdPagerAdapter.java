@@ -54,7 +54,7 @@ public class AdPagerAdapter extends PagerAdapter
         {
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
             {
-              //  imageView.setImageBitmap(loadedImage);
+                //  imageView.setImageBitmap(loadedImage);
             }
         });
         return imageView;

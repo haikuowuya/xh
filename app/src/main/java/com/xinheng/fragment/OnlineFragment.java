@@ -13,7 +13,8 @@ import android.widget.ScrollView;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
-import com.xinheng.adapter.online.OnlineGridAdapter;
+import com.xinheng.adapter.online.OnlineCenterGridAdapter;
+import com.xinheng.adapter.online.OnlineViewPagerAdapter;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
@@ -30,7 +31,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
  * 时间： 17:38
- * 说明： 首页内容
+ * 说明： 在线售药内容
  */
 public class OnlineFragment extends BaseFragment
 {
@@ -100,12 +101,18 @@ public class OnlineFragment extends BaseFragment
 
     private void fillTabViewPagerIndicator()
     {
-     //   mTabViewPagerIndicator.setViewPagerAdapter(genIndicatorAdapter());
+        mTabViewPagerIndicator.getViewPager().requestDisallowInterceptTouchEvent(false);
+        mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
+        mTabViewPagerIndicator.setViewPagerAdapter(genIndicatorAdapter());
     }
 
     private PagerAdapter genIndicatorAdapter()
     {
-        return null;
+        String[] titles =    getResources().getStringArray(R.array.array_order);
+        OnlineViewPagerAdapter  pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(),titles);
+
+        return pagerAdapter;
+
     }
 
     @Override
@@ -132,7 +139,7 @@ public class OnlineFragment extends BaseFragment
         data.add(new HomeGridItem(R.mipmap.ic_online_1, "轻松找药"));
         data.add(new HomeGridItem(R.mipmap.ic_online_2, "购物车"));
         data.add(new HomeGridItem(R.mipmap.ic_online_3, "我的订单"));
-        OnlineGridAdapter gridAdapter = new OnlineGridAdapter(mActivity, data);
+        OnlineCenterGridAdapter gridAdapter = new OnlineCenterGridAdapter(mActivity, data);
         return gridAdapter;
     }
 
