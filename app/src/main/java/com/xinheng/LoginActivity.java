@@ -10,18 +10,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.mvp.model.LoginSuccessItem;
+import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.slidingmenu.SlidingMenu;
+import com.xinheng.util.GsonUtils;
 
 /**
  * 用户登录界面
  */
-public class LoginActivity extends BaseActivity
+public class LoginActivity extends BaseActivity implements DataView
 
 {
-    public static void actionLogin(BaseActivity activity)
-    {
+    public static void actionLogin(BaseActivity activity) {
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
     }
@@ -36,7 +39,7 @@ public class LoginActivity extends BaseActivity
     private Button mBtnForgetPwd;
 
     /***
-     *  登录按钮  
+     * 登录按钮
      */
     private Button mBtnLogin;
     /***
@@ -50,8 +53,7 @@ public class LoginActivity extends BaseActivity
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);//TODO
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -64,8 +66,7 @@ public class LoginActivity extends BaseActivity
     /**
      * 初始化View控件
      */
-    private void initView()
-    {
+    private void initView() {
         mBtnForgetPwd = (Button) findViewById(R.id.btn_forget_pwd);
         mLinearWeiBoContainer = (LinearLayout) findViewById(R.id.linear_weibo_container);
         mBtnLogin = (Button) findViewById(R.id.btn_login);
@@ -79,8 +80,7 @@ public class LoginActivity extends BaseActivity
     /***
      * 按钮的点击事件
      */
-    private void setListener()
-    {
+    private void setListener() {
         OnViewClickListenerImpl listener = new OnViewClickListenerImpl();
         mBtnForgetPwd.setOnClickListener(listener);
         mBtnRegister.setOnClickListener(listener);
@@ -89,19 +89,29 @@ public class LoginActivity extends BaseActivity
         mBtnLogin.setOnClickListener(listener);
     }
 
-    private void configTitleLayout()
-    {
+    private void configTitleLayout() {
         getTitleContainer().setVisibility(View.GONE);
         ((View) getContentViewGroup().getParent()).setPadding(0, 0, 0, 0);
     }
 
-    private class OnViewClickListenerImpl implements View.OnClickListener
-    {
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem) {
+        if (null != resultItem) {
+          //  LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.toString(), LoginSuccessItem.class);
+          //  showCroutonToast(loginSuccessItem.toString());
+            showCroutonToast(resultItem.message);
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg) {
+        showCroutonToast(msg);
+    }
+
+    private class OnViewClickListenerImpl implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
-            switch (v.getId())
-            {
+        public void onClick(View v) {
+            switch (v.getId()) {
                 case R.id.btn_register://立即注册
                     register();
                     break;
@@ -125,48 +135,42 @@ public class LoginActivity extends BaseActivity
         /***
          * 登录
          */
-        private void login()
-        {
+        private void login() {
             LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity);
-            loginPresenter.doLogin("13915433160","110916");
+            loginPresenter.doLogin("13915433160", "110916");
         }
 
         /***
          * 立即注册
          */
-        private void register()
-        {
+        private void register() {
             RegisterActivity.actionRegister(mActivity);
         }
 
         /***
          * 微博登录
          */
-        private void weibo()
-        {
+        private void weibo() {
             showCroutonToast("微博登录");
         }
 
         /***
          * 微信登录
          */
-        private void weixin()
-        {
+        private void weixin() {
             showCroutonToast("微信登录");
         }
 
         /**
          * 忘记密码
          */
-        private void forgetPwd()
-        {
+        private void forgetPwd() {
             showCroutonToast("忘记密码");
         }
     }
 
     @Override
-    public CharSequence getActivityTitle()
-    {
+    public CharSequence getActivityTitle() {
         return getString(R.string.tv_activity_login);
     }
 

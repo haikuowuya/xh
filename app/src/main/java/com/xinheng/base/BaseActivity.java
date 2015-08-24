@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +37,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  *
  */
-public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle
-{
+public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle {
 
     /***
      * Activity 跳转时通过Intent传值的KEY
@@ -79,14 +79,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      */
     private ProgressDialog mProgressDialog;
 
-    public SharedPreferences getPreferences()
-    {
+    public SharedPreferences getPreferences() {
         return mPreferences;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
         XHApplication application = (XHApplication) getApplication();
@@ -99,13 +97,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
+        mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                if(keyCode == KeyEvent.KEYCODE_BACK)
-                {
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
                     mProgressDialog.dismiss();
                     mActivity.finish();
                     return true;
@@ -115,54 +110,54 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         });
     }
 
-    public  void showProgressDialog()
-    {
-        if(!mProgressDialog.isShowing())
-        {
+    public void showProgressDialog() {
+        showProgressDialog(null);
+    }
+
+    public void showProgressDialog(CharSequence msg) {
+        if (!mProgressDialog.isShowing()) {
+            if (!TextUtils.isEmpty(msg)) {
+                mProgressDialog.setMessage(msg);
+            }
             mProgressDialog.show();
+
         }
     }
-    public  void dismissProgressDialog()
-    {
-        if(mProgressDialog.isShowing())
-        {
-            mProgressDialog.dismiss();;
+
+    public void dismissProgressDialog() {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            ;
         }
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
-        if(mProgressDialog.isShowing())
-        {
-            mProgressDialog.dismiss();;
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            ;
         }
     }
 
-    public void showToast(String text)
-    {
+    public void showToast(String text) {
         Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
     }
 
-    public void showCroutonToast(String text)
-    {
+    public void showCroutonToast(String text) {
         ToastUtils.showCrouton(mActivity, text, getContentViewGroup());
     }
 
-    public View getCenterTitleView()
-    {
+    public View getCenterTitleView() {
         return mTvCenterTitle;
     }
 
-    public View getTitleContainer()
-    {
+    public View getTitleContainer() {
         return mLinearTitleContainer;
     }
 
     @Override
-    public void setContentView(int layoutResID)
-    {
+    public void setContentView(int layoutResID) {
         super.setContentView(R.layout.activity_base);   //TODO XXX
         mFrameContainer = (FrameLayout) findViewById(R.id.frame_container);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.ptr_container);
@@ -175,24 +170,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mFrameContainer.addView(contentView, layoutParams);
         mIvBack.setImageDrawable(new DrawerArrowDrawable.BackDrawerArrowDrawable(mActivity));
-        if (IntentUtils.isLauncherIntent(getIntent()))
-        {
+        if (IntentUtils.isLauncherIntent(getIntent())) {
             mIvBack.setVisibility(View.GONE);
         }
-        mIvBack.setOnClickListener(new View.OnClickListener()
-        {
+        mIvBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 onBackPressed();
             }
         });
 
-        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
-        {
+        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 mSlidingMenu.toggle(true);
             }
         });
@@ -200,8 +190,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         initSlidingMenu();
     }
 
-    private void initSlidingMenu()
-    {
+    private void initSlidingMenu() {
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -211,11 +200,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);
         mSlidingMenu.setFadeDegree(0.65f);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
-        {
+        mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer() {
             @Override
-            public void transformCanvas(Canvas canvas, float percentOpen)
-            {
+            public void transformCanvas(Canvas canvas, float percentOpen) {
                 float scale = (float) (percentOpen * 0.25 + 0.75);
                 canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
                 // canvas.scale(percentOpen, 1, 0, 0);
@@ -227,38 +214,29 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     }
 
-    public void setIvRightVisibility(int visibility)
-    {
+    public void setIvRightVisibility(int visibility) {
         mIvRight.setVisibility(visibility);
     }
 
-    public ViewGroup getContentViewGroup()
-    {
+    public ViewGroup getContentViewGroup() {
         return mFrameContainer;
     }
 
-    public boolean canDoRefresh()
-    {
+    public boolean canDoRefresh() {
         return false;
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_MENU)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             mSlidingMenu.toggle(true);
             return true;
         }
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            if (mSlidingMenu.isMenuShowing())
-            {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (mSlidingMenu.isMenuShowing()) {
                 mSlidingMenu.showContent(true);
                 return true;
-            }
-            else if (mActivity instanceof MainActivity)
-            {
+            } else if (mActivity instanceof MainActivity) {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
             }
@@ -266,30 +244,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return super.onKeyDown(keyCode, event);
     }
 
-    public void closeMenu()
-    {
-        if (mSlidingMenu.isMenuShowing())
-        {
+    public void closeMenu() {
+        if (mSlidingMenu.isMenuShowing()) {
             mSlidingMenu.showContent(true);
         }
     }
 
-    private class PtrHandlerImpl implements PtrHandler
-    {
+    private class PtrHandlerImpl implements PtrHandler {
         @Override
-        public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view1)
-        {
+        public boolean checkCanDoRefresh(PtrFrameLayout ptrFrameLayout, View view, View view1) {
             return canDoRefresh();
         }
 
         @Override
-        public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-        {
-            ptrFrameLayout.postDelayed(new Runnable()
-            {
+        public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+            ptrFrameLayout.postDelayed(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     mPtrClassicFrameLayout.refreshComplete();
                 }
             }, 2000L);
