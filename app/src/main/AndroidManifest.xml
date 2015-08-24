@@ -30,6 +30,15 @@
             android:label="@string/tv_activity_register"
             />
         <activity
+            android:name=".LoginActivity"
+            android:label="@string/tv_activity_login"
+            />
+
+        <activity
+            android:name=".OnlineActivity"
+            android:label="@string/tv_activity_online"
+            />
+        <activity
             android:name=".DepartmentNavActivity"
             android:label="@string/tv_activity_department_nav"/>
         <activity
@@ -58,6 +67,18 @@
             android:name=".UserReportActivity"
             android:label="@string/tv_activity_user_report"/>
 
+        <activity
+            android:name=".UserRecipeActivity"
+            android:label="@string/tv_activity_user_recipe"/>
+        <activity
+            android:name=".UserCheckActivity"
+            android:label="@string/tv_activity_user_check"/>
+        <activity
+            android:name=".UserOrderActivity"
+            android:label="@string/tv_activity_user_order"/>
+ <activity
+            android:name=".DoctorEvaluationActivity"
+            android:label="@string/tv_activity_doctor_evaluation"/>
 
 
     </application>

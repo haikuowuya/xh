@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.UserMedicalItem;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class UserMedicalListAdapter extends BaseAdapter<UserMedicalItem>
 {
-    public UserMedicalListAdapter(Activity activity, List<UserMedicalItem> data)
+    public UserMedicalListAdapter(BaseActivity activity, List<UserMedicalItem> data)
     {
         super(activity, R.layout.list_user_medical_item, data);
     }

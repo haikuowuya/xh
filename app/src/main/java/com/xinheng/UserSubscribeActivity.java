@@ -51,7 +51,12 @@ public class UserSubscribeActivity extends TabViewPagerActivity
             @Override
             public CharSequence getPageTitle(int position)
             {
-                return "我的预约 " + (1 + position);
+                String title = "预约挂号";
+                if (position == 1)
+                {
+                    title = "预约加号";
+                }
+                return title;
             }
         };
 

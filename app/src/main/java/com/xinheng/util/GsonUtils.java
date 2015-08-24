@@ -1,5 +1,7 @@
 package com.xinheng.util;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.xinheng.mvp.model.ResultItem;
 

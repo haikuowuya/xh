@@ -15,7 +15,7 @@ public class UserCounselReplyItem extends  BaseEmptyItem
     /**
      * 咨询回复医生姓名
      */
-    public String   doctName;
+    public String   doctorName;
     /***
      * 回复医生医院
      */

@@ -14,11 +14,11 @@ import java.util.List;
 public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 {
 	protected List<T> mData;
-	private  Activity mActivity;
+	private  BaseActivity mActivity;
 	protected int mLayoutId;
 	protected LayoutInflater mInflater;
 	protected int mPosition;
-	public BaseAdapter(Activity activity, int layoutId, List<T> data)
+	public BaseAdapter(BaseActivity activity, int layoutId, List<T> data)
 	{
 		super();
 		this.mData = data;
@@ -26,7 +26,7 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 		mLayoutId = layoutId;
 		mInflater = LayoutInflater.from(mActivity);
 	}
-	public Activity getActivity()
+	public BaseActivity getActivity()
 	{
 		return  mActivity;
 	}

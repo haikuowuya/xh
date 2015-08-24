@@ -14,6 +14,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,13 +25,16 @@ import java.util.List;
  */
 public class UserDoctorListFragment extends PTRListFragment implements DataView
 {
-    private static final String DATA =  UserDoctorItem.DEBUG_SUCCESS;
+    private static final String DATA = UserDoctorItem.DEBUG_SUCCESS;
 
     public static UserDoctorListFragment newInstance()
     {
         UserDoctorListFragment fragment = new UserDoctorListFragment();
         return fragment;
     }
+
+    private LinkedList<UserDoctorItem> mUserDoctorItems = new LinkedList<>();
+    private UserDoctorListAdapter mUserDoctorListAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
@@ -46,6 +50,12 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     }
 
     @Override
+    protected void doRefresh()
+    {
+         doGetData();;
+    }
+
+    @Override
     protected void doGetData()
     {
         mActivity.showProgressDialog();
@@ -55,11 +65,23 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
+        refreshComplete();
         Type type = new TypeToken<List<UserDoctorItem>>()
         {
         }.getType();
         List<UserDoctorItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        getListView().setAdapter(new UserDoctorListAdapter(mActivity, items));
+        if (null != items)
+        {
+            mUserDoctorItems.addAll(items);
+            if (null == mUserDoctorListAdapter)
+            {
+                mUserDoctorListAdapter = new UserDoctorListAdapter(mActivity, mUserDoctorItems);
+                getListView().setAdapter(mUserDoctorListAdapter);
+            } else
+            {
+                mUserDoctorListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

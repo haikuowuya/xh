@@ -2,11 +2,17 @@
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+   
+    card_view:contentPadding="0dp"
+    card_view:cardCornerRadius="4dp"
 
-    android:background="@drawable/list_linear_item_selector"
+    card_view:cardElevation="1dp"
+    card_view:cardMaxElevation="10dp"
+    card_view:cardUseCompatPadding="true"
 
     >
 
@@ -16,8 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/list_linear_item_selector"
+         
         android:orientation="vertical"
-        android:paddingRight="10dp"
+
         >
 
 
@@ -25,17 +32,18 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
+
             android:layout_height="@dimen/dimen_list_single_item_height">
 
             <ImageView
                 android:layout_width="@dimen/dimen_list_single_item_height"
                 android:layout_height="match_parent"
                 android:padding="12dp"
-                android:src="@mipmap/ic_launcher"
-                tools:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_subscribe_time"
+                tools:src="@mipmap/ic_subscribe_time"/>
 
             <TextView
-                android:id="@+id/tv_sub_time"
+                android:id="@+id/tv_subscribe_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -67,11 +75,11 @@
                 android:layout_width="@dimen/dimen_list_single_item_height"
                 android:layout_height="match_parent"
                 android:padding="12dp"
-                android:src="@mipmap/ic_launcher"
-                tools:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_subscribe_hospital"
+                tools:src="@mipmap/ic_subscribe_hospital"/>
 
             <TextView
-                android:id="@+id/tv_hospital_name"
+                android:id="@+id/tv_subscribe_hospital"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -84,13 +92,12 @@
                 android:layout_width="@dimen/dimen_list_single_item_height"
                 android:layout_height="match_parent"
                 android:padding="12dp"
-                android:src="@mipmap/ic_launcher"
-                tools:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_subscribe_dept"
+                tools:src="@mipmap/ic_subscribe_dept"/>
 
             <TextView
 
-                android:id="@+id/tv_dept_name"
-
+                android:id="@+id/tv_subscribe_dept"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -111,12 +118,12 @@
                 android:layout_width="@dimen/dimen_list_single_item_height"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/ic_subscribe_msg"
 
-                tools:src="@mipmap/ic_launcher"/>
+                tools:src="@mipmap/ic_subscribe_msg"/>
 
             <TextView
-                android:id="@+id/tv_content"
+                android:id="@+id/tv_subscribe_msg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -139,11 +146,11 @@
                 android:layout_width="@dimen/dimen_list_single_item_height"
                 android:layout_height="match_parent"
                 android:padding="12dp"
-                android:src="@mipmap/ic_launcher"
-                tools:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_subscribe_appointment"
+                tools:src="@mipmap/ic_subscribe_appointment"/>
 
             <TextView
-                android:id="@+id/tv_appo_time"
+                android:id="@+id/tv_subscribe_appointment_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

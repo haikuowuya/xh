@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.UserSubscribeItem;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class SubscribeAdapter extends BaseAdapter<UserSubscribeItem>
 {
-    public SubscribeAdapter(Activity activity, List<UserSubscribeItem> data)
+    public SubscribeAdapter(BaseActivity activity, List<UserSubscribeItem> data)
     {
         super(activity, R.layout.list_user_subscribe_item, data);
     }
@@ -23,10 +24,10 @@ public class SubscribeAdapter extends BaseAdapter<UserSubscribeItem>
     @Override
     public void bindDataToView(View convertView, UserSubscribeItem userSubscribeItem)
     {
-        setTextViewText(convertView, R.id.tv_sub_time,"预约时间："+ userSubscribeItem.createTime);
-        setTextViewText(convertView, R.id.tv_appo_time, "申请时间："+userSubscribeItem.appointmentTime);
-        setTextViewText(convertView, R.id.tv_content, userSubscribeItem.content);
-        setTextViewText(convertView, R.id.tv_dept_name, userSubscribeItem.department+"/"+userSubscribeItem.doctorName);
-        setTextViewText(convertView, R.id.tv_hospital_name,"就诊机构："+ userSubscribeItem.hospital);
+        setTextViewText(convertView, R.id.tv_subscribe_time,"预约时间："+ userSubscribeItem.createTime);
+        setTextViewText(convertView, R.id.tv_subscribe_appointment_time, "申请时间："+userSubscribeItem.appointmentTime);
+        setTextViewText(convertView, R.id.tv_subscribe_msg, userSubscribeItem.content);
+        setTextViewText(convertView, R.id.tv_subscribe_dept, userSubscribeItem.department+"/"+userSubscribeItem.doctorName);
+        setTextViewText(convertView, R.id.tv_subscribe_hospital,"就诊机构："+ userSubscribeItem.hospital);
     }
 }

@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
+import com.xinheng.adapter.user.UserDoctorListAdapter;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
@@ -14,6 +15,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,6 +33,8 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
         UserMedicalListFragment fragment = new UserMedicalListFragment();
         return fragment;
     }
+    private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
+    private UserMedicalListAdapter mUserMedicalListAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
@@ -46,6 +50,12 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     }
 
     @Override
+    protected void doRefresh()
+    {
+         doGetData();
+    }
+
+    @Override
     protected void doGetData()
     {
         mActivity.showProgressDialog();
@@ -55,11 +65,23 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
+        refreshComplete();
         Type type = new TypeToken<List<UserMedicalItem>>()
         {
         }.getType();
         List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        getListView().setAdapter(new UserMedicalListAdapter(mActivity, items));
+        if (null != items)
+        {
+            mUserMedicalItems.addAll(items);
+            if (null == mUserMedicalListAdapter)
+            {
+                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
+                getListView().setAdapter(mUserMedicalListAdapter);
+            } else
+            {
+                mUserMedicalListAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

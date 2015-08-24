@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.fragment.UserCounselListFragment;
+import com.xinheng.fragment.UserReportListFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -29,17 +31,12 @@ public class UserCounselActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_counsel);//TODO
-        initView();
-        setIvRightVisibility(View.VISIBLE);
-       
+        setContentView(R.layout.activity_activity_common);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserCounselListFragment.newInstance()).commit();
+
     }
 
-    private void initView()
-    {
-        mListView = (ListView) findViewById(R.id.lv_listview);
-    }
-
+  
     @Override
     public CharSequence getActivityTitle()
     {

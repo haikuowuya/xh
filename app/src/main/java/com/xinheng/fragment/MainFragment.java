@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.xinheng.DepartmentNavActivity;
+import com.xinheng.OnlineActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.main.AdPagerAdapter;
 import com.xinheng.adapter.main.GridAdapter;
@@ -78,6 +79,10 @@ public class MainFragment extends BaseFragment
                 if(position ==1)
                 {
                     DepartmentNavActivity.actionDepartmentNav(mActivity);
+                }
+                else if(position ==3)
+                {
+                    OnlineActivity.actionOnline(mActivity);
                 }
             }
         });

@@ -1,5 +1,6 @@
 package com.xinheng.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,177 +26,7 @@ import java.util.List;
  */
 public class UserSubscribeListFragment extends PTRListFragment implements DataView
 {
-    private static final String DATA = "{\n" +
-            "    \"result\": \"1\",\n" +
-            "    \"message\": \"获取预约信息成功\",\n" +
-            "    \"properties\": [\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667777\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": \"327327237667455\",\n" +
-            "            \"createTime\": \"22222222222\",\n" +
-            "            \"doctId\": \"7\",\n" +
-            "            \"doctorName\": \"朱震\",\n" +
-            "            \"hospital\": \"苏州中医院\",\n" +
-            "            \"department\": \"外科\",\n" +
-            "            \"technicalPost\": \"主任医师\",\n" +
-            "            \"appointmentTime\": \"78945489841445\",\n" +
-            "            \"content\": \"根据您提交的病情描述及以往病历分析，初步诊断为扁桃体发炎、脓肿，建议就诊前先到医院检验科\"\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
+    private static final String DATA = UserSubscribeItem.DEBUG_SUCCESS;
 
     public static UserSubscribeListFragment newInstance()
     {
@@ -202,17 +34,29 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
         return fragment;
     }
 
+    private LinkedList<UserSubscribeItem> mUserSubscribeItems = new LinkedList<>();
+    private SubscribeAdapter mSubscribeAdapter;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+        getListView().setSelector(new ColorDrawable(0x00000000));
+        getListView().setDividerHeight(0);
+        getListView().setDivider(new ColorDrawable(0x00000000));
     }
 
     @Override
     public String getFragmentTitle()
     {
         return getString(R.string.tv_fragment_ptr_list);
+    }
+
+    @Override
+    protected void doRefresh()
+    {
+        doGetData();
     }
 
     @Override
@@ -225,11 +69,20 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
+        refreshComplete();
         Type type = new TypeToken<List<UserSubscribeItem>>()
         {
         }.getType();
         List<UserSubscribeItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        getListView().setAdapter(new SubscribeAdapter(mActivity, items));
+        mUserSubscribeItems.addAll(items);
+        if (null == mSubscribeAdapter)
+        {
+            mSubscribeAdapter = new SubscribeAdapter(mActivity, mUserSubscribeItems);
+            getListView().setAdapter(mSubscribeAdapter);
+        } else
+        {
+            mSubscribeAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

@@ -43,12 +43,13 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="输入你的手机号码"
                 android:textColorHint="#FF666666"/>
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
+                android:layout_height="40dp"
                 android:background="@drawable/btn_register_code_selector"
                 android:text="获取验证码"
                 android:textColor="#FFFFFFFF"/>
@@ -80,6 +81,7 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:singleLine="true"
                 android:hint="输入收到的验证码"
                 android:textColorHint="#FF666666"/>
 
@@ -109,6 +111,8 @@
                 android:layout_height="44dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:singleLine="true"
+                android:inputType="textPassword"
                 android:hint="输入你的手机号码"
                 android:textColorHint="#FF666666"/>
 
@@ -134,7 +138,7 @@
             android:layout_marginRight="60dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/btn_register_code_selector"
-            android:text="注册"
+            android:text="@string/tv_activity_register"
             android:textColor="#FFFFFFFF"/>
 
 

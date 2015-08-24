@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.xinheng.DepartmentNavActivity;
+import com.xinheng.LoginActivity;
 import com.xinheng.R;
-import com.xinheng.RegisterActivity;
 import com.xinheng.TabViewPagerActivity;
 import com.xinheng.UserCenterActivity;
 import com.xinheng.base.BaseFragment;
@@ -58,30 +58,28 @@ public class MenuFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                mActivity.closeMenu();
                 final String text = parent.getAdapter().getItem(position).toString();
                 new Handler(mActivity.getMainLooper()).postDelayed(new Runnable()
                 {
                     public void run()
                     {
-                        if (getString(R.string.tv_activity_register).equals(text))//  注册
+                        if (getString(R.string.tv_activity_login).equals(text))
                         {
-                            RegisterActivity.actionRegister(mActivity);
-                        }
-                        else if (getString(R.string.tv_activity_department_nav).equals(text))
+                            LoginActivity.actionLogin(mActivity);
+                        } else if (getString(R.string.tv_activity_department_nav).equals(text))
                         {
                             DepartmentNavActivity.actionDepartmentNav(mActivity);
-                        }
-                        else if(getString(R.string.tv_activity_tab_viewpager).equals(text))
+                        } else if (getString(R.string.tv_activity_tab_viewpager).equals(text))
                         {
                             TabViewPagerActivity.actionTabViewPager(mActivity);
-                        }
-                        else if(getString(R.string.tv_activity_user_center).equals(text))
+                        } else if (getString(R.string.tv_activity_user_center).equals(text))
                         {
                             UserCenterActivity.actionUserCenter(mActivity);
                         }
                     }
-                }, 200L);
-                mActivity.closeMenu();
+                }, 360L);
+
 
             }
         });
