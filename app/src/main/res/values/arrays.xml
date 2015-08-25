@@ -12,6 +12,10 @@
         <item>@string/tv_activity_user_center</item>
     </string-array>
 
+    <string-array name="array_interface">
+        <item>@string/tv_activity_user_order</item>
+    </string-array>
+
     <string-array name="array_department_left">
         <item>国家重点级专科</item>
         <item>省级重点级专科</item>

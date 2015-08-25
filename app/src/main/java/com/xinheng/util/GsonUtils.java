@@ -30,7 +30,7 @@ public class GsonUtils
         {
             System.out.println("json to class【" + classOfT + "】 解析失败  " + e.getMessage());
         }
-        System.out.println("\n" + json);
+        System.out.println("\nJSON 数据 【" + json +" 】");
         return t;
     }
 

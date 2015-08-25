@@ -79,6 +79,9 @@
  <activity
             android:name=".DoctorEvaluationActivity"
             android:label="@string/tv_activity_doctor_evaluation"/>
+        <activity
+            android:name=".InterfaceActivity"
+            android:label="@string/tv_activity_interface"/>
 
 
     </application>

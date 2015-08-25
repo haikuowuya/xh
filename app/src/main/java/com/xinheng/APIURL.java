@@ -14,4 +14,8 @@ public class APIURL
      * 用户登录URL
      */
     public static final String LOGIN_URL=BASE_API_URL+"interface/patient/user/login";
+    /**
+     * 我的订单列表URL
+     */
+    public static final String USER_ORDER_LIST=BASE_API_URL+"interface/patient/myorder/getlist";
 }

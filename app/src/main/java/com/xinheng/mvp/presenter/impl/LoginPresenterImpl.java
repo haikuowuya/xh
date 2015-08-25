@@ -44,7 +44,6 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void doLogin(String username, String password) {
         username = "15850217017";
         password = "111111";
-
         String pwd = new MD5().getMD5_32(password);
         LoginItem loginItem = new LoginItem(username, pwd);
         final String jsonLoginItem = GsonUtils.toJson(loginItem);

@@ -97,9 +97,12 @@ public class LoginActivity extends BaseActivity implements DataView
     @Override
     public void onGetDataSuccess(ResultItem resultItem) {
         if (null != resultItem) {
-          //  LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.toString(), LoginSuccessItem.class);
-          //  showCroutonToast(loginSuccessItem.toString());
             showCroutonToast(resultItem.message);
+            LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
+            System.out.println("loginSuccessItem = " + loginSuccessItem);
+         //  showCroutonToast(loginSuccessItem.toString());
+            InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
+
         }
     }
 
