@@ -12,9 +12,10 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserOrderItem;
+import com.xinheng.mvp.presenter.UserOrderPresenter;
+import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomListView;
@@ -94,17 +95,21 @@ public class UserOrderFragment extends BaseFragment implements DataView
     protected void doGetData()
     {
         mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserOrderPresenter userOrderPresenter = new UserOrderPresenterImpl(mActivity,this);
+        userOrderPresenter.doGetUserOrder("1");
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
       mPtrClassicFrameLayout.refreshComplete();
+        if(null != resultItem)
+        {
         Type type = new TypeToken<List<UserOrderItem>>()
         {
         }.getType();
-        List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList( DATA, type);
+        List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type) ;
+      //  List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList( DATA, type);
         if(null != userOrderItems)
         {
             mUserOrderItems.addAll(userOrderItems);
@@ -112,10 +117,12 @@ public class UserOrderFragment extends BaseFragment implements DataView
             {
                 mUserOrderListAdapter = new UserOrderListAdapter(mActivity, mUserOrderItems);
                 mCustomListView.setAdapter(mUserOrderListAdapter);
-            } else
+            }
+            else
             {
                 mUserOrderListAdapter.notifyDataSetChanged();
             }
+        }
         }
     }
 

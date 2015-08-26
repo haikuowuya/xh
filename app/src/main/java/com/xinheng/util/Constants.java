@@ -16,4 +16,15 @@ public class Constants
      * 自己手机的IMEI
      */
     public static final String IMEI = "358094050288555";
+    /***
+     * http请求中添加的header key
+     */
+    public static final String  SESSION_ID="sessionId";
+    /***
+     * http请求中添加的header key
+     */
+    public static final String USER_ID="userId";
+
+
+    public static final String PREF_LOGIN="login";
 }

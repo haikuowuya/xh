@@ -11,6 +11,7 @@ import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
@@ -29,8 +30,7 @@ import java.util.Map;
  */
 public class RequestUtils
 {
-    private static final String SESSION_ID="sessionId";
-    public static final String USER_ID="userId";
+
     /**
      * 请求url中的数据，默认用{@link com.android.volley.Request.Method.GET}get请求
      *
@@ -146,11 +146,11 @@ public class RequestUtils
                 if (successItem != null)
                 {
                     HashMap<String, String> headerMap = new HashMap<>();
-                    headerMap.put(SESSION_ID, successItem.sessionId);
+                    headerMap.put(Constants.SESSION_ID, successItem.sessionId);
                     //userId要客户端加密
                     String encryptUserId = RSAUtil.clientEncrypt(successItem.id);
                     System.out.println("加密后的userId = " + encryptUserId);
-                    headerMap.put(USER_ID, encryptUserId);
+                    headerMap.put(Constants.USER_ID, encryptUserId);
                     return headerMap;
                 }
                 return super.getHeaders();

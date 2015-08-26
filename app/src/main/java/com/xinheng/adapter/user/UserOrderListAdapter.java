@@ -25,19 +25,22 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
     @Override
     public void bindDataToView(View convertView, UserOrderItem item)
     {
-        if (null != item && null != item.orderlist && !item.orderlist.isEmpty())
+        if (null != item)
         {
-            UserOrderItem.OrderMedicalItem medicalItem = item.orderlist.get(0);
             setTextViewText(convertView, R.id.tv_hospital_name, item.hospital);
-            setTextViewText(convertView, R.id.tv_durg_name, item.orderlist.get(0).drugName);
-            String info = "包装规格：" + medicalItem.specs + "    产地：" + medicalItem.place + "\n" +
-                    "生产厂家：" + medicalItem.producer;
-            String fee = "共"+medicalItem.count+"件商品,合计：￥："+item.fee+" （含运费￥0.00）"  ;
+            if (null != item.orderlist && !item.orderlist.isEmpty())
+            {
+                UserOrderItem.OrderMedicalItem medicalItem = item.orderlist.get(0);
+                setTextViewText(convertView, R.id.tv_durg_name, medicalItem.drugName);
+                String info = "包装规格：" + medicalItem.specs + "    产地：" + medicalItem.place + "\n" +
+                        "生产厂家：" + medicalItem.producer;
+                String fee = "共" + medicalItem.count + "件商品,合计：￥：" + item.fee + " （含运费￥0.00）";
+                setTextViewText(convertView, R.id.tv_durg_info, info);
+                setTextViewText(convertView, R.id.tv_order_fee_info, fee);
+                setTextViewText(convertView, R.id.tv_durg_price, medicalItem.unitPrice);
+                setTextViewText(convertView, R.id.tv_durg_count, "X " + medicalItem.count);
+            }
 
-            setTextViewText(convertView, R.id.tv_durg_info, info);
-            setTextViewText(convertView, R.id.tv_order_fee_info, fee);
-            setTextViewText(convertView, R.id.tv_durg_price, medicalItem.unitPrice);
-            setTextViewText(convertView, R.id.tv_durg_count, "X "+medicalItem.count);
         }
     }
 }
