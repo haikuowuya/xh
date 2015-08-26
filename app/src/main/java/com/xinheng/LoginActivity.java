@@ -23,9 +23,11 @@ import com.xinheng.util.GsonUtils;
  */
 public class LoginActivity extends BaseActivity implements DataView
 {
-    public static final String DEFAULT_USERNAME="15850217017";
-    public static final String DEFAULT_PWD="111111";
-    public static void actionLogin(BaseActivity activity) {
+    public static final String DEFAULT_USERNAME = "15850217017";
+    public static final String DEFAULT_PWD = "111111";
+
+    public static void actionLogin(BaseActivity activity)
+    {
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
     }
@@ -62,7 +64,8 @@ public class LoginActivity extends BaseActivity implements DataView
     private EditText mEtPwd;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);//TODO
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
@@ -71,11 +74,11 @@ public class LoginActivity extends BaseActivity implements DataView
         setListener();
     }
 
-
     /**
      * 初始化View控件
      */
-    private void initView() {
+    private void initView()
+    {
         mBtnForgetPwd = (Button) findViewById(R.id.btn_forget_pwd);
         mEtUsername = (EditText) findViewById(R.id.et_username);
         mEtPwd = (EditText) findViewById(R.id.et_pwd);
@@ -85,12 +88,15 @@ public class LoginActivity extends BaseActivity implements DataView
         mBtnRegister = (Button) findViewById(R.id.btn_register);
         mEtUsername.setText(DEFAULT_USERNAME);
         mEtPwd.setText(DEFAULT_PWD);
+        mEtUsername.setSelection(mEtUsername.getText().length());
+        mEtPwd.setSelection(mEtPwd.getText().length());
     }
 
     /***
      * 按钮的点击事件
      */
-    private void setListener() {
+    private void setListener()
+    {
         OnViewClickListenerImpl listener = new OnViewClickListenerImpl();
         mBtnForgetPwd.setOnClickListener(listener);
         mBtnRegister.setOnClickListener(listener);
@@ -99,35 +105,45 @@ public class LoginActivity extends BaseActivity implements DataView
         mBtnLogin.setOnClickListener(listener);
     }
 
-    private void configTitleLayout() {
+    private void configTitleLayout()
+    {
         getTitleContainer().setVisibility(View.GONE);
         ((View) getContentViewGroup().getParent()).setPadding(0, 0, 0, 0);
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem) {
-        if (null != resultItem) {
-            showCroutonToast(resultItem.message);
+    public void onGetDataSuccess(ResultItem resultItem)
+    {
+        if (null != resultItem)
+        {
+            // showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
             LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
             System.out.println("loginSuccessItem = " + loginSuccessItem);
-            if(null != loginSuccessItem)
+            if (null != loginSuccessItem)
             {
                 mPreferences.edit().putString(Constants.PREF_LOGIN, GsonUtils.toJson(loginSuccessItem)).commit();
-                UserCenterActivity.actionUserCenter(mActivity);
+//                UserCenterActivity.actionUserCenter(mActivity);
+                MainActivity.actioMain(mActivity);
             }
-           // InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
+
+            // InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
         }
     }
 
     @Override
-    public void onGetDataFailured(String msg) {
+    public void onGetDataFailured(String msg)
+    {
         showCroutonToast(msg);
     }
 
-    private class OnViewClickListenerImpl implements View.OnClickListener {
+    private class OnViewClickListenerImpl implements View.OnClickListener
+    {
         @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
                 case R.id.btn_register://立即注册
                     register();
                     break;
@@ -151,15 +167,16 @@ public class LoginActivity extends BaseActivity implements DataView
         /***
          * 登录
          */
-        private void login() {
+        private void login()
+        {
             String username = mEtUsername.getText().toString();
             String pwd = mEtPwd.getText().toString();
-            if(TextUtils.isEmpty(username))
+            if (TextUtils.isEmpty(username))
             {
                 showCroutonToast("登录名不可以为空");
                 return;
             }
-            if(TextUtils.isEmpty(pwd))
+            if (TextUtils.isEmpty(pwd))
             {
                 showCroutonToast("密码不可以为空");
             }
@@ -170,36 +187,40 @@ public class LoginActivity extends BaseActivity implements DataView
         /***
          * 立即注册
          */
-        private void register() {
+        private void register()
+        {
             RegisterActivity.actionRegister(mActivity);
         }
 
         /***
          * 微博登录
          */
-        private void weibo() {
+        private void weibo()
+        {
             showCroutonToast("微博登录");
         }
 
         /***
          * 微信登录
          */
-        private void weixin() {
+        private void weixin()
+        {
             showCroutonToast("微信登录");
         }
 
         /**
          * 忘记密码
          */
-        private void forgetPwd() {
+        private void forgetPwd()
+        {
             showCroutonToast("忘记密码");
         }
     }
 
     @Override
-    public CharSequence getActivityTitle() {
+    public CharSequence getActivityTitle()
+    {
         return getString(R.string.tv_activity_login);
     }
-
 
 }

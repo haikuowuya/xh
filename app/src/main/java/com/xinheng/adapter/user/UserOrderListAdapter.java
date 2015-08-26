@@ -13,7 +13,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/24 0024
  * 时间： 13:50
- * 说明：
+ * 说明：  我的订单列表适配器
  */
 public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
 {
@@ -40,7 +40,28 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                 setTextViewText(convertView, R.id.tv_durg_price, medicalItem.unitPrice);
                 setTextViewText(convertView, R.id.tv_durg_count, "X " + medicalItem.count);
             }
-
+            /***
+             * 评价按钮点击事件
+             */
+            setViewOnClick(convertView, R.id.tv_evaluation, new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    getActivity().showCroutonToast("评价");
+                }
+            });
+            /***
+             * 删除订单按钮点击事件
+             */
+            setViewOnClick(convertView, R.id.tv_del_order, new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    getActivity().showCroutonToast("删除订单");
+                }
+            });
         }
     }
 }

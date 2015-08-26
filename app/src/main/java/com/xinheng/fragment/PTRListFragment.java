@@ -72,7 +72,6 @@ public class PTRListFragment extends BaseFragment
      */
     protected void doRefresh()
     {
-
         mPtrClassicFrameLayout.postDelayed(new Runnable()
         {
             @Override

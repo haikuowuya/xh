@@ -17,8 +17,9 @@
         android:theme="@style/AppTheme">
         <activity
 
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:name=".LoginActivity"
+            android:label="@string/tv_activity_login"
+            android:theme="@style/Full.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -26,18 +27,18 @@
             </intent-filter>
         </activity>
         <activity
+
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
             android:name=".RegisterActivity"
             android:label="@string/tv_activity_register"
-            />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/tv_activity_login"
-            />
+            android:theme="@style/Full.AppTheme"/>
 
         <activity
             android:name=".OnlineActivity"
-            android:label="@string/tv_activity_online"
-            />
+            android:label="@string/tv_activity_online"/>
         <activity
             android:name=".DepartmentNavActivity"
             android:label="@string/tv_activity_department_nav"/>
@@ -76,13 +77,19 @@
         <activity
             android:name=".UserOrderActivity"
             android:label="@string/tv_activity_user_order"/>
- <activity
+        <activity
             android:name=".DoctorEvaluationActivity"
             android:label="@string/tv_activity_doctor_evaluation"/>
         <activity
             android:name=".InterfaceActivity"
             android:label="@string/tv_activity_interface"/>
+        <activity
+            android:name=".FindMedicalActivity"
+            android:label="@string/tv_activity_find_medical"/>
 
+        <activity
+            android:name=".DeptFindMedicalActivity"
+            android:label="@string/tv_activity_dept_find_medical"/>
 
     </application>
 

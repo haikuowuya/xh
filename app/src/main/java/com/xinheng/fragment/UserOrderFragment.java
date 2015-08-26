@@ -3,10 +3,13 @@ package com.xinheng.fragment;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
@@ -17,6 +20,7 @@ import com.xinheng.mvp.model.UserOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
 import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomListView;
 
@@ -47,6 +51,14 @@ public class UserOrderFragment extends BaseFragment implements DataView
     private CustomListView mCustomListView;
     private LinkedList<UserOrderItem> mUserOrderItems = new LinkedList<>();
     private UserOrderListAdapter mUserOrderListAdapter;
+    /**
+     *搜索按钮
+     */
+    private ImageView mIvSearch;
+    /**
+     * 搜索框
+     */
+    private EditText mEtSearch;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -61,22 +73,35 @@ public class UserOrderFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 doRefresh();
             }
         });
         mCustomListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mCustomListView.setSelector(new ColorDrawable(0x00000000));
-        mCustomListView.setDividerHeight(4);
+        mCustomListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
         mCustomListView.setDivider(new ColorDrawable(0x00000000));
+
+        mIvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = mEtSearch.getText().toString();
+                if (TextUtils.isEmpty(searchText)) {
+                    mActivity.showCroutonToast("搜索关键字不可以为空");
+                    return;
+                }
+
+            }
+        });
     }
     private void initView(View view)
     {
         mCustomListView = (CustomListView) view.findViewById(R.id.lv_custom_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_scrollview_container);
+
+        mIvSearch = (ImageView) view.findViewById(R.id.iv_search);
+        mEtSearch = (EditText) view.findViewById(R.id.et_search);
     }
 
     @Override

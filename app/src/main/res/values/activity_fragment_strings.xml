@@ -9,6 +9,7 @@
     <string name="tv_activity_register">注&#160;&#160;册</string>
     <string name="tv_activity_login">登&#160;&#160;录</string>
     <string name="tv_activity_department_nav">科室导航</string>
+    <string name="tv_activity_dept_find_medical">按科室找药</string>
     <string name="tv_activity_sliding_menu">侧滑菜单</string>
     <string name="tv_activity_tab_viewpager">tab_viewpager</string>
     <string name="tv_activity_user_center">用户中心</string>
@@ -17,6 +18,7 @@
     <string name="tv_activity_user_remind">我的提醒</string>
     <string name="tv_activity_user_subscribe">我的预约</string>
     <string name="tv_activity_user_doctor">我的医生</string>
+    <string name="tv_activity_find_medical">轻松找药</string>
     <string name="tv_activity_user_medical">我的病历</string>
     <string name="tv_activity_user_report">我的报告</string>
     <string name="tv_activity_user_recipe">我的处方</string>

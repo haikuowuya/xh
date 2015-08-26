@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.xinheng.MainActivity;
 import com.xinheng.R;
+import com.xinheng.RegisterActivity;
 import com.xinheng.XHApplication;
 import com.xinheng.drawable.DrawerArrowDrawable;
 import com.xinheng.fragment.MenuFragment;
@@ -42,7 +43,6 @@ import in.srain.cube.views.ptr.PtrHandler;
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle
 {
-
     /***
      * Activity 跳转时通过Intent传值的KEY
      */
@@ -98,8 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        int statusCoclor = getResources().getColor(R.color.color_title_background_color);
-        ViewUtils.alphaStatusBarAndNavBar(mActivity, statusCoclor, 0xFF000000);
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -117,6 +115,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 return false;
             }
         });
+
+        if (!IntentUtils.isLauncherIntent(getIntent()) || this instanceof RegisterActivity)
+        {
+            int statusCoclor = getResources().getColor(R.color.color_title_background_color);
+            ViewUtils.alphaStatusBarAndNavBar(mActivity, statusCoclor, 0xFF000000);
+        }
     }
 
     public void showProgressDialog()
@@ -293,6 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     /***
      * 获取登录成功后的用户信息，用于下一步的操作
+     *
      * @return null  或者 {@link LoginSuccessItem}对象
      */
     public LoginSuccessItem getLoginSuccessItem()

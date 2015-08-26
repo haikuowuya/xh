@@ -1,15 +1,22 @@
 package com.xinheng;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.MainFragment;
-import com.xinheng.slidingmenu.SlidingMenu;
 
 public class MainActivity extends BaseActivity
 {
+    public static void actioMain(BaseActivity activity)
+    {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+    }
+
     private MainFragment mMainFragment;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
