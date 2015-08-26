@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xinheng.MainActivity;
+import com.xinheng.OnlineActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
 import com.xinheng.XHApplication;
@@ -157,7 +158,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (mProgressDialog.isShowing())
         {
             mProgressDialog.dismiss();
-            ;
         }
     }
 
@@ -197,6 +197,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mFrameContainer.addView(contentView, layoutParams);
         mIvBack.setImageDrawable(new DrawerArrowDrawable.BackDrawerArrowDrawable(mActivity));
         if (IntentUtils.isLauncherIntent(getIntent()))
+        {
+            mIvBack.setVisibility(View.GONE);
+        }
+        //首页和在线售药页面隐藏左上角的返回按钮
+        if(this instanceof  MainActivity || this instanceof OnlineActivity)
         {
             mIvBack.setVisibility(View.GONE);
         }
