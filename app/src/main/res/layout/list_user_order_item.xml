@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:background="#FFEBEBEB"
+            android:background="#FFDCDCDC"
             android:paddingRight="10dp">
 
             <FrameLayout
@@ -132,11 +132,8 @@
                         android:layout_height="@dimen/dimen_list_single_item_height"
                         android:gravity="center_vertical|top"
                         android:textColor="@color/color_main_text_gray_color"
-                        tools:text="x10"
-                        />
+                        tools:text="x10"/>
                 </LinearLayout>
-
-
             </LinearLayout>
         </LinearLayout>
 

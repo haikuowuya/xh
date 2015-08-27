@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.xinheng.FindMedicalActivity;
+import com.xinheng.GetMedicalActivity;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
@@ -109,8 +110,8 @@ public class OnlineFragment extends BaseFragment
 
     private PagerAdapter genIndicatorAdapter()
     {
-        String[] titles =    getResources().getStringArray(R.array.array_order);
-        OnlineViewPagerAdapter  pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(),titles);
+        String[] titles = getResources().getStringArray(R.array.array_order);
+        OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), titles);
         return pagerAdapter;
 
     }
@@ -124,7 +125,11 @@ public class OnlineFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position ==1)    //轻松找药
+                if (position == 0)//按方抓药
+                {
+                    GetMedicalActivity.actionGetMedical(mActivity);
+                }
+                if (position == 1)    //轻松找药
                 {
                     FindMedicalActivity.actionFindMedical(mActivity);
                 }
