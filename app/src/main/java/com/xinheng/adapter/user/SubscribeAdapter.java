@@ -1,6 +1,5 @@
 package com.xinheng.adapter.user;
 
-import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
@@ -29,5 +28,15 @@ public class SubscribeAdapter extends BaseAdapter<UserSubscribeItem>
         setTextViewText(convertView, R.id.tv_subscribe_msg, userSubscribeItem.content);
         setTextViewText(convertView, R.id.tv_subscribe_dept, userSubscribeItem.department+"/"+userSubscribeItem.doctorName);
         setTextViewText(convertView, R.id.tv_subscribe_hospital,"就诊机构："+ userSubscribeItem.hospital);
+
+        setViewOnClick(convertView, R.id.tv_detail, new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                getActivity().showCroutonToast("查看详情");
+            }
+        });
+
     }
 }

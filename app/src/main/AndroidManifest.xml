@@ -19,7 +19,7 @@
 
             android:name=".LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/Full.AppTheme">
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,7 +34,8 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/tv_activity_register"
-            android:theme="@style/Full.AppTheme"/>
+
+           />
 
         <activity
             android:name=".OnlineActivity"
@@ -92,6 +93,12 @@
         <activity
             android:name=".DeptFindMedicalActivity"
             android:label="@string/tv_activity_dept_find_medical"/>
+  <activity
+            android:name=".ForgetPwdActivity"
+            android:label="@string/tv_activity_forget_pwd"/>
+        <activity
+            android:name=".AddRecipeActivity"
+            android:label="@string/tv_activity_add_recipe"/>
 
     </application>
 

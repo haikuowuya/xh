@@ -1,6 +1,7 @@
 package com.xinheng.http;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -80,7 +81,7 @@ public class RequestUtils
     /**
      * 使用Post请求
      *
-     * @param activity
+     * @param activity :当前请求所在的Activity
      * @param url      ：post请求的url
      * @param postBody :post请求的加密字符串
      * @param dataView ：处理加载进度
@@ -90,11 +91,20 @@ public class RequestUtils
         getDataFromUrlByPostWithLoginInfo(activity, url, postBody, null, dataView);
     }
 
+    /**
+     * 获取用户登录成功后的数据， 使用Post请求
+     *
+     * @param activity     :当前请求所在的Activity
+     * @param url          ：post请求的url
+     * @param postBody     :post请求的加密字符串
+     * @param dataView     ：处理加载进度
+     * @param successItem: 用户登录成功后的信息
+     */
     public static void getDataFromUrlByPostWithLoginInfo(final BaseActivity activity, String url, final String postBody, final LoginSuccessItem successItem, final DataView dataView)
     {
+        System.out.println("请求的URL = " + url);
         Response.Listener responseListener = new Response.Listener()
         {
-            @Override
             public void onResponse(Object response)
             {
                 activity.dismissProgressDialog();
@@ -120,22 +130,30 @@ public class RequestUtils
             public void onErrorResponse(VolleyError error)
             {
                 activity.dismissProgressDialog();
-                dataView.onGetDataFailured(error.getMessage());
+                String errMsg = "错误信息没有";
+                if (error != null && !TextUtils.isEmpty(error.getMessage()))
+                {
+                    errMsg = error.getMessage();
+                }
+                System.out.println("errMsg = " + errMsg + " error = " + error);
+                dataView.onGetDataFailured(errMsg);
             }
         };
         Request request = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
         {
-            @Override
             public byte[] getBody() throws AuthFailureError
             {
                 byte[] bytes = null;
-                try
+                if(!TextUtils.isEmpty(postBody))
                 {
-                    bytes = postBody.getBytes(HTTP.UTF_8);
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    e.printStackTrace();
+                    try
+                    {
+                        bytes = postBody.getBytes(HTTP.UTF_8);
+                    }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 return bytes;
             }
@@ -147,6 +165,7 @@ public class RequestUtils
                 {
                     HashMap<String, String> headerMap = new HashMap<>();
                     headerMap.put(Constants.SESSION_ID, successItem.sessionId);
+                    headerMap.put(Constants.COOKIE, Constants.SID + successItem.sessionId);
                     //userId要客户端加密
                     String encryptUserId = RSAUtil.clientEncrypt(successItem.id);
                     System.out.println("加密后的userId = " + encryptUserId);

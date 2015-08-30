@@ -10,6 +10,7 @@
         <item>@string/tv_activity_department_nav</item>
         <item>@string/tv_activity_tab_viewpager</item>
         <item>@string/tv_activity_user_center</item>
+        <item>@string/tv_activity_interface</item>
     </string-array>
 
     <string-array name="array_interface">
@@ -41,12 +42,12 @@
     
     
     <string-array name="array_order">
-        <item>全部</item>
-        <item>待审核</item>
-        <item>未通过</item>
-        <item>待付款</item>
-        <item>已付款</item>
-        <item>待评价</item>
+        <item>全部~-1</item>
+        <item>未付款~0</item>
+        <item>已付款~1</item>
+        <item>已关闭~2</item>
+        <item>已发药~3</item>
+
     </string-array>
 
 

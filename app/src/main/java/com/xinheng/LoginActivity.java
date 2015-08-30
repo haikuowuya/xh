@@ -124,10 +124,10 @@ public class LoginActivity extends BaseActivity implements DataView
             {
                 mPreferences.edit().putString(Constants.PREF_LOGIN, GsonUtils.toJson(loginSuccessItem)).commit();
 //                UserCenterActivity.actionUserCenter(mActivity);
-                MainActivity.actioMain(mActivity);
+               MainActivity.actioMain(mActivity);
             }
 
-            // InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
+//           InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
         }
     }
 
@@ -213,7 +213,8 @@ public class LoginActivity extends BaseActivity implements DataView
          */
         private void forgetPwd()
         {
-            showCroutonToast("忘记密码");
+//            showCroutonToast("忘记密码");
+            ForgetPwdActivity.actionForgetPwd(mActivity);
         }
     }
 

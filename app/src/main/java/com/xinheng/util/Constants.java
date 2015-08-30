@@ -8,6 +8,14 @@ package com.xinheng.util;
  */
 public class Constants
 {
+    /**
+     * HTTP header中的cookie值KEY
+     */
+    public static final String COOKIE = "cookie";
+    /**
+     * HTTP header中的cookie值VALUE的前缀
+     */
+    public static final String SID="sid=";
     /***
      * 字符串使用到的分隔符
      */
@@ -24,7 +32,5 @@ public class Constants
      * http请求中添加的header key
      */
     public static final String USER_ID="userId";
-
-
     public static final String PREF_LOGIN="login";
 }

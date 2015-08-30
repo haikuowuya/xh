@@ -9,10 +9,6 @@ package com.xinheng.mvp.model;
 public class RegisterItem extends BaseEmptyItem
 {
     /**
-     * 账号必选
-     */
-    public String account;
-    /**
      * 密码，必选
      */
     public String password;
@@ -25,7 +21,16 @@ public class RegisterItem extends BaseEmptyItem
      */
     public String checkcode;
 
+    public RegisterItem()
+    {
+    }
 
+    public RegisterItem( String mobile,String password, String checkcode)
+    {
+        this.mobile = mobile;
+        this.password = password;
+        this.checkcode = checkcode;
+    }
 
     public static final String  DEBUG_SUCCESS="{\"result\":\"1\",\"message\":\"注册成功\"}";
     public static final String  DEBUG_FAILURED="{\"result\":\"-1\",\"message\":\"注册失败！\"}";

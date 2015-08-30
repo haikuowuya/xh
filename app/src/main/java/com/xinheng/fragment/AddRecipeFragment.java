@@ -1,13 +1,10 @@
 package com.xinheng.fragment;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,11 +15,8 @@ import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
-import com.xinheng.mvp.presenter.UserOrderSearchPresenter;
 import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
-import com.xinheng.mvp.presenter.impl.UserOrderSearchPresenterImpl;
 import com.xinheng.mvp.view.DataView;
-import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomListView;
 
@@ -38,24 +32,16 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 作者：  libo
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  我的订单列表
+ * 说明：  添加处方
  */
-public class UserOrderFragment extends BaseFragment implements DataView
+public class AddRecipeFragment extends BaseFragment implements DataView
 {
-    private static final String DATA = UserOrderItem.DEBUG_SUCCESS;
-    public static final String ARG_ORDER_STATUS="order_status";
-    public static UserOrderFragment newInstance()
+    public static AddRecipeFragment newInstance()
     {
-      return  newInstance(UserOrderItem.ORDER_STATUS_0);
-    }
-    public static UserOrderFragment newInstance(String orderStatus)
-    {
-        UserOrderFragment fragment = new UserOrderFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_ORDER_STATUS, orderStatus);
-        fragment.setArguments(bundle);
+        AddRecipeFragment fragment = new AddRecipeFragment();
         return fragment;
     }
+
 
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     private CustomListView mCustomListView;
@@ -79,7 +65,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_user_order, null);
+        View view = inflater.inflate(R.layout.fragment_add_recipe, null);
         initView(view);
         mIsInit = true;
         return view;
@@ -89,7 +75,6 @@ public class UserOrderFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mOrderStatus = getArguments().getString(ARG_ORDER_STATUS,mOrderStatus);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -97,36 +82,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 doRefresh();
             }
         });
-        mCustomListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mCustomListView.setSelector(new ColorDrawable(0x00000000));
-        mCustomListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
-        mCustomListView.setDivider(new ColorDrawable(0x00000000));
-        mIvSearch.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-               doSearch();
-            }
-        });
     }
-
-    /***
-     * 点击搜索按钮的事件
-     */
-    private void doSearch()
-    {
-        String searchText = mEtSearch.getText().toString();
-        if (TextUtils.isEmpty(searchText))
-        {
-            mActivity.showCroutonToast("搜索关键字不可以为空");
-            return;
-        }
-        mActivity.hideSoftKeyBorard(mEtSearch);
-        UserOrderSearchPresenter userOrderSearchPresenter = new UserOrderSearchPresenterImpl(mActivity, this);
-        userOrderSearchPresenter.doGetUserOrderSearch(searchText, mOrderStatus);
-    }
-
     private void initView(View view)
     {
         mCustomListView = (CustomListView) view.findViewById(R.id.lv_custom_listview);
@@ -138,7 +94,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     @Override
     public String getFragmentTitle()
     {
-        return "我的订单";
+        return "添加处方";
     }
 
     protected void doRefresh()

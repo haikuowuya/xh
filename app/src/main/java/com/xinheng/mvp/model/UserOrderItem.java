@@ -14,7 +14,45 @@ public class UserOrderItem extends BaseEmptyItem
     public static final String  DEBUG_SUCCESS="{\"message\":\"获取数据成功\",\"properties\":[{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]},{\"alipayTradeNo\":\"123456789\",\"createTime\":\"1438133859000\",\"despatchtime\":\"1438133877000\",\"fee\":\"100.36\",\"hid\":\"402881b44e570757014e570ab37e0000\",\"hospital\":\"贵州省中医医院\",\"orderId\":\"1\",\"orderStatus\":\"1\",\"orderlist\":[{\"count\":\"1\",\"drugId\":\"1\",\"drugName\":\"药品11\",\"place\":\"上海\",\"producer\":\"苏州中药厂\",\"specs\":\"10*200\",\"unitPrice\":\"100.0\"}]}],\"result\":\"1\"}";
     public static final String  DEBUG_FAILURED="{\"result\":\"-1\",\"message\":\"获取订单信息列表失败！\"}";
 
-    public static final String ORDER_STATUS_PAYED="1";
+
+    public static final String ORDER_STATUS_ALL="-1";
+    /**
+     * 未付款
+     */
+    public static final String ORDER_STATUS_0="0";
+    /**
+     * 已付款
+     */
+    public static final String ORDER_STATUS_1="1";
+    /**
+     * 已关闭
+     */
+    public static final String ORDER_STATUS_2="2";
+
+    /**
+     * 已发药
+     */
+    public static final String ORDER_STATUS_3="3";
+
+    /**
+     * 申请退款
+     */
+    public static final String ORDER_STATUS_4="4";
+
+    /**
+     * 退款成功
+     */
+    public static final String ORDER_STATUS_5="5";
+
+    /**
+     * 退款失败
+     */
+    public static final String ORDER_STATUS_6="6";
+
+    /**
+     * 交易完成
+     */
+    public static final String ORDER_STATUS_7="7";
     /**
      * 支付编号
      */

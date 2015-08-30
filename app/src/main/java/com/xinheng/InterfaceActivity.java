@@ -6,8 +6,6 @@ import android.os.Bundle;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.InterfaceFragment;
 
-import java.io.Serializable;
-
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
@@ -16,13 +14,9 @@ import java.io.Serializable;
  */
 public class InterfaceActivity extends BaseActivity
 {
-
-    public static  final String EXTRA_LOGIN_SUCCESS_ITEM ="login_success_item";
-
-    public static void actionInterface(BaseActivity activity, Serializable loginSuccessItem)
+    public static void actionInterface(BaseActivity activity  )
     {
         Intent intent = new Intent(activity, InterfaceActivity.class);
-        intent.putExtra(EXTRA_LOGIN_SUCCESS_ITEM, loginSuccessItem);
         activity.startActivity(intent);
     }
 
@@ -31,7 +25,7 @@ public class InterfaceActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, InterfaceFragment.newInstance( getIntent().getSerializableExtra(EXTRA_LOGIN_SUCCESS_ITEM))).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, InterfaceFragment.newInstance(  )).commit();
     }
 
   

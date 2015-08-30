@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.MainFragment;
 import com.xinheng.fragment.OnlineFragment;
 
 public class OnlineActivity extends BaseActivity
@@ -31,7 +30,6 @@ public class OnlineActivity extends BaseActivity
     {
         getCenterTitleView().setVisibility(View.GONE);
         findViewById(R.id.iv_home_logo).setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -45,4 +43,6 @@ public class OnlineActivity extends BaseActivity
     {
         return getString(R.string.tv_activity_online);
     }
+
+
 }

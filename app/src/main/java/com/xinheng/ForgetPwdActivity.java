@@ -9,21 +9,17 @@ import android.widget.EditText;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.presenter.RegisterPresenter;
-import com.xinheng.mvp.presenter.impl.RegisterPresenterImpl;
 import com.xinheng.mvp.view.DataView;
-import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.PatternUtils;
 
 /**
- * 用户注册界面
+ *  忘记密码界面
  */
-public class RegisterActivity extends BaseActivity implements DataView
-
+public class ForgetPwdActivity extends BaseActivity implements DataView
 {
-    public static void actionRegister(BaseActivity activity)
+    public static void actionForgetPwd(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, RegisterActivity.class);
+        Intent intent = new Intent(activity, ForgetPwdActivity.class);
         activity.startActivity(intent);
     }
 
@@ -32,57 +28,36 @@ public class RegisterActivity extends BaseActivity implements DataView
      */
     private EditText mEtMobile;
     /**
-     * 手机密码
-     */
-    private EditText mEtPwd;
-    /**
      * 手机验证码
      */
     private EditText mEtCode;
     /**
-     * 获取手机验证码按钮
+     * 下一步按钮
      */
-    private Button mBtnCode;
-
-    /**
-     * 注册按钮
-     */
-    private Button mBtnRegister;
+    private Button mBtnNext;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);//TODO
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-        configTitleLayout();
+        setContentView(R.layout.activity_forget_pwd);//TODO
+
         initView();
         setListener();
-
     }
 
     private void setListener()
     {
         OnViewClickListenerImpl onViewClickListener = new OnViewClickListenerImpl();
-        mBtnCode.setOnClickListener(onViewClickListener);
-        mBtnRegister.setOnClickListener(onViewClickListener);
+        mBtnNext.setOnClickListener(onViewClickListener);
     }
 
     private void initView()
     {
         mEtCode = (EditText) findViewById(R.id.et_code);
         mEtMobile = (EditText) findViewById(R.id.et_mobile);
-        mEtPwd = (EditText) findViewById(R.id.et_pwd);
-        mBtnCode = (Button) findViewById(R.id.btn_code);
-        mBtnRegister = (Button) findViewById(R.id.btn_register);
+        mBtnNext = (Button) findViewById(R.id.btn_next);
     }
-
-    private void configTitleLayout()
-    {
-        getTitleContainer().setVisibility(View.GONE);
-        ((View) getContentViewGroup().getParent()).setPadding(0, 0, 0, 0);
-    }
-
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
@@ -103,7 +78,6 @@ public class RegisterActivity extends BaseActivity implements DataView
 
     private class OnViewClickListenerImpl implements View.OnClickListener
     {
-
         public void onClick(View v)
         {
             switch (v.getId())
@@ -111,17 +85,17 @@ public class RegisterActivity extends BaseActivity implements DataView
                 case R.id.btn_code://获取验证码
                     code();
                     break;
-                case R.id.btn_register://注册
-                    register();
+                case R.id.btn_next://下一步
+                    next();
                     break;
             }
         }
     }
 
     /**
-     * 注册按钮的点击执行事件
+     * 下一步按钮的点击执行事件
      */
-    private void register()
+    private void next()
     {
         String mobile = mEtMobile.getText().toString();
         if (TextUtils.isEmpty(mobile))
@@ -139,21 +113,7 @@ public class RegisterActivity extends BaseActivity implements DataView
             showCroutonToast("手机号码格式不正确");
             return;
         }
-        String pwd = mEtPwd.getText().toString();
-        if (TextUtils.isEmpty(pwd))
-        {
-            showCroutonToast("密码不可以为空");
-            return;
-        }
-        if (TextUtils.getTrimmedLength(pwd) < 6)
-        {
-            showCroutonToast("密码的长度最少为6位");
-            return;
-        }
         String code = mEtCode.getText().toString();
-        RegisterPresenter registerPresenter = new RegisterPresenterImpl(mActivity, this);
-        registerPresenter.doRegister(mobile, pwd, code);
-
     }
 
     private void code()
@@ -164,7 +124,7 @@ public class RegisterActivity extends BaseActivity implements DataView
     @Override
     public CharSequence getActivityTitle()
     {
-        return getString(R.string.tv_activity_register);
+        return getString(R.string.tv_activity_forget_pwd);
     }
 
 }

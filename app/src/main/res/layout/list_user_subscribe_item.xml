@@ -6,33 +6,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   
-    card_view:contentPadding="0dp"
-    card_view:cardCornerRadius="4dp"
 
+    card_view:cardCornerRadius="4dp"
     card_view:cardElevation="1dp"
+                      android:background="@color/color_content_background_color"
     card_view:cardMaxElevation="10dp"
     card_view:cardUseCompatPadding="true"
-
-    >
+    card_view:contentPadding="0dp">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="4dp"
         android:background="@drawable/list_linear_item_selector"
-         
         android:orientation="vertical"
-
         >
-
-
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-
             android:layout_height="@dimen/dimen_list_single_item_height">
 
             <ImageView
@@ -162,9 +156,11 @@
             <TextView
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/user_subscribe_detail_selector"
                 android:gravity="center_vertical"
-
+                android:padding="10dp"
                 android:text="查看详情"
                 android:textColor="@color/color_main_text_color"
                 tools:text="查看详情"

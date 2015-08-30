@@ -21,6 +21,10 @@ import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
 import com.xinheng.mvp.model.HomeGridItem;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.OnLinePresenter;
+import com.xinheng.mvp.presenter.impl.OnLinePresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.view.CustomGridView;
 import com.xinheng.view.InfiniteViewPagerIndicatorView;
@@ -35,7 +39,7 @@ import java.util.List;
  * 时间： 17:38
  * 说明： 在线售药内容
  */
-public class OnlineFragment extends BaseFragment
+public class OnlineFragment extends BaseFragment   implements DataView
 {
     /**
      * 顶部的滚动广告位置
@@ -141,6 +145,14 @@ public class OnlineFragment extends BaseFragment
         });
     }
 
+    @Override
+    protected void doGetData()
+    {
+        super.doGetData();
+        OnLinePresenter onLinePresenter = new OnLinePresenterImpl(mActivity, this);
+        onLinePresenter.doGetOnLine();
+    }
+
     private BaseAdapter genGridAdapter()
     {
         List<HomeGridItem> data = new LinkedList<>();
@@ -167,6 +179,21 @@ public class OnlineFragment extends BaseFragment
         data.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=947584711,2775882058&fm=80"));
         AdPagerAdapter adPagerAdapter = new AdPagerAdapter(mActivity, data);
         return adPagerAdapter;
+    }
+
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem)
+    {
+        if(null != resultItem)
+        {
+            mActivity.showCroutonToast(resultItem.message);
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg)
+    {
+        mActivity.showCroutonToast(msg);
     }
 
     @Override

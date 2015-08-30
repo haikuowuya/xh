@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,7 +99,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         application.recordActivity(mActivity);
         mPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        /**
+         * 这样设置的话，不会出现滚动
+         */
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+              getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -117,7 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             }
         });
 
-        if (!IntentUtils.isLauncherIntent(getIntent()) || this instanceof RegisterActivity)
+        if (!IntentUtils.isLauncherIntent(getIntent()) && !(this instanceof RegisterActivity))
         {
             int statusCoclor = getResources().getColor(R.color.color_title_background_color);
             ViewUtils.alphaStatusBarAndNavBar(mActivity, statusCoclor, 0xFF000000);
@@ -316,6 +321,41 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
         return loginSuccessItem;
     }
+
+    /**
+     * 隐藏软键盘，根据当前焦点View
+     */
+    public void hideSoftKeyBorard()
+    {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive())
+        {
+            if (imm.isActive())
+            {
+                View focusView = mActivity.getCurrentFocus();
+                if (null != focusView)
+                {
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+                }
+            }
+        }
+    }
+
+    /**
+     * 隐藏软键盘，根据给定的View
+     * @param view
+     */
+    public void hideSoftKeyBorard(View view)
+    {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive())
+        {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+
 
     private class PtrHandlerImpl implements PtrHandler
     {

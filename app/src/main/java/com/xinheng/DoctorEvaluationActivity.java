@@ -50,7 +50,6 @@ public class DoctorEvaluationActivity extends BaseActivity
      */
     private TextView mTvDoctorHospitalDept;
 
-
     /**
      * 提交按钮
      */

@@ -66,9 +66,9 @@ public class OkHttpStack implements HttpStack {
         com.squareup.okhttp.Request okHttpRequest = okHttpRequestBuilder.build();
         Headers okHeaders = okHttpRequest.headers();
 
-        for (final String name : okHeaders.names()) {
-            System.out.println("okheaders value = " + okHeaders.values(name));
-        }
+//        for (final String name : okHeaders.names()) {
+//            System.out.println("okheaders value = " + okHeaders.values(name));
+//        }
         Call okHttpCall = client.newCall(okHttpRequest);
         Response okHttpResponse = okHttpCall.execute();
 

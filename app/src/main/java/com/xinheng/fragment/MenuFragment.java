@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.xinheng.DepartmentNavActivity;
+import com.xinheng.InterfaceActivity;
 import com.xinheng.LoginActivity;
 import com.xinheng.R;
 import com.xinheng.TabViewPagerActivity;
@@ -76,6 +77,10 @@ public class MenuFragment extends BaseFragment
                         } else if (getString(R.string.tv_activity_user_center).equals(text))
                         {
                             UserCenterActivity.actionUserCenter(mActivity);
+                        }
+                        else if(getString(R.string.tv_activity_interface).equals(text))
+                        {
+                            InterfaceActivity.actionInterface(mActivity);
                         }
                     }
                 }, 360L);

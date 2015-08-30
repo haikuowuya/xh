@@ -1,146 +1,160 @@
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="#FFEFEDE7"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+    android:fitsSystemWindows="true"
+    android:background="@color/color_content_background_color">
 
-    <LinearLayout
-        android:id="@+id/frame_content"
+    <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="15dp">
-
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_register_logo"/>
+        android:layout_height="wrap_content"
+        android:background="@color/color_content_background_color"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            >
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <ImageView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:padding="8dp"
-                android:src="@mipmap/ic_register_username"/>
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_register_logo"/>
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:singleLine="true"
-                android:hint="输入你的手机号码"
-                android:textColorHint="#FF666666"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                >
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
+                    android:src="@mipmap/ic_register_username"/>
+
+                <EditText
+                    android:id="@+id/et_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="输入你的手机号码"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+
+                <Button
+                    android:id="@+id/btn_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:background="@drawable/btn_register_code_selector"
+                    android:text="获取验证码"
+                    android:textColor="#FFFFFFFF"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFBFBFBF"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                >
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
+                    android:src="@mipmap/ic_register_code"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="输入收到的验证码"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFBFBFBF"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                >
+
+                <ImageView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
+                    android:src="@mipmap/ic_register_pwd"/>
+
+                <EditText
+                    android:id="@+id/et_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="输入你的密码"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:gravity="bottom|right"
+                    android:text="6-32个字符"
+                    android:textColor="#FF666666"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFBFBFBF"/>
+
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/btn_register_code_selector"
-                android:text="获取验证码"
+                android:text="@string/tv_activity_register"
                 android:textColor="#FFFFFFFF"/>
 
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            >
-
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:padding="8dp"
-                android:src="@mipmap/ic_register_code"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:singleLine="true"
-                android:hint="输入收到的验证码"
-                android:textColorHint="#FF666666"/>
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            >
-
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:padding="8dp"
-                android:src="@mipmap/ic_register_pwd"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:singleLine="true"
-                android:inputType="textPassword"
-                android:hint="输入你的手机号码"
-                android:textColorHint="#FF666666"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:gravity="bottom|right"
-                android:text="6-32个字符"
-                android:textColor="#FF666666"/>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"/>
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/btn_register_code_selector"
-            android:text="@string/tv_activity_register"
-            android:textColor="#FFFFFFFF"/>
-
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

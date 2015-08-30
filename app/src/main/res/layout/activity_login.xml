@@ -30,6 +30,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_register_logo"/>
 

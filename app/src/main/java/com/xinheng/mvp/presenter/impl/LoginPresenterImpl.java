@@ -11,7 +11,7 @@ import com.xinheng.util.MD5;
 import com.xinheng.util.RSAUtil;
 
 /**
- * 作者： raiyi-suzhou
+ * 作者： libo
  * 日期： 2015/8/24 0024
  * 时间： 16:34
  * 说明：用户登录的实现类
@@ -33,6 +33,7 @@ public class LoginPresenterImpl implements LoginPresenter
         final String jsonLoginItem = GsonUtils.toJson(loginItem);
         //加密的字符串
         final String encryptString = RSAUtil.clientEncrypt(jsonLoginItem);
+        System.out.println("加密后的字符串 = "+ encryptString);
         String loginUrl = APIURL.LOGIN_URL;
         RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptString, (DataView) mActivity);
     }
