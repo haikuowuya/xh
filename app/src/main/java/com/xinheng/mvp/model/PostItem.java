@@ -6,7 +6,7 @@ package com.xinheng.mvp.model;
  * 时间： 16:10
  * 说明：  给服务端传送的数据基类
  */
-public class PostListItem extends  BaseEmptyItem
+public class PostItem extends  BaseEmptyItem
 {
     public static final String DEFAULT_PAGE ="-1";
     public String userId;

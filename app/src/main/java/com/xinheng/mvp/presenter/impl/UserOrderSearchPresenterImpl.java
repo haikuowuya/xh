@@ -3,7 +3,7 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.order.PostOrderSearchListItem;
+import com.xinheng.mvp.model.order.PostOrderSearchItem;
 import com.xinheng.mvp.presenter.UserOrderSearchPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
@@ -28,7 +28,7 @@ public class UserOrderSearchPresenterImpl implements UserOrderSearchPresenter
     public void doGetUserOrderSearch(String keyword, String status)
     {
         String useOrderSearchUrl = APIURL.USER_ORDER_SEARCH;
-        PostOrderSearchListItem postOrderSearchListItem = new PostOrderSearchListItem();
+        PostOrderSearchItem postOrderSearchListItem = new PostOrderSearchItem();
         postOrderSearchListItem.userId = mActivity.getLoginSuccessItem().id;
         postOrderSearchListItem.state = status;
         postOrderSearchListItem.keyword = keyword;

@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.xinheng.FindMedicalActivity;
 import com.xinheng.GetMedicalActivity;
 import com.xinheng.R;
@@ -22,14 +24,19 @@ import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
 import com.xinheng.mvp.model.HomeGridItem;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.model.online.HomeOnLineItem;
+import com.xinheng.mvp.model.online.OnLineBottomItem;
+import com.xinheng.mvp.model.online.OnLineCenterItem;
 import com.xinheng.mvp.presenter.OnLinePresenter;
 import com.xinheng.mvp.presenter.impl.OnLinePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
+import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomGridView;
 import com.xinheng.view.InfiniteViewPagerIndicatorView;
 import com.xinheng.view.TabViewPagerIndicator;
 
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +46,7 @@ import java.util.List;
  * 时间： 17:38
  * 说明： 在线售药内容
  */
-public class OnlineFragment extends BaseFragment   implements DataView
+public class OnLineFragment extends BaseFragment implements DataView
 {
     /**
      * 顶部的滚动广告位置
@@ -50,9 +57,13 @@ public class OnlineFragment extends BaseFragment   implements DataView
      * 中间的四个功能按钮
      */
     private CustomGridView mCustomGridView;
+    /***
+     * 顶部的布局包含，上面的滑动Viewpager和4个功能按钮
+     */
+    private LinearLayout mLinearTopContainer;
 
     /**
-     * 功能按钮下面的布局
+     * 功能按钮下面的布局(中间布局)
      */
     private LinearLayout mLinearCenterContainer;
     /**
@@ -60,9 +71,9 @@ public class OnlineFragment extends BaseFragment   implements DataView
      */
     private TabViewPagerIndicator mTabViewPagerIndicator;
 
-    public static OnlineFragment newInstance()
+    public static OnLineFragment newInstance()
     {
-        OnlineFragment fragment = new OnlineFragment();
+        OnLineFragment fragment = new OnLineFragment();
         return fragment;
     }
 
@@ -80,23 +91,34 @@ public class OnlineFragment extends BaseFragment   implements DataView
         mInfiniteViewPagerIndicatorView = (InfiniteViewPagerIndicatorView) view.findViewById(R.id.infinite_viewpager);
         mTabViewPagerIndicator = (TabViewPagerIndicator) view.findViewById(R.id.tab_viewpager_online_indicator);
         mLinearCenterContainer = (LinearLayout) view.findViewById(R.id.linear_online_center_container);
-        mInfiniteViewPagerIndicatorView.requestDisallowInterceptTouchEvent(true);
+        mLinearTopContainer = (LinearLayout) view.findViewById(R.id.linear_online_top_container);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
+        fillTopContainer(null);
+        fillCenterContainer(null);
+        fillBottomContainer();
+    }
+
+    private void fillTopContainer(List<AdItem> adItems)
+    {
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mInfiniteViewPagerIndicatorView.getLayoutParams();
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
         layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_home_ad_height);
         mInfiniteViewPagerIndicatorView.setLayoutParams(layoutParams);
-        mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter());
+        mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter(adItems));
         mInfiniteViewPagerIndicatorView.startAutoCycle();
         mCustomGridView.setAdapter(genGridAdapter());
-        fillCenterContainer();
-        fillTabViewPagerIndicator();
     }
 
-    private void fillCenterContainer()
+    private void fillCenterContainer(List<OnLineCenterItem> centerItems)
     {
-        for (int i = 0; i < 2; i++)
+        mLinearCenterContainer.removeAllViews();
+        int count = 2;
+        if (null != centerItems && !centerItems.isEmpty())
+        {
+            count = centerItems.size();
+        }
+        for (int i = 0; i < count; i++)
         {
             View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_online_center_item, null);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -105,7 +127,7 @@ public class OnlineFragment extends BaseFragment   implements DataView
         }
     }
 
-    private void fillTabViewPagerIndicator()
+    private void fillBottomContainer()
     {
         mTabViewPagerIndicator.getViewPager().requestDisallowInterceptTouchEvent(false);
         mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
@@ -143,12 +165,12 @@ public class OnlineFragment extends BaseFragment   implements DataView
                 }
             }
         });
+        doGetData();
     }
 
     @Override
     protected void doGetData()
     {
-        super.doGetData();
         OnLinePresenter onLinePresenter = new OnLinePresenterImpl(mActivity, this);
         onLinePresenter.doGetOnLine();
     }
@@ -170,24 +192,72 @@ public class OnlineFragment extends BaseFragment   implements DataView
         return false;
     }
 
-    private PagerAdapter genAdapter()
+    private PagerAdapter genAdapter(List<AdItem> items)
     {
-        List<AdItem> data = new LinkedList<>();
-        data.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2832113025,1191479993&fm=80"));
-        data.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2898205578,742300433&fm=80"));
-        data.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=396845035,2757297576&fm=80"));
-        data.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=947584711,2775882058&fm=80"));
-        AdPagerAdapter adPagerAdapter = new AdPagerAdapter(mActivity, data);
+        if (items == null)
+        {
+            items = new LinkedList<>();
+            items.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2832113025,1191479993&fm=80"));
+            items.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2898205578,742300433&fm=80"));
+            items.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=396845035,2757297576&fm=80"));
+            items.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=947584711,2775882058&fm=80"));
+        }
+        AdPagerAdapter adPagerAdapter = new AdPagerAdapter(mActivity, items);
         return adPagerAdapter;
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
         }
+
+        Type type = new TypeToken<List<HomeOnLineItem>>()
+        {
+        }.getType();
+        HomeOnLineItem homeOnLineItem = new HomeOnLineItem();
+        resultItem = GsonUtils.jsonToClass(HomeOnLineItem.DEBUG_SUCCESS, ResultItem.class);
+        if (null != resultItem && resultItem.properties.isJsonArray())
+        {
+            JsonArray jsonArray = resultItem.properties.getAsJsonArray();
+            if (jsonArray.size() == 3)
+            {
+                Type adType = new TypeToken<List<AdItem>>()
+                {
+                }.getType();
+                Type subjectType = new TypeToken<List<OnLineCenterItem>>()
+                {
+                }.getType();
+                Type listType = new TypeToken<List<OnLineBottomItem>>()
+                {
+                }.getType();
+                List<AdItem> advertisement = GsonUtils.jsonToList(jsonArray.get(0).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_ADVERTISEMENT).toString(), adType);
+                List<OnLineCenterItem> subject = GsonUtils.jsonToList(jsonArray.get(1).getAsJsonObject().getAsJsonObject(HomeOnLineItem.KEY_SUBJECT).toString(), subjectType);
+                //  List<OnLineBottomItem> list  = GsonUtils.jsonToList(jsonArray.get(2).getAsJsonObject().getAsJsonObject(HomeOnLineItem.KEY_LIST).toString(), listType);
+                homeOnLineItem.advertisement = advertisement;
+                homeOnLineItem.subject = subject;
+                //  homeOnLineItem.list = list;
+            }
+            System.out.println("homeOnLineItem = " + homeOnLineItem);
+            fillHomeOnLineItemDataToView(homeOnLineItem);
+        }
+    }
+
+    /***
+     * 将后台获取到的数据解析后与对应的View绑定后显示，
+     *
+     * @param homeOnLineItem
+     */
+    private void fillHomeOnLineItemDataToView(HomeOnLineItem homeOnLineItem)
+    {
+        if (homeOnLineItem != null)
+        {
+            fillTopContainer(homeOnLineItem.advertisement);
+            fillCenterContainer(homeOnLineItem.subject);
+        }
+
     }
 
     @Override

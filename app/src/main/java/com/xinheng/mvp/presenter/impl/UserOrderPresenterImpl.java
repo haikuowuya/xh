@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.PostListItem;
+import com.xinheng.mvp.model.PostItem;
 import com.xinheng.mvp.model.UserOrderItem;
-import com.xinheng.mvp.model.order.PostOrderListItem;
+import com.xinheng.mvp.model.order.PostOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
@@ -41,14 +41,14 @@ public class UserOrderPresenterImpl implements UserOrderPresenter
         {
             if (status.equals(UserOrderItem.ORDER_STATUS_ALL))
             {
-                PostListItem postListItem = new PostListItem();
+                PostItem postListItem = new PostItem();
                 postListItem.userId = mActivity.getLoginSuccessItem().id;
                 postListItem.page = "-1";
                 mingPostBody = GsonUtils.toJson(postListItem);
             }
             else
             {
-                PostOrderListItem orderListItem = new PostOrderListItem();
+                PostOrderItem orderListItem = new PostOrderItem();
                 orderListItem.userId = mActivity.getLoginSuccessItem().id;
                 orderListItem.page = "-1";
                 orderListItem.state = status;

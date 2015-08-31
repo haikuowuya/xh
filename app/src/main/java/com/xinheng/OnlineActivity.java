@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.OnlineFragment;
+import com.xinheng.fragment.OnLineFragment;
 
 public class OnlineActivity extends BaseActivity
 {
-    private OnlineFragment mOnlineFragment;
+    private OnLineFragment mOnlineFragment;
     
     public static void actionOnline(BaseActivity activity)
     {
@@ -22,7 +22,7 @@ public class OnlineActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_common);
         configTitleLayout();
-        mOnlineFragment = OnlineFragment.newInstance();
+        mOnlineFragment = OnLineFragment.newInstance();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mOnlineFragment).commit();
     }
 

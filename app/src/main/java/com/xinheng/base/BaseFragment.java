@@ -68,7 +68,8 @@ public abstract class BaseFragment extends Fragment implements IFragmentTitle
     }
 
     /**
-     * 在此方法中进行网络请求操作
+     * 在此方法中进行网络请求操作  ,注意懒加载只有在和ViewPager结合使用时才有效的
+     * 如果只是一个单纯的Fragment,需要手动去调用此方法
      */
     protected void doGetData()
     {

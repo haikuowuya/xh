@@ -10,7 +10,7 @@ import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.LoginSuccessItem;
-import com.xinheng.mvp.model.PostListItem;
+import com.xinheng.mvp.model.PostItem;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
@@ -48,7 +48,7 @@ public class InterfaceFragment extends PTRListFragment implements DataView
                     String text = parent.getAdapter().getItem(position).toString();
                     if (getString(R.string.tv_activity_user_order).equals(text))
                     {
-                        PostListItem postListItem = new PostListItem();
+                        PostItem postListItem = new PostItem();
                         postListItem.userId = mLoginSuccessItem.id;
                         postListItem.page = "-1";
                         String mingPostBody = GsonUtils.toJson(postListItem);

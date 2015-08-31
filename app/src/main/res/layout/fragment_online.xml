@@ -12,42 +12,50 @@
     android:scrollbars="none">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_content_background_color"
         android:orientation="vertical">
 
-        <com.xinheng.view.InfiniteViewPagerIndicatorView
-            android:id="@+id/infinite_viewpager"
+        <LinearLayout
+            android:id="@+id/linear_online_top_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:background="#FF00F800"
-            tools:layout_height="144dp"/>
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/shape_ad_bottom_shadow"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="4dp"/>
+            <com.xinheng.view.InfiniteViewPagerIndicatorView
+                android:id="@+id/infinite_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:background="#FF00F800"
+                tools:layout_height="144dp"/>
 
-        <com.xinheng.view.CustomGridView
-            android:id="@+id/custom_gridview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_white_color"
-            android:fadeScrollbars="false"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0dp"
-            android:horizontalSpacing="@dimen/dimen_adapter_view_divider_height"
-            android:numColumns="4"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:requiresFadingEdge="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="@dimen/dimen_adapter_view_divider_height"
-            tools:background="#FFBBB800"
-            tools:layout_height="120dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/shape_ad_bottom_shadow"
+                android:fadingEdge="horizontal"
+                android:fadingEdgeLength="4dp"/>
+
+            <com.xinheng.view.CustomGridView
+                android:id="@+id/custom_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white_color"
+                android:fadeScrollbars="false"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0dp"
+                android:horizontalSpacing="@dimen/dimen_adapter_view_divider_height"
+                android:numColumns="4"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:requiresFadingEdge="none"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="@dimen/dimen_adapter_view_divider_height"
+                tools:background="#FFBBB800"
+                tools:layout_height="120dp"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linear_online_center_container"
@@ -61,8 +69,8 @@
         <com.xinheng.view.TabViewPagerIndicator
             android:id="@+id/tab_viewpager_online_indicator"
             android:layout_width="match_parent"
-            android:background="@color/color_white_color"
-            android:layout_height="296dp"/>
+            android:layout_height="296dp"
+            android:background="@color/color_white_color"/>
 
     </LinearLayout>
 
