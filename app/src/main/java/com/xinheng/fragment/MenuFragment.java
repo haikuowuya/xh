@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.xinheng.DepartmentNavActivity;
 import com.xinheng.InterfaceActivity;
 import com.xinheng.LoginActivity;
+import com.xinheng.MainActivity;
 import com.xinheng.R;
 import com.xinheng.TabViewPagerActivity;
 import com.xinheng.UserCenterActivity;
@@ -26,9 +27,7 @@ import com.xinheng.base.BaseFragment;
  */
 public class MenuFragment extends BaseFragment
 {
-
     private ListView mListView;
-
     public static MenuFragment newInstance()
     {
         MenuFragment fragment = new MenuFragment();
@@ -65,7 +64,12 @@ public class MenuFragment extends BaseFragment
                 {
                     public void run()
                     {
-                        if (getString(R.string.tv_activity_login).equals(text))
+                        if(getString(R.string.tv_activity_main).equals(text))
+                        {
+                            MainActivity.actioMain(mActivity);
+                        }
+
+                       else  if (getString(R.string.tv_activity_login).equals(text))
                         {
                             LoginActivity.actionLogin(mActivity);
                         } else if (getString(R.string.tv_activity_department_nav).equals(text))

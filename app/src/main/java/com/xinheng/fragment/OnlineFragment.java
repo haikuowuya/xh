@@ -96,7 +96,7 @@ public class OnLineFragment extends BaseFragment implements DataView
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         fillTopContainer(null);
         fillCenterContainer(null);
-        fillBottomContainer();
+        fillBottomContainer(null);
     }
 
     private void fillTopContainer(List<AdItem> adItems)
@@ -127,19 +127,25 @@ public class OnLineFragment extends BaseFragment implements DataView
         }
     }
 
-    private void fillBottomContainer()
+    private void fillBottomContainer(List<OnLineBottomItem> bottomItems)
     {
-        mTabViewPagerIndicator.getViewPager().requestDisallowInterceptTouchEvent(false);
+        List<HomeOnLineItem.Item> items = items = new LinkedList<>();
+        if (null == bottomItems)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                HomeOnLineItem.Item item = new HomeOnLineItem.Item();
+                item.title = "TAB " + (1 + i);
+                items.add(item);
+            }
+        }
+        else
+        {
+            items.addAll( bottomItems.get(0).items);
+        }
         mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
-        mTabViewPagerIndicator.setViewPagerAdapter(genIndicatorAdapter());
-    }
-
-    private PagerAdapter genIndicatorAdapter()
-    {
-        String[] titles = getResources().getStringArray(R.array.array_order);
-        OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), titles);
-        return pagerAdapter;
-
+        OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), items);
+        mTabViewPagerIndicator.setViewPagerAdapter(pagerAdapter);
     }
 
     @Override
@@ -213,10 +219,11 @@ public class OnLineFragment extends BaseFragment implements DataView
         {
             mActivity.showCroutonToast(resultItem.message);
         }
+        handleResultItem(resultItem);
+    }
 
-        Type type = new TypeToken<List<HomeOnLineItem>>()
-        {
-        }.getType();
+    private void handleResultItem(ResultItem resultItem)
+    {
         HomeOnLineItem homeOnLineItem = new HomeOnLineItem();
         resultItem = GsonUtils.jsonToClass(HomeOnLineItem.DEBUG_SUCCESS, ResultItem.class);
         if (null != resultItem && resultItem.properties.isJsonArray())
@@ -234,11 +241,11 @@ public class OnLineFragment extends BaseFragment implements DataView
                 {
                 }.getType();
                 List<AdItem> advertisement = GsonUtils.jsonToList(jsonArray.get(0).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_ADVERTISEMENT).toString(), adType);
-                List<OnLineCenterItem> subject = GsonUtils.jsonToList(jsonArray.get(1).getAsJsonObject().getAsJsonObject(HomeOnLineItem.KEY_SUBJECT).toString(), subjectType);
-                //  List<OnLineBottomItem> list  = GsonUtils.jsonToList(jsonArray.get(2).getAsJsonObject().getAsJsonObject(HomeOnLineItem.KEY_LIST).toString(), listType);
+                List<OnLineCenterItem> subject = GsonUtils.jsonToList(jsonArray.get(1).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_SUBJECT).toString(), subjectType);
+                List<OnLineBottomItem> list = GsonUtils.jsonToList(jsonArray.get(2).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_LIST).toString(), listType);
                 homeOnLineItem.advertisement = advertisement;
                 homeOnLineItem.subject = subject;
-                //  homeOnLineItem.list = list;
+                homeOnLineItem.list = list;
             }
             System.out.println("homeOnLineItem = " + homeOnLineItem);
             fillHomeOnLineItemDataToView(homeOnLineItem);
@@ -256,6 +263,7 @@ public class OnLineFragment extends BaseFragment implements DataView
         {
             fillTopContainer(homeOnLineItem.advertisement);
             fillCenterContainer(homeOnLineItem.subject);
+            fillBottomContainer(homeOnLineItem.list);
         }
 
     }
@@ -264,6 +272,7 @@ public class OnLineFragment extends BaseFragment implements DataView
     public void onGetDataFailured(String msg)
     {
         mActivity.showCroutonToast(msg);
+        handleResultItem(null);
     }
 
     @Override

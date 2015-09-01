@@ -5,7 +5,7 @@
         <item>C</item>
         <item>D</item>
         <item>E</item>
-        <item>F</item>
+        <item>@string/tv_activity_main</item>
         <item>@string/tv_activity_login</item>
         <item>@string/tv_activity_department_nav</item>
         <item>@string/tv_activity_tab_viewpager</item>

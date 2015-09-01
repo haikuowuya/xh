@@ -31,7 +31,6 @@ import java.util.Map;
  */
 public class RequestUtils
 {
-
     /**
      * 请求url中的数据，默认用{@link com.android.volley.Request.Method.GET}get请求
      *

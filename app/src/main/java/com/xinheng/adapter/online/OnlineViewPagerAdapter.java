@@ -5,6 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.xinheng.fragment.OnlineGridItemFragment;
+import com.xinheng.mvp.model.online.HomeOnLineItem;
+
+import java.util.List;
 
 /**
  * 作者： raiyi-suzhou
@@ -14,12 +17,12 @@ import com.xinheng.fragment.OnlineGridItemFragment;
  */
 public class OnlineViewPagerAdapter extends FragmentPagerAdapter
 {
-    private String[] titles;
 
-    public OnlineViewPagerAdapter(FragmentManager fm, String[] titles)
+   private  List<HomeOnLineItem.Item> items = null;
+    public OnlineViewPagerAdapter(FragmentManager fm, List<HomeOnLineItem.Item> items)
     {
         super(fm);
-        this.titles = titles;
+        this.items = items;
     }
     @Override
     public Fragment getItem(int position)
@@ -30,13 +33,13 @@ public class OnlineViewPagerAdapter extends FragmentPagerAdapter
     @Override
     public int getCount()
     {
-        return titles.length;
+        return items.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position)
     {
 
-        return titles[position];
+        return items.get(position).title;
     }
 }

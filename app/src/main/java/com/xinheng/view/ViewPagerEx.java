@@ -1830,7 +1830,7 @@ public class ViewPagerEx extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
-        getParent().requestDisallowInterceptTouchEvent(true);
+     //   getParent().requestDisallowInterceptTouchEvent(true);
         return super.dispatchTouchEvent(ev);
     }
 

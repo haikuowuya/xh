@@ -235,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 //        mSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setShadowWidthRes(R.dimen.dimen_slidingmenu_shadow_width);
         mSlidingMenu.setShadowDrawable(R.drawable.shape_slidingmenu_shadow);
