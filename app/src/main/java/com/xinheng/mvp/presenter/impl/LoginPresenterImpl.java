@@ -20,9 +20,12 @@ public class LoginPresenterImpl implements LoginPresenter
 {
     private BaseActivity mActivity;
 
-    public LoginPresenterImpl(BaseActivity baseActivity)
+    private DataView mDataView;
+
+    public LoginPresenterImpl(BaseActivity activity, DataView dataView)
     {
-        mActivity = baseActivity;
+        mActivity = activity;
+        mDataView = dataView;
     }
 
     @Override
@@ -35,6 +38,6 @@ public class LoginPresenterImpl implements LoginPresenter
         final String encryptString = RSAUtil.clientEncrypt(jsonLoginItem);
         System.out.println("加密后的字符串 = "+ encryptString);
         String loginUrl = APIURL.LOGIN_URL;
-        RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptString, (DataView) mActivity);
+        RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptString, mDataView);
     }
 }

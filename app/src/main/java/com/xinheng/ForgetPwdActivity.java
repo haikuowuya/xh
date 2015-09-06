@@ -6,14 +6,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.CodeUtils;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PatternUtils;
 
 /**
- *  忘记密码界面
+ * 忘记密码界面
  */
 public class ForgetPwdActivity extends BaseActivity implements DataView
 {
@@ -35,21 +38,31 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
      * 下一步按钮
      */
     private Button mBtnNext;
+    /***
+     * 本地生产的验证码图片
+     */
+    private ImageView mIvCode;
+    /***
+     * 生成的验证码字符串
+     */
+    private String mCode;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_pwd);//TODO
-
         initView();
         setListener();
+        //进入Activity时生成验证码
+        newCode();
     }
 
     private void setListener()
     {
         OnViewClickListenerImpl onViewClickListener = new OnViewClickListenerImpl();
         mBtnNext.setOnClickListener(onViewClickListener);
+        mIvCode.setOnClickListener(onViewClickListener);
     }
 
     private void initView()
@@ -57,7 +70,9 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
         mEtCode = (EditText) findViewById(R.id.et_code);
         mEtMobile = (EditText) findViewById(R.id.et_mobile);
         mBtnNext = (Button) findViewById(R.id.btn_next);
+        mIvCode = (ImageView) findViewById(R.id.iv_code);
     }
+
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
@@ -82,14 +97,24 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
         {
             switch (v.getId())
             {
-                case R.id.btn_code://获取验证码
-                    code();
-                    break;
                 case R.id.btn_next://下一步
                     next();
                     break;
+                case R.id.iv_code://重新生成验证码
+                    newCode();
+                    break;
             }
         }
+    }
+
+    private void newCode()
+    {
+        int height = DensityUtils.dpToPx(mActivity, 36);
+        int width = height * 2;
+        int fontSize = DensityUtils.spToPx(mActivity, 18);
+        mIvCode.setImageBitmap(CodeUtils.getInstance().createBitmap(width, height,fontSize));
+        mCode = CodeUtils.getInstance().getCode();
+        System.out.println("mCode = " + mCode);
     }
 
     /**
@@ -97,15 +122,16 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
      */
     private void next()
     {
+        String code = mEtCode.getText().toString();
         String mobile = mEtMobile.getText().toString();
         if (TextUtils.isEmpty(mobile))
         {
             showCroutonToast("手机号码不可以为空");
             return;
         }
-        if (mobile.length() != 11)
+        if (TextUtils.getTrimmedLength(mobile) != 11)
         {
-            showCroutonToast("手机号码应该为11位数字");
+            showCroutonToast("手机号码长度应该为11位");
             return;
         }
         if (!PatternUtils.isPhoneNumber(mobile))
@@ -113,12 +139,16 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
             showCroutonToast("手机号码格式不正确");
             return;
         }
-        String code = mEtCode.getText().toString();
-    }
-
-    private void code()
-    {
-
+        if (TextUtils.isEmpty(code))
+        {
+            showCroutonToast("验证码不可以为空");
+            return;
+        }
+        if (!code.equalsIgnoreCase(mCode)) //验证码不区分大小写
+        {
+            showCroutonToast("验证码不正确，请重新输入");
+            return;
+        }
     }
 
     @Override

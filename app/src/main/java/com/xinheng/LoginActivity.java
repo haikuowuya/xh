@@ -9,26 +9,43 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.mvp.model.LoginSuccessItem;
-import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
-import com.xinheng.mvp.view.DataView;
+import com.xinheng.mvp.view.impl.LoginViewImpl;
 import com.xinheng.slidingmenu.SlidingMenu;
-import com.xinheng.util.Constants;
-import com.xinheng.util.GsonUtils;
 
 /**
  * 用户登录界面
  */
-public class LoginActivity extends BaseActivity implements DataView
+public class LoginActivity extends BaseActivity
 {
     public static final String DEFAULT_USERNAME = "15850217017";
     public static final String DEFAULT_PWD = "111111";
+    public static final String EXTRA_USERNAME = "username";
+    public static final String EXTRA_PWD = "pwd";
 
+    /**
+     * 跳转到用户登录界面
+     * @param activity ：当前跳转的Activity页面
+     */
     public static void actionLogin(BaseActivity activity)
     {
         Intent intent = new Intent(activity, LoginActivity.class);
+        activity.startActivity(intent);
+    }
+
+    /**
+     * 跳转到用户登录界面， 带有用户名和用户密码
+     *
+     * @param activity ：当前跳转的Activity页面
+     * @param username ：用户名
+     * @param pwd      ：用户密码
+     */
+    public static void actionLogin(BaseActivity activity, String username, String pwd)
+    {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.putExtra(EXTRA_USERNAME, username);
+        intent.putExtra(EXTRA_PWD, pwd);
         activity.startActivity(intent);
     }
 
@@ -72,6 +89,7 @@ public class LoginActivity extends BaseActivity implements DataView
         configTitleLayout();
         initView();
         setListener();
+        initUsernamePwd();
     }
 
     /**
@@ -86,12 +104,28 @@ public class LoginActivity extends BaseActivity implements DataView
         mBtnLogin = (Button) findViewById(R.id.btn_login);
         mLinearWeiXinContainer = (LinearLayout) findViewById(R.id.linear_weixin_container);
         mBtnRegister = (Button) findViewById(R.id.btn_register);
-        mEtUsername.setText(DEFAULT_USERNAME);
-        mEtPwd.setText(DEFAULT_PWD);
         mEtUsername.setSelection(mEtUsername.getText().length());
         mEtPwd.setSelection(mEtPwd.getText().length());
     }
 
+    /***
+     * 初始化用户名和用户密码
+     * 如果通过Intent传递过来则使用Intent传递的用户名和密码，
+     * 否则如果是测试阶段 {@link LoginActivity#DEFAULT_USERNAME}、{@link LoginActivity#DEFAULT_PWD} 不为空
+     *
+     */
+    private  void initUsernamePwd()
+    {
+        String userName = DEFAULT_USERNAME;
+        String pwd = DEFAULT_PWD;
+        if(!TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_USERNAME))&& !TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_PWD)))
+        {
+            userName =getIntent().getStringExtra(EXTRA_USERNAME);
+            pwd =getIntent().getStringExtra(EXTRA_PWD);
+        }
+        mEtUsername.setText(userName);
+        mEtPwd.setText(pwd);
+    }
     /***
      * 按钮的点击事件
      */
@@ -109,32 +143,6 @@ public class LoginActivity extends BaseActivity implements DataView
     {
         getTitleContainer().setVisibility(View.GONE);
         ((View) getContentViewGroup().getParent()).setPadding(0, 0, 0, 0);
-    }
-
-    @Override
-    public void onGetDataSuccess(ResultItem resultItem)
-    {
-        if (null != resultItem)
-        {
-            // showCroutonToast(resultItem.message);
-            showToast(resultItem.message);
-            LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
-            System.out.println("loginSuccessItem = " + loginSuccessItem);
-            if (null != loginSuccessItem)
-            {
-                mPreferences.edit().putString(Constants.PREF_LOGIN, GsonUtils.toJson(loginSuccessItem)).commit();
-//                UserCenterActivity.actionUserCenter(mActivity);
-               MainActivity.actioMain(mActivity);
-            }
-
-//           InterfaceActivity.actionInterface(mActivity, loginSuccessItem);
-        }
-    }
-
-    @Override
-    public void onGetDataFailured(String msg)
-    {
-        showCroutonToast(msg);
     }
 
     private class OnViewClickListenerImpl implements View.OnClickListener
@@ -180,7 +188,7 @@ public class LoginActivity extends BaseActivity implements DataView
             {
                 showCroutonToast("密码不可以为空");
             }
-            LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity);
+            LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
             loginPresenter.doLogin(username, pwd);
         }
 

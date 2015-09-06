@@ -9,9 +9,12 @@ import android.widget.EditText;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.RegisterPresenter;
+import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.mvp.presenter.impl.RegisterPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.mvp.view.impl.LoginViewImpl;
 import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.PatternUtils;
 
@@ -19,8 +22,11 @@ import com.xinheng.util.PatternUtils;
  * 用户注册界面
  */
 public class RegisterActivity extends BaseActivity implements DataView
-
 {
+    /**
+     * 跳转到用户注册界面
+     * @param activity:跳转时所在的Activity
+     */
     public static void actionRegister(BaseActivity activity)
     {
         Intent intent = new Intent(activity, RegisterActivity.class);
@@ -43,7 +49,6 @@ public class RegisterActivity extends BaseActivity implements DataView
      * 获取手机验证码按钮
      */
     private Button mBtnCode;
-
     /**
      * 注册按钮
      */
@@ -58,9 +63,11 @@ public class RegisterActivity extends BaseActivity implements DataView
         configTitleLayout();
         initView();
         setListener();
-
     }
 
+    /***
+     * 设置View的点击事件
+     */
     private void setListener()
     {
         OnViewClickListenerImpl onViewClickListener = new OnViewClickListenerImpl();
@@ -68,6 +75,9 @@ public class RegisterActivity extends BaseActivity implements DataView
         mBtnRegister.setOnClickListener(onViewClickListener);
     }
 
+    /**
+     * 初始化View
+     */
     private void initView()
     {
         mEtCode = (EditText) findViewById(R.id.et_code);
@@ -89,6 +99,15 @@ public class RegisterActivity extends BaseActivity implements DataView
         if (null != resultItem)
         {
             showCroutonToast(resultItem.message);
+            if(resultItem.success())
+            {
+                LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
+                loginPresenter.doLogin(mEtMobile.getText().toString(), mEtPwd.getText().toString());
+            }
+            else
+            {
+                LoginActivity.actionLogin(mActivity,mEtMobile.getText().toString(), mEtPwd.getText().toString());
+            }
         }
     }
 
@@ -153,7 +172,6 @@ public class RegisterActivity extends BaseActivity implements DataView
         String code = mEtCode.getText().toString();
         RegisterPresenter registerPresenter = new RegisterPresenterImpl(mActivity, this);
         registerPresenter.doRegister(mobile, pwd, code);
-
     }
 
     private void code()

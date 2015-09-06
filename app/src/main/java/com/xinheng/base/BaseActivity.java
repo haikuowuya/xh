@@ -317,9 +317,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (!TextUtils.isEmpty(prefLogin))
         {
             loginSuccessItem = GsonUtils.jsonToClass(prefLogin, LoginSuccessItem.class);
-
         }
         return loginSuccessItem;
+    }
+
+    /***
+     * 将登陆成功后的用户信息保存到sharepreference中，
+     * @param loginSuccessItem
+     */
+    public void saveLoginSuccessItem(LoginSuccessItem loginSuccessItem)
+    {
+        mPreferences.edit().putString(Constants.PREF_LOGIN, GsonUtils.toJson(loginSuccessItem)).commit();
     }
 
     /**
@@ -353,9 +361,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
-
-
 
     private class PtrHandlerImpl implements PtrHandler
     {
