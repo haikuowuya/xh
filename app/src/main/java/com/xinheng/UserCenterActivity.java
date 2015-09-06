@@ -50,6 +50,14 @@ public class UserCenterActivity extends BaseActivity
         initView();
         fillLinearGridContainer();
         fillLinearListContainer();
+        setListener();
+    }
+
+    private void setListener()
+    {
+        OnClickListenerImpl onClickListener = new OnClickListenerImpl();
+        mIvPhoto.setOnClickListener(onClickListener);
+        mTvUserName.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -77,7 +85,8 @@ public class UserCenterActivity extends BaseActivity
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 mLinearListContainer.addView(view, layoutParams);
                 view.setOnClickListener(new OnLinearItemClickListenerImpl(new IconTextItem(iconId, text)));
-            } else
+            }
+            else
             {
                 View view = new View(mActivity);
                 int height = DensityUtils.dpToPx(mActivity, 20.f);
@@ -140,33 +149,61 @@ public class UserCenterActivity extends BaseActivity
             if (getString(R.string.tv_activity_user_counsel).equals(mIconTextItem.text))
             {
                 UserCounselActivity.actionUserCounsel(mActivity);
-            } else if (getString(R.string.tv_activity_user_remind).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_remind).equals(mIconTextItem.text))
             {
                 UserRemindActivity.actionUserRemind(mActivity);
-            } else if (getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
             {
                 UserSubscribeActivity.actionUserSubscribe(mActivity);
-            } else if (getString(R.string.tv_activity_user_doctor).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_doctor).equals(mIconTextItem.text))
             {
                 UserDoctorActivity.actionUserDoctor(mActivity);
-            } else if (getString(R.string.tv_activity_user_medical).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_medical).equals(mIconTextItem.text))
             {
                 UserMedicalActivity.actionUsermedical(mActivity);
-            } else if (getString(R.string.tv_activity_user_report).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_report).equals(mIconTextItem.text))
             {
                 UserReportActivity.actionUserReport(mActivity);
-            } else if (getString(R.string.tv_activity_user_recipe).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_recipe).equals(mIconTextItem.text))
             {
                 UserRecipeActivity.actionUserRecipe(mActivity);
-            } else if (getString(R.string.tv_activity_user_check).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_check).equals(mIconTextItem.text))
             {
                 UserCheckActivity.actionUserCheck(mActivity);
-            } else if (getString(R.string.tv_activity_user_order).equals(mIconTextItem.text))
+            }
+            else if (getString(R.string.tv_activity_user_order).equals(mIconTextItem.text))
             {
                 UserOrderActivity.actionUserOrder(mActivity);
             }
-
-
         }
+    }
+
+    private class OnClickListenerImpl implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v)
+        {
+            switch (v.getId())
+            {
+                case R.id.iv_photo://点击用户头像
+                    account();
+                    break;
+            }
+        }
+    }
+
+    /***
+     * 点击用户名和头像执行的事件
+     */
+    private void account()
+    {
+        UserAccountActivity.actionUserAccount(mActivity);
     }
 }

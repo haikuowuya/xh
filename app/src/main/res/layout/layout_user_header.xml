@@ -24,7 +24,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:scaleType="centerCrop"
-
             app:civ_borderColor="#FFFF0000"
             app:civ_borderWidth="1dp"
             android:src="@mipmap/ic_photo"
