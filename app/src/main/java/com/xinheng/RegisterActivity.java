@@ -17,6 +17,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.mvp.view.impl.LoginViewImpl;
 import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.PatternUtils;
+import com.xinheng.util.VerifyCodeUtils;
 
 /**
  * 用户注册界面
@@ -176,7 +177,24 @@ public class RegisterActivity extends BaseActivity implements DataView
 
     private void code()
     {
-
+        String mobile = mEtMobile.getText().toString();
+        if (TextUtils.isEmpty(mobile))
+        {
+            showCroutonToast("手机号码不可以为空");
+            return;
+        }
+        if (mobile.length() != 11)
+        {
+            showCroutonToast("手机号码应该为11位数字");
+            return;
+        }
+        if (!PatternUtils.isPhoneNumber(mobile))
+        {
+            showCroutonToast("手机号码格式不正确");
+            return;
+        }
+        showCroutonToast("正在获取验证码");
+        VerifyCodeUtils.getVerifyCode(mActivity,mBtnCode,60*1000,mEtMobile.getText().toString());
     }
 
     @Override

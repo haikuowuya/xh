@@ -25,6 +25,11 @@ public class APIURL
     public static final String USER_ORDER_LIST=BASE_API_URL+"/interface/patient/myorder/getlist";
 
     /**
+     * 我的医生列表URL
+     */
+    public static final String USER_DOCTOR_LIST=BASE_API_URL+"/interface/patient/mydoctor/getlist";
+
+    /**
      * 我的订单搜索URL
      */
     public static final String USER_ORDER_SEARCH=BASE_API_URL+"/interface/patient/myorder/search";

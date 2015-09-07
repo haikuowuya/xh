@@ -7,9 +7,10 @@ import android.widget.ArrayAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserDoctorListAdapter;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserDoctorItem;
+import com.xinheng.mvp.presenter.UserDoctorPresenter;
+import com.xinheng.mvp.presenter.impl.UserDoctorPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -52,14 +53,14 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();;
+         doGetData();
     }
 
     @Override
     protected void doGetData()
     {
-        mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserDoctorPresenter userDoctorPresenter = new UserDoctorPresenterImpl(mActivity, this);
+        userDoctorPresenter.doGetUserDoctor();
     }
 
     @Override

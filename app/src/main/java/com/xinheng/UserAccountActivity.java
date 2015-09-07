@@ -20,16 +20,23 @@ public class UserAccountActivity extends BaseActivity
         activity.startActivity(intent);
     }
 
+    private UserAccountFragment mUserAccountFragment ;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserAccountFragment.newInstance()).commit();
-
+        mUserAccountFragment = UserAccountFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mUserAccountFragment).commit();
     }
 
-  
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        mUserAccountFragment.onActivityResult(requestCode,resultCode, data);
+    }
+
     @Override
     public CharSequence getActivityTitle()
     {

@@ -125,6 +125,8 @@ public class LoginActivity extends BaseActivity
         }
         mEtUsername.setText(userName);
         mEtPwd.setText(pwd);
+        mEtUsername.setSelection(userName.length());
+        mEtPwd.setSelection(pwd.length());
     }
     /***
      * 按钮的点击事件

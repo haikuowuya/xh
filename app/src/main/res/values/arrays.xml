@@ -61,6 +61,28 @@
 
 
 
+
+
+
+
+
+
+    <array name="array_photo_choose">
+        <item>从相册选择</item>
+        <item>拍照</item>
+    </array>
+
+
+
+
+
+
+
+
+
+
+
+
     <string-array name="array_user_grid_nav">
     <item>ic_user_counsel~我的咨询</item>
     <item>ic_user_subscribe~我的预约</item>

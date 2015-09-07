@@ -1,14 +1,23 @@
 package com.xinheng.fragment;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.util.PhotoUtils;
+import com.xinheng.util.StorageUtils;
 
 /**
  * 作者： raiyi-suzhou
@@ -18,12 +27,17 @@ import com.xinheng.base.BaseFragment;
  */
 public class UserAccountFragment extends BaseFragment
 {
+
+
+    private Bitmap mBitmap;
+
     public static UserAccountFragment newInstance()
     {
         UserAccountFragment fragment = new UserAccountFragment();
         return fragment;
     }
 
+    private String mImageFilePath = null;
     private LinearLayout mLinearPhotoContainer;
     /**
      * 姓名
@@ -43,11 +57,13 @@ public class UserAccountFragment extends BaseFragment
      */
     private LinearLayout mLinearAccountSecure;
 
+    private ImageView mIvPhoto;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_user_account, null);
+        View view = inflater.inflate(R.layout.fragment_user_account, null);      //TODO
         initView(view);
         return view;
     }
@@ -59,6 +75,7 @@ public class UserAccountFragment extends BaseFragment
         mLinearNick = (LinearLayout) view.findViewById(R.id.linear_nick_container);
         mLinearUserName = (LinearLayout) view.findViewById(R.id.linear_username_container);
         mLinearPhotoContainer = (LinearLayout) view.findViewById(R.id.linear_photo_container);
+        mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
     }
 
     @Override
@@ -113,9 +130,23 @@ public class UserAccountFragment extends BaseFragment
          */
         private void photo()
         {
-            mActivity.showCroutonToast("上传头像");
+            //mActivity.showCroutonToast("上传头像");
+            new AlertDialog.Builder(mActivity).setItems(R.array.array_photo_choose, new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    if (which == 0)//从相册选择
+                    {
+                        PhotoUtils.selectPicFromSD(mActivity);
+                    }
+                    else if (which == 1)//拍照
+                    {
+                      mImageFilePath =  PhotoUtils.selectPicFromCamera(mActivity);
+                    }
+                }
+            }).setTitle("请选择图片来源").show();
         }
-
         /**
          * 账户安全
          */
@@ -149,4 +180,45 @@ public class UserAccountFragment extends BaseFragment
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
+            {
+                if (null != data && data.getData() != null)
+                {
+                    mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
+                }
+            }
+            if (null != mImageFilePath)
+            {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options); //此时返回bm为空
+                options.inJustDecodeBounds = false;
+                int scale = 1;
+                while (true)
+                {
+                    if (options.outWidth / 2 >= PhotoUtils.W_H && options.outHeight / 2 >= PhotoUtils.W_H)
+                    {
+                        options.outWidth /= 2;
+                        options.outHeight /= 2;
+                        scale++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                options.inSampleSize = scale;
+                //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
+                mBitmap = BitmapFactory.decodeFile(mImageFilePath,options) ;
+                mBitmap = PhotoUtils.rotateBitmap(mImageFilePath, mBitmap);
+                mIvPhoto.setImageBitmap(mBitmap);
+            }
+        }
+        System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode +" imageFilePath = " + mImageFilePath + " data = " + data);
+    }
 }
