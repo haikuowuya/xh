@@ -2,4 +2,5 @@
     <string name="app_name">XH</string>
     <string name="tv_submit">提&#160;&#160;交</string>
     <string name="tv_next">下&#160;&#160;一&#160;&#160;步</string>
+    <string name="tv_verify_mobile_hint">你好，已绑定手机%s，点击获取验证码</string>
 </resources>

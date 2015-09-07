@@ -193,6 +193,7 @@ public class UserCenterActivity extends BaseActivity
             switch (v.getId())
             {
                 case R.id.iv_photo://点击用户头像
+                case R.id.tv_username://点击用户名
                     account();
                     break;
             }

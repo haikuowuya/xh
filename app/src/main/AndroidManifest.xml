@@ -19,7 +19,7 @@
 
             android:name=".LoginActivity"
             android:label="@string/app_name"
-        >
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -35,7 +35,7 @@
             android:name=".RegisterActivity"
             android:label="@string/tv_activity_register"
 
-           />
+            />
 
         <activity
             android:name=".OnlineActivity"
@@ -86,22 +86,33 @@
             android:label="@string/tv_activity_interface"/>
         <activity
             android:name=".FindMedicalActivity"
-            android:label="@string/tv_activity_find_medical"/>   <activity
+            android:label="@string/tv_activity_find_medical"/>
+        <activity
             android:name=".GetMedicalActivity"
             android:label="@string/tv_activity_get_medical"/>
 
         <activity
             android:name=".DeptFindMedicalActivity"
             android:label="@string/tv_activity_dept_find_medical"/>
-  <activity
+        <activity
             android:name=".ForgetPwdActivity"
             android:label="@string/tv_activity_forget_pwd"/>
         <activity
             android:name=".AddRecipeActivity"
             android:label="@string/tv_activity_add_recipe"/>
 
-        <activity android:name=".UserAccountActivity"
-                  android:label="@string/tv_activity_user_account"/>
+        <activity
+            android:name=".UserAccountActivity"
+            android:label="@string/tv_activity_user_account"/>
+        <activity
+            android:name=".BindPhoneVerifyActivity"
+            android:label="@string/tv_activity_bind_phone_verify"/>
+        <activity
+            android:name=".VerifyPersonActivity"
+            android:label="@string/tv_activity_verify_person"/>
+        <activity
+            android:name=".ResetPwdActivity"
+            android:label="@string/tv_activity_reset_pwd"/>
     </application>
 
 </manifest>

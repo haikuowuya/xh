@@ -1,0 +1,93 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fillViewport="false"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none"
+    >
+
+    <LinearLayout
+        android:id="@+id/frame_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="20dp"
+        android:background="@color/color_white_color"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textColor="#FF222222"
+            tools:text="你好，已绑定手机152****1234，点击获取验证码"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            >
+
+
+            <EditText
+                android:id="@+id/et_code"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edittext_background"
+                android:hint="输入验证码"
+                android:inputType="textVisiblePassword"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textColorHint="#FF666666"/>
+
+            <Button
+                android:id="@+id/btn_code"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/user_subscribe_evaluation_selector"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="获取验证码"
+                android:textColor="@color/color_white_color"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFBFBFBF"
+            android:visibility="gone"/>
+
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/btn_register_code_selector"
+            android:text="@string/tv_next"
+            android:textColor="#FFFFFFFF"/>
+
+
+    </LinearLayout>
+</ScrollView>

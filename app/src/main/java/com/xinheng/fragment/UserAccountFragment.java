@@ -1,7 +1,6 @@
 package com.xinheng.fragment;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,11 +10,13 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.StorageUtils;
 
@@ -27,8 +28,6 @@ import com.xinheng.util.StorageUtils;
  */
 public class UserAccountFragment extends BaseFragment
 {
-
-
     private Bitmap mBitmap;
 
     public static UserAccountFragment newInstance()
@@ -130,23 +129,33 @@ public class UserAccountFragment extends BaseFragment
          */
         private void photo()
         {
-            //mActivity.showCroutonToast("上传头像");
-            new AlertDialog.Builder(mActivity).setItems(R.array.array_photo_choose, new DialogInterface.OnClickListener()
+
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_dialog_modify_photo, null);
+            LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
+            LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
+         final    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
+            int width = DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 40);
+            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+            alertDialog.show();
+            linearCameraContainer.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    PhotoUtils.selectPicFromCamera(mActivity);
+                    alertDialog.dismiss();
+                }
+            });
+            linearGalleryContainer.setOnClickListener(new View.OnClickListener()
             {
                 @Override
-                public void onClick(DialogInterface dialog, int which)
+                public void onClick(View v)
                 {
-                    if (which == 0)//从相册选择
-                    {
-                        PhotoUtils.selectPicFromSD(mActivity);
-                    }
-                    else if (which == 1)//拍照
-                    {
-                      mImageFilePath =  PhotoUtils.selectPicFromCamera(mActivity);
-                    }
+                    PhotoUtils.selectPicFromSD(mActivity);
+                    alertDialog.dismiss();
                 }
-            }).setTitle("请选择图片来源").show();
+            });
         }
+
         /**
          * 账户安全
          */
@@ -197,7 +206,6 @@ public class UserAccountFragment extends BaseFragment
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 mBitmap = BitmapFactory.decodeFile(mImageFilePath, options); //此时返回bm为空
-                options.inJustDecodeBounds = false;
                 int scale = 1;
                 while (true)
                 {
@@ -214,11 +222,12 @@ public class UserAccountFragment extends BaseFragment
                 }
                 options.inSampleSize = scale;
                 //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
-                mBitmap = BitmapFactory.decodeFile(mImageFilePath,options) ;
+                options.inJustDecodeBounds = false;
+                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options);
                 mBitmap = PhotoUtils.rotateBitmap(mImageFilePath, mBitmap);
                 mIvPhoto.setImageBitmap(mBitmap);
             }
         }
-        System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode +" imageFilePath = " + mImageFilePath + " data = " + data);
+        System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
     }
 }

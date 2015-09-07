@@ -28,6 +28,11 @@ public class LoginSuccessItem extends BaseEmptyItem {
      */
     public String sessionId;
 
+    /***
+     * 用户的头像URL
+     */
+    public String photo;
+
 
     @Override
     public String toString() {
@@ -35,7 +40,7 @@ public class LoginSuccessItem extends BaseEmptyItem {
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("lastlogintime = " + lastlogintime);
         stringBuffer.append(" mobile = " + mobile);
-        stringBuffer.append(" sessionId = " + sessionId);
+        stringBuffer.append(" photo = " + photo);
         return stringBuffer.toString();
     }
 }
