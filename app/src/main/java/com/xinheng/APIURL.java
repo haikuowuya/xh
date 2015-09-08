@@ -28,6 +28,10 @@ public class APIURL
      * 我的医生列表URL
      */
     public static final String USER_DOCTOR_LIST=BASE_API_URL+"/interface/patient/mydoctor/getlist";
+    /***
+     * 提交医生评价、获取医生评价详情，根据传递的post参数区分的
+     */
+    public static final String DOCTOR_EVALUATION_URL=BASE_API_URL+"/interface/patient/doctorevaluation/getdetail";
 
     /**
      * 我的订单搜索URL

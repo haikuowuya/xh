@@ -53,7 +53,7 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();
+        doGetData();
     }
 
     @Override
@@ -67,20 +67,25 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserDoctorItem>>()
+        if (null != resultItem)
         {
-        }.getType();
-        List<UserDoctorItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        if (null != items)
-        {
-            mUserDoctorItems.addAll(items);
-            if (null == mUserDoctorListAdapter)
+            mActivity.showCroutonToast(resultItem.message);
+            Type type = new TypeToken<List<UserDoctorItem>>()
             {
-                mUserDoctorListAdapter = new UserDoctorListAdapter(mActivity, mUserDoctorItems);
-                getListView().setAdapter(mUserDoctorListAdapter);
-            } else
+            }.getType();
+            List<UserDoctorItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+            if (null != items)
             {
-                mUserDoctorListAdapter.notifyDataSetChanged();
+                mUserDoctorItems.addAll(items);
+                if (null == mUserDoctorListAdapter)
+                {
+                    mUserDoctorListAdapter = new UserDoctorListAdapter(mActivity, mUserDoctorItems);
+                    getListView().setAdapter(mUserDoctorListAdapter);
+                }
+                else
+                {
+                    mUserDoctorListAdapter.notifyDataSetChanged();
+                }
             }
         }
     }

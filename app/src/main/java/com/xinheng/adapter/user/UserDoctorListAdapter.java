@@ -99,7 +99,7 @@ public class UserDoctorListAdapter extends BaseAdapter<UserDoctorItem>
         {
 
 //            getActivity().showCroutonToast("医生评价");
-            DoctorEvaluationActivity.actionDoctorEvaluation(getActivity(),userDoctorItem);
+            DoctorEvaluationActivity.actionDoctorEvaluation(getActivity(),userDoctorItem.doctId);
 
 
         }

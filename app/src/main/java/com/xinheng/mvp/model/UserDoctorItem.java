@@ -39,4 +39,7 @@ public class UserDoctorItem extends BaseEmptyItem
      */
     public String grade;
 
+
+
+
 }
