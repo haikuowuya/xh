@@ -15,14 +15,14 @@ import com.xinheng.base.BaseActivity;
  * 时间： 13:48
  * 说明： 按科室找药界面
  */
-public class DeptFindMedicalActivity extends BaseActivity
+public class DepartmentFindMedicalActivity extends BaseActivity
 {
     private ListView mLeftListView;
     private ListView mRightListView;
 
     public static void actionDeptFindMedical(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, DeptFindMedicalActivity.class);
+        Intent intent = new Intent(activity, DepartmentFindMedicalActivity.class);
         activity.startActivity(intent);
     }
 

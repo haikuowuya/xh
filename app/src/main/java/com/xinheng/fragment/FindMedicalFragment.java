@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.xinheng.DeptFindMedicalActivity;
+import com.xinheng.DepartmentFindMedicalActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 
@@ -133,7 +133,7 @@ public class FindMedicalFragment extends BaseFragment
         private void dept()
         {
 //            mActivity.showCroutonToast("科室查找");
-            DeptFindMedicalActivity.actionDeptFindMedical(mActivity);
+            DepartmentFindMedicalActivity.actionDeptFindMedical(mActivity);
         }
 
         /**

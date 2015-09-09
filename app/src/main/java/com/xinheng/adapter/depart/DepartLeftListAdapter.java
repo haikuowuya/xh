@@ -1,4 +1,4 @@
-package com.xinheng.adapter.department;
+package com.xinheng.adapter.depart;
 
 import android.view.View;
 
@@ -12,12 +12,12 @@ import java.util.List;
 /**
  * Created by Steven on 2015/9/9 0009.
  */
-public class DepartRightListAdapter extends BaseAdapter<DepartItem>
+public class DepartLeftListAdapter extends BaseAdapter<DepartItem>
 {
 
-    public DepartRightListAdapter(BaseActivity activity, List<DepartItem> data)
+    public DepartLeftListAdapter(BaseActivity activity, List<DepartItem> data)
     {
-        super(activity, R.layout.list_department_right_item, data);
+        super(activity, R.layout.list_department_left_item, data);
     }
 
     @Override

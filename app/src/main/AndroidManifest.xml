@@ -35,9 +35,10 @@
             android:name=".RegisterActivity"
             android:label="@string/tv_activity_register"/>
 
-        <activity android:name=".CatchActivity"
-                  android:theme="@style/Crash.AppTheme"
+        <activity
+            android:name=".CatchActivity"
             android:label="string/tv_activity_crash"
+            android:theme="@style/Crash.AppTheme"
             />
 
         <activity
@@ -95,7 +96,7 @@
             android:label="@string/tv_activity_get_medical"/>
 
         <activity
-            android:name=".DeptFindMedicalActivity"
+            android:name=".DepartmentFindMedicalActivity"
             android:label="@string/tv_activity_dept_find_medical"/>
         <activity
             android:name=".ForgetPwdActivity"
@@ -116,6 +117,9 @@
         <activity
             android:name=".ResetPwdActivity"
             android:label="@string/tv_activity_reset_pwd"/>
+        <activity
+            android:name=".DepartmentDoctorActivity"
+            android:label="@string/tv_activity_depart_doctor"/>
     </application>
 
 </manifest>

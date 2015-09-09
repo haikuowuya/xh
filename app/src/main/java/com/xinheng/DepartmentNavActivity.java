@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.adapter.department.DepartLeftListAdapter;
-import com.xinheng.adapter.department.DepartRightListAdapter;
+import com.xinheng.adapter.depart.DepartLeftListAdapter;
+import com.xinheng.adapter.depart.DepartRightListAdapter;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.DepartItem;
 import com.xinheng.mvp.model.ResultItem;
@@ -133,7 +133,8 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
             }
             else if (adapterView == mRightListView)
             {
-                showCroutonToast(departItem.name);
+             //   showCroutonToast(departItem.name);
+                DepartmentDoctorActivity.actionDepartDoctor(mActivity, departItem);
             }
         }
     }
