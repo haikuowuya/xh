@@ -16,6 +16,15 @@ public class APIURL
      */
     public static final String LOGIN_URL=BASE_API_URL+"/interface/patient/user/login";
     /**
+     * 获取科室导航的数据URL
+     */
+    public static final String GET_DEPARTMENT_NAV_URL=BASE_API_URL+"/interface/patient/appointment/getdepart";
+    /***
+     * 我的咨询列表URL
+     */
+    public static final String GET_USER_COUNSEL_LIST_URL=BASE_API_URL+"/interface/patient/consultation/getlist";
+
+    /**
      * 用户注册URL
      */
     public static final String REGISTER_URL=BASE_API_URL+"/interface/patient/user/register";
@@ -23,15 +32,23 @@ public class APIURL
      * 我的订单列表URL
      */
     public static final String USER_ORDER_LIST=BASE_API_URL+"/interface/patient/myorder/getlist";
+    /***
+     * 我的病历列表URL
+     */
+    public static final String USER_MEDICAL_LIST_URL=BASE_API_URL+"/interface/patient/myrecord/getlist";
 
     /**
      * 我的医生列表URL
      */
-    public static final String USER_DOCTOR_LIST=BASE_API_URL+"/interface/patient/mydoctor/getlist";
+    public static final String USER_DOCTOR_LIST_URL=BASE_API_URL+"/interface/patient/mydoctor/getlist";
     /***
-     * 提交医生评价、获取医生评价详情，根据传递的post参数区分的
+     *  获取医生评价详情
      */
-    public static final String DOCTOR_EVALUATION_URL=BASE_API_URL+"/interface/patient/doctorevaluation/getdetail";
+    public static final String GET_USER_DOCTOR_EVALUATION_URL =BASE_API_URL+"/interface/patient/doctorevaluation/getdetail";
+    /***
+     *  提交医生评价
+     */
+    public static final String ADD_USER_DOCTOR_EVALUATION_URL =BASE_API_URL+"/interface/patient/doctorevaluation/add";
 
     /**
      * 我的订单搜索URL

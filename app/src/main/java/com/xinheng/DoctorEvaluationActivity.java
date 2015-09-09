@@ -67,7 +67,7 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
         if (!TextUtils.isEmpty(mDoctId))
         {
             DoctorEvaluationPresenter doctorEvaluationPresenter = new DoctorEvaluationPresenterImpl(mActivity, this);
-            doctorEvaluationPresenter.getDoctorEvaluationDetail(mDoctId);
+            doctorEvaluationPresenter.doGetDoctorEvaluationDetail(mDoctId);
             mScrollView.setVisibility(View.GONE);
         }
     }
@@ -109,9 +109,9 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
                         @Override
                         public void onClick(View v)
                         {
-                            showCroutonToast("提交");
+//                            showCroutonToast("提交");
                             DoctorEvaluationPresenter doctorEvaluationPresenter = new DoctorEvaluationPresenterImpl(mActivity, DoctorEvaluationActivity.this);
-                            doctorEvaluationPresenter.doDoctorEvaluation(mUserDoctorDetailItem, "111","111","111");
+                            doctorEvaluationPresenter.doSubmitDoctorEvaluation(mUserDoctorDetailItem, "111", "111", "111");
                         }
                     });
                 }

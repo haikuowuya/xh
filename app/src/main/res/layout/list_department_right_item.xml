@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <TextView android:id="@+id/tv_text"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
-          android:layout_height="48dp"
+          android:layout_height="wrap_content"
           android:background="@drawable/activated_department_right_background_selector"
           android:gravity="center_vertical"
-          android:paddingLeft="8dp"
-        
+          android:paddingLeft="12dp"
+          android:paddingTop="12dp"
+          android:paddingBottom="12dp"
+          android:singleLine="true"
           android:textColor="@drawable/list_department_right_text_color_selector"
           android:textSize="16sp"
           android:textAppearance="?android:attr/textAppearanceListItemSmall"

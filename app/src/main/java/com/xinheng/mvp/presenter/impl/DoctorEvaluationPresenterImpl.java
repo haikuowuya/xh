@@ -27,9 +27,9 @@ public class DoctorEvaluationPresenterImpl implements DoctorEvaluationPresenter
     }
 
     @Override
-    public void doDoctorEvaluation(UserDoctorDetailItem userDoctorDetailItem, String serviceDescribe, String effectDescribe, String feeDescribe)
+    public void doSubmitDoctorEvaluation(UserDoctorDetailItem userDoctorDetailItem, String serviceDescribe, String effectDescribe, String feeDescribe)
     {
-        String doctorEvaluationUrl = APIURL.DOCTOR_EVALUATION_URL;
+        String doctorEvaluationUrl = APIURL.ADD_USER_DOCTOR_EVALUATION_URL;
         PostDoctorEvaluationItem  postDoctorEvaluationItem = new PostDoctorEvaluationItem();
         postDoctorEvaluationItem.userId = mActivity.getLoginSuccessItem().id;
         postDoctorEvaluationItem.doctId = userDoctorDetailItem.doctId;
@@ -46,9 +46,9 @@ public class DoctorEvaluationPresenterImpl implements DoctorEvaluationPresenter
     }
 
     @Override
-    public void getDoctorEvaluationDetail(String doctId)
+    public void doGetDoctorEvaluationDetail(String doctId)
     {
-        String doctorEvaluationUrl = APIURL.DOCTOR_EVALUATION_URL;
+        String doctorEvaluationUrl = APIURL.GET_USER_DOCTOR_EVALUATION_URL;
         BasePostDoctorItem postDoctorItem = new BasePostDoctorItem();
         postDoctorItem.doctId = doctId;
         String mingPostBody = GsonUtils.toJson(postDoctorItem);

@@ -15,10 +15,10 @@ public interface DoctorEvaluationPresenter
      * @param effectDescribe       疗效描述
      * @param feeDescribe          费用描述
      */
-    public void doDoctorEvaluation(UserDoctorDetailItem userDoctorDetailItem, String serviceDescribe, String effectDescribe, String feeDescribe);
+    public void doSubmitDoctorEvaluation(UserDoctorDetailItem userDoctorDetailItem, String serviceDescribe, String effectDescribe, String feeDescribe);
 
     /***
      * 获取医生评价详情
      */
-    public void getDoctorEvaluationDetail(String doctId);
+    public void doGetDoctorEvaluationDetail(String doctId);
 }

@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.xinheng.base.BaseActivity;
+import com.xinheng.crash.CrashWoodpecker;
 
 import java.util.LinkedList;
 
@@ -32,6 +33,7 @@ public class XHApplication extends android.app.Application
     {
         super.onCreate();
         sInstance = this;
+        CrashWoodpecker.fly().to(this);
         DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.ic_launcher).showImageOnLoading(R.mipmap.ic_launcher).showImageOnFail(R.mipmap.ic_launcher).delayBeforeLoading(0).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).bitmapConfig(Bitmap.Config.RGB_565).imageScaleType(ImageScaleType.IN_SAMPLE_INT).build();
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).defaultDisplayImageOptions(options).threadPriority(Thread.NORM_PRIORITY).threadPoolSize(4).denyCacheImageMultipleSizesInMemory().memoryCache(new WeakMemoryCache()).discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).imageDownloader(new BaseImageDownloader(this, 30 * 1000, 30 * 1000)).build();
         ImageLoader.getInstance().init(configuration);

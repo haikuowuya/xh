@@ -5,6 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
     </style>
+    <style name="Crash.AppTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/color_crash_windowbackground_color</item>
+
+    </style>
 
     <style name="Full.AppTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
@@ -85,4 +89,7 @@
 
     </style>
 
+    <style name="LineTextAppearance">
+        <item name="android:textColor">#FFE040FB</item>
+    </style>
 </resources>

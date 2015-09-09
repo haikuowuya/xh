@@ -7,9 +7,10 @@ import android.widget.ArrayAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserCounselListAdapter;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserCounselItem;
+import com.xinheng.mvp.presenter.UserCounselPresenter;
+import com.xinheng.mvp.presenter.impl.UserCounselPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -52,36 +53,46 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-        doGetData(); ;
+        doGetData();
     }
 
     @Override
     protected void doGetData()
     {
-        mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserCounselPresenter userCounselPresenter = new UserCounselPresenterImpl(mActivity, this);
+        userCounselPresenter.doGetUserCounsel();
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserCounselItem>>()
+
+        if (null != resultItem)
         {
-        }.getType();
-        List<UserCounselItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        if (null != items)
-        {
-            mUserCounselItems.addAll(items);
-            if (null == mUserCounselListAdapter)
+            mActivity.showCroutonToast(resultItem.message);
+            if (resultItem.success())
             {
-                mUserCounselListAdapter = new UserCounselListAdapter(mActivity, mUserCounselItems);
-                getListView().setAdapter(mUserCounselListAdapter);
-            } else
-            {
-                mUserCounselListAdapter.notifyDataSetChanged();
+                Type type = new TypeToken<List<UserCounselItem>>()
+                {
+                }.getType();
+                List<UserCounselItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                if (null != items)
+                {
+                    mUserCounselItems.addAll(items);
+                    if (null == mUserCounselListAdapter)
+                    {
+                        mUserCounselListAdapter = new UserCounselListAdapter(mActivity, mUserCounselItems);
+                        getListView().setAdapter(mUserCounselListAdapter);
+                    }
+                    else
+                    {
+                        mUserCounselListAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }
+
     }
 
     @Override

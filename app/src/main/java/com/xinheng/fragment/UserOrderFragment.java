@@ -161,6 +161,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
         if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
+            if(resultItem.success())
+            {
             Type type = new TypeToken<List<UserOrderItem>>()
             {
             }.getType();
@@ -178,6 +180,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 {
                     mUserOrderListAdapter.notifyDataSetChanged();
                 }
+            }
             }
         }
     }

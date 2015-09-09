@@ -6,11 +6,11 @@ import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserDoctorListAdapter;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserMedicalItem;
+import com.xinheng.mvp.presenter.UserMedicalPresenter;
+import com.xinheng.mvp.presenter.impl.UserMedicalPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -33,6 +33,7 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
         UserMedicalListFragment fragment = new UserMedicalListFragment();
         return fragment;
     }
+
     private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
     private UserMedicalListAdapter mUserMedicalListAdapter;
 
@@ -52,36 +53,47 @@ public class UserMedicalListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
-         doGetData();
+        doGetData();
     }
 
     @Override
     protected void doGetData()
     {
-        mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserMedicalPresenter userMedicalPresenter = new UserMedicalPresenterImpl(mActivity, this);
+        userMedicalPresenter.doGetUserMedical();
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserMedicalItem>>()
+
+        if (null != resultItem)
         {
-        }.getType();
-        List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        if (null != items)
-        {
-            mUserMedicalItems.addAll(items);
-            if (null == mUserMedicalListAdapter)
+            mActivity.showCroutonToast(resultItem.message);
+
+            if (resultItem.success())
             {
-                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
-                getListView().setAdapter(mUserMedicalListAdapter);
-            } else
-            {
-                mUserMedicalListAdapter.notifyDataSetChanged();
+                Type type = new TypeToken<List<UserMedicalItem>>()
+                {
+                }.getType();
+                List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                if (null != items)
+                {
+                    mUserMedicalItems.addAll(items);
+                    if (null == mUserMedicalListAdapter)
+                    {
+                        mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
+                        getListView().setAdapter(mUserMedicalListAdapter);
+                    }
+                    else
+                    {
+                        mUserMedicalListAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }
+
     }
 
     @Override

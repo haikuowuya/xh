@@ -6,15 +6,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.LoginSuccessItem;
-import com.xinheng.mvp.model.PostItem;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
-import com.xinheng.util.GsonUtils;
-import com.xinheng.util.RSAUtil;
 
 /**
  * 作者： raiyi-suzhou
@@ -48,14 +43,17 @@ public class InterfaceFragment extends PTRListFragment implements DataView
                     String text = parent.getAdapter().getItem(position).toString();
                     if (getString(R.string.tv_activity_user_order).equals(text))
                     {
-                        PostItem postListItem = new PostItem();
-                        postListItem.userId = mLoginSuccessItem.id;
-                        postListItem.page = "-1";
-                        String mingPostBody = GsonUtils.toJson(postListItem);
-                        // System.out.println("明文POST 数据 = " +mingPostBody );
-                        String postBody = RSAUtil.clientEncrypt(mingPostBody);
-                        System.out.println("加密POST 数据 = " + postBody);
-                        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, APIURL.USER_ORDER_LIST, postBody, mLoginSuccessItem, InterfaceFragment.this);
+                        int a = 0;
+                        int b = 1;
+                        int c = b/a;
+//                        PostItem postListItem = new PostItem();
+//                        postListItem.userId = mLoginSuccessItem.id;
+//                        postListItem.page = "-1";
+//                        String mingPostBody = GsonUtils.toJson(postListItem);
+//                        // System.out.println("明文POST 数据 = " +mingPostBody );
+//                        String postBody = RSAUtil.clientEncrypt(mingPostBody);
+//                        System.out.println("加密POST 数据 = " + postBody);
+//                        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, APIURL.USER_ORDER_LIST, postBody, mLoginSuccessItem, InterfaceFragment.this);
                     }
                 }
             });

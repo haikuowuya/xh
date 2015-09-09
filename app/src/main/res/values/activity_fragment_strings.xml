@@ -2,6 +2,7 @@
 <resources>
 
     <string name="tv_activity_main">首页</string>
+    <string name="tv_activity_crash">异常捕获</string>
     <string name="tv_activity_online">在线售药</string>
     <string name="tv_fragment_menu">右侧菜单</string>
     <string name="tv_fragment_main">首页内容</string>
