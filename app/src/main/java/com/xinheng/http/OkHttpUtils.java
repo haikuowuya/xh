@@ -1,10 +1,16 @@
 package com.xinheng.http;
 
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.xinheng.mvp.model.LoginSuccessItem;
+import com.xinheng.util.Constants;
+import com.xinheng.util.RSAUtil;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.protocol.HTTP;
@@ -39,12 +45,28 @@ public class OkHttpUtils
         sOkHttpClient.newCall(request).enqueue(callback);
     }
 
+    public static void customXHasyncExecute(String url ,  LoginSuccessItem loginSuccessItem , String postBody, Callback callback)
+    {
+        //userId要客户端加密
+        String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
+        System.out.println("加密后的userId = " + encryptUserId);
+
+        String sessionId = loginSuccessItem.sessionId;
+        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId)
+                .add(Constants.COOKIE,  Constants.SID+sessionId)
+                .add(Constants.USER_ID, encryptUserId)
+                .build();
+        RequestBody reqBody = RequestBody.create(MediaType.parse("application/json"), postBody);
+        Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
+        asyncExecute(request, callback);
+    }
+
     public static void cancleRequest(Request request)
     {
         sOkHttpClient.cancel(request);
     }
 
-    public static void asynExecute(Request request)
+    public static void asyncExecute(Request request)
     {
         asyncExecute(request, new Callback()
         {

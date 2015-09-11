@@ -43,6 +43,10 @@ public class APIURL
      */
     public static final String USER_DOCTOR_LIST_URL=BASE_API_URL+"/interface/patient/mydoctor/getlist";
     /***
+     * 我的预约列表URL
+     */
+    public static final String USER_SUBSCRIBE_LIST_URL=BASE_API_URL+"/interface/patient/myappointment/getlist";
+    /***
      *  获取医生评价详情
      */
     public static final String GET_USER_DOCTOR_EVALUATION_URL =BASE_API_URL+"/interface/patient/doctorevaluation/getdetail";

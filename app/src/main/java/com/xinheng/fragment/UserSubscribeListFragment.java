@@ -8,9 +8,10 @@ import android.widget.ArrayAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.SubscribeAdapter;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserSubscribeItem;
+import com.xinheng.mvp.presenter.UserSubscribePresenter;
+import com.xinheng.mvp.presenter.impl.UserSubscribePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -28,19 +29,34 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
 {
     private static final String DATA = UserSubscribeItem.DEBUG_SUCCESS;
 
-    public static UserSubscribeListFragment newInstance()
+    public static final String TYPE_0 = "0";
+    public static final String TYPE_1 = "1";
+    public static final String ARG_TYPE = "type";
+
+    public static UserSubscribeListFragment newInstance(String type)
     {
         UserSubscribeListFragment fragment = new UserSubscribeListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_TYPE, type);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
     private LinkedList<UserSubscribeItem> mUserSubscribeItems = new LinkedList<>();
     private SubscribeAdapter mSubscribeAdapter;
+    /***
+     * 预约类型， 0表示预约挂号 1表示预约加号
+     */
+    private String mType = TYPE_0;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        if (null != getArguments().getString(ARG_TYPE))
+        {
+            mType = getArguments().getString(ARG_TYPE);
+        }
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         getListView().setSelector(new ColorDrawable(0x00000000));
         getListView().setDividerHeight(0);
@@ -62,32 +78,40 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
     @Override
     protected void doGetData()
     {
-        mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserSubscribePresenter userSubscribePresenter = new UserSubscribePresenterImpl(mActivity, this);
+        userSubscribePresenter.doGetUserSubscribe(mType);
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserSubscribeItem>>()
+        if (null != resultItem)
         {
-        }.getType();
-        List<UserSubscribeItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        mUserSubscribeItems.addAll(items);
-        if (null == mSubscribeAdapter)
-        {
-            mSubscribeAdapter = new SubscribeAdapter(mActivity, mUserSubscribeItems);
-            getListView().setAdapter(mSubscribeAdapter);
-        } else
-        {
-            mSubscribeAdapter.notifyDataSetChanged();
+            mActivity.showCroutonToast(resultItem.message);
+            if (resultItem.success())
+            {
+                Type type = new TypeToken<List<UserSubscribeItem>>()
+                {
+                }.getType();
+                List<UserSubscribeItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                mUserSubscribeItems.addAll(items);
+                if (null == mSubscribeAdapter)
+                {
+                    mSubscribeAdapter = new SubscribeAdapter(mActivity, mUserSubscribeItems);
+                    getListView().setAdapter(mSubscribeAdapter);
+                }
+                else
+                {
+                    mSubscribeAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
     @Override
     public void onGetDataFailured(String msg)
     {
-
+      mActivity.showCroutonToast(msg);
     }
 }

@@ -20,7 +20,7 @@ public class UserSubscribeItem extends  BaseEmptyItem
     /***
      *预约就诊医生姓名
      */
-    public String doctorName;
+    public String doctName;
 
     /**
      * 医院名称

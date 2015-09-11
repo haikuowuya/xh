@@ -39,7 +39,12 @@ public class UserSubscribeActivity extends TabViewPagerActivity
             @Override
             public Fragment getItem(int position)
             {
-                return UserSubscribeListFragment.newInstance();
+                String type = UserSubscribeListFragment.TYPE_0;
+                if(position ==1)
+                {
+                    type = UserSubscribeListFragment.TYPE_1;
+                }
+                return UserSubscribeListFragment.newInstance(type);
             }
 
             @Override
