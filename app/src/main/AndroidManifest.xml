@@ -120,6 +120,11 @@
         <activity
             android:name=".DepartmentDoctorActivity"
             android:label="@string/tv_activity_depart_doctor"/>
+        <activity
+            android:name=".UserSubscribeDetailActivity"
+            android:label="@string/tv_activity_user_subscribe_detail"/>
+        <activity android:name=".DepartmentDoctorDetailActivity"
+                  android:label="@string/tv_activity_department_doctor_detail"/>
     </application>
 
 </manifest>

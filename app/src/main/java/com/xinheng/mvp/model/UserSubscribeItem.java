@@ -43,6 +43,11 @@ public class UserSubscribeItem extends  BaseEmptyItem
      */
     public String content;
 
+    /**
+     * 我的预约-预约加号时才有的字段，表示审核状态
+     */
+    public  String  consentState  ;
+
 
 
 

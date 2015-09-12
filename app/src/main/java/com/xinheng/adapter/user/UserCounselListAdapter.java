@@ -1,5 +1,9 @@
 package com.xinheng.adapter.user;
 
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.xinheng.R;
@@ -9,7 +13,6 @@ import com.xinheng.mvp.model.UserCounselItem;
 import com.xinheng.mvp.model.UserCounselReplyItem;
 import com.xinheng.util.DateFormatUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -25,19 +28,33 @@ public class UserCounselListAdapter extends BaseAdapter<UserCounselItem>
     @Override
     public void bindDataToView(View convertView, UserCounselItem item)
     {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
-        setTextViewText(convertView, R.id.tv_answer_count, "医生回答（" + item.total + "）");
+
         setTextViewText(convertView, R.id.tv_counsel_question, item.question);
         String counselTime = DateFormatUtils.format(item.createTime);
         setTextViewText(convertView, R.id.tv_counsel_time, counselTime);
         setTextViewText(convertView, R.id.tv_counsel_desc, item.question);
-        if (item.replys != null && !item.replys.isEmpty())
+        int total = 0;
+        if (TextUtils.isDigitsOnly(item.total))
         {
-            UserCounselReplyItem reply = item.replys.get(0);
-            String answerTime =  DateFormatUtils.format(reply.createTime);
-            setTextViewText(convertView, R.id.tv_answer_time, answerTime);
-            setTextViewText(convertView, R.id.tv_doctor_info, reply.doctName + " " + reply.hospital + "  " + reply.department + "/" + reply.technicalPost);
-            setTextViewText(convertView, R.id.tv_answer_content, reply.content);
+            total = Integer.parseInt(item.total);
+        }
+        setTextViewText(convertView, R.id.tv_answer_count, "医生回答（" +total + "）");
+        setViewVisibility(convertView, R.id.linear_doctor_answer_container, View.GONE);
+        if (total > 0)
+        {
+            setViewVisibility(convertView, R.id.linear_doctor_answer_container, View.VISIBLE);
+            if (item.replys != null && !item.replys.isEmpty())
+            {
+                UserCounselReplyItem reply = item.replys.get(0);
+                String answerTime = DateFormatUtils.format(reply.createTime);
+                setTextViewText(convertView, R.id.tv_answer_time, answerTime);
+                String doctorInfo = reply.doctName + " " + reply.hospital + "  " + reply.department + "/" + reply.technicalPost;
+                SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(doctorInfo);
+                ForegroundColorSpan span = new ForegroundColorSpan(0xFF2FAD68);
+                spannableStringBuilder.setSpan(span, 0, reply.doctName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                setTextViewText(convertView, R.id.tv_doctor_info, spannableStringBuilder);
+                setTextViewText(convertView, R.id.tv_answer_content, reply.content);
+            }
         }
     }
 }

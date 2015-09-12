@@ -1,5 +1,6 @@
 package com.xinheng.fragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,7 @@ import com.xinheng.mvp.model.UserCounselItem;
 import com.xinheng.mvp.presenter.UserCounselPresenter;
 import com.xinheng.mvp.presenter.impl.UserCounselPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -42,6 +44,11 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+        getListView().setDividerHeight(0);
+        getListView().setBackgroundColor(0xFFF0F0F0);
+        int leftRight = DensityUtils.dpToPx(mActivity, 10.f);
+        getListView().setPadding(leftRight,leftRight, leftRight, 0);
+        getListView().setDivider(new ColorDrawable(0x00000000));
     }
 
     @Override

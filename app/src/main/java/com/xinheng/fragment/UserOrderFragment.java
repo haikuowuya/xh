@@ -90,6 +90,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         mOrderStatus = getArguments().getString(ARG_ORDER_STATUS,mOrderStatus);
+        mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)

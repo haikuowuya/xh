@@ -37,6 +37,18 @@ public class APIURL
      * 我的病历列表URL
      */
     public static final String USER_MEDICAL_LIST_URL=BASE_API_URL+"/interface/patient/myrecord/getlist";
+    /**
+     * 我的报告列表URL
+     */
+    public static final String USER_REPORT_LIST_URL=BASE_API_URL+"/interface/patient/myreport/getlist";
+    /**
+     * 我的检查列表URL
+     */
+    public static final String USER_CHECK_LIST_URL=BASE_API_URL+"/interface/patient/mycheck/getlist";
+    /**
+     * 我的处方列表URL
+     */
+    public static final String USER_RECIPE_LIST_URL=BASE_API_URL+"/interface/patient/myprescription/getlist";
 
     /**
      * 我的医生列表URL

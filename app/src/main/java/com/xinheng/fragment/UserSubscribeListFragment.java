@@ -13,6 +13,7 @@ import com.xinheng.mvp.model.UserSubscribeItem;
 import com.xinheng.mvp.presenter.UserSubscribePresenter;
 import com.xinheng.mvp.presenter.impl.UserSubscribePresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -60,6 +61,9 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         getListView().setSelector(new ColorDrawable(0x00000000));
         getListView().setDividerHeight(0);
+        getListView().setBackgroundColor(0xFFF0F0F0);
+        int leftRight = DensityUtils.dpToPx(mActivity, 10.f);
+        getListView().setPadding(leftRight, 0,leftRight,0);
         getListView().setDivider(new ColorDrawable(0x00000000));
     }
 

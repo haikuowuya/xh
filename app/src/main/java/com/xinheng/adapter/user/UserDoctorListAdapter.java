@@ -7,6 +7,7 @@ import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.UserDoctorItem;
+import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.ToastUtils;
 
 import java.util.List;
@@ -25,7 +26,8 @@ public class UserDoctorListAdapter extends BaseAdapter<UserDoctorItem>
     @Override
     public void bindDataToView(View convertView, UserDoctorItem item)
     {
-        setTextViewText(convertView, R.id.tv_time, "上次就诊时间：" + item.lastServiceTime);
+        String lastServiceTime = DateFormatUtils.format(item.lastServiceTime, true, false);
+        setTextViewText(convertView, R.id.tv_time, "上次就诊时间：" +  lastServiceTime);
         setTextViewText(convertView, R.id.tv_doctor_name, item.doctName);
         setTextViewText(convertView, R.id.tv_dept_name, item.hospital + "/" + item.department);
         setTextViewText(convertView, R.id.tv_hospital_name, item.hospital);

@@ -2,9 +2,14 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -22,7 +27,7 @@ import com.xinheng.util.GsonUtils;
 public class DoctorEvaluationActivity extends BaseActivity implements DataView
 {
     private static final String TEXT_SERVICE = "服务：";
-    private static final String TEXT_BLANK = "    ";
+    private static final String TEXT_BLANK = "   ";
     private static final String TEXT_FEE = "费用：";
     private static final String TEXT_RESULT = "疗效：";
     private static final String EXTRA_DOCT_ID = "doctId";
@@ -57,11 +62,36 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
 
     private ScrollView mScrollView;
 
+    /**
+     * 服务编辑框
+     */
+    private EditText mEtService;
+    /**
+     * 费用编辑框
+     */
+    private EditText mEtFee;
+    /**
+     * 疗效编辑框
+     */
+    private  EditText mEtEffect;
+    /**
+     * 服务评分条
+     */
+    private RatingBar mRbService;
+    /**
+     * 费用评分条
+     */
+    private RatingBar mRbFee;
+    /**
+     * 疗效评分条
+     */
+    private  RatingBar mRbEffect;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_evaluation);
+        setContentView(R.layout.activity_doctor_evaluation);   //TODO
         mDoctId = getIntent().getStringExtra(EXTRA_DOCT_ID);
         initView();
         if (!TextUtils.isEmpty(mDoctId))
@@ -79,6 +109,12 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
         mTvDoctorHospitalDept = (TextView) findViewById(R.id.tv_doctor_hospital_dept);
         mTvDoctorName = (TextView) findViewById(R.id.tv_doctor_name);
         mBtnSubmit = (Button) findViewById(R.id.btn_submit);
+        mEtFee = (EditText) findViewById(R.id.et_fee);
+        mEtService = (EditText) findViewById(R.id.et_service);
+        mEtEffect = (EditText) findViewById(R.id.et_effect);
+        mRbFee =(RatingBar) findViewById(R.id.rb_fee);
+        mRbEffect = (RatingBar) findViewById(R.id.rb_effect);
+        mRbService = (RatingBar) findViewById(R.id.rb_service);
     }
 
     @Override
@@ -93,7 +129,7 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
         if (null != resultItem)
         {
             showCroutonToast(resultItem.message);
-            if(null == mUserDoctorDetailItem)
+            if (null == mUserDoctorDetailItem)
             {
                 mUserDoctorDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserDoctorDetailItem.class);
                 if (null != mUserDoctorDetailItem)
@@ -103,7 +139,21 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
                     String dept = mUserDoctorDetailItem.institution + "   " + mUserDoctorDetailItem.department + "/" + mUserDoctorDetailItem.technicalPost;
                     mTvDoctorHospitalDept.setText(dept);
                     String evaluation = TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT + mUserDoctorDetailItem.effectGrade + TEXT_BLANK + TEXT_FEE + mUserDoctorDetailItem.feeGrade;
-                    mTvDoctorEvaluation.setText(evaluation);
+                    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(evaluation);
+                    ForegroundColorSpan foregroundColorSpan1 = new ForegroundColorSpan(0xFFFF5907);
+                    ForegroundColorSpan foregroundColorSpan2 = new ForegroundColorSpan(0xFFFF5907);
+                    ForegroundColorSpan foregroundColorSpan3 = new ForegroundColorSpan(0xFFFF5907);
+                    int start1 = TEXT_SERVICE.length();
+                    int end1 = start1 + mUserDoctorDetailItem.serviceGrade.length();
+                    spannableStringBuilder.setSpan(foregroundColorSpan1, start1, end1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    int start2 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT).length();
+                    int end2 = start2 + mUserDoctorDetailItem.effectGrade.length();
+                    spannableStringBuilder.setSpan(foregroundColorSpan2, start2, end2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    int start3 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT + mUserDoctorDetailItem.effectGrade + TEXT_BLANK + TEXT_FEE).length();
+                    int end3 = start3 + mUserDoctorDetailItem.feeGrade.length();
+                    spannableStringBuilder.setSpan(foregroundColorSpan3, start3, end3, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+                    mTvDoctorEvaluation.setText(spannableStringBuilder);
                     mBtnSubmit.setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -111,7 +161,20 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
                         {
 //                            showCroutonToast("提交");
                             DoctorEvaluationPresenter doctorEvaluationPresenter = new DoctorEvaluationPresenterImpl(mActivity, DoctorEvaluationActivity.this);
-                            doctorEvaluationPresenter.doSubmitDoctorEvaluation(mUserDoctorDetailItem, "111", "111", "111");
+                            String serviceStr = mEtService.getText().toString();
+                            String feeStr = mEtFee.getText().toString();
+                            String  effectStr = mEtEffect.getText().toString();
+                            String serviceNum = mRbService.getRating()*2+"";
+                            String effectNum = mRbEffect.getRating() * 2+"";
+                            String feeNum = mRbFee.getRating() * 2+"";
+
+
+                            System.out.println("serviceNum = " + serviceNum + " effectNum = " + effectNum + " feeNum = " + feeNum);
+                            mUserDoctorDetailItem.effectGrade = effectNum;
+                            mUserDoctorDetailItem.feeGrade = feeNum;
+                            mUserDoctorDetailItem.serviceGrade = serviceNum;
+
+                            doctorEvaluationPresenter.doSubmitDoctorEvaluation(mUserDoctorDetailItem, serviceStr, effectStr, feeStr);
                         }
                     });
                 }

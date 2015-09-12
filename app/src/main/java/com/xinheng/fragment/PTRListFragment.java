@@ -58,6 +58,8 @@ public class PTRListFragment extends BaseFragment
     {
         super.onActivityCreated(savedInstanceState);
         mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+
+        mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)

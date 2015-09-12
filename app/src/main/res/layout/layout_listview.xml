@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/color_white_color"
     android:entries="@array/array_menu"
-
     android:scrollbars="none">
 
 

@@ -2,6 +2,8 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
@@ -100,6 +102,15 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
                     {
                         mDepartDoctorListAdapter.notifyDataSetChanged();
                     }
+                    getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            DepartDoctorItem doctorItem = (DepartDoctorItem) parent.getAdapter().getItem(position);
+
+                        }
+                    });
                 }
             }
         }

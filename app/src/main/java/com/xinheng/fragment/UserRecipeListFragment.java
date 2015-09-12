@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -12,12 +13,15 @@ import android.widget.ListView;
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddRecipeActivity;
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserMedicalListAdapter;
+import com.xinheng.adapter.user.UserRecipeListAdapter;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.UserMedicalItem;
+import com.xinheng.mvp.model.UserRecipeItem;
+import com.xinheng.mvp.presenter.UserRecipePresenter;
+import com.xinheng.mvp.presenter.impl.UserRecipePresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -43,8 +47,8 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
         UserRecipeListFragment fragment = new UserRecipeListFragment();
         return fragment;
     }
-    private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
-    private UserMedicalListAdapter mUserMedicalListAdapter;
+    private LinkedList<UserRecipeItem> mUserRecipeItems = new LinkedList<>();
+    private UserRecipeListAdapter mUserRecipeListAdapter;
 
 
     private ListView mListView;
@@ -54,6 +58,10 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
      * 添加处方
      */
     private ImageView mIvAddRecipe;
+    /**
+     * ListView 的headerview
+     */
+    private ImageView mListHeaderImageView;
 
     @Nullable
     @Override
@@ -69,12 +77,19 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
         mListView = (ListView) view.findViewById(R.id.lv_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_list_container);
         mIvAddRecipe = (ImageView) view.findViewById(R.id.iv_add_recipe);
+        mListHeaderImageView = new ImageView(mActivity);
+        mListHeaderImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        int height = DensityUtils.dpToPx(mActivity, 130.f);
+        AbsListView.LayoutParams layoutparams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+        mListHeaderImageView.setLayoutParams(layoutparams);
+        mListHeaderImageView.setImageResource(R.mipmap.ic_user_medical_banner);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        mListView.addHeaderView(mListHeaderImageView);
         mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
@@ -105,29 +120,37 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
     @Override
     protected void doGetData()
     {
-        mActivity.showProgressDialog();
-        RequestUtils.getDataFromUrl(mActivity, "http://www.baidu.com", this);
+        UserRecipePresenter userRecipePresenter = new UserRecipePresenterImpl(mActivity, this) ;
+        userRecipePresenter.doGetUserRecipe();
     }
 
     @Override
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-        Type type = new TypeToken<List<UserMedicalItem>>()
+        if(null != resultItem)
         {
-        }.getType();
-        List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(DATA, type);
-        if (null != items)
-        {
-            mUserMedicalItems.addAll(items);
-            if (null == mUserMedicalListAdapter)
+            mActivity.showCroutonToast(resultItem.message);
+            if(resultItem.success())
             {
-                mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
+                Type type = new TypeToken<List<UserRecipeItem>>()
+                {
+                }.getType();
+                List<UserRecipeItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                if (null != items)
+                {
+                    mUserRecipeItems.addAll(items);
+                    if (null == mUserRecipeListAdapter)
+                    {
+                        mUserRecipeListAdapter = new UserRecipeListAdapter(mActivity, mUserRecipeItems);
 
-                mListView.setAdapter(mUserMedicalListAdapter);
-            } else
-            {
-                mUserMedicalListAdapter.notifyDataSetChanged();
+                        mListView.setAdapter(mUserRecipeListAdapter);
+                    }
+                    else
+                    {
+                        mUserRecipeListAdapter.notifyDataSetChanged();
+                    }
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ public class UserRecipeItem extends BaseEmptyItem
      */
     public String name;
     /**
-     * 处方付费状态 type=0是出现  type=1 没有此字段
+     * 处方付费状态 type=0时出现  type=1 没有此字段
      */
     public String payState;
     /**
