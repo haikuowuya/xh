@@ -3,18 +3,17 @@
     android:id="@+id/linear_title_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:cv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="164dp"
     android:orientation="vertical">
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:alpha="0.8"
-
         android:background="@color/color_title_background_color">
 
         <com.xinheng.view.CircularImageView
@@ -24,10 +23,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="32dp"
             android:scaleType="centerCrop"
-            app:civ_borderColor="#FFFF0000"
-            app:civ_borderWidth="1dp"
+            cv:civ_borderColor="@color/color_main_text_color"
+            cv:civ_borderWidth="1dp"
             android:src="@mipmap/ic_photo"
-            app:civ_shadowColor="@color/color_main_text_color"
+            cv:civ_border="true"
+            cv:civ_shadowColor="@color/color_main_text_color"
             tools:src="@mipmap/ic_photo"/>
 
         <TextView

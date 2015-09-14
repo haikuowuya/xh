@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Canvas;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -15,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ import com.xinheng.fragment.MenuFragment;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.Constants;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.IntentUtils;
 import com.xinheng.util.ToastUtils;
@@ -224,11 +229,24 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             @Override
             public void onClick(View v)
             {
-                mSlidingMenu.toggle(true);
+                 mSlidingMenu.toggle(true);
+//                showPopupWindow();
             }
         });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
         initSlidingMenu();
+    }
+
+    private void showPopupWindow()
+    {
+        ListView  listview  = new ListView(mActivity);
+        listview.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+          int width = DensityUtils.dpToPx(mActivity, 200.f);
+        int height =  width*3;
+
+        PopupWindow popupWindow = new PopupWindow(listview, width,height);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
+        popupWindow.showAsDropDown(mIvRight);
     }
 
     private void initSlidingMenu()

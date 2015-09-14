@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.CardView
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_linear_item_selector"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="1dp"
-    card_view:cardUseCompatPadding="true"
-    card_view:contentPadding="0dp"
-    >
+    android:scrollbars="none"
+    android:background="@color/color_content_background_color"
+    android:fillViewport="true"
+    android:padding="10dp">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-             android:background="@drawable/list_linear_item_selector"
+        android:background="@drawable/list_linear_item_selector"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -88,7 +84,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/linear_doctor_answer_container"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFF5F5F5"
@@ -117,54 +113,47 @@
                     android:gravity="center_vertical"
                     android:textColor="@color/color_main_text_color"
                     tools:text="查看更多"/>
-
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/linear_doctor_answer_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="#FFE0E0E0"/>
-
-
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <TextView
+                android:layout_width="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/color_main_text_gray_color"
+                android:text="追问医生"
+                android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/et_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingEnd="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:gravity="top"
+                android:padding="4dp"
+                android:background="@drawable/shape_edittext_round_background"
+                android:layout_height="100dp"/>
 
-                <TextView
-                    android:id="@+id/tv_doctor_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_list_single_item_height"
-                    android:gravity="center_vertical"
-                    android:textColor="#FF999999"
-                           android:singleLine="true"
-                    android:layout_toLeftOf="@+id/tv_answer_time"
-                    tools:text="张三  苏州市中医院 外科/主任医师"/>
 
-                <TextView
-                    android:id="@+id/tv_answer_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_list_single_item_height"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical"
-                    android:textColor="#FFD5D7DA"
-                    tools:text="12-24 14:30"/>
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_register_code_selector"
+                android:text="@string/tv_submit"
+                android:textColor="#FFFFFFFF"/>
 
-                <TextView
-                    android:id="@+id/tv_answer_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dimen_list_single_item_height"
-
-                    android:layout_below="@+id/tv_doctor_info"
-                    android:gravity="left"
-                    tools:text="获取信息成功获取信息成功获取信息成功获取信息成功"/>
-            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</ScrollView>

@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_list_single_item_height"
     android:background="@drawable/list_linear_item_selector"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,9 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        >
+        android:paddingRight="10dp">
 
         <ImageView
             android:id="@+id/iv_icon"

@@ -107,7 +107,7 @@ public class RegisterActivity extends BaseActivity implements DataView
             }
             else
             {
-                LoginActivity.actionLogin(mActivity,mEtMobile.getText().toString(), mEtPwd.getText().toString());
+              //  LoginActivity.actionLogin(mActivity,mEtMobile.getText().toString(), mEtPwd.getText().toString());
             }
         }
     }

@@ -24,6 +24,10 @@ public class APIURL
      * 我的咨询列表URL
      */
     public static final String GET_USER_COUNSEL_LIST_URL=BASE_API_URL+"/interface/patient/consultation/getlist";
+    /**
+     * 我的咨询详情URL
+     */
+    public static final String GET_USER_COUNSEL_DETAIL_URL=BASE_API_URL+"/interface/patient/consultation/getreply";
 
     /**
      * 用户注册URL

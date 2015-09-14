@@ -21,6 +21,7 @@
     <string name="tv_activity_tab_viewpager">tab_viewpager</string>
     <string name="tv_activity_user_center">用户中心</string>
     <string name="tv_activity_user_counsel">我的咨询</string>
+    <string name="tv_activity_user_counsel_detail">咨询详情</string>
     <string name="tv_activity_user_account">我的账号</string>
     <string name="tv_activity_interface">接口测试</string>
     <string name="tv_activity_user_remind">我的提醒</string>
