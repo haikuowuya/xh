@@ -4,42 +4,46 @@
     android:id="@+id/sv_scrollview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:scrollbars="none">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:background="@color/color_content_background_color"
-                  android:fitsSystemWindows="true"
-                  android:orientation="vertical"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_content_background_color"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="10dp"
-
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"/>
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="*"
+                android:textColor="#FFFF0000"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingRight="8dp"
                 android:text="药方名称"
                 android:textColor="#FF222222"/>
 
             <EditText
-                android:id="@+id/et_search"
+                android:id="@+id/et_medical_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
@@ -48,7 +52,7 @@
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请输入你要搜索的内容"
+                android:hint="请输入名称"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColorHint="@color/color_main_text_gray_color"/>
@@ -61,11 +65,15 @@
 
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"/>
+            <TextView
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="*"
+                android:textColor="#FFFF0000"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -75,8 +83,8 @@
                 android:textColor="#FF222222"/>
 
             <Button
+                android:id="@+id/btn_image"
                 android:layout_width="wrap_content"
-
                 android:layout_height="match_parent"
                 android:layout_margin="6dp"
                 android:background="@drawable/user_subscribe_evaluation_selector"
@@ -86,6 +94,7 @@
                 android:textColor="@color/color_white_color"/>
 
             <TextView
+                android:id="@+id/tv_file_status"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -98,7 +107,7 @@
             android:layout_height="44dp"
             android:background="@color/color_white_color"
             android:gravity="center_vertical"
-            android:paddingLeft="44dp"
+            android:paddingLeft="16dp"
             android:text="请上传处方扫描件或照片，内容必须清晰可辨!"
             android:textColor="#FF999999"/>
 
@@ -108,22 +117,18 @@
 
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="8dp"
                 android:text="处方医院"
                 android:textColor="#FF222222"/>
 
             <EditText
-
+                android:id="@+id/et_hospital"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
@@ -132,7 +137,6 @@
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请输入你要搜索的内容"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColorHint="@color/color_main_text_gray_color"/>
@@ -146,22 +150,18 @@
 
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="8dp"
                 android:text="处方医师"
                 android:textColor="#FF222222"/>
 
             <EditText
-
+                android:id="@+id/et_doctor_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
@@ -170,7 +170,6 @@
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请输入你要搜索的内容"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColorHint="@color/color_main_text_gray_color"/>
@@ -184,22 +183,18 @@
 
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="8dp"
                 android:text="患者名称"
                 android:textColor="#FF222222"/>
 
             <EditText
-
+                android:id="@+id/et_username"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
@@ -208,7 +203,6 @@
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请输入你要搜索的内容"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColorHint="@color/color_main_text_gray_color"/>
@@ -222,21 +216,18 @@
 
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="8dp"
                 android:text="每份价格"
                 android:textColor="#FF222222"/>
 
             <EditText
+                android:id="@+id/et_price"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
@@ -245,7 +236,7 @@
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请输入你要搜索的内容"
+
                 android:paddingLeft="8dp"
                 android:singleLine="true"
                 android:textColorHint="@color/color_main_text_gray_color"/>
@@ -256,17 +247,12 @@
             android:layout_height="44dp"
             android:background="@color/color_white_color">
 
-            <ImageView
-                android:layout_width="44dp"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@mipmap/ic_launcher"
-                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingLeft="16dp"
                 android:text="每份价格"
                 android:textColor="#FF222222"/>
 
@@ -304,264 +290,58 @@
                 android:textSize="13sp"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_add_medical"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="right"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-
+            android:background="@drawable/btn_register_code_selector"
+            android:gravity="center"
+            android:text="添加药品"
+            android:textColor="@color/color_white_color"/>
+                <!--处方中添加的药品-->
+        <LinearLayout
+            android:id="@+id/linear_medical_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@color/color_white_color"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:orientation="horizontal"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:text="编辑全部"
-                    android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"/>
+            android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="100dp"
-                    android:text="编辑全部"
-                    android:gravity="center"
-                           android:layout_centerVertical="true"
-                    android:textColor="@color/color_white_color"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/btn_register_code_selector"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="match_parent"/>
 
-            </RelativeLayout>
+
+
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginTop="1dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"
-                    android:src="@mipmap/ic_launcher"/>
-
-                <TextView
-                    android:id="@+id/tv_hospital_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="广东电子黄页客户端"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <TextView
-                    android:id="@+id/tv_order_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical|right"
-                    android:text="编辑"
-                    android:padding="10dp"
-                    android:layout_marginRight="20dp"
-                    android:textColor="#FF333333"/>
-            </LinearLayout>
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="#FFEBEBEB"
-                android:paddingRight="10dp">
-
-                <FrameLayout
-                    android:layout_width="96dp"
-                    android:layout_height="wrap_content">
-
-                    <com.xinheng.view.CircularImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:padding="20dp"
-                        android:src="@mipmap/ic_photo"/>
-                </FrameLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_list_single_item_height"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_durg_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:maxLines="2"
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="历史\nkkk"/>
-
-                        <TextView
-                            android:id="@+id/tv_durg_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical|right|bottom"
-                            android:singleLine="true"
-                            android:textColor="#FF000000"
-                            tools:text="$22.41"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:id="@+id/tv_durg_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/dimen_list_single_item_height"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:maxLines="2"
-
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="上次时间\nkkk"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_durg_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/dimen_list_single_item_height"
-                            android:gravity="center_vertical|top"
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="x10"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="#FFEBEBEB"
-                android:paddingRight="10dp">
-
-                <FrameLayout
-                    android:layout_width="96dp"
-                    android:layout_height="wrap_content">
-
-                    <com.xinheng.view.CircularImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:padding="20dp"
-                        android:src="@mipmap/ic_photo"/>
-                </FrameLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen_list_single_item_height"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_durg_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:maxLines="2"
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="历史\nkkk"/>
-
-                        <TextView
-                            android:id="@+id/tv_durg_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical|right|bottom"
-                            android:singleLine="true"
-                            android:textColor="#FF000000"
-                            tools:text="$22.41"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-
-                        <TextView
-                            android:id="@+id/tv_durg_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/dimen_list_single_item_height"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:maxLines="2"
-
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="上次时间\nkkk"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_durg_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/dimen_list_single_item_height"
-                            android:gravity="center_vertical|top"
-                            android:textColor="@color/color_main_text_gray_color"
-                            tools:text="x10"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-                android:padding="10dp"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <Button
                     android:layout_width="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_margin="4dp"
-                    android:textColor="@color/color_white_color"
-                    android:text="保存药方"
                     android:layout_weight="1"
                     android:background="@drawable/btn_register_code_selector"
-                    android:layout_height="36dp"/>
+                    android:text="保存药方"
+                    android:textColor="@color/color_white_color"/>
 
                 <Button
                     android:layout_width="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_margin="4dp"
-                    android:textColor="@color/color_white_color"
-                    android:text="提交审核"
                     android:layout_weight="1"
                     android:background="@drawable/user_subscribe_evaluation_selector"
-                    android:layout_height="36dp"/>
+                    android:text="提交审核"
+                    android:textColor="@color/color_white_color"/>
 
 
             </LinearLayout>

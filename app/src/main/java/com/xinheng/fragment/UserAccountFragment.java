@@ -129,11 +129,10 @@ public class UserAccountFragment extends BaseFragment
          */
         private void photo()
         {
-
             View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_dialog_modify_photo, null);
             LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
             LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
-         final    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
+            final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
             int width = DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 40);
             alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
             alertDialog.show();

@@ -42,6 +42,10 @@ public class APIURL
      */
     public static final String USER_MEDICAL_LIST_URL=BASE_API_URL+"/interface/patient/myrecord/getlist";
     /**
+     * 根据搜索关键字进行药品的搜索
+     */
+    public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/patient/mall/search";
+    /**
      * 我的报告列表URL
      */
     public static final String USER_REPORT_LIST_URL=BASE_API_URL+"/interface/patient/myreport/getlist";

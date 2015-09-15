@@ -127,6 +127,8 @@
                   android:label="@string/tv_activity_department_doctor_detail"/>
         <activity android:name=".UserCounselDetailActivity"
                   android:label="@string/tv_activity_user_counsel_detail"/>
+        <activity android:name=".AddDrugActivity"
+                  android:label="@string/tv_activity_add_drug"/>
     </application>
 
 </manifest>
