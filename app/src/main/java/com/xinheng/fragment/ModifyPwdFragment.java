@@ -141,11 +141,12 @@ public class ModifyPwdFragment extends BaseFragment
             return;
         }
         String pwd2 = mEtPwd2.getText().toString();
-        if(pwd1.equals(pwd2))
+        if(!pwd1.equals(pwd2))
         {
             mActivity.showCroutonToast("两次输入的密码不一致");
             return;
         }
+        mActivity.hideSoftKeyBorard(mEtPwd2);
     }
 
     private void next()
@@ -159,6 +160,7 @@ public class ModifyPwdFragment extends BaseFragment
             mTv2.setTextColor(0xFF333333);
             mTv1.setCompoundDrawablesWithIntrinsicBounds(0,R.mipmap.ic_verify_1_disable,0,0);
             mTv2.setCompoundDrawablesWithIntrinsicBounds(0,R.mipmap.ic_verify_2_enable,0,0);
+            mActivity.hideSoftKeyBorard(mEtCode);
         }
         else
         {
