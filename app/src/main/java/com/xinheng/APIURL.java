@@ -44,7 +44,7 @@ public class APIURL
     /**
      * 根据搜索关键字进行药品的搜索
      */
-    public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/patient/mall/search";
+    public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/medicaldata/drug/getall";
     /**
      * 我的报告列表URL
      */
@@ -56,7 +56,11 @@ public class APIURL
     /**
      * 我的处方列表URL
      */
-    public static final String USER_RECIPE_LIST_URL=BASE_API_URL+"/interface/patient/myprescription/getlist";
+    public static final String USER_RECIPE_LIST_URL = BASE_API_URL + "/interface/patient/myprescription/getlist";
+    /***
+     * 按方抓药-保存药方信息
+     */
+    public static final String SAVE_PRESCRIPTION_URL = BASE_API_URL + "/interface/patient/mall/saveprescription";
 
     /**
      * 我的医生列表URL

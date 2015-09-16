@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.xinheng.AccountSecurityActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.util.DensityUtils;
@@ -160,7 +161,8 @@ public class UserAccountFragment extends BaseFragment
          */
         private void accountSecure()
         {
-            mActivity.showCroutonToast("账户安全");
+           // mActivity.showCroutonToast("账户安全");
+            AccountSecurityActivity.actionAccountSecurity(mActivity);
         }
 
         /**

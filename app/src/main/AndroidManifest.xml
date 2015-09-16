@@ -129,6 +129,12 @@
                   android:label="@string/tv_activity_user_counsel_detail"/>
         <activity android:name=".AddDrugActivity"
                   android:label="@string/tv_activity_add_drug"/>
+        <activity android:name=".AccountSecurityActivity"
+                  android:label="@string/tv_activity_account_security"/>
+        <activity android:name=".ModifyPwdActivity"
+                  android:label="@string/tv_activity_modify_pwd"/>
+        <activity android:name=".BindPhoneActivity"
+                  android:label="@string/tv_activity_bind_phone"/>
     </application>
 
 </manifest>

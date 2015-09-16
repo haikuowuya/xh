@@ -15,9 +15,9 @@ import com.xinheng.R;
 import com.xinheng.adapter.drug.DrugListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.drug.DrugItem;
-import com.xinheng.mvp.presenter.UserMedicalSearchPresenter;
-import com.xinheng.mvp.presenter.impl.UserMedicalSearchPresenterImpl;
+import com.xinheng.mvp.model.prescription.DrugItem;
+import com.xinheng.mvp.presenter.DrugSearchPresenter;
+import com.xinheng.mvp.presenter.impl.DrugSearchPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
@@ -138,8 +138,8 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         }
         mActivity.hideSoftKeyBorard(mEtSearch);
         String keyword = mEtSearch.getText().toString();
-        UserMedicalSearchPresenter   userMedicalSearchPresenter = new UserMedicalSearchPresenterImpl(mActivity, this);
-        userMedicalSearchPresenter.doAddMedicalSearch(keyword);
+        DrugSearchPresenter drugSearchPresenter = new DrugSearchPresenterImpl(mActivity, this);
+        drugSearchPresenter.doSearchDrug("1", keyword);
     }
 
 

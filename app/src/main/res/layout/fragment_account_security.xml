@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:id="@+id/sv_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:orientation="vertical"
+                  android:padding="10dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_user_account_info_background"
+            android:orientation="vertical"
+            android:padding="0.5dp">
+
+
+            <LinearLayout
+                android:id="@+id/linear_login_pwd_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="6dp"
+                        android:text="登录密码"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="*建议您定期更改密码以保护账户安全"
+                        android:textColor="@color/color_main_text_gray_color"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_list_single_item_height"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="14dp"
+                    android:src="@mipmap/ic_find_medical_arrow"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_bind_phone_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:text="绑定手机"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:padding="6dp"
+                            android:textColor="#FFFF0000"
+                            android:layout_weight="1"
+                            android:text="152****3648"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="若您绑定的手机已丢失或停用，请立即修改更换"
+                        android:textColor="@color/color_main_text_gray_color"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_list_single_item_height"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="14dp"
+                    android:src="@mipmap/ic_find_medical_arrow"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+

@@ -51,6 +51,7 @@ public class BindPhoneVerifyActivity extends BaseActivity implements DataView
      */
     private String mMobile;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {

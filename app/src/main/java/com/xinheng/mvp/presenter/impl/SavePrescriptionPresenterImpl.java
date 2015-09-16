@@ -3,8 +3,8 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.PostItem;
-import com.xinheng.mvp.presenter.UserSaveMedicalPresenter;
+import com.xinheng.mvp.model.prescription.PostSavePrescriptionItem;
+import com.xinheng.mvp.presenter.SavePrescriptionPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
@@ -12,24 +12,23 @@ import com.xinheng.util.RSAUtil;
 /**
  * 用户保存药方接口实现
  */
-public class UserSaveMedicalPresenterImpl implements UserSaveMedicalPresenter
+public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
 {
     private BaseActivity mActivity;
     private DataView mDataView;
 
-    public UserSaveMedicalPresenterImpl(BaseActivity activity, DataView dataView)
+    public SavePrescriptionPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
     }
 
     @Override
-    public void doSaveMedical()
+    public void doSavePrescription(PostSavePrescriptionItem item )
     {
-        String userMedicalUrl = APIURL.USER_MEDICAL_LIST_URL;
-        PostItem postItem = new PostItem();
-        postItem.userId = mActivity.getLoginSuccessItem().id;
-        String mingPostBody = GsonUtils.toJson(postItem);
+        String userMedicalUrl = APIURL.SAVE_PRESCRIPTION_URL;
+        item.userId = mActivity.getLoginSuccessItem().id;
+        String mingPostBody = GsonUtils.toJson(item);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
         System.out.println("postBody = " + postBody );

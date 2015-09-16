@@ -1,4 +1,4 @@
-package com.xinheng.mvp.model.drug;
+package com.xinheng.mvp.model.prescription;
 
 import com.xinheng.mvp.model.order.PostOrderItem;
 
@@ -7,5 +7,11 @@ import com.xinheng.mvp.model.order.PostOrderItem;
  */
 public class PostDrugSearchItem extends PostOrderItem
 {
-    public  String keyword;
+    public String keyword;
+    /***
+     * 医院id
+     */
+    public String hid;
+
+
 }

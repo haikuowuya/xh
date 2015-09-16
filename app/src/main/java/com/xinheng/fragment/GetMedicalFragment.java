@@ -3,6 +3,7 @@ package com.xinheng.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,11 @@ import android.widget.LinearLayout;
 import com.xinheng.AddDrugActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.model.prescription.PostSavePrescriptionItem;
+import com.xinheng.mvp.presenter.SavePrescriptionPresenter;
+import com.xinheng.mvp.presenter.impl.SavePrescriptionPresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PhotoUtils;
 
@@ -23,7 +29,7 @@ import com.xinheng.util.PhotoUtils;
  * 时间： 17:48
  * 说明：  按方抓药Fragment界面
  */
-public class GetMedicalFragment extends BaseFragment
+public class GetMedicalFragment extends BaseFragment     implements DataView
 {
     public static GetMedicalFragment newInstance()
     {
@@ -73,6 +79,16 @@ public class GetMedicalFragment extends BaseFragment
      * 添加药品
      */
     private Button mBtnAddMedical;
+
+    /***
+     * 保存处方
+     */
+    private Button mBtnSavePrescription;
+
+    /**
+     * 提交审核
+     */
+    private Button mBtnSubmit;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
@@ -80,6 +96,8 @@ public class GetMedicalFragment extends BaseFragment
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnImage.setOnClickListener(onClickListener);
         mBtnAddMedical.setOnClickListener(onClickListener);
+        mBtnSavePrescription.setOnClickListener(onClickListener);
+        mBtnSubmit.setOnClickListener(onClickListener);
     }
 
     private void initView(View view)
@@ -91,6 +109,8 @@ public class GetMedicalFragment extends BaseFragment
         mEtUserName = (EditText) view.findViewById(R.id.et_username);
         mBtnImage = (Button) view.findViewById(R.id.btn_image);
         mBtnAddMedical = (Button) view.findViewById(R.id.btn_add_medical);
+        mBtnSavePrescription = (Button) view.findViewById(R.id.btn_save_prescription);
+        mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
     }
 
 
@@ -111,6 +131,21 @@ public class GetMedicalFragment extends BaseFragment
 
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem)
+    {
+        if(null != resultItem)
+        {
+            mActivity.showCroutonToast(resultItem.message);
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg)
+    {
+
+    }
+
     private class OnClickListenerImpl implements View.OnClickListener
     {
         public void onClick(View v)
@@ -123,9 +158,48 @@ public class GetMedicalFragment extends BaseFragment
                 case R.id.btn_add_medical://添加药品
                     AddDrugActivity.actionAddMedical(mActivity);
                     break;
+                case R.id.btn_save_prescription://保存药方
+                    savePrescription();
+                    break;
+                case R.id.btn_submit://提交审核
+                    submit();
+                    break;
             }
 
         }
+    }
+
+    /***
+     * 保存药方
+     */
+    private void savePrescription()
+    {
+        String name = mEtMedicalName.getText().toString();
+        if(TextUtils.isEmpty(name))
+        {
+            mActivity.showCroutonToast("药方名称不可以为空");
+            return;
+        }
+        String img = null;
+
+
+        //userid字段此处可以不赋值，后面会获取登录信息的userid
+        PostSavePrescriptionItem item = new PostSavePrescriptionItem();
+        item.name = name;
+        item.img = img;
+        item.hosname = mEtHospital.getText().toString();
+        item.doctorname = mEtDoctorName.getText().toString();
+        item.patientname = mEtUserName.getText().toString();
+        SavePrescriptionPresenter savePrescriptionPresenter = new SavePrescriptionPresenterImpl(mActivity, this);
+        savePrescriptionPresenter.doSavePrescription(item);
+
+    }
+
+    /**
+     * 提交审核
+     */
+    private void submit()
+    {
     }
 
     /***

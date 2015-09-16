@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:id="@+id/sv_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                  android:background="#FFFFFFFF"
+                  android:orientation="vertical"
+                  android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/ic_verify_1_enable"
+                android:gravity="center"
+                android:text="验证身份"
+                android:textColor="#FF333333"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/ic_verify_2_disable"
+                android:gravity="center"
+                android:text="修改登录密码"
+                android:textColor="#FF999999"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:drawablePadding="10dp"
+                android:drawableTop="@mipmap/ic_verify_3_disable"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="#FF999999"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#FFE3EBD9"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="已绑定手机号码：15236163846"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+            <Button
+                android:id="@+id/btn_code"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:background="@drawable/user_subscribe_evaluation_selector"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="获取验证码"
+                android:textColor="@color/color_white_color"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="请输入短信验证码:"
+                android:textColor="@color/color_main_text_gray_color"/>
+            <EditText
+                android:id="@+id/et_code"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edittext_background"
+                android:hint="输入验证码"
+                android:inputType="textVisiblePassword"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textColorHint="#FF666666"/>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/btn_register_code_selector"
+            android:text="@string/tv_next"
+            android:textColor="#FFFFFFFF"/>
+
+    </LinearLayout>
+</ScrollView>
+

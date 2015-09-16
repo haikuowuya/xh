@@ -326,6 +326,7 @@
                 android:padding="10dp">
 
                 <Button
+                    android:id="@+id/btn_save_prescription"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_margin="4dp"
@@ -335,6 +336,7 @@
                     android:textColor="@color/color_white_color"/>
 
                 <Button
+                    android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
                     android:layout_margin="4dp"

@@ -7,7 +7,7 @@ import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
-import com.xinheng.mvp.model.drug.DrugItem;
+import com.xinheng.mvp.model.prescription.DrugItem;
 
 import java.util.LinkedList;
 import java.util.List;
