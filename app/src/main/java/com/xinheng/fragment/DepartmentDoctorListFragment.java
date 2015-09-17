@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.DepartmentDoctorActivity;
+import com.xinheng.DepartmentDoctorDetailActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.depart.DepartDoctorListAdapter;
 import com.xinheng.mvp.model.DepartItem;
@@ -108,6 +109,7 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
                             DepartDoctorItem doctorItem = (DepartDoctorItem) parent.getAdapter().getItem(position);
+                            DepartmentDoctorDetailActivity.actionDepartDoctorDetail(mActivity, doctorItem);
 
                         }
                     });

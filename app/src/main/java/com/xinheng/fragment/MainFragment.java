@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.xinheng.AutoCheckActivity;
 import com.xinheng.DepartmentNavActivity;
 import com.xinheng.OnlineActivity;
 import com.xinheng.R;
@@ -76,7 +77,11 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position ==1)
+                if(position ==0)
+                {
+                    AutoCheckActivity.actionAutoCheck(mActivity);
+                }
+               else if(position ==1)
                 {
                     DepartmentNavActivity.actionDepartmentNav(mActivity);
                 }

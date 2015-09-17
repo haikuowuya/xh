@@ -34,6 +34,7 @@
     <string name="tv_activity_user_subscribe_detail">预约详情</string>
     <string name="tv_activity_get_medical">按方抓药</string>
     <string name="tv_activity_add_drug">添加药品</string>
+    <string name="tv_activity_auto_check">症状自测</string>
     <string name="tv_activity_user_medical">我的病历</string>
     <string name="tv_activity_user_report">我的报告</string>
     <string name="tv_activity_user_recipe">我的处方</string>

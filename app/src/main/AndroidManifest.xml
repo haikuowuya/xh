@@ -135,6 +135,8 @@
                   android:label="@string/tv_activity_modify_pwd"/>
         <activity android:name=".BindPhoneActivity"
                   android:label="@string/tv_activity_bind_phone"/>
+        <activity android:name=".AutoCheckActivity"
+                  android:label="@string/tv_activity_auto_check"/>
     </application>
 
 </manifest>

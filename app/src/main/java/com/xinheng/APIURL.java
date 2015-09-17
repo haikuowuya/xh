@@ -19,7 +19,14 @@ public class APIURL
      * 获取科室导航的数据URL
      */
     public static final String GET_DEPARTMENT_NAV_URL=BASE_API_URL+"/interface/patient/appointment/getdepart";
+    /***
+     * 获取科室医生列表URL
+     */
     public static final String GET_DEPARTMENT_DOCTOR_LIST_URL=BASE_API_URL+"/interface/patient/appointment/getdoctors";
+    /**
+     * 获取医生详情URL
+     */
+    public static final String GET_DOCTOR_DETAIL_URL = BASE_API_URL + "/interface/patient/getdoctordetail";
     /***
      * 我的咨询列表URL
      */

@@ -1,24 +1,29 @@
 package com.xinheng.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
+import com.xinheng.DepartmentDoctorDetailActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.util.DensityUtils;
-import com.xinheng.util.PhotoUtils;
-import com.xinheng.util.StorageUtils;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.model.depart.DepartDoctorItem;
+import com.xinheng.mvp.model.doctor.DoctorDetailItem;
+import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
+import com.xinheng.mvp.presenter.DoctorDetailPresenter;
+import com.xinheng.mvp.presenter.impl.DoctorDetailPresenterImpl;
+import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.GsonUtils;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * 作者： raiyi-suzhou
@@ -26,72 +31,91 @@ import com.xinheng.util.StorageUtils;
  * 时间： 17:48
  * 说明：   科室医生详情
  */
-public class DepartmentDoctorDetailFragment extends BaseFragment
+public class DepartmentDoctorDetailFragment extends BaseFragment implements DataView
 {
-    private Bitmap mBitmap;
+    private DepartDoctorItem mDepartDoctorItem;
 
-    public static DepartmentDoctorDetailFragment newInstance()
+    public static DepartmentDoctorDetailFragment newInstance(DepartDoctorItem doctorItem)
     {
         DepartmentDoctorDetailFragment fragment = new DepartmentDoctorDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DepartmentDoctorDetailActivity.EXTRA_DEPART_DOCTOR_ITEM, doctorItem);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
-    private String mImageFilePath = null;
-    private LinearLayout mLinearPhotoContainer;
+    /***
+     * 医生名称
+     */
+    private TextView mTvDoctorName;
+    /***
+     * 医生职称
+     */
+    private TextView mTvTechnicalPost;
+
+    /***
+     * 科室信息
+     */
+    private TextView mTvDepart;
+
     /**
-     * 姓名
+     * 排班信息
      */
-    private LinearLayout mLinearUserName;
+    private LinearLayout mLinearScheduleContainer;
     /***
-     * 昵称
+     * 医生擅长
      */
-    private LinearLayout mLinearNick;
-    /***
-     * 地址管理
-     */
-    private LinearLayout mLinearAddress;
+    private TextView mTvSkill;
 
     /***
-     * 账户安全
+     * 医生简介
      */
-    private LinearLayout mLinearAccountSecure;
+    private TextView mTvIntro;
 
-    private ImageView mIvPhoto;
+    private ScrollView mScrollView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_user_account, null);      //TODO
+        View view = inflater.inflate(R.layout.fragment_depart_doctor_detail, null);      //TODO
         initView(view);
         return view;
     }
 
     private void initView(View view)
     {
-        mLinearAccountSecure = (LinearLayout) view.findViewById(R.id.linear_account_secure);
-        mLinearAddress = (LinearLayout) view.findViewById(R.id.linear_address_container);
-        mLinearNick = (LinearLayout) view.findViewById(R.id.linear_nick_container);
-        mLinearUserName = (LinearLayout) view.findViewById(R.id.linear_username_container);
-        mLinearPhotoContainer = (LinearLayout) view.findViewById(R.id.linear_photo_container);
-        mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+        mTvDepart = (TextView) view.findViewById(R.id.tv_dept_name);
+        mTvDoctorName = (TextView) view.findViewById(R.id.tv_doctor_name);
+        mTvIntro = (TextView) view.findViewById(R.id.tv_intro);
+        mTvSkill = (TextView) view.findViewById(R.id.tv_skill);
+        mTvTechnicalPost = (TextView) view.findViewById(R.id.tv_technical_post);
+        mLinearScheduleContainer = (LinearLayout) view.findViewById(R.id.linear_schedule_container);
+        mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        mDepartDoctorItem = getArguments().getSerializable(DepartmentDoctorDetailActivity.EXTRA_DEPART_DOCTOR_ITEM) == null ? null : (DepartDoctorItem) getArguments().getSerializable(DepartmentDoctorDetailActivity.EXTRA_DEPART_DOCTOR_ITEM);
+        doGetData();
         setListener();
     }
 
     private void setListener()
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
-        mLinearAccountSecure.setOnClickListener(onClickListener);
-        mLinearAddress.setOnClickListener(onClickListener);
-        mLinearNick.setOnClickListener(onClickListener);
-        mLinearUserName.setOnClickListener(onClickListener);
-        mLinearPhotoContainer.setOnClickListener(onClickListener);
+
+    }
+
+    @Override
+    protected void doGetData()
+    {
+        DoctorDetailPresenter doctorDetailPresenter = new DoctorDetailPresenterImpl(mActivity, this);
+        doctorDetailPresenter.doGetDoctorDetail(mDepartDoctorItem.doctId);
+        mScrollView.setVisibility(View.GONE);
     }
 
     @Override
@@ -100,134 +124,69 @@ public class DepartmentDoctorDetailFragment extends BaseFragment
         return getString(R.string.tv_fragment_user_account);
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem)
+    {
+        if (null != resultItem)
+        {
+            mScrollView.setVisibility(View.VISIBLE);
+            mActivity.showCroutonToast(resultItem.message);
+            if (resultItem.success())
+            {
+                Type type = new TypeToken<List<DoctorDetailItem>>()
+                {
+                }.getType();
+                List<DoctorDetailItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                if (null != items && !items.isEmpty())
+                {
+                    DoctorDetailItem doctorDetailItem = items.get(0);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg)
+    {
+        mActivity.showCroutonToast(msg);
+        Type type = new TypeToken<List<DoctorDetailItem>>()
+        {
+        }.getType();
+        List<DoctorDetailItem> items = GsonUtils.jsonToResultItemToList(DoctorDetailItem.DEBUG_SUCCESS, type);
+        if (null != items && !items.isEmpty())
+        {
+            mScrollView.setVisibility(View.VISIBLE);
+            DoctorDetailItem doctorDetailItem = items.get(0);
+            mTvDepart.setText(doctorDetailItem.hospital + " / " + doctorDetailItem.department);
+            mTvSkill.setText(doctorDetailItem.skill);
+            mTvIntro.setText(doctorDetailItem.introduction);
+            mTvDoctorName.setText(doctorDetailItem.doctName);
+            mTvTechnicalPost.setText(doctorDetailItem.technicalPost);
+            if (null != doctorDetailItem.schedule && !doctorDetailItem.schedule.isEmpty())
+            {
+                for (int i = 0; i < doctorDetailItem.schedule.size(); i++)
+                {
+                    DoctorScheduleItem doctorScheduleItem = doctorDetailItem.schedule.get(i);
+                    View item = LayoutInflater.from(mActivity).inflate(R.layout.layout_doctor_schedule_item, null);
+                    TextView tvDate = (TextView) item.findViewById(R.id.tv_date);
+                    TextView tvTime = (TextView) item.findViewById(R.id.tv_time);
+                    TextView tvStatus = (TextView) item.findViewById(R.id.tv_status);
+                    tvDate.setText(doctorScheduleItem.date);
+                    tvTime.setText(doctorScheduleItem.begintime + " - " + doctorScheduleItem.endtime);
+                    mLinearScheduleContainer.addView(item);
+                }
+            }
+        }
+    }
+
     private class OnClickListenerImpl implements View.OnClickListener
     {
         public void onClick(View v)
         {
             switch (v.getId())
             {
-                case R.id.linear_photo_container://上传头像
-                    photo();
-                    break;
-                case R.id.linear_account_secure://账户安全
-                    accountSecure();
-                    break;
-                case R.id.linear_address_container://地址管理
-                    address();
-                    break;
-                case R.id.linear_nick_container://昵称
-                    nick();
-                    break;
-                case R.id.linear_username_container://用户名/姓名
-                    username();
-                    break;
             }
-        }
-
-        /***
-         * 上传头像
-         */
-        private void photo()
-        {
-
-            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_dialog_modify_photo, null);
-            LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
-            LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
-         final    AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
-            int width = DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 40);
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
-            linearCameraContainer.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    PhotoUtils.selectPicFromCamera(mActivity);
-                    alertDialog.dismiss();
-                }
-            });
-            linearGalleryContainer.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    PhotoUtils.selectPicFromSD(mActivity);
-                    alertDialog.dismiss();
-                }
-            });
-        }
-
-        /**
-         * 账户安全
-         */
-        private void accountSecure()
-        {
-            mActivity.showCroutonToast("账户安全");
-        }
-
-        /**
-         * 地址管理
-         */
-        private void address()
-        {
-            mActivity.showCroutonToast("地址管理");
-        }
-
-        /**
-         * 昵称
-         */
-        private void nick()
-        {
-            mActivity.showCroutonToast("昵称");
-        }
-
-        /***
-         * 姓名
-         */
-        private void username()
-        {
-            mActivity.showCroutonToast("姓名");
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == Activity.RESULT_OK)
-        {
-            if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
-            {
-                if (null != data && data.getData() != null)
-                {
-                    mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                }
-            }
-            if (null != mImageFilePath)
-            {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options); //此时返回bm为空
-                int scale = 1;
-                while (true)
-                {
-                    if (options.outWidth / 2 >= PhotoUtils.W_H && options.outHeight / 2 >= PhotoUtils.W_H)
-                    {
-                        options.outWidth /= 2;
-                        options.outHeight /= 2;
-                        scale++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                options.inSampleSize = scale;
-                //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
-                options.inJustDecodeBounds = false;
-                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options);
-                mBitmap = PhotoUtils.rotateBitmap(mImageFilePath, mBitmap);
-                mIvPhoto.setImageBitmap(mBitmap);
-            }
-        }
-        System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-    }
 }
