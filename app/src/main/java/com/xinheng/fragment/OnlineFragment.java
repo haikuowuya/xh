@@ -13,7 +13,7 @@ import android.widget.ScrollView;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.FindMedicalActivity;
-import com.xinheng.GetMedicalActivity;
+import com.xinheng.PrescriptionActivity;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
@@ -159,7 +159,7 @@ public class OnLineFragment extends BaseFragment implements DataView
             {
                 if (position == 0)//按方抓药
                 {
-                    GetMedicalActivity.actionGetMedical(mActivity);
+                    PrescriptionActivity.actionGetMedical(mActivity);
                 }
                 if (position == 1)    //轻松找药
                 {

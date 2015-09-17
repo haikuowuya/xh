@@ -8,7 +8,8 @@
     android:background="@color/color_content_background_color"
 
     android:fitsSystemWindows="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tv_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -36,6 +38,7 @@
                 android:textColor="#FF333333"/>
 
             <TextView
+                android:id="@+id/tv_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -48,6 +51,7 @@
 
 
             <TextView
+                android:id="@+id/tv_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -64,58 +68,158 @@
             android:layout_height="1dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+
             android:background="#FFE3EBD9"/>
 
         <LinearLayout
+            android:id="@+id/linear_1"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_height="44dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="10dp"
-                android:text="已绑定手机号码：15236163846"
-                android:textColor="@color/color_main_text_gray_color"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
 
-            <Button
-                android:id="@+id/btn_code"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="6dp"
-                android:background="@drawable/user_subscribe_evaluation_selector"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="获取验证码"
-                android:textColor="@color/color_white_color"
-                />
+                <TextView
+                    android:id="@+id/tv_old_bind_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:text="已绑定手机号码：15236163846"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <Button
+                    android:id="@+id/btn_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:text="请输入短信验证码:"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:hint="输入验证码"
+                    android:inputType="textVisiblePassword"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linear_2"
             android:layout_marginTop="10dp"
-            android:layout_height="44dp">
+               android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:text="请输入短信验证码:"
-                android:textColor="@color/color_main_text_gray_color"/>
-            <EditText
-                android:id="@+id/et_code"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_edittext_background"
-                android:hint="输入验证码"
-                android:inputType="textVisiblePassword"
-                android:padding="4dp"
-                android:singleLine="true"
-                android:textColorHint="#FF666666"/>
+                android:layout_height="44dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:padding="10dp"
+                    android:text="新的手机号码:"
+                    android:textColor="@color/color_main_text_gray_color"/>
+                <EditText
+                    android:id="@+id/et_new_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/shape_edittext_background"
+                    android:hint="新的手机号码"
+                    android:inputType="phone"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+                <Button
+                    android:id="@+id/btn_new_phone_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:text="请输入短信验证码:"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_new_phone_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:hint="输入验证码"
+                    android:inputType="textVisiblePassword"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:textColorHint="#FF666666"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear_3"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_finish"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            tools:text="kkkkkk"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_next"
             android:layout_width="match_parent"

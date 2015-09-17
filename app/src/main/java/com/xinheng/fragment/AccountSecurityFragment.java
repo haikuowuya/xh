@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.xinheng.BindPhoneActivity;
 import com.xinheng.ModifyPwdActivity;
@@ -39,6 +40,8 @@ public class AccountSecurityFragment extends BaseFragment
      */
     private LinearLayout mLinearBindPhoneContainer;
 
+    private TextView mTvPhone;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -52,6 +55,7 @@ public class AccountSecurityFragment extends BaseFragment
     {
         mLinearLoginPwdContainer = (LinearLayout) view.findViewById(R.id.linear_login_pwd_container);
         mLinearBindPhoneContainer = (LinearLayout) view.findViewById(R.id.linear_bind_phone_container);
+        mTvPhone = (TextView) view.findViewById(R.id.tv_phone);
 
     }
 
@@ -60,6 +64,9 @@ public class AccountSecurityFragment extends BaseFragment
     {
         super.onActivityCreated(savedInstanceState);
         setListener();
+        String mobile = mActivity.getLoginSuccessItem().mobile;
+        String tmpMobile =  mobile.substring(0, 3)+"****"+mobile.substring(7);
+        mTvPhone.setText(tmpMobile);
     }
 
     private void setListener()

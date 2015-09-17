@@ -23,17 +23,19 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PhotoUtils;
 
+import java.io.File;
+
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
  * 说明：  按方抓药Fragment界面
  */
-public class GetMedicalFragment extends BaseFragment     implements DataView
+public class PrescriptionFragment extends BaseFragment     implements DataView
 {
-    public static GetMedicalFragment newInstance()
+    public static PrescriptionFragment newInstance()
     {
-        GetMedicalFragment fragment = new GetMedicalFragment();
+        PrescriptionFragment fragment = new PrescriptionFragment();
         return fragment;
     }
 
@@ -41,7 +43,7 @@ public class GetMedicalFragment extends BaseFragment     implements DataView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_get_medical, null);
+        View view = inflater.inflate(R.layout.fragment_prescription, null);
         initView(view);
         mIsInit = true;
         return view;
@@ -174,24 +176,7 @@ public class GetMedicalFragment extends BaseFragment     implements DataView
      */
     private void savePrescription()
     {
-        String name = mEtMedicalName.getText().toString();
-        if(TextUtils.isEmpty(name))
-        {
-            mActivity.showCroutonToast("药方名称不可以为空");
-            return;
-        }
-        String img = null;
 
-
-        //userid字段此处可以不赋值，后面会获取登录信息的userid
-        PostSavePrescriptionItem item = new PostSavePrescriptionItem();
-        item.name = name;
-        item.img = img;
-        item.hosname = mEtHospital.getText().toString();
-        item.doctorname = mEtDoctorName.getText().toString();
-        item.patientname = mEtUserName.getText().toString();
-        SavePrescriptionPresenter savePrescriptionPresenter = new SavePrescriptionPresenterImpl(mActivity, this);
-        savePrescriptionPresenter.doSavePrescription(item);
 
     }
 
@@ -200,6 +185,22 @@ public class GetMedicalFragment extends BaseFragment     implements DataView
      */
     private void submit()
     {
+        String name = mEtMedicalName.getText().toString();
+        if(TextUtils.isEmpty(name))
+        {
+            mActivity.showCroutonToast("药方名称不可以为空");
+            return;
+        }
+
+        //userid字段此处可以不赋值，后面会获取登录信息的userid
+        PostSavePrescriptionItem item = new PostSavePrescriptionItem();
+        item.name = name;
+        item.file = new File("");
+        item.hosname = mEtHospital.getText().toString();
+        item.doctorname = mEtDoctorName.getText().toString();
+        item.patientname = mEtUserName.getText().toString();
+        SavePrescriptionPresenter savePrescriptionPresenter = new SavePrescriptionPresenterImpl(mActivity, this);
+        savePrescriptionPresenter.doSavePrescription(item);
     }
 
     /***

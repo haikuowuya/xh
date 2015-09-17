@@ -58,9 +58,18 @@ public class APIURL
      */
     public static final String USER_RECIPE_LIST_URL = BASE_API_URL + "/interface/patient/myprescription/getlist";
     /***
-     * 按方抓药-保存药方信息
+     * 按方抓药-提交审核
      */
-    public static final String SAVE_PRESCRIPTION_URL = BASE_API_URL + "/interface/patient/mall/saveprescription";
+    public static final String SAVE_PRESCRIPTION_URL = BASE_API_URL + "/interface/patient/mall/submitaudit";
+
+    /***
+     * 校验和修改绑定手机号码
+      */
+    public static final String VERIFY_MODIFY_BIND_PHONE_URL = BASE_API_URL +"/interface/patient/user/authmobile";
+    /***
+     * 根据给定的手机号码发送验证码
+     */
+    public static final String SEND_SMS_CODE_URL = BASE_API_URL +"/interface/sms/sendValided";
 
     /**
      * 我的医生列表URL

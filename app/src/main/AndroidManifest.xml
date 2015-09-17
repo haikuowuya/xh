@@ -92,7 +92,7 @@
             android:name=".FindMedicalActivity"
             android:label="@string/tv_activity_find_medical"/>
         <activity
-            android:name=".GetMedicalActivity"
+            android:name=".PrescriptionActivity"
             android:label="@string/tv_activity_get_medical"/>
 
         <activity

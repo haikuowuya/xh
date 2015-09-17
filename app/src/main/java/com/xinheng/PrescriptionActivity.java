@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.GetMedicalFragment;
+import com.xinheng.fragment.PrescriptionFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -12,11 +12,11 @@ import com.xinheng.fragment.GetMedicalFragment;
  * 时间： 13:48
  * 说明：按方抓药页面
  */
-public class GetMedicalActivity extends BaseActivity
+public class PrescriptionActivity extends BaseActivity
 {
     public static void actionGetMedical(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, GetMedicalActivity.class);
+        Intent intent = new Intent(activity, PrescriptionActivity.class);
         activity.startActivity(intent);
     }
 
@@ -25,7 +25,7 @@ public class GetMedicalActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
           setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, GetMedicalFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, PrescriptionFragment.newInstance()).commit();
 
     }
 

@@ -322,6 +322,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
+
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -333,6 +334,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/btn_register_code_selector"
                     android:text="保存药方"
+                    android:visibility="gone"
                     android:textColor="@color/color_white_color"/>
 
                 <Button
