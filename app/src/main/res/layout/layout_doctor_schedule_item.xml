@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_register_code_selector"
-            android:padding="10dp"
+            android:padding="6dp"
             android:src="@mipmap/ic_user_arrow"
             android:text="预约挂号"
             android:layout_margin="4dp"
