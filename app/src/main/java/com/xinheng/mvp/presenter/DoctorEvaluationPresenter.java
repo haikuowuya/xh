@@ -1,6 +1,6 @@
 package com.xinheng.mvp.presenter;
 
-import com.xinheng.mvp.model.UserDoctorDetailItem;
+import com.xinheng.mvp.model.user.UserDoctorDetailItem;
 
 /**
  * Created by Steven on 2015/9/8 0008.

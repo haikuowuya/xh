@@ -157,7 +157,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (mProgressDialog.isShowing())
         {
             mProgressDialog.dismiss();
-            ;
+
         }
     }
 
@@ -374,7 +374,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     public void hideSoftKeyBorard(View view)
     {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive())
+        if (imm.isActive() &&null != view)
         {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

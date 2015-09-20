@@ -23,12 +23,17 @@ public class DrugListAdapter extends BaseAdapter<DrugItem>
         super(activity, R.layout.list_drug_item, data);
     }
 
+    public LinkedList<DrugItem> getSelectedItems()
+    {
+        return mSelectedItems;
+    }
+
     @Override
     public void bindDataToView(View convertView, final DrugItem drugItem)
     {
       setTextViewText(convertView, R.id.tv_drug_name, drugItem.name);
-        setTextViewText(convertView, R.id.tv_drug_nature, drugItem.nature);
-
+        String drugInfo ="产地:"+ drugItem.place+" 规格:"+ drugItem.specs+" 价格:"+ drugItem.cost;
+        setTextViewText(convertView, R.id.tv_drug_info, drugInfo);
         final TextView tvAdd = ViewHolder.getView(convertView , R.id.tv_add);
         if(mSelectedItems.contains(drugItem))
         {

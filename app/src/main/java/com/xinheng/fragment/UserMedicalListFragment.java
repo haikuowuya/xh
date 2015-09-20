@@ -16,7 +16,7 @@ import com.xinheng.R;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserMedicalItem;
+import com.xinheng.mvp.model.user.UserMedicalItem;
 import com.xinheng.mvp.presenter.UserMedicalPresenter;
 import com.xinheng.mvp.presenter.impl.UserMedicalPresenterImpl;
 import com.xinheng.mvp.view.DataView;

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_linear_item_selector"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_linear_item_selector"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_patient_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:gravity="center_vertical"
+                            android:textColor="#FF333333"
+                    tools:text="姓名：张三"/>
+
+                <TextView
+                    android:id="@+id/tv_patient_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:gravity="center_vertical"
+                    tools:text="身份证号：41138****4444"
+                    android:textColor="#FF666666"
+                    />
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen_list_single_item_height"
+                    android:gravity="center_vertical"
+                    tools:text="手机号码：152****3616"
+                    android:textColor="#FF666666"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:src="@mipmap/ic_user_arrow"/>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -1,4 +1,6 @@
-package com.xinheng.mvp.model;
+package com.xinheng.mvp.model.user;
+
+import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
  * 我的处方信息

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xinheng.AccountSecurityActivity;
+import com.xinheng.AddressListActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.util.DensityUtils;
@@ -170,8 +171,10 @@ public class UserAccountFragment extends BaseFragment
          */
         private void address()
         {
-            mActivity.showCroutonToast("地址管理");
+//            mActivity.showCroutonToast("地址管理");
+            AddressListActivity.actionAddressManager(mActivity);
         }
+
 
         /**
          * 昵称

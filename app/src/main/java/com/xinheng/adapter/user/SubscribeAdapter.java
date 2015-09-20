@@ -7,7 +7,7 @@ import com.xinheng.R;
 import com.xinheng.UserSubscribeDetailActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
-import com.xinheng.mvp.model.UserSubscribeItem;
+import com.xinheng.mvp.model.user.UserSubscribeItem;
 import com.xinheng.util.DateFormatUtils;
 
 import java.util.List;

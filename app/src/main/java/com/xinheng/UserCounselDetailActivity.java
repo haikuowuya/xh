@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.UserCounselDetailFragment;
+import com.xinheng.mvp.model.user.UserCounselItem;
 
 /**
  * 作者： raiyi-suzhou
@@ -14,18 +15,21 @@ import com.xinheng.fragment.UserCounselDetailFragment;
  */
 public class UserCounselDetailActivity extends BaseActivity
 {
-    public static void actionUserCounselDetail(BaseActivity activity)
+    public static void actionUserCounselDetail(BaseActivity activity,UserCounselItem item)
     {
         Intent intent = new Intent(activity, UserCounselDetailActivity.class);
+        intent.putExtra(EXTRA_ITEM ,item);
         activity.startActivity(intent);
     }
+    private UserCounselItem mUserCounselItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mUserCounselItem = getIntent().getSerializableExtra(EXTRA_ITEM)==null?null: (UserCounselItem) getIntent().getSerializableExtra(EXTRA_ITEM) ;
         setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserCounselDetailFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserCounselDetailFragment.newInstance(mUserCounselItem)).commit();
     }
 
   

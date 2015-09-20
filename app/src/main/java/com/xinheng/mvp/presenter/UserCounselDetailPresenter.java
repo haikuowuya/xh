@@ -1,9 +1,9 @@
 package com.xinheng.mvp.presenter;
 
 /**
- * Created by Steven on 2015/9/9 0009.
+ * 我的咨询详情接口
  */
 public interface UserCounselDetailPresenter
 {
-    public  void  doGetUserCounselDetail();
+    public  void  doGetUserCounselDetail(String id);
 }

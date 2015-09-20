@@ -10,5 +10,5 @@ public class PostDepartDoctorItem extends PostItem
     /***
      * 科室id
      */
-    public  String id;
+//  public  String id;
 }

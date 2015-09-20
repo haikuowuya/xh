@@ -1,4 +1,4 @@
-package com.xinheng.mvp.model;
+package com.xinheng.mvp.model.user;
 
 /**
  * Created by Steven on 2015/9/8 0008.

@@ -1,4 +1,6 @@
-package com.xinheng.mvp.model;
+package com.xinheng.mvp.model.user;
+
+import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
  * 作者： raiyi-suzhou
@@ -6,7 +8,7 @@ package com.xinheng.mvp.model;
  * 时间： 16:40
  * 说明： 个人中心-我的咨询回复信息
  */
-public class UserCounselReplyItem extends  BaseEmptyItem
+public class UserCounselReplyItem extends BaseEmptyItem
 {
     /**
      * 咨询回复医生id

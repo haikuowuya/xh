@@ -24,11 +24,12 @@ public class UserCounselDetailPresenterImpl implements UserCounselDetailPresente
     }
 
     @Override
-    public void doGetUserCounselDetail()
+    public void doGetUserCounselDetail(String id )
     {
          String userCounselUrl = APIURL.GET_USER_COUNSEL_DETAIL_URL;
         PostItem postItem = new PostItem();
         postItem.userId = mActivity.getLoginSuccessItem().id;
+        postItem.id = id;
         String mingPostBody = GsonUtils.toJson(postItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);

@@ -15,8 +15,9 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnDeleteUserOrderEvent;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserOrderItem;
+import com.xinheng.mvp.model.user.UserOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
 import com.xinheng.mvp.presenter.UserOrderSearchPresenter;
 import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
@@ -30,6 +31,8 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -89,6 +92,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         mOrderStatus = getArguments().getString(ARG_ORDER_STATUS,mOrderStatus);
         mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
@@ -110,6 +114,25 @@ public class UserOrderFragment extends BaseFragment implements DataView
                doSearch();
             }
         });
+    }
+
+    //===============================EVENT BUS========================
+    @Subscribe
+    public void onEventMainThread(OnDeleteUserOrderEvent event)
+    {
+         if(null != event && null != event.mUserOrderItem&& null != mUserOrderListAdapter && mUserOrderItems.contains(event.mUserOrderItem))
+         {
+             mUserOrderItems.remove(event.mUserOrderItem);
+             mUserOrderListAdapter.notifyDataSetChanged();
+         }
+    }
+    //===============================EVENT BUS========================
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /***
@@ -153,6 +176,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
         mActivity.showProgressDialog();
         UserOrderPresenter userOrderPresenter = new UserOrderPresenterImpl(mActivity, this);
         userOrderPresenter.doGetUserOrder(mOrderStatus);
+        mUserOrderItems.clear();
     }
 
     @Override

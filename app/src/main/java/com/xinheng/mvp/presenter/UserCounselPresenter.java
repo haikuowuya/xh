@@ -1,7 +1,7 @@
 package com.xinheng.mvp.presenter;
 
 /**
- * Created by Steven on 2015/9/9 0009.
+ *  获取我的咨询列表接口
  */
 public interface UserCounselPresenter
 {

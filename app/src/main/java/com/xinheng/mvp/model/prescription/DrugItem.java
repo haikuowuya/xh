@@ -45,6 +45,12 @@ public class DrugItem extends BaseEmptyItem
      */
     public String specs;
 
+    /**
+     * 价格
+     */
+    public  String cost;
+
+
     @Override
     public boolean equals(Object o)
     {

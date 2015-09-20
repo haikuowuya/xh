@@ -12,7 +12,7 @@ import com.xinheng.R;
 import com.xinheng.UserCounselDetailActivity;
 import com.xinheng.adapter.user.UserCounselListAdapter;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserCounselItem;
+import com.xinheng.mvp.model.user.UserCounselItem;
 import com.xinheng.mvp.presenter.UserCounselPresenter;
 import com.xinheng.mvp.presenter.impl.UserCounselPresenterImpl;
 import com.xinheng.mvp.view.DataView;
@@ -50,16 +50,9 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
         getListView().setDividerHeight(0);
         getListView().setBackgroundColor(0xFFF0F0F0);
         int leftRight = DensityUtils.dpToPx(mActivity, 10.f);
-        getListView().setPadding(leftRight,leftRight, leftRight, 0);
+        getListView().setPadding(leftRight, leftRight, leftRight, 0);
         getListView().setDivider(new ColorDrawable(0x00000000));
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                UserCounselDetailActivity.actionUserCounselDetail(mActivity);
-            }
-        });
+
     }
 
     @Override
@@ -85,7 +78,6 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     public void onGetDataSuccess(ResultItem resultItem)
     {
         refreshComplete();
-
         if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
@@ -97,6 +89,7 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
                 List<UserCounselItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
                 if (null != items)
                 {
+                    mUserCounselItems.clear();
                     mUserCounselItems.addAll(items);
                     if (null == mUserCounselListAdapter)
                     {
@@ -107,6 +100,15 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
                     {
                         mUserCounselListAdapter.notifyDataSetChanged();
                     }
+
+                    getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            UserCounselDetailActivity.actionUserCounselDetail(mActivity,mUserCounselItems.get(position));
+                        }
+                    });
                 }
             }
         }

@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserDoctorListAdapter;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserDoctorItem;
+import com.xinheng.mvp.model.user.UserDoctorItem;
 import com.xinheng.mvp.presenter.UserDoctorPresenter;
 import com.xinheng.mvp.presenter.impl.UserDoctorPresenterImpl;
 import com.xinheng.mvp.view.DataView;

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserCounselItem;
-import com.xinheng.mvp.model.UserCounselReplyItem;
+import com.xinheng.mvp.model.user.UserCounselItem;
+import com.xinheng.mvp.model.user.UserCounselReplyItem;
 import com.xinheng.mvp.presenter.UserCounselDetailPresenter;
 import com.xinheng.mvp.presenter.impl.UserCounselDetailPresenterImpl;
 import com.xinheng.mvp.view.DataView;
@@ -33,13 +33,18 @@ import com.xinheng.util.GsonUtils;
  */
 public class UserCounselDetailFragment extends BaseFragment implements DataView
 {
+    public static final String  ARG_COUNSEL_ITEM="counsel_item";
     public static final String SERVER_ERROR_TEST_RESULT="{\"message\":\"获取信息成功！\",\"properties\":{\"createTime\":\"111111\",\"id\":\"1\",\"question\":\"感冒发热怎么办\",\"replys\":[{\"content\":\"感冒\",\"createTime\":\"1437726354000\",\"department\":\"男性皮肤科\",\"doctId\":\"1\",\"doctName\":\"tom\",\"hospital\":\"贵州省中医医院\",\"technicalPost\":\"主任医师\"},{\"content\":\"正常情况\",\"createTime\":\"1437725575000\",\"department\":\"男性皮肤科\",\"doctId\":\"1\",\"doctName\":\"tom\",\"hospital\":\"贵州省中医医院\",\"technicalPost\":\"主任医师\"}],\"title\":\"感冒\",\"total\":\"2\"},\"result\":\"1\"}";
-    public static UserCounselDetailFragment newInstance()
+    public static UserCounselDetailFragment newInstance(UserCounselItem item)
     {
         UserCounselDetailFragment fragment = new UserCounselDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_COUNSEL_ITEM, item);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
+    private UserCounselItem mUserCounselItem;
     /***
      * 咨询问题
      */
@@ -56,7 +61,14 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
      * 医生回答个数
      */
     private TextView mTvAnswerCount;
+    /***
+     * 医生回答布局
+     */
     private LinearLayout mLinearReplyContainer;
+    /***
+     * 追问布局
+     */
+    private LinearLayout mLinearQuestionContainer;
 
     private EditText mEtContent;
     private Button mBtnSubmit;
@@ -77,8 +89,11 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
         mTvCounselTime = (TextView) view.findViewById(R.id.tv_counsel_time);
         mTvQuestion = (TextView) view.findViewById(R.id.tv_counsel_question);
         mLinearReplyContainer = (LinearLayout) view.findViewById(R.id.linear_doctor_answer_container);
+        mLinearQuestionContainer = (LinearLayout) view.findViewById(R.id.linear_question_container);
         mEtContent = (EditText) view.findViewById(R.id.et_content);
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
+        //默认追问医生隐藏
+        mLinearQuestionContainer.setVisibility(View.GONE);
 
     }
 
@@ -86,6 +101,7 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        mUserCounselItem = getArguments().getSerializable(ARG_COUNSEL_ITEM)==null?null: (UserCounselItem) getArguments().getSerializable(ARG_COUNSEL_ITEM) ;
         setListener();
         doGetData();
     }
@@ -99,8 +115,16 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
     @Override
     protected void doGetData()
     {
-        UserCounselDetailPresenter userCounselDetailPresenter = new UserCounselDetailPresenterImpl(mActivity, this);
-        userCounselDetailPresenter.doGetUserCounselDetail();
+        if (null != mUserCounselItem)
+        {
+            UserCounselDetailPresenter userCounselDetailPresenter = new UserCounselDetailPresenterImpl(mActivity, this);
+            userCounselDetailPresenter.doGetUserCounselDetail(mUserCounselItem.id);
+        }
+        else
+        {
+            mActivity.showCroutonToast("咨询id为空，不可以进行下一步操作");
+            mActivity.finish();
+        }
     }
 
     @Override
@@ -117,7 +141,11 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
             mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
-
+                UserCounselItem  userCounselItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserCounselItem.class);
+                if(null != userCounselItem)
+                {
+                    showContent(userCounselItem);
+                }
             }
         }
     }
@@ -129,11 +157,11 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
         ResultItem resultItem = GsonUtils.jsonToClass(SERVER_ERROR_TEST_RESULT, ResultItem.class);
         if(null != resultItem && resultItem.success())
         {
-            UserCounselItem  userCounselItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserCounselItem.class);
-            if(null != userCounselItem)
-            {
-                 showContent(userCounselItem);
-            }
+//            UserCounselItem  userCounselItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserCounselItem.class);
+//            if(null != userCounselItem)
+//            {
+//                 showContent(userCounselItem);
+//            }
         }
     }
 
@@ -176,7 +204,8 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
                     @Override
                     public void onClick(View v)
                     {
-                        mActivity.showCroutonToast("追问:回答"+(1+ finalI));
+                       // mActivity.showCroutonToast("追问:回答"+(1+ finalI));
+                        mLinearQuestionContainer.setVisibility(View.VISIBLE);
                     }
                 });
             }

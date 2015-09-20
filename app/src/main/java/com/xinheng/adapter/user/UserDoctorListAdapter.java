@@ -6,7 +6,7 @@ import com.xinheng.DoctorEvaluationActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
-import com.xinheng.mvp.model.UserDoctorItem;
+import com.xinheng.mvp.model.user.UserDoctorItem;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.ToastUtils;
 

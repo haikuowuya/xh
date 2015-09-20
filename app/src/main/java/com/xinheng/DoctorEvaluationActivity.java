@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserDoctorDetailItem;
+import com.xinheng.mvp.model.user.UserDoctorDetailItem;
 import com.xinheng.mvp.presenter.DoctorEvaluationPresenter;
 import com.xinheng.mvp.presenter.impl.DoctorEvaluationPresenterImpl;
 import com.xinheng.mvp.view.DataView;
@@ -144,16 +144,22 @@ public class DoctorEvaluationActivity extends BaseActivity implements DataView
                     ForegroundColorSpan foregroundColorSpan2 = new ForegroundColorSpan(0xFFFF5907);
                     ForegroundColorSpan foregroundColorSpan3 = new ForegroundColorSpan(0xFFFF5907);
                     int start1 = TEXT_SERVICE.length();
-                    int end1 = start1 + mUserDoctorDetailItem.serviceGrade.length();
-                    spannableStringBuilder.setSpan(foregroundColorSpan1, start1, end1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                    int start2 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT).length();
-                    int end2 = start2 + mUserDoctorDetailItem.effectGrade.length();
-                    spannableStringBuilder.setSpan(foregroundColorSpan2, start2, end2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                    int start3 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT + mUserDoctorDetailItem.effectGrade + TEXT_BLANK + TEXT_FEE).length();
-                    int end3 = start3 + mUserDoctorDetailItem.feeGrade.length();
-                    spannableStringBuilder.setSpan(foregroundColorSpan3, start3, end3, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                     if(!TextUtils.isEmpty(mUserDoctorDetailItem.serviceGrade)
+                             &&!TextUtils.isEmpty(mUserDoctorDetailItem.effectGrade)
+                             &&!TextUtils.isEmpty(mUserDoctorDetailItem.feeGrade)
+                             )
+                     {
+                         int end1 = start1 + mUserDoctorDetailItem.serviceGrade.length();
+                         spannableStringBuilder.setSpan(foregroundColorSpan1, start1, end1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                         int start2 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT).length();
+                         int end2 = start2 + mUserDoctorDetailItem.effectGrade.length();
+                         spannableStringBuilder.setSpan(foregroundColorSpan2, start2, end2, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                         int start3 = (TEXT_SERVICE + mUserDoctorDetailItem.serviceGrade + TEXT_BLANK + TEXT_RESULT + mUserDoctorDetailItem.effectGrade + TEXT_BLANK + TEXT_FEE).length();
+                         int end3 = start3 + mUserDoctorDetailItem.feeGrade.length();
+                         spannableStringBuilder.setSpan(foregroundColorSpan3, start3, end3, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                         mTvDoctorEvaluation.setText(spannableStringBuilder);
+                     }
 
-                    mTvDoctorEvaluation.setText(spannableStringBuilder);
                     mBtnSubmit.setOnClickListener(new View.OnClickListener()
                     {
                         @Override

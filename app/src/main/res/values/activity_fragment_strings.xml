@@ -34,11 +34,15 @@
     <string name="tv_activity_user_subscribe_detail">预约详情</string>
     <string name="tv_activity_get_medical">按方抓药</string>
     <string name="tv_activity_add_drug">添加药品</string>
+    <string name="tv_activity_patient">常用就诊人</string>
+    <string name="tv_activity_address_manager">收货地址管理</string>
+    <string name="tv_activity_add_address">新增收货地址</string>
     <string name="tv_activity_auto_check">症状自测</string>
     <string name="tv_activity_user_medical">我的病历</string>
     <string name="tv_activity_user_report">我的报告</string>
     <string name="tv_activity_user_recipe">我的处方</string>
     <string name="tv_activity_add_recipe">添加处方</string>
+    <string name="tv_activity_add_patient">添加就诊人</string>
     <string name="tv_activity_department_doctor_detail">医生详情</string>
     <string name="tv_activity_user_order">我的订单</string>
     <string name="tv_activity_doctor_evaluation">医生评价</string>

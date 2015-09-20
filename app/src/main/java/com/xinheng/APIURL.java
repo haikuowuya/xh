@@ -8,13 +8,12 @@ package com.xinheng;
  */
 public class APIURL
 {
-
-    public static final String BASE_API_URL="http://139.196.24.205:8080";
-//    public static final String BASE_API_URL=" http://192.168.2.119";
+    public static final String BASE_API_URL="http://139.196.24.205";
+ //  public static final String BASE_API_URL=" http://192.168.2.119";
     /**
      * 用户登录URL
      */
-    public static final String LOGIN_URL=BASE_API_URL+"/interface/patient/user/login";
+    public static final String LOGIN_URL=BASE_API_URL+"/public/patient/user/login";
     /**
      * 获取科室导航的数据URL
      */
@@ -27,23 +26,53 @@ public class APIURL
      * 获取医生详情URL
      */
     public static final String GET_DOCTOR_DETAIL_URL = BASE_API_URL + "/interface/patient/getdoctordetail";
+    /**
+     * 获取常用就诊人列表URL
+     */
+    public static final String GET_USER_PATIENT_LIST_URL = BASE_API_URL + "/interface/patient/userlist/getlist";
+
+    /**
+     *添加常用就诊人URL
+     */
+    public static final String ADD_USER_PATIENT_URL = BASE_API_URL + "/interface/patient/userlist/add";
+
+    /***
+     * 添加收货地址
+     */
+    public static final String ADD_ADDRESS_URL=BASE_API_URL+"/interface/patient/ recieveaddress/add";
+    /**
+     * 修改收货地址
+     */
+    public static final String MODIFY_ADDRESS_URL=BASE_API_URL+"/interface/patient/recieveaddress/edit";
+    /***
+     * 获取地址列表URL
+     */
+    public static final String GET_ADDRESS_LIST_URL = BASE_API_URL + "/interface/patient/recieveaddress/getlist";
     /***
      * 我的咨询列表URL
      */
-    public static final String GET_USER_COUNSEL_LIST_URL=BASE_API_URL+"/interface/patient/consultation/getlist";
+    public static final String GET_USER_COUNSEL_LIST_URL=BASE_API_URL+"/interface/patient/myconsultation/getlist";
     /**
      * 我的咨询详情URL
      */
-    public static final String GET_USER_COUNSEL_DETAIL_URL=BASE_API_URL+"/interface/patient/consultation/getreply";
+    public static final String GET_USER_COUNSEL_DETAIL_URL=BASE_API_URL+"/interface/patient/myconsultation/getdetail";
 
     /**
      * 用户注册URL
      */
-    public static final String REGISTER_URL=BASE_API_URL+"/interface/patient/user/register";
+    public static final String REGISTER_URL=BASE_API_URL+"/public/patient/user/register";
     /**
      * 我的订单列表URL
      */
     public static final String USER_ORDER_LIST=BASE_API_URL+"/interface/patient/myorder/getlist";
+    /***
+     * 删除我的订单URL
+     */
+    public static final String DELETE_USER_ORDER_URL =BASE_API_URL+"/interface/patient/myorder/remove";
+    /***
+     * 删除收货地址
+     */
+    public static final String DELETE_ADDRESS_URL =BASE_API_URL+"/interface/patient/recieveaddress/delete";
     /***
      * 我的病历列表URL
      */

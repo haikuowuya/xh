@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.drug.DrugListAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnAddDrugItemEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.prescription.DrugItem;
 import com.xinheng.mvp.presenter.DrugSearchPresenter;
@@ -24,6 +25,8 @@ import com.xinheng.util.GsonUtils;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 作者： raiyi-suzhou
@@ -61,6 +64,7 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         super.onActivityCreated(savedInstanceState);
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnSearch.setOnClickListener(onClickListener);
+        search("");
     }
 
     private void initView(View view)
@@ -70,6 +74,17 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         mListView = (ListView) view.findViewById(R.id.lv_listview);
     }
 
+
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        if(null != mDrugListAdapter)
+        {
+            EventBus.getDefault().post(new OnAddDrugItemEvent(mDrugListAdapter.getSelectedItems()));
+        }
+    }
 
     @Override
     public String getFragmentTitle()
@@ -84,16 +99,13 @@ public class AddDrugFragment extends BaseFragment   implements DataView
             mActivity.showCroutonToast(resultItem.message);
             if(resultItem.success())
             {
-
-            }
-            else
-            {
                 Type type = new TypeToken<List<DrugItem>>()
                 {
                 }.getType();
-               List<DrugItem> drugItems = GsonUtils.jsonToResultItemToList(DrugItem.DEBUG_SUCCESS, type);
+                List<DrugItem> drugItems = GsonUtils.jsonToList(resultItem.properties.getAsJsonObject().get("list").getAsJsonArray().toString(),type);
                 if (null != drugItems)
                 {
+                    mDrugItems.clear();
                     mDrugItems.addAll(drugItems);
                     if (null == mDrugListAdapter)
                     {
@@ -106,6 +118,7 @@ public class AddDrugFragment extends BaseFragment   implements DataView
                     }
                 }
             }
+
 
         }
     }
@@ -123,24 +136,22 @@ public class AddDrugFragment extends BaseFragment   implements DataView
             switch (v.getId())
             {
                 case R.id.btn_search://搜索
-                    search();
+                    search(mEtSearch.getText().toString());
                     break;
             }
         }
     }
 
-    private void search()
+    private void search(String searchText )
     {
-        if(TextUtils.isEmpty(mEtSearch.getText()))
+        if(TextUtils.isEmpty( searchText))
         {
-            mActivity.showCroutonToast("请输入搜索关键字");
-            return;
+        //    mActivity.showCroutonToast("请输入搜索关键字");
+          //  return;
         }
         mActivity.hideSoftKeyBorard(mEtSearch);
-        String keyword = mEtSearch.getText().toString();
+        String keyword = searchText;
         DrugSearchPresenter drugSearchPresenter = new DrugSearchPresenterImpl(mActivity, this);
-        drugSearchPresenter.doSearchDrug("1", keyword);
+        drugSearchPresenter.doSearchDrug("402881b44e706cab014e7075fdff0004", keyword);
     }
-
-
 }

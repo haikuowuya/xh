@@ -3,7 +3,7 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.UserDoctorDetailItem;
+import com.xinheng.mvp.model.user.UserDoctorDetailItem;
 import com.xinheng.mvp.model.doctor.BasePostDoctorItem;
 import com.xinheng.mvp.model.doctor.PostDoctorEvaluationItem;
 import com.xinheng.mvp.presenter.DoctorEvaluationPresenter;

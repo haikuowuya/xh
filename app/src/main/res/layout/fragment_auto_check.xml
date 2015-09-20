@@ -12,6 +12,7 @@
         android:layout_height="44dp"
         android:layout_margin="10dp"
         android:background="@color/color_white_color">
+
     </LinearLayout>
 
     <FrameLayout
@@ -22,6 +23,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_auto_check_man_1"/>
+
+        <ImageView
+            android:layout_gravity="bottom|right"
+            android:layout_margin="15dp"
+            android:src="@mipmap/ic_auto_switch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
 
     </FrameLayout>
 

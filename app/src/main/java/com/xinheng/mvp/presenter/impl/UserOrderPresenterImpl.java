@@ -6,7 +6,7 @@ import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.PostItem;
-import com.xinheng.mvp.model.UserOrderItem;
+import com.xinheng.mvp.model.user.UserOrderItem;
 import com.xinheng.mvp.model.order.PostOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
 import com.xinheng.mvp.view.DataView;

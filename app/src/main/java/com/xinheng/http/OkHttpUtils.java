@@ -1,5 +1,7 @@
 package com.xinheng.http;
 
+import android.text.TextUtils;
+
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,35 +50,46 @@ public class OkHttpUtils
         sOkHttpClient.newCall(request).enqueue(callback);
     }
 
-    public static void customXHasyncExecute(String url , LoginSuccessItem loginSuccessItem , String postBody, Callback callback)
+    public static void customXHasyncExecute(String url, LoginSuccessItem loginSuccessItem, String postBody, Callback callback)
     {
         //userId要客户端加密
         String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
         System.out.println("加密后的userId = " + encryptUserId);
         String sessionId = loginSuccessItem.sessionId;
-        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId)
-                .add(Constants.COOKIE,  Constants.SID+sessionId)
-                .add(Constants.USER_ID, encryptUserId)
-                .build();
+        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
         RequestBody reqBody = RequestBody.create(MediaType.parse("application/json"), postBody);
         Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
         asyncExecute(request, callback);
     }
 
-    public static void customXHasyncExecuteWithFile(String url , LoginSuccessItem loginSuccessItem , String postBody,File file,  Callback callback)
+    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
     {
         //userId要客户端加密
         String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
         System.out.println("加密后的userId = " + encryptUserId);
         String sessionId = loginSuccessItem.sessionId;
-        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId)
-                .add(Constants.COOKIE,  Constants.SID+sessionId)
-                .add(Constants.USER_ID, encryptUserId)
-                .build();
-        RequestBody strBody = RequestBody.create(MediaType.parse("application/json"), postBody);;
-        RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file)   ;
-        RequestBody reqBody = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("file","file",fileBody ).addPart(strBody).build();
+        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
+
+        RequestBody fileBody1 = RequestBody.create(MediaType.parse("image/png"), file);
+        RequestBody fileBody2 = RequestBody.create(MediaType.parse("image/png"), file);
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("file", "file", fileBody1)
+                .addFormDataPart("file", "file", fileBody2)  ;
+        if (null != postMap)
+        {
+            for (String key : postMap.keySet())
+            {
+                String value = postMap.get(key);
+                if(TextUtils.isEmpty(value))
+                {
+                    value="";
+                }
+                multipartBuilder.addFormDataPart(key, value);
+               // System.out.println("key = " + key + " value = " + value);
+            }
+        }
+        RequestBody reqBody = multipartBuilder.build();
         Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
+
         asyncExecute(request, callback);
     }
 

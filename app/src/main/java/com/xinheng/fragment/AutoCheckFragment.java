@@ -15,7 +15,7 @@ import com.xinheng.mvp.view.DataView;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  按方抓药-添加药品Fragment页面
+ * 说明： 症状自测页面
  */
 public class AutoCheckFragment extends BaseFragment   implements DataView
 {

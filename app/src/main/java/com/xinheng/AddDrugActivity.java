@@ -14,7 +14,7 @@ import com.xinheng.fragment.AddDrugFragment;
  */
 public class AddDrugActivity extends BaseActivity
 {
-    public static void actionAddMedical(BaseActivity activity)
+    public static void actionAddDrug(BaseActivity activity)
     {
         Intent intent = new Intent(activity, AddDrugActivity.class);
         activity.startActivity(intent);

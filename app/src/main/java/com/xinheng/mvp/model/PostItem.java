@@ -9,6 +9,10 @@ package com.xinheng.mvp.model;
 public class PostItem extends  BaseEmptyItem
 {
     public static final String DEFAULT_PAGE ="-1";
+    /***
+     * 通过id操作的post请求提交
+     */
+    public String id ;
     public String userId;
     public String page = DEFAULT_PAGE ;
     public String pageSize;

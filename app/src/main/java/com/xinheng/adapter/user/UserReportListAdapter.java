@@ -5,7 +5,7 @@ import android.view.View;
 import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
-import com.xinheng.mvp.model.UserReportItem;
+import com.xinheng.mvp.model.user.UserReportItem;
 
 import java.util.List;
 

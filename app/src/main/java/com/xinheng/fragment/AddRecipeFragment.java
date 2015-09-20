@@ -13,7 +13,7 @@ import com.xinheng.R;
 import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserOrderItem;
+import com.xinheng.mvp.model.user.UserOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
 import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;

@@ -51,6 +51,7 @@ public class UserCenterActivity extends BaseActivity
         fillLinearGridContainer();
         fillLinearListContainer();
         setListener();
+        mTvUserName.setText(mActivity.getLoginSuccessItem().name);
     }
 
     private void setListener()
@@ -125,6 +126,7 @@ public class UserCenterActivity extends BaseActivity
         mIvPhoto = (CircularImageView) findViewById(R.id.iv_photo);
         mTvUserName = (TextView) findViewById(R.id.tv_username);
         mScrollView = (ScrollView) findViewById(R.id.sv_scrollview);
+
     }
 
     @Override
@@ -181,6 +183,10 @@ public class UserCenterActivity extends BaseActivity
             else if (getString(R.string.tv_activity_user_order).equals(mIconTextItem.text))
             {
                 UserOrderActivity.actionUserOrder(mActivity);
+            }
+            else if(getString(R.string.tv_activity_patient).equals(mIconTextItem.text))
+            {
+                UserPatientListActivity.actionPatient(mActivity);
             }
         }
     }

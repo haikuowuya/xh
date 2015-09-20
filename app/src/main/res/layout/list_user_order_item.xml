@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_linear_item_selector"
-    >
+    android:background="@drawable/list_linear_item_selector">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,81 +59,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="#FFDCDCDC"
-            android:paddingRight="10dp">
-
-            <FrameLayout
-                android:layout_width="96dp"
-                android:layout_height="wrap_content">
-
-                <com.xinheng.view.CircularImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_gravity="center"
-                    android:padding="20dp"
-                    android:src="@mipmap/ic_photo"/>
-            </FrameLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen_list_single_item_height"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_durg_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:maxLines="2"
-                        android:textColor="@color/color_main_text_gray_color"
-                        tools:text="历史\nkkk"/>
-
-                    <TextView
-                        android:id="@+id/tv_durg_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|right|bottom"
-                        android:singleLine="true"
-                        android:textColor="#FF000000"
-                        tools:text="$22.41"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:id="@+id/tv_durg_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen_list_single_item_height"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:maxLines="2"
-
-                        android:textColor="@color/color_main_text_gray_color"
-                        tools:text="上次时间\nkkk"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_durg_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen_list_single_item_height"
-                        android:gravity="center_vertical|top"
-                        android:textColor="@color/color_main_text_gray_color"
-                        tools:text="x10"/>
-                </LinearLayout>
-            </LinearLayout>
+            android:orientation="vertical"
+            android:id="@+id/linear_drug_container"
+            >
         </LinearLayout>
 
         <LinearLayout
@@ -172,9 +99,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:background="@drawable/list_linear_item_selector"
+                    android:background="@drawable/shape_edittext_background"
                     android:gravity="center_vertical|right"
-                    android:padding="6dp"
+                    android:padding="8dp"
                     android:text="删除订单"
                     android:textColor="@color/color_main_text_gray_color"
                     tools:text="删除订单"/>

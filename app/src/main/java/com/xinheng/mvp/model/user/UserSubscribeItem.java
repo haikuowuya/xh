@@ -1,9 +1,11 @@
-package com.xinheng.mvp.model;
+package com.xinheng.mvp.model.user;
+
+import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
  *我的预约信息
  */
-public class UserSubscribeItem extends  BaseEmptyItem
+public class UserSubscribeItem extends BaseEmptyItem
 {
     /**
      *    预约信息id

@@ -10,7 +10,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
 
 /**
- * Created by Steven on 2015/9/9 0009.
+ * 获取我的咨询列表接口的实现类
  */
 public class UserCounselPresenterImpl implements UserCounselPresenter
 {

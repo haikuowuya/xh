@@ -26,7 +26,6 @@ public class PrescriptionActivity extends BaseActivity
         super.onCreate(savedInstanceState);
           setContentView(R.layout.activity_activity_common);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, PrescriptionFragment.newInstance()).commit();
-
     }
 
 

@@ -137,6 +137,17 @@
                   android:label="@string/tv_activity_bind_phone"/>
         <activity android:name=".AutoCheckActivity"
                   android:label="@string/tv_activity_auto_check"/>
+        <activity android:name=".UserPatientListActivity"
+                  android:label="@string/tv_activity_patient"/>
+
+        <activity android:name=".AddPatientActivity"
+                  android:label="@string/tv_activity_add_patient"/>
+        <activity android:name=".AddressListActivity"
+                  android:label="@string/tv_activity_address_manager"/>
+        <activity android:name=".AddOrModifyAddressActivity"
+                  android:label="@string/tv_activity_add_address"/>
+
+
     </application>
 
 </manifest>

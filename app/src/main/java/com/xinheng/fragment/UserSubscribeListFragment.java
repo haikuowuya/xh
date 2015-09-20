@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.user.SubscribeAdapter;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.UserSubscribeItem;
+import com.xinheng.mvp.model.user.UserSubscribeItem;
 import com.xinheng.mvp.presenter.UserSubscribePresenter;
 import com.xinheng.mvp.presenter.impl.UserSubscribePresenterImpl;
 import com.xinheng.mvp.view.DataView;

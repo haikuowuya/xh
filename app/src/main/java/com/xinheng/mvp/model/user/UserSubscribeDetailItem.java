@@ -1,4 +1,4 @@
-package com.xinheng.mvp.model;
+package com.xinheng.mvp.model.user;
 
 /**
  * 作者： raiyi-suzhou
