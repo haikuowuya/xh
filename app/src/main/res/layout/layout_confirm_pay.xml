@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:padding="8dp"
+            android:padding="4dp"
             tools:text="在线支付\n普通快递"/>
 
         <TextView

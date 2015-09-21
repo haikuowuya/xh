@@ -92,7 +92,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         mOrderId = getArguments().getString(ARG_ORDER_ID);
-        mTvDispatchTime.setText(DateFormatUtils.format(System.currentTimeMillis()+""));
+        mTvDispatchTime.setText(DateFormatUtils.format(System.currentTimeMillis()+"",true,false));
         mTvDispatchWay.setText("在线支付"+"\n"+"普通快递");
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
     }
