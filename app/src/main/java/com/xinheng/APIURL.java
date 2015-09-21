@@ -81,6 +81,10 @@ public class APIURL
      * 根据搜索关键字进行药品的搜索
      */
     public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/medicaldata/drug/getall";
+    /***
+     * 按方抓药，提交审核后的确认订单URL
+     */
+    public static final String CONFIRM_ORDER_URL=BASE_API_URL+"/interface/patient/mall/confirm";
     /**
      * 我的报告列表URL
      */

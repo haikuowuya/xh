@@ -79,7 +79,10 @@ public class CrashListAdapter extends RecyclerView.Adapter<CrashListAdapter.View
 
                 holder.itemView.setSelected(true);
                 int indexOfC = crash.indexOf("(");
-
+                   if(indexOfC ==-1)
+                   {
+                       indexOfC = crash.indexOf("{");
+                   }
                 String atPackage = crash.substring(0, indexOfC);
                 SpannableStringBuilder builder = new SpannableStringBuilder(atPackage).append(
                         StringStyleUtils.format(holder.title.getContext(),

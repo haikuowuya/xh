@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,21 +26,30 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xinheng.DepartmentNavActivity;
 import com.xinheng.MainActivity;
 import com.xinheng.OnlineActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
+import com.xinheng.UserCenterActivity;
 import com.xinheng.XHApplication;
+import com.xinheng.adapter.PopupListAdapter;
 import com.xinheng.drawable.DrawerArrowDrawable;
 import com.xinheng.fragment.MenuFragment;
+import com.xinheng.mvp.model.IconTextItem;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.slidingmenu.SlidingMenu;
+import com.xinheng.util.AndroidUtils;
 import com.xinheng.util.Constants;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.IntentUtils;
+import com.xinheng.util.SplitUtils;
 import com.xinheng.util.ToastUtils;
 import com.xinheng.util.ViewUtils;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -91,7 +100,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      */
     private ProgressDialog mProgressDialog;
 
-
     private PopupWindow mPopupWindow;
 
     public SharedPreferences getPreferences()
@@ -112,7 +120,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
          * 这样设置的话，不会出现滚动
          */
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-              getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE|WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在获取数据中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -215,7 +223,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             mIvBack.setVisibility(View.GONE);
         }
         //首页和在线售药页面隐藏左上角的返回按钮
-        if(this instanceof  MainActivity || this instanceof OnlineActivity)
+        if (this instanceof MainActivity || this instanceof OnlineActivity)
         {
             mIvBack.setVisibility(View.GONE);
         }
@@ -234,7 +242,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             public void onClick(View v)
             {
                 // mSlidingMenu.toggle(true);
-              showPopupWindow();
+                showPopupWindow();
             }
         });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
@@ -243,18 +251,72 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     private void showPopupWindow()
     {
-        if(null ==mPopupWindow)
+        if (null == mPopupWindow)
         {
-            ListView listview = (ListView) LayoutInflater.from(mActivity).inflate(R.layout.layout_listview,null);
+            ListView listview = (ListView) LayoutInflater.from(mActivity).inflate(R.layout.layout_listview, null);
             listview.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-            listview.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, R.layout.list_popupwindow_item));
+
+            String[] strings = getResources().getStringArray(R.array.array_menu_menu);
+            List<IconTextItem> iconTextItems = new LinkedList<>();
+            for (int i = 0; i < strings.length; i++)
+            {
+                String[] tmp = SplitUtils.split(strings[i]);
+
+                if (null != tmp && tmp.length > 0 && tmp.length == 2)
+                {
+                    int iconId = getResources().getIdentifier(tmp[0], "mipmap", getPackageName());
+                    String text = tmp[1];
+                    View view = LayoutInflater.from(mActivity).inflate(R.layout.list_icon_text_item, null);
+                    TextView textView = (TextView) view.findViewById(R.id.tv_text);
+                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
+                    textView.setText(text);
+                    imageView.setImageResource(iconId);
+                    iconTextItems.add(new IconTextItem(iconId, text));
+                }
+            }
+            listview.setAdapter(new PopupListAdapter(mActivity, iconTextItems));
             listview.setItemChecked(0, true);
-            int width = DensityUtils.dpToPx(mActivity, 200.f);
+            int width = DensityUtils.dpToPx(mActivity, 160.f);
             int height = AbsListView.LayoutParams.WRAP_CONTENT;
             mPopupWindow = new PopupWindow(listview, width, height);
             mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
             mPopupWindow.setOutsideTouchable(true);// 设置点击窗口外边窗口消失
             mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    mPopupWindow.dismiss();
+                    switch (position)
+                    {
+                        case 0:
+                            if (!(mActivity instanceof MainActivity))
+                            {
+                                MainActivity.actioMain(mActivity);
+                            }
+                            break;
+
+                        case 1:
+                            if (!(mActivity instanceof DepartmentNavActivity))
+                            {
+                                DepartmentNavActivity.actionDepartmentNav(mActivity);
+                            }
+                            break;
+                        case 2:
+                            if (!(mActivity instanceof UserCenterActivity))
+                            {
+                                UserCenterActivity.actionUserCenter(mActivity);
+                            }
+                            break;
+
+                        case 3:
+                            mActivity.showCroutonToast("系统设置");
+                            break;
+                    }
+                }
+            });
         }
         if (mPopupWindow != null && mPopupWindow.isShowing())
         {
@@ -262,7 +324,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         }
         else
         {
-            mPopupWindow.showAsDropDown(mIvRight);
+            mPopupWindow.showAsDropDown(mIvRight, 0, DensityUtils.dpToPx(mActivity, 4.f));
         }
     }
 
@@ -270,7 +332,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
+        {
+            mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        }
+        else
+        {
+            mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
 //        mSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
         mSlidingMenu.setShadowWidthRes(R.dimen.dimen_slidingmenu_shadow_width);
         mSlidingMenu.setShadowDrawable(R.drawable.shape_slidingmenu_shadow);
@@ -358,6 +428,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     /***
      * 将登陆成功后的用户信息保存到sharepreference中，
+     *
      * @param loginSuccessItem
      */
     public void saveLoginSuccessItem(LoginSuccessItem loginSuccessItem)
@@ -386,12 +457,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     /**
      * 隐藏软键盘，根据给定的View
+     *
      * @param view
      */
     public void hideSoftKeyBorard(View view)
     {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive() &&null != view)
+        if (imm.isActive() && null != view)
         {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

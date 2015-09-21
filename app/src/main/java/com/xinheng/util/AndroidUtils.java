@@ -20,12 +20,12 @@ import java.security.MessageDigest;
 public class AndroidUtils
 {
     /**
-     * 获取手机设备号
+     * 获取手机设备号 IMEI
      *
      * @param context
      * @return
      */
-    public static String getDeviceId(Context context)
+    public static String getIMEI(Context context)
     {
         String deviceId = "";
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);

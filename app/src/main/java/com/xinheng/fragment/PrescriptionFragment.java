@@ -18,16 +18,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinheng.AddDrugActivity;
+import com.xinheng.ConfirmOrderActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddDrugItemEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.prescription.DrugItem;
+import com.xinheng.mvp.model.prescription.OrderPrescItem;
 import com.xinheng.mvp.model.prescription.PostSavePrescriptionItem;
 import com.xinheng.mvp.presenter.SavePrescriptionPresenter;
 import com.xinheng.mvp.presenter.impl.SavePrescriptionPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
+import com.xinheng.util.GsonUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.RSAUtil;
 import com.xinheng.util.StorageUtils;
@@ -59,8 +62,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     private List<DrugItem> mDrugItems = null;
     private List<String> mDrugItemCounts = new LinkedList<>();
 
-
-    private String mImageFilePath ;
+    private String mImageFilePath;
 
     @Nullable
     @Override
@@ -163,6 +165,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         if (null != mLinearDrugContainer && null != event && event.mDrugItems != null && !event.mDrugItems.isEmpty())
         {
+            mLinearDrugContainer.removeAllViews();
             mDrugItems = event.mDrugItems;
 //            mActivity.showCroutonToast("event.size = " + event.mDrugItems.size());
             mBtnEdit.setVisibility(View.VISIBLE);
@@ -204,8 +207,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.VISIBLE);
                 view.findViewById(R.id.linear_edit_container).setVisibility(View.GONE);
-                TextView tvCount = (TextView) view.findViewById(R.id.tv_drug_count);
-
             }
         }
     }
@@ -351,13 +352,21 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
+            if (resultItem.success())
+            {
+                OrderPrescItem orderPrescItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), OrderPrescItem.class);
+                if(null != orderPrescItem &&!TextUtils.isEmpty(orderPrescItem.orderId))
+                {
+                    ConfirmOrderActivity.actionConfirmOrder(mActivity, orderPrescItem.orderId);
+                }
+            }
         }
     }
 
     @Override
     public void onGetDataFailured(String msg)
     {
-
+        mActivity.showCroutonToast(msg);
     }
 
     private class OnClickListenerImpl implements View.OnClickListener
@@ -426,7 +435,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 view.findViewById(R.id.linear_edit_container).setVisibility(View.GONE);
                 TextView tvCount = (TextView) view.findViewById(R.id.tv_edit_count);
                 mDrugItemCounts.add(tvCount.getText().toString());
-               }
+            }
         }
         String name = mEtMedicalName.getText().toString();
         if (TextUtils.isEmpty(name))
@@ -434,7 +443,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 //            mActivity.showCroutonToast("药方名称不可以为空");
 //            return;
         }
-        if(TextUtils.isEmpty(mImageFilePath))
+        if (TextUtils.isEmpty(mImageFilePath))
         {
             mActivity.showCroutonToast("请选择处方图片");
             return;
@@ -447,7 +456,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         item.patientname = mEtUserName.getText().toString();
         item.result = RSAUtil.clientEncrypt("结果");
         item.quantity = "111";
-        item.file =new File(mImageFilePath);
+        item.file = new File(mImageFilePath);
         LinkedList<String> drugList = new LinkedList<>();
         for (DrugItem drugitem : mDrugItems)
         {
@@ -476,7 +485,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         {
             public void onClick(View v)
             {
-                mImageFilePath =     PhotoUtils.selectPicFromCamera(mActivity);
+                mImageFilePath = PhotoUtils.selectPicFromCamera(mActivity);
                 alertDialog.dismiss();
             }
         });
@@ -504,7 +513,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 }
             }
         }
-       // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-      mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
+        // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
+        mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
     }
 }

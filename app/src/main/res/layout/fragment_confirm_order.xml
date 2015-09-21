@@ -3,11 +3,12 @@
 <ScrollView
     android:id="@+id/sv_scrollview"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:scrollbars="none"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:scrollbars="none">
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/color_white_color">
+
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -57,12 +59,12 @@
                             android:id="@+id/tv_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dimen_list_single_item_height"
+                            android:layout_marginRight="12dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical|right"
                             android:padding="10dp"
-                            android:textStyle="bold"
-                            android:layout_marginRight="12dp"
                             android:textColor="#FF666666"
+                            android:textStyle="bold"
                             tools:text="152361638465"
                             />
                     </LinearLayout>
@@ -71,8 +73,8 @@
                         android:id="@+id/tv_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="@dimen/dimen_list_single_item_height"
                         android:gravity="center_vertical|top"
+                        android:minHeight="@dimen/dimen_list_single_item_height"
                         android:textColor="#FF333333"
                         tools:text="江苏省盐城市建湖县 工业园区1355号"
                         />
@@ -89,8 +91,17 @@
             </LinearLayout>
 
         </LinearLayout>
+        <!--支付以及配送方式-->
+        <LinearLayout
+            android:id="@+id/linear_pay_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white_color"
+            android:orientation="vertical">
 
-
+            <include layout="@layout/layout_confirm_pay"/>
+        </LinearLayout>
 
         <!--处方中添加的药品-->
         <LinearLayout
@@ -100,7 +111,33 @@
             android:background="@color/color_white_color"
             android:orientation="vertical">
 
-           <!-- <include layout="@layout/layout_prescription_drug_item_title"/>-->
+        </LinearLayout>
+
+        <!--配送说明-->
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/color_white_color"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="配送说明"
+                android:textColor="#FF333333"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical|right"
+                android:padding="10dp"
+                android:text="免费配送"
+                android:textColor="#FF666666"/>
 
         </LinearLayout>
 
@@ -108,11 +145,26 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#FF999999"/>
-        <LinearLayout
 
+        <TextView
+            android:id="@+id/tv_fee"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/color_white_color"
+            android:gravity="center_vertical|right"
+            android:padding="10dp"
+            android:textColor="#FF333333"
+            tools:text="共3件商品，合计：￥57.89（含运费0.00）"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#FF999999"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginTop="20dp"
             android:background="@color/color_white_color"
             android:orientation="vertical">
 
@@ -120,31 +172,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
 
                 android:orientation="horizontal"
                 android:padding="10dp">
 
-                <Button
-                    android:id="@+id/btn_save_prescription"
+                <TextView
+                    android:id="@+id/tv_confirm_fee"
                     android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_margin="4dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/btn_register_code_selector"
-                    android:text="保存药方"
-                    android:textColor="@color/color_white_color"
-                    android:visibility="gone"/>
+                    android:gravity="center_vertical|right"
+                    android:padding="4dp"
+                    android:text="合计：￥100\n(含运费0.00)"
+
+                    android:textColor="#FF333333"/>
 
                 <Button
-                    android:id="@+id/btn_submit"
+                    android:id="@+id/btn_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_margin="4dp"
-                    android:layout_weight="1"
+
                     android:background="@drawable/user_subscribe_evaluation_selector"
-                    android:text="提交审核"
+                    android:text="确 定"
                     android:textColor="@color/color_white_color"/>
 
 

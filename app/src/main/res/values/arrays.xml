@@ -101,5 +101,11 @@
         <item></item>
 
     </string-array>
+    <array name="array_menu_menu">
+        <item>ic_menu_home~首页</item>
+        <item>ic_menu_nav~医院导航</item>
+        <item>ic_menu_user~个人中心</item>
+        <item>ic_menu_settings~系统设置</item>
+    </array>
 
 </resources>

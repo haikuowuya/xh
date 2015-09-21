@@ -10,7 +10,7 @@ public class DateFormatUtils
 {
     public static String format(String time)
     {
-        return format(time, false)    ;
+        return format(time, false);
     }
 
     public static String format(String time, boolean withYMD)

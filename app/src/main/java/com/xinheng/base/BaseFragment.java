@@ -28,7 +28,7 @@ public abstract class BaseFragment extends Fragment implements IFragmentTitle
         super.onAttach(activity);
         mActivity = (BaseActivity) activity;
         mFragment = this;
-        mCanPullToRefresh = Constants.IMEI.equals(AndroidUtils.getDeviceId(mActivity));
+        mCanPullToRefresh = Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity));
     }
 
     @Override
