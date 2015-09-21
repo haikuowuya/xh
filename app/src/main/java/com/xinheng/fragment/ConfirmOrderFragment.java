@@ -1,7 +1,5 @@
 package com.xinheng.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -30,9 +28,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.RSAUtil;
-import com.xinheng.util.StorageUtils;
 
-import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,30 +39,27 @@ import de.greenrobot.event.Subscribe;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  按方抓药Fragment界面
+ * 说明：  确认订单界面
  */
-public class PrescriptionFragment extends BaseFragment implements DataView
+public class ConfirmOrderFragment extends BaseFragment implements DataView
 {
     public static final String TEXT_FINISHED = "完成";
     public static final String TEXT_ADD_MEDICAL = "添加药品";
 
-    public static PrescriptionFragment newInstance()
+    public static ConfirmOrderFragment newInstance()
     {
-        PrescriptionFragment fragment = new PrescriptionFragment();
+        ConfirmOrderFragment fragment = new ConfirmOrderFragment();
         return fragment;
     }
 
     private List<DrugItem> mDrugItems = null;
     private List<String> mDrugItemCounts = new LinkedList<>();
 
-
-    private String mImageFilePath ;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_prescription, null);  //TODO
+        View view = inflater.inflate(R.layout.fragment_confirm_order, null);  //TODO
         initView(view);
         mIsInit = true;
         return view;
@@ -427,6 +420,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 TextView tvCount = (TextView) view.findViewById(R.id.tv_edit_count);
                 mDrugItemCounts.add(tvCount.getText().toString());
                }
+
         }
         String name = mEtMedicalName.getText().toString();
         if (TextUtils.isEmpty(name))
@@ -434,20 +428,15 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 //            mActivity.showCroutonToast("药方名称不可以为空");
 //            return;
         }
-        if(TextUtils.isEmpty(mImageFilePath))
-        {
-            mActivity.showCroutonToast("请选择处方图片");
-            return;
-        }
         //userid字段此处可以不赋值，后面会获取登录信息的userid
         PostSavePrescriptionItem item = new PostSavePrescriptionItem();
         item.name = name;
         item.hosname = mEtHospital.getText().toString();
         item.doctorname = mEtDoctorName.getText().toString();
         item.patientname = mEtUserName.getText().toString();
-        item.result = RSAUtil.clientEncrypt("结果");
+        item.result = "结果";
         item.quantity = "111";
-        item.file =new File(mImageFilePath);
+
         LinkedList<String> drugList = new LinkedList<>();
         for (DrugItem drugitem : mDrugItems)
         {
@@ -476,7 +465,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         {
             public void onClick(View v)
             {
-                mImageFilePath =     PhotoUtils.selectPicFromCamera(mActivity);
+                PhotoUtils.selectPicFromCamera(mActivity);
                 alertDialog.dismiss();
             }
         });
@@ -489,22 +478,5 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 alertDialog.dismiss();
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode == Activity.RESULT_OK)
-        {
-            if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
-            {
-                if (null != data && data.getData() != null)
-                {
-                    mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                }
-            }
-        }
-       // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-      mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
     }
 }

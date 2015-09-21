@@ -64,6 +64,7 @@ public class OkHttpUtils
 
     public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
     {
+        System.out.println("XH  请求URL = " + url );
         //userId要客户端加密
         String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
         System.out.println("加密后的userId = " + encryptUserId);
@@ -71,9 +72,10 @@ public class OkHttpUtils
         Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
 
         RequestBody fileBody1 = RequestBody.create(MediaType.parse("image/png"), file);
-        RequestBody fileBody2 = RequestBody.create(MediaType.parse("image/png"), file);
-        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("file", "file", fileBody1)
-                .addFormDataPart("file", "file", fileBody2)  ;
+     //   RequestBody fileBody2 = RequestBody.create(MediaType.parse("image/png"), file);
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("file", "file", fileBody1) ;
+//                .addFormDataPart("file", "file", fileBody2)
+// ;
         if (null != postMap)
         {
             for (String key : postMap.keySet())

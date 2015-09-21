@@ -14,7 +14,6 @@ import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,18 +88,18 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
         };
         Map<String, String> postMap = new HashMap<>();
         postMap.put("userId", RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id));
-        postMap.put("name", RSAUtil.clientEncrypt(item.name));
+        postMap.put("name", item.name);
         String drugIdStr = GsonUtils.toJson(item.drugId);
         // System.out.println("drugIdStr = " +drugIdStr);
         postMap.put("drugIds", drugIdStr);
         postMap.put("hosname", item.hosname);
         postMap.put("doctorname", item.doctorname);
         postMap.put("patientname", item.patientname);
-        postMap.put("result", RSAUtil.clientEncrypt(item.result));
+        postMap.put("result", item.result);
         postMap.put("quantity", item.quantity);
         postMap.put("drugQuantitys", GsonUtils.toJson(item.drugQuantity));
         mActivity.showProgressDialog();
-        OkHttpUtils.customXHasyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap, new File("/mnt/sdcard/tmp.jpg"), callback);
+        OkHttpUtils.customXHasyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap, item.file, callback);
     }
 
 }

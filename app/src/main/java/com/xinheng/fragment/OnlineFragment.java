@@ -106,6 +106,7 @@ public class OnLineFragment extends BaseFragment implements DataView
         layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_home_ad_height);
         mInfiniteViewPagerIndicatorView.setLayoutParams(layoutParams);
         mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter(adItems));
+        mInfiniteViewPagerIndicatorView.stopAutoCycle();
         mInfiniteViewPagerIndicatorView.startAutoCycle();
         mCustomGridView.setAdapter(genGridAdapter());
     }

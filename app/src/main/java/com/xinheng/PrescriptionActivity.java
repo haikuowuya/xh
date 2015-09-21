@@ -20,15 +20,22 @@ public class PrescriptionActivity extends BaseActivity
         activity.startActivity(intent);
     }
 
+    private  PrescriptionFragment mPrescriptionFragment;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
           setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, PrescriptionFragment.newInstance()).commit();
+        mPrescriptionFragment =    PrescriptionFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mPrescriptionFragment).commit();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        mPrescriptionFragment.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public CharSequence getActivityTitle()

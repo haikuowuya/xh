@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -50,13 +51,17 @@ public class AdPagerAdapter extends PagerAdapter
         imageView.setImageResource(R.mipmap.ic_ad_banner);
         container.addView(imageView);
         String imageUrl = item.img;
-        ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
+        if(URLUtil.isNetworkUrl(imageUrl))
         {
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-            {
-                //  imageView.setImageBitmap(loadedImage);
-            }
-        });
+            ImageLoader.getInstance().loadImage(
+                    imageUrl, new AbsImageLoadingListener()
+                    {
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                        {
+                              imageView.setImageBitmap(loadedImage);
+                        }
+                    });
+        }
         return imageView;
     }
 

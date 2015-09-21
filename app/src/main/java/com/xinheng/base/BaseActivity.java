@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -89,6 +90,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      * 网络加载时显示的进度框
      */
     private ProgressDialog mProgressDialog;
+
+
+    private PopupWindow mPopupWindow;
 
     public SharedPreferences getPreferences()
     {
@@ -229,8 +233,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             @Override
             public void onClick(View v)
             {
-                 mSlidingMenu.toggle(true);
-//                showPopupWindow();
+                // mSlidingMenu.toggle(true);
+              showPopupWindow();
             }
         });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
@@ -239,14 +243,27 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     private void showPopupWindow()
     {
-        ListView  listview  = new ListView(mActivity);
-        listview.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-          int width = DensityUtils.dpToPx(mActivity, 200.f);
-        int height =  width*3;
-
-        PopupWindow popupWindow = new PopupWindow(listview, width,height);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
-        popupWindow.showAsDropDown(mIvRight);
+        if(null ==mPopupWindow)
+        {
+            ListView listview = (ListView) LayoutInflater.from(mActivity).inflate(R.layout.layout_listview,null);
+            listview.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+            listview.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, R.layout.list_popupwindow_item));
+            listview.setItemChecked(0, true);
+            int width = DensityUtils.dpToPx(mActivity, 200.f);
+            int height = AbsListView.LayoutParams.WRAP_CONTENT;
+            mPopupWindow = new PopupWindow(listview, width, height);
+            mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
+            mPopupWindow.setOutsideTouchable(true);// 设置点击窗口外边窗口消失
+            mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
+        }
+        if (mPopupWindow != null && mPopupWindow.isShowing())
+        {
+            mPopupWindow.dismiss();
+        }
+        else
+        {
+            mPopupWindow.showAsDropDown(mIvRight);
+        }
     }
 
     private void initSlidingMenu()

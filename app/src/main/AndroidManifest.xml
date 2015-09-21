@@ -148,6 +148,10 @@
                   android:label="@string/tv_activity_add_address"/>
 
 
+        <activity android:name=".ConfirmOrderActivity"
+                  android:label="@string/tv_activity_confirm_order"/>
+
+
     </application>
 
 </manifest>
