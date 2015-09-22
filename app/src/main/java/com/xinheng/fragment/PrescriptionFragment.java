@@ -68,7 +68,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_prescription, null);  //TODO
+        View view = inflater.inflate(R.layout.fragment_prescription, null);  //TODO 布局文件
         initView(view);
         mIsInit = true;
         return view;
@@ -98,11 +98,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     private EditText mEtUserName;
 
     /**
-     * 每份价格
-     */
-    private EditText mEtPrice;
-
-    /**
      * 添加药品
      */
     private Button mBtnAddMedical;
@@ -127,7 +122,15 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 
     private double mPrice;
 
+    /***
+     * 添加药品后的编辑按钮
+     */
     private Button mBtnEdit;
+
+    /**
+     * 服用剂数
+     */
+    private EditText mEtQuantity;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
@@ -145,8 +148,8 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         mEtDoctorName = (EditText) view.findViewById(R.id.et_doctor_name);
         mEtHospital = (EditText) view.findViewById(R.id.et_hospital);
+        mEtQuantity = (EditText) view.findViewById(R.id.et_quantity);
         mEtMedicalName = (EditText) view.findViewById(R.id.et_medical_name);
-        mEtPrice = (EditText) view.findViewById(R.id.et_price);
         mEtUserName = (EditText) view.findViewById(R.id.et_username);
         mBtnImage = (Button) view.findViewById(R.id.btn_image);
         mBtnAddMedical = (Button) view.findViewById(R.id.btn_add_medical);
@@ -347,7 +350,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         if (null != resultItem)
         {
@@ -355,7 +358,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             if (resultItem.success())
             {
                 OrderPrescItem orderPrescItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), OrderPrescItem.class);
-                if(null != orderPrescItem &&!TextUtils.isEmpty(orderPrescItem.orderId))
+                if (null != orderPrescItem && !TextUtils.isEmpty(orderPrescItem.orderId))
                 {
                     ConfirmOrderActivity.actionConfirmOrder(mActivity, orderPrescItem.orderId);
                 }
@@ -364,7 +367,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
         mActivity.showCroutonToast(msg);
     }
@@ -448,6 +451,13 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             mActivity.showCroutonToast("请选择处方图片");
             return;
         }
+        String quantity = mEtQuantity.getText().toString();
+        if (TextUtils.isEmpty(quantity))
+        {
+//            mActivity.showCroutonToast("请输入服用剂数");
+//            return;
+            quantity ="1";
+        }
         //userid字段此处可以不赋值，后面会获取登录信息的userid
         PostSavePrescriptionItem item = new PostSavePrescriptionItem();
         item.name = name;
@@ -455,7 +465,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         item.doctorname = mEtDoctorName.getText().toString();
         item.patientname = mEtUserName.getText().toString();
         item.result = RSAUtil.clientEncrypt("结果");
-        item.quantity = "111";
+        item.quantity = quantity;
         item.file = new File(mImageFilePath);
         LinkedList<String> drugList = new LinkedList<>();
         for (DrugItem drugitem : mDrugItems)

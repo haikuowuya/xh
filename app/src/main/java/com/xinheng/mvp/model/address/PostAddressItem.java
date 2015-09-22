@@ -6,4 +6,6 @@ package com.xinheng.mvp.model.address;
 public class PostAddressItem extends  AddressItem
 {
     public String userId;
+    public String province;//省
+    public String  county;//区县
 }

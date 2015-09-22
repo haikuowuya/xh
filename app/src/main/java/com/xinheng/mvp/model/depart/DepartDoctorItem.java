@@ -41,7 +41,7 @@ public class DepartDoctorItem extends BaseEmptyItem
      */
     public String skill;
 
-    public static final String DEBUG_SUCCESS = "{\"result\":\"1\",\"message\":\"获取科室医生列表信息成功\",\"properties\":[{\"doctId\":\"6\",\"status\":\"0\",\"doctorName\":\"朱震\",\"img\":\"doc.jpg\",\"hospital\":\"苏州中医院\",\"department\":\"外科\",\"technicalPost\":\"主任医师\",\"skill\":\"擅长：治疗瘿气、瘿病眼病、瘿痈、消渴病及其慢性并发症、痹症、绝经前后诸症、肥胖症、肾上腺疾病、性腺疾病等内分泌疾病\"},{\"doctId\":\"443\",\"status\":\"0\",\"doctorName\":\"代芳\",\"img\":\"doc.jpg\",\"hospital\":\"苏州中医院\",\"department\":\"外科\",\"technicalPost\":\"主任医师\",\"skill\":\"擅长：治疗瘿病、消渴病及其慢性并发症、痹症、绝经前后诸症、肥胖症等内分泌疾病，尤其致力于瘿气及瘿病眼病方向的研究\"}]}";
+    public static final String DEBUG_SUCCESS = "{\"result\":\"1\",\"message\":\"获取科室医生列表信息成功\",\"properties\":[{\"doctId\":\"40288af44f7870fa014f788f79fa0015\",\"status\":\"0\",\"doctorName\":\"宋宁静\",\"img\":\"doc.jpg\",\"hospital\":\"苏州中医院\",\"department\":\"外科\",\"technicalPost\":\"主任医师\",\"skill\":\"擅长：用针药结合、及运用刺络疗法治疗面瘫、面肌痉挛、颈腰椎病、坐骨神经痛、头痛、三叉神经痛、诸神经痛、软组织损伤等病症；并运用中药治疗心肌缺血、失眠、房颤等老年病、慢... 更多 擅长：用针药结合、及运用刺络疗法治疗面瘫、面肌痉挛、颈腰椎病、坐骨神经痛、头痛、三叉神经痛、诸神经痛、软组织损伤等病症；并运用中药治疗心肌缺血、失眠、房颤等老年病、慢性病亦有独道经验。以“醒脑开窍”针刺法为主，治疗不同时期的中风病、及颅脑外伤后遗症等病症\"}]}";
     public static final String DEBUG_FAILURED = "{\"result\":\"-1\",\"message\":\"获取科室医生列表信息失败！\"}";
 
 }

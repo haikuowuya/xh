@@ -26,8 +26,10 @@ import com.xinheng.mvp.model.prescription.ConfirmOrderItem;
 import com.xinheng.mvp.model.prescription.PostPayDespatchItem;
 import com.xinheng.mvp.presenter.AddressPresenter;
 import com.xinheng.mvp.presenter.ConfirmOrderPresenter;
+import com.xinheng.mvp.presenter.SubmitOrderPresenter;
 import com.xinheng.mvp.presenter.impl.AddressPresenterImpl;
 import com.xinheng.mvp.presenter.impl.ConfirmOrderPresenterImpl;
+import com.xinheng.mvp.presenter.impl.SubmitOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
@@ -231,11 +233,11 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
                 if (REQUEST_ORDER_INFO_TAG.equals(requestTag))
                 {
+                    mActivity.showCroutonToast(resultItem.message);
                     ConfirmOrderItem confirmOrderItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), ConfirmOrderItem.class);
                     if (null != confirmOrderItem && null != confirmOrderItem.list && !confirmOrderItem.list.isEmpty())
                     {
@@ -254,7 +256,8 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                         spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + confirmOrderItem.fee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         mTvConfirmFee.setText(spannableStringBuilder1);
                     }
-                } else if (REQUEST_ADDRESS_TAG.equals(requestTag))
+                }
+                else if (REQUEST_ADDRESS_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<AddressItem>>()
                     {
@@ -265,6 +268,10 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                         AddressItem addressItem = items.get(0);
                         fillAddressItemToView(addressItem);
                     }
+                }
+                else if (REQUEST_CONFIRM_ORDER_TAG.equals(requestTag))
+                {
+                    mActivity.showCroutonToast(resultItem.message);
                 }
             }
         }
@@ -287,7 +294,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
     @Override
     public void onGetDataFailured(String msg, String requestTag)
     {
-
+        mActivity.showCroutonToast(msg);
     }
 
     /**
@@ -331,8 +338,8 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
         {
             switch (v.getId())
             {
-                case R.id.btn_ok://确认
-                    ok();
+                case R.id.btn_ok://提交订单
+                    submitOrder();
                     break;
                 case R.id.linear_address_container://点击收货地址
                     address();
@@ -354,9 +361,10 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
         AddressListActivity.actionAddressManager(mActivity, true);
     }
 
-    private void ok()
+    private void submitOrder()
     {
-
+        SubmitOrderPresenter submitOrderPresenter = new SubmitOrderPresenterImpl(mActivity, this, REQUEST_CONFIRM_ORDER_TAG);
+        submitOrderPresenter.doSubmitOrder(mPostPayDespatchItem);
     }
 
 }

@@ -49,6 +49,11 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     }
 
     private AddressItem mAddressItem;
+
+    /***
+     * Post提交的实体类
+     */
+    private PostAddressItem mPostAddressItem = new PostAddressItem();
     /****
      * 省市地区信息
      */
@@ -89,7 +94,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_add_or_modify_address, null);
+        View view = inflater.inflate(R.layout.fragment_add_or_modify_address, null);   //TODO 布局文件
         initView(view);
         mIsInit = true;
         return view;
@@ -126,6 +131,9 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
         if (null != event && null != event)
         {
             mTvCity.setText(event.province + "-" + event.city + "-" + event.area);
+            mPostAddressItem.province = event.province;
+            mPostAddressItem.city = event.city;
+            mPostAddressItem.county = event.area;
         }
     }
 
@@ -167,8 +175,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
                 deleteAddress();
             }
         });
-        mTvCity.setOnClickListener(
-                new View.OnClickListener()
+        mTvCity.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -180,14 +187,16 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
 
     private void deleteAddress()
     {
-        if(null != mAddressItem)
+        if (null != mAddressItem)
         {
             DeleteAddressPresenter deleteAddressPresenter = new DeleteAddressPresenterImpl(mActivity, this);
             deleteAddressPresenter.doDeleteAddress(mAddressItem.id);
         }
-
     }
 
+    /**
+     * 提交按钮点击事件
+     */
     private void submit()
     {
         String city = mTvCity.getText().toString();
@@ -209,7 +218,6 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
             return;
         }
         String phone = mEtPhone.getText().toString();
-
         if (TextUtils.isEmpty(phone))
         {
             mActivity.showCroutonToast("收货人手机号码不可以为空");
@@ -221,22 +229,19 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
             mActivity.showCroutonToast("邮政编码不可以为空");
             return;
         }
-
-        PostAddressItem postAddressItem = new PostAddressItem();
-        postAddressItem.isDefault = mCbDefault.isChecked() ? "1" : "0";
+        mPostAddressItem.isDefault = mCbDefault.isChecked() ? "1" : "0";
         if (mAddressItem != null)
         {
-            postAddressItem.id = mAddressItem.id;//如果id不为空代表修改
+            mPostAddressItem.id = mAddressItem.id;//如果id不为空代表修改
         }
-
-        postAddressItem.city = city;    //   {"message":"cityCode错误！","result":"-1"}
-        postAddressItem.cityCode = "330824";//使用文档中的
-        postAddressItem.mobile = phone;
-        postAddressItem.address = address;
-        postAddressItem.name = name;
-        postAddressItem.zipcode = zipCode;
+     //   mPostAddressItem.city = city;    //   {"message":"cityCode错误！","result":"-1"}
+        mPostAddressItem.cityCode = "330824";//使用文档中的
+        mPostAddressItem.mobile = phone;
+        mPostAddressItem.address = address;
+        mPostAddressItem.name = name;
+        mPostAddressItem.zipcode = zipCode;
         AddOrModifyAddressPresenter addOrModifyAddressPresenter = new AddOrModifyAddressPresenterImpl(mActivity, this);
-        addOrModifyAddressPresenter.doAddOrModifyAddress(postAddressItem);
+        addOrModifyAddressPresenter.doAddOrModifyAddress(mPostAddressItem);
         mActivity.hideSoftKeyBorard(mActivity.getCurrentFocus());
     }
 
@@ -258,7 +263,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         if (null != resultItem)
         {
@@ -272,7 +277,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }

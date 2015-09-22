@@ -1,9 +1,11 @@
 package com.xinheng.mvp.model.doctor;
 
+import com.xinheng.mvp.model.BaseEmptyItem;
+
 /**
- * Created by Steven on 2015/9/8 0008.
+ * 根据医生id进行操作，post提交的请求体
  */
-public class BasePostDoctorItem
+public class BasePostDoctorItem  extends BaseEmptyItem
 {
     public String doctId;
 }

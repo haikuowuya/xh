@@ -82,9 +82,17 @@ public class APIURL
      */
     public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/medicaldata/drug/getall";
     /***
-     * 按方抓药，提交审核后的确认订单URL
+     * 按方抓药，提交审核后的获取订单信息URL
      */
     public static final String CONFIRM_ORDER_URL=BASE_API_URL+"/interface/patient/mall/confirm";
+    /***
+     *  按方抓药，提交审核后提交订单
+     */
+    public static final String SAVE_ORDER_URL=BASE_API_URL+"/interface/patient/mall/saveconfirm";
+    /***
+     * 科室医生-医生详情-添加关注接口URL
+     */
+    public static final String ADD_ATTENTION_URL=BASE_API_URL+"/interface/patient/mall/saveconfirm";
     /**
      * 我的报告列表URL
      */

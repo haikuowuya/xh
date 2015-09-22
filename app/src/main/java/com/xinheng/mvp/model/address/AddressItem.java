@@ -17,6 +17,5 @@ public class AddressItem extends BaseEmptyItem
     public String qq;//联系qq
     public String isDefault;//是否默认地址 0 否 1 是
     public String createTime;//创建时间
-
     public String city;
 }

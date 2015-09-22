@@ -17,10 +17,14 @@ public class DoctorDetailPresenterImpl implements DoctorDetailPresenter
     private BaseActivity mActivity;
     private DataView mDataView;
 
-    public DoctorDetailPresenterImpl(BaseActivity activity, DataView dataView)
+    private String mRequestTag;
+
+
+    public DoctorDetailPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
     {
         mActivity = activity;
         mDataView = dataView;
+        mRequestTag = requestTag;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class DoctorDetailPresenterImpl implements DoctorDetailPresenter
         String mingPostBody = GsonUtils.toJson(postDepartDoctorItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, departDoctorUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, departDoctorUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 
 

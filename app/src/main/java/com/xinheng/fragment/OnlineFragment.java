@@ -46,7 +46,7 @@ import java.util.List;
  * 时间： 17:38
  * 说明： 在线售药内容
  */
-public class OnLineFragment extends BaseFragment implements DataView
+public class OnlineFragment extends BaseFragment implements DataView
 {
     /**
      * 顶部的滚动广告位置
@@ -71,9 +71,9 @@ public class OnLineFragment extends BaseFragment implements DataView
      */
     private TabViewPagerIndicator mTabViewPagerIndicator;
 
-    public static OnLineFragment newInstance()
+    public static OnlineFragment newInstance()
     {
-        OnLineFragment fragment = new OnLineFragment();
+        OnlineFragment fragment = new OnlineFragment();
         return fragment;
     }
 

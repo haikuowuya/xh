@@ -10,7 +10,7 @@ import com.xinheng.mvp.model.depart.DepartDoctorItem;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/9/9 0009.
+ * 科室医生列表适配器
  */
 public class DepartDoctorListAdapter   extends BaseAdapter<DepartDoctorItem>
 {

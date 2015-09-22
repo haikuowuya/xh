@@ -71,9 +71,10 @@
                         tools:text="主任医师"/>
 
                     <TextView
-                        android:id="@+id/tv_guanzhu"
+                        android:id="@+id/tv_attention"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
+
                         android:layout_marginRight="4dp"
                         android:background="@drawable/user_subscribe_detail_selector"
                         android:drawableLeft="@mipmap/ic_doctor_guanzhu"
@@ -95,16 +96,14 @@
                     android:layout_height="32dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
-
                     android:textColor="@color/color_main_text_gray_color"
                     tools:text="国家级重点专科/内分泌科"/>
 
                 <Button
-                    android:id="@+id/btn_code"
+                    android:id="@+id/btn_online_counsel"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
                     android:layout_margin="6dp"
-
                     android:background="@drawable/user_subscribe_evaluation_selector"
                     android:gravity="center"
                     android:padding="4dp"
@@ -118,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_background"
+            android:background="@drawable/shape_edittext_round_background"
             android:orientation="vertical">
 
             <TextView
@@ -127,18 +126,20 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="排班信息"/>
+
             <View
                 android:layout_width="match_parent"
-                android:background="#FF999999"
+                android:layout_height="0.5dp"
                 android:layout_marginLeft="10dp"
-                android:layout_height="0.5dp"/>
+                android:background="#FF999999"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_background"
+            android:background="@drawable/shape_edittext_round_background"
             android:orientation="vertical">
 
             <TextView
@@ -147,18 +148,22 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="擅长"/>
+
             <View
                 android:layout_width="match_parent"
-                android:background="#FF999999"
+                android:layout_height="0.5dp"
                 android:layout_marginLeft="10dp"
-                android:layout_height="0.5dp"/>
+                android:layout_marginRight="10dp"
+                android:background="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_skill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="擅长"/>
+                android:text="擅长"
+                android:textColor="@color/color_main_text_gray_color"/>
 
         </LinearLayout>
 
@@ -166,7 +171,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_background"
+            android:background="@drawable/shape_edittext_round_background"
             android:orientation="vertical">
 
             <TextView
@@ -175,19 +180,53 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:text="简介"/>
+
             <View
                 android:layout_width="match_parent"
-                android:background="#FF999999"
+                android:layout_height="0.5dp"
                 android:layout_marginLeft="10dp"
-                android:layout_height="0.5dp"/>
+                android:layout_marginRight="10dp"
+                android:background="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="擅长"/>
+                android:text="简介"
+                android:textColor="@color/color_main_text_gray_color"/>
+        </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_edittext_round_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="预约规则"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#FF999999"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="@string/tv_subscribe_rule"
+                android:textColor="@color/color_main_text_gray_color"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
