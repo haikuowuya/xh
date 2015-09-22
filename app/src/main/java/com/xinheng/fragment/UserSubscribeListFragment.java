@@ -87,7 +87,7 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         refreshComplete();
         if (null != resultItem)
@@ -114,7 +114,7 @@ public class UserSubscribeListFragment extends PTRListFragment implements DataVi
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
       mActivity.showCroutonToast(msg);
     }

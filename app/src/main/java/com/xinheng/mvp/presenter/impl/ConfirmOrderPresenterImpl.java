@@ -16,6 +16,14 @@ public class ConfirmOrderPresenterImpl implements ConfirmOrderPresenter
 {
     private BaseActivity mActivity;
     private DataView mDataView;
+    private String mRequestTag;
+
+    public ConfirmOrderPresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
+    {
+        mActivity = activity;
+        mDataView = dataView;
+        mRequestTag = requestTag;
+    }
 
     public ConfirmOrderPresenterImpl(BaseActivity activity, DataView dataView)
     {
@@ -33,9 +41,8 @@ public class ConfirmOrderPresenterImpl implements ConfirmOrderPresenter
         String mingPostBody = GsonUtils.toJson(postItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        System.out.println("postBody = " + postBody );
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userMedicalUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        System.out.println("postBody = " + postBody);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userMedicalUrl, postBody, mActivity.getLoginSuccessItem(), mDataView, mRequestTag);
     }
-
 
 }

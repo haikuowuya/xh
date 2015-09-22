@@ -10,6 +10,6 @@ import com.xinheng.mvp.model.ResultItem;
  */
 public interface DataView
 {
-    public void onGetDataSuccess(ResultItem resultItem);
-    public void onGetDataFailured(String msg);
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag);
+    public void onGetDataFailured(String msg,String requestTag);
 }

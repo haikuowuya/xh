@@ -38,7 +38,7 @@ public class RequestUtils
      * @param url:请求的URL
      * @param dataView:请求结果的回调
      */
-    public static void getDataFromUrl(final BaseActivity activity, String url, final DataView dataView)
+    public static void getDataFromUrl(final BaseActivity activity, String url, final DataView dataView, final String requestTag)
     {
         Response.Listener responseListener = new Response.Listener()
         {
@@ -51,16 +51,17 @@ public class RequestUtils
                     //  System.out.println("结果数据 = 【 "+result+" 】");
                 }
                 //模拟网络请求
-                new Handler(activity.getMainLooper()).postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        activity.dismissProgressDialog();
+                new Handler(activity.getMainLooper()).postDelayed(
+                        new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                activity.dismissProgressDialog();
 //                        dataView.onGetDataSuccess(GsonUtils.jsonToClass(result, ResultItem.class));
-                        dataView.onGetDataSuccess(null);
-                    }
-                }, 2000L);
+                                dataView.onGetDataSuccess(null, requestTag);
+                            }
+                        }, 2000L);
 
             }
         };
@@ -70,7 +71,7 @@ public class RequestUtils
             public void onErrorResponse(VolleyError error)
             {
                 activity.dismissProgressDialog();
-                dataView.onGetDataFailured(error.getMessage());
+                dataView.onGetDataFailured(error.getMessage(), requestTag);
             }
         };
         Request request = new StringRequest(Request.Method.GET, url, responseListener, errorListener);
@@ -85,21 +86,41 @@ public class RequestUtils
      * @param postBody :post请求的加密字符串
      * @param dataView ：处理加载进度
      */
+    public static void getDataFromUrlByPost(final BaseActivity activity, String url, final String postBody, final DataView dataView, String requestTag)
+    {
+        getDataFromUrlByPostWithLoginInfo(activity, url, postBody, null, dataView, requestTag);
+    }
+
     public static void getDataFromUrlByPost(final BaseActivity activity, String url, final String postBody, final DataView dataView)
     {
         getDataFromUrlByPostWithLoginInfo(activity, url, postBody, null, dataView);
     }
 
+    /***
+     * 获取用户登录成功后的数据， 使用Post请求,没有传人requestTag,适用于一个页面只进行单一请求
+     *
+     * @param activity    : 当前请求所在的Activity
+     * @param url         : post请求的url
+     * @param postBody    : post请求的加密字符串
+     * @param successItem :用户登录成功后的信息
+     * @param dataView    :处理加载进度
+     */
+    public static void getDataFromUrlByPostWithLoginInfo(final BaseActivity activity, String url, final String postBody, final LoginSuccessItem successItem, final DataView dataView)
+    {
+        getDataFromUrlByPostWithLoginInfo(activity, url, postBody, successItem, dataView, null);
+    }
+
     /**
      * 获取用户登录成功后的数据， 使用Post请求
      *
-     * @param activity     :当前请求所在的Activity
-     * @param url          ：post请求的url
-     * @param postBody     :post请求的加密字符串
-     * @param dataView     ：处理加载进度
-     * @param successItem: 用户登录成功后的信息
+     * @param activity         :当前请求所在的Activity
+     * @param url              ：post请求的url
+     * @param postBody         :post请求的加密字符串
+     * @param dataView         ：处理加载进度
+     * @param successItem:     用户登录成功后的信息
+     * @param requestTag:请求的标志
      */
-    public static void getDataFromUrlByPostWithLoginInfo(final BaseActivity activity, String url, final String postBody, final LoginSuccessItem successItem, final DataView dataView)
+    public static void getDataFromUrlByPostWithLoginInfo(final BaseActivity activity, String url, final String postBody, final LoginSuccessItem successItem, final DataView dataView, final String requestTag)
     {
         System.out.println("请求的URL = " + url);
         Response.Listener responseListener = new Response.Listener()
@@ -120,7 +141,7 @@ public class RequestUtils
                     }
                     resultItem = GsonUtils.jsonToClass(decryptResult, ResultItem.class);
                 }
-                dataView.onGetDataSuccess(resultItem);
+                dataView.onGetDataSuccess(resultItem, requestTag);
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener()
@@ -135,7 +156,7 @@ public class RequestUtils
                     errMsg = error.getMessage();
                 }
                 System.out.println("errMsg = " + errMsg + " error = " + error);
-                dataView.onGetDataFailured(errMsg);
+                dataView.onGetDataFailured(errMsg, requestTag);
             }
         };
         Request request = new StringRequest(Request.Method.POST, url, responseListener, errorListener)
@@ -143,13 +164,12 @@ public class RequestUtils
             public byte[] getBody() throws AuthFailureError
             {
                 byte[] bytes = null;
-                if(!TextUtils.isEmpty(postBody))
+                if (!TextUtils.isEmpty(postBody))
                 {
                     try
                     {
                         bytes = postBody.getBytes(HTTP.UTF_8);
-                    }
-                    catch (UnsupportedEncodingException e)
+                    } catch (UnsupportedEncodingException e)
                     {
                         e.printStackTrace();
                     }

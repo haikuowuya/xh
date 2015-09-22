@@ -53,7 +53,7 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
                     public void run()
                     {
                         mActivity.dismissProgressDialog();
-                        mDataView.onGetDataFailured(e.getMessage());
+                        mDataView.onGetDataFailured(e.getMessage(),null);
                     }
                 });
             }
@@ -81,7 +81,7 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
                     public void run()
                     {
                         mActivity.dismissProgressDialog();
-                        mDataView.onGetDataSuccess(finalResultItem);
+                        mDataView.onGetDataSuccess(finalResultItem,null);
                     }
                 });
             }

@@ -16,6 +16,7 @@ import com.xinheng.R;
 import com.xinheng.adapter.address.AddressListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddOrModifyOrDelAddressEvent;
+import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.address.AddressItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
@@ -43,16 +44,20 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class AddressListFragment extends BaseFragment implements DataView
 {
     private static final String DATA = UserPatientItem.DEBUG_SUCCESS;
+    public static final String ARG_FROM_CONFIRM_ORDER = "from_confirm_order";
 
-    public static AddressListFragment newInstance()
+    public static AddressListFragment newInstance(boolean fromConfirmOrder)
     {
         AddressListFragment fragment = new AddressListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ARG_FROM_CONFIRM_ORDER, fromConfirmOrder);
+        fragment.setArguments(bundle);
         return fragment;
     }
+
+    private boolean mFromConfirmOrder = false;
     private LinkedList<AddressItem> mAddressItems = new LinkedList<>();
     private AddressListAdapter mAddressListAdapter;
-
-
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
@@ -71,6 +76,7 @@ public class AddressListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -83,28 +89,32 @@ public class AddressListFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
+        mFromConfirmOrder = getArguments().getBoolean(ARG_FROM_CONFIRM_ORDER);
         mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                doRefresh();
-            }
-        });
-        mBtnAddAddress.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                AddOrModifyAddressActivity.actionAddAddress(mActivity);
-            }
-        });
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        doRefresh();
+                    }
+                });
+        mBtnAddAddress.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        AddOrModifyAddressActivity.actionAddAddress(mActivity);
+                    }
+                });
     }
+
     //===============================EVENT BUS========================
     @Subscribe
     public void onEventMainThread(OnAddOrModifyOrDelAddressEvent event)
     {
-        if(null != event )
+        if (null != event)
         {
             doGetData();
             //重新去请求一次服务器吧，下面的方式会出现年龄为null
@@ -129,6 +139,7 @@ public class AddressListFragment extends BaseFragment implements DataView
     {
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
@@ -137,10 +148,10 @@ public class AddressListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
@@ -157,32 +168,40 @@ public class AddressListFragment extends BaseFragment implements DataView
                     {
                         mAddressListAdapter = new AddressListAdapter(mActivity, mAddressItems);
                         mListView.setAdapter(mAddressListAdapter);
-                    }
-                    else
+                    } else
                     {
                         mAddressListAdapter.notifyDataSetChanged();
                     }
-                    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                    {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                        {
-                            AddressItem addressItem = mAddressItems.get(position);
-                            AddOrModifyAddressActivity.actionAddAddress(mActivity,addressItem);
-                        }
-                    });
+                    mListView.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener()
+                            {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                                {
+                                        AddressItem addressItem = mAddressItems.get(position);
+                                    if(!mFromConfirmOrder)
+                                    {
+                                        AddOrModifyAddressActivity.actionAddAddress(mActivity, addressItem);
+                                    }
+                                    else
+                                    {
+                                        EventBus.getDefault().post(new OnSelectAddressEvent(addressItem));
+                                          mActivity.finish();
+                                    }
+                                }
+                            });
                 }
             }
         }
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }

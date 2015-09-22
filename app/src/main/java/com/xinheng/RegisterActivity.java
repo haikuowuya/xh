@@ -95,7 +95,7 @@ public class RegisterActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if (null != resultItem)
         {
@@ -113,7 +113,7 @@ public class RegisterActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
         if (!TextUtils.isEmpty(msg))
         {

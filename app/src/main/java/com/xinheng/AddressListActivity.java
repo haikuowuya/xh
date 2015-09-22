@@ -14,22 +14,31 @@ import com.xinheng.fragment.AddressListFragment;
  */
 public class AddressListActivity extends BaseActivity
 {
+    public static final String EXTRA_FROM_CONFIRM_ORDER = "from_confirm_order";
+
     public static void actionAddressManager(BaseActivity activity)
     {
+         actionAddressManager(activity,false);
+    }
+
+    public static void actionAddressManager(BaseActivity activity, boolean fromConfirmOrder)
+    {
         Intent intent = new Intent(activity, AddressListActivity.class);
+        intent.putExtra(EXTRA_FROM_CONFIRM_ORDER, fromConfirmOrder);
         activity.startActivity(intent);
     }
+
+    private boolean mFromConfirmOrder = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-          setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, AddressListFragment.newInstance()).commit();
+        setContentView(R.layout.activity_activity_common);
+        mFromConfirmOrder = getIntent().getBooleanExtra(EXTRA_FROM_CONFIRM_ORDER, false);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, AddressListFragment.newInstance(mFromConfirmOrder)).commit();
 
     }
-
-
 
     @Override
     public CharSequence getActivityTitle()

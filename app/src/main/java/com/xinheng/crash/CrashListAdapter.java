@@ -41,95 +41,109 @@ import com.xinheng.R;
  * Created by drakeet(http://drakeet.me)
  * Date: 9/2/15 12:42
  */
-public class CrashListAdapter extends RecyclerView.Adapter<CrashListAdapter.ViewHolder> {
+public class CrashListAdapter extends RecyclerView.Adapter<CrashListAdapter.ViewHolder>
+{
 
     public static final String TAG = "CrashListAdapter";
 
     private String[] mData;
     private String mPackageName;
 
-    public CrashListAdapter(String[] strings, String pack) {
+    public CrashListAdapter(String[] strings, String pack)
+    {
         mData = strings;
         mPackageName = pack;
     }
 
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_crash_cat, parent, false);
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int i)
+    {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_crash_cat, parent, false);
         return new ViewHolder(v);
     }
 
-    @Override public void onBindViewHolder(final ViewHolder holder, final int position) {
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position)
+    {
         String crash = mData[position];
         holder.log = crash;
-        if (crash != null) {
+        if (crash != null)
+        {
             setSpaceState(holder, /*show = */ crash.startsWith("at "));
 
-            if (crash.startsWith("Caused by")) {
+            if (crash.startsWith("Caused by"))
+            {
                 holder.title.setTypeface(null, Typeface.BOLD);
                 holder.title.setTextColor(0xdeffffff);
-            }
-            else {
+            } else
+            {
                 holder.title.setTypeface(null, Typeface.NORMAL);
                 holder.title.setTextColor(0xffef4545);
             }
 
-            if (mPackageName != null && crash.contains(mPackageName))
+            if (mPackageName != null && crash.contains(mPackageName) && crash.indexOf("(") > -1)
             {
-
                 holder.itemView.setSelected(true);
                 int indexOfC = crash.indexOf("(");
-                   if(indexOfC ==-1)
-                   {
-                       indexOfC = crash.indexOf("{");
-                   }
                 String atPackage = crash.substring(0, indexOfC);
                 SpannableStringBuilder builder = new SpannableStringBuilder(atPackage).append(
-                        StringStyleUtils.format(holder.title.getContext(),
-                                " " + crash.substring(indexOfC), R.style.LineTextAppearance));
+                        StringStyleUtils.format(
+                                holder.title.getContext(), " " + crash.substring(indexOfC), R.style.LineTextAppearance));
                 CharSequence title = builder.subSequence(0, builder.length());
                 holder.title.setText(title);
-            }
-            else {
+
+            } else
+            {
                 holder.itemView.setSelected(false);
                 holder.title.setText(crash);
             }
         }
     }
 
-    @Override public void onViewRecycled(ViewHolder holder) {
+    @Override
+    public void onViewRecycled(ViewHolder holder)
+    {
         super.onViewRecycled(holder);
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount()
+    {
         return mData == null ? 0 : mData.length;
     }
 
-    public void setSpaceState(ViewHolder holder, boolean show) {
-        if (!show) {
+    public void setSpaceState(ViewHolder holder, boolean show)
+    {
+        if (!show)
+        {
             holder.space.setVisibility(View.GONE);
-        }
-        else {
+        } else
+        {
             holder.space.setVisibility(View.VISIBLE);
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    {
         TextView title;
         Space space;
         String log;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView)
+        {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.tv_trace);
             space = (Space) itemView.findViewById(R.id.space);
             itemView.setOnClickListener(this);
         }
 
-        @Override public void onClick(View v) {
-            if (log.endsWith("more")) {
-                Toast.makeText(v.getContext(), "It is not supported temporarily.",
-                        Toast.LENGTH_SHORT).show();
+        @Override
+        public void onClick(View v)
+        {
+            if (log.endsWith("more"))
+            {
+                Toast.makeText(
+                        v.getContext(), "It is not supported temporarily.", Toast.LENGTH_SHORT).show();
             }
         }
     }

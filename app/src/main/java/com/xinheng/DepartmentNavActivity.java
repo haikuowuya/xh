@@ -69,13 +69,13 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
 
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if (null != resultItem)
         {

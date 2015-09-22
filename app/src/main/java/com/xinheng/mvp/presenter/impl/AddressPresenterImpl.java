@@ -17,10 +17,19 @@ public class AddressPresenterImpl implements AddressPresenter
     private BaseActivity mActivity;
     private DataView mDataView;
 
+    private  String mRequestTag;
+
     public AddressPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
+    }
+
+    public AddressPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mDataView = dataView;
+        mRequestTag = requestTag;
     }
 
     @Override
@@ -33,7 +42,7 @@ public class AddressPresenterImpl implements AddressPresenter
       //  mingPostBody = mingPostBody.replaceAll("DEFAULT","default");
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userPatientListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userPatientListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 
 

@@ -125,7 +125,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if (null != resultItem)
         {
@@ -146,7 +146,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
         mActivity.showCroutonToast(msg);
         Type type = new TypeToken<List<DoctorDetailItem>>()

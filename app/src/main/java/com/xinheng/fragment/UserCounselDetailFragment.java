@@ -134,7 +134,7 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if (null != resultItem)
         {
@@ -151,7 +151,7 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
         mActivity.showCroutonToast(msg);
         ResultItem resultItem = GsonUtils.jsonToClass(SERVER_ERROR_TEST_RESULT, ResultItem.class);

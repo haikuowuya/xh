@@ -151,6 +151,11 @@
         <activity android:name=".ConfirmOrderActivity"
                   android:label="@string/tv_activity_confirm_order"/>
 
+        <activity android:name=".PayDespatchActivity"
+                  android:label="@string/tv_activity_pay_despatch"/>
+
+        <activity android:name=".CityListActivity"
+                  android:label="@string/tv_activity_city_list"/>
 
     </application>
 

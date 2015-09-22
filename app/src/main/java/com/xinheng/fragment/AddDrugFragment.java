@@ -92,7 +92,7 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         return "我的订单";
     }
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if(resultItem != null)
         {
@@ -124,7 +124,7 @@ public class AddDrugFragment extends BaseFragment   implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
 
     }

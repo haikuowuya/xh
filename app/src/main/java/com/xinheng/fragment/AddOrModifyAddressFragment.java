@@ -12,9 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.xinheng.CityListActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddOrModifyOrDelAddressEvent;
+import com.xinheng.eventbus.OnProvinceCityAreaSelectEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.address.AddressItem;
 import com.xinheng.mvp.model.address.PostAddressItem;
@@ -25,6 +27,7 @@ import com.xinheng.mvp.presenter.impl.DeleteAddressPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * 作者：  libo
@@ -96,6 +99,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         setListener();
         mAddressItem = getArguments().getSerializable(ARG_ADDRESS_ITEM) == null ? null : (AddressItem) getArguments().getSerializable(ARG_ADDRESS_ITEM);
         if (null != mAddressItem)
@@ -112,7 +116,24 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
             mEtZipCode.setSelection(mAddressItem.zipcode.length());
             mCbDefault.setChecked("1".equals(mAddressItem.isDefault));
         }
+    }
 
+    //===============================EVENT BUS========================
+    //选择省市地区事件
+    @Subscribe
+    public void onEventMainThread(OnProvinceCityAreaSelectEvent event)
+    {
+        if (null != event && null != event)
+        {
+            mTvCity.setText(event.province + "-" + event.city + "-" + event.area);
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     private void initView(View view)
@@ -138,7 +159,6 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
                 submit();
             }
         });
-
         mIvDeleteAddress.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -147,6 +167,15 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
                 deleteAddress();
             }
         });
+        mTvCity.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        CityListActivity.actionCityList(mActivity);
+                    }
+                });
     }
 
     private void deleteAddress()
@@ -229,7 +258,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         if (null != resultItem)
         {
@@ -243,7 +272,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
 
     }

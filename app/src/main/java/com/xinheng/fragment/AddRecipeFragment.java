@@ -111,7 +111,7 @@ public class AddRecipeFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem)
+    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
     {
         mPtrClassicFrameLayout.refreshComplete();
         if (null != resultItem)
@@ -139,7 +139,7 @@ public class AddRecipeFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg)
+    public void onGetDataFailured(String msg,String requestTag)
     {
 
     }

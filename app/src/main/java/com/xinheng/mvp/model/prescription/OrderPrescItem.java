@@ -5,7 +5,7 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 /**
  *订单id，药方id 实体类
  */
-public class OrderPrescItem     extends BaseEmptyItem
+public class OrderPrescItem  extends BaseEmptyItem
 {
    public String  orderId;//订单id
     public String prescId;//药方id
