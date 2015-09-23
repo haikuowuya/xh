@@ -215,7 +215,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
     {
         TextView textView = new TextView(mActivity);
         textView.setText(patientItem.name);
-        int paddingLRTB = DensityUtils.dpToPx(mActivity, 10.f);
+        int paddingLRTB = DensityUtils.dpToPx(mActivity, 8.f);
         textView.setGravity(Gravity.CENTER_VERTICAL);
         textView.setBackgroundResource(R.drawable.shape_edittext_background);
         textView.setPadding(paddingLRTB, paddingLRTB, paddingLRTB, paddingLRTB);
