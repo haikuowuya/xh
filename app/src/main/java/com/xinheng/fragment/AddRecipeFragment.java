@@ -14,8 +14,6 @@ import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserOrderItem;
-import com.xinheng.mvp.presenter.UserOrderPresenter;
-import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomListView;
@@ -106,8 +104,8 @@ public class AddRecipeFragment extends BaseFragment implements DataView
     protected void doGetData()
     {
         mActivity.showProgressDialog();
-        UserOrderPresenter userOrderPresenter = new UserOrderPresenterImpl(mActivity, this);
-        userOrderPresenter.doGetUserOrder(mOrderStatus);
+//        UserOrderPresenter userOrderPresenter = new UserOrderPresenterImpl(mActivity, this);
+//        userOrderPresenter.doGetUserOrder(mOrderStatus);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.xinheng.mvp.model;
 
+import com.xinheng.util.Constants;
+
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/25 0025
@@ -15,5 +17,5 @@ public class PostItem extends  BaseEmptyItem
     public String id ;
     public String userId;
     public String page = DEFAULT_PAGE ;
-    public String pageSize;
+    public String pageSize = Constants.PRE_PAGE_SIZE+"";
 }

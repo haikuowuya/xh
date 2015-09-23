@@ -8,6 +8,8 @@ package com.xinheng.util;
  */
 public class Constants
 {
+
+    public static final int  PRE_PAGE_SIZE=10;
     /**
      * HTTP header中的cookie值KEY
      */

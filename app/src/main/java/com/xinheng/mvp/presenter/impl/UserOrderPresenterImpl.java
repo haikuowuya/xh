@@ -32,7 +32,7 @@ public class UserOrderPresenterImpl implements UserOrderPresenter
     }
 
     @Override
-    public void doGetUserOrder(String status)
+    public void doGetUserOrder(String status,int currentPage)
     {
         //获取我的订单URL
         String userOrderUrl = APIURL.USER_ORDER_LIST;
@@ -43,14 +43,14 @@ public class UserOrderPresenterImpl implements UserOrderPresenter
             {
                 PostItem postListItem = new PostItem();
                 postListItem.userId = mActivity.getLoginSuccessItem().id;
-                postListItem.page = "-1";
+                postListItem.page = currentPage+"";
                 mingPostBody = GsonUtils.toJson(postListItem);
             }
             else
             {
                 PostOrderItem orderListItem = new PostOrderItem();
                 orderListItem.userId = mActivity.getLoginSuccessItem().id;
-                orderListItem.page = "-1";
+                orderListItem.page = currentPage+"";
                 orderListItem.state = status;
                 mingPostBody = GsonUtils.toJson(orderListItem);
             }

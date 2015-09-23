@@ -8,5 +8,5 @@ package com.xinheng.mvp.presenter;
  */
 public interface UserOrderPresenter
 {
-    public void doGetUserOrder(String status);
+    public void doGetUserOrder(String status, int currentPage);
 }
