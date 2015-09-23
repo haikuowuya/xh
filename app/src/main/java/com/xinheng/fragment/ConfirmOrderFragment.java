@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddressListActivity;
 import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
+import com.xinheng.UserOrderActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;
@@ -272,6 +273,11 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                 else if (REQUEST_CONFIRM_ORDER_TAG.equals(requestTag))
                 {
                     mActivity.showCroutonToast(resultItem.message);
+                    if (resultItem.success())
+                    {
+                        UserOrderActivity.actionUserOrder(mActivity);
+                        mActivity.finish();
+                    }
                 }
             }
         }

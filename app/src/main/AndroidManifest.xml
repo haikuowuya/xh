@@ -123,39 +123,56 @@
         <activity
             android:name=".UserSubscribeDetailActivity"
             android:label="@string/tv_activity_user_subscribe_detail"/>
-        <activity android:name=".DepartmentDoctorDetailActivity"
-                  android:label="@string/tv_activity_department_doctor_detail"/>
-        <activity android:name=".UserCounselDetailActivity"
-                  android:label="@string/tv_activity_user_counsel_detail"/>
-        <activity android:name=".AddDrugActivity"
-                  android:label="@string/tv_activity_add_drug"/>
-        <activity android:name=".AccountSecurityActivity"
-                  android:label="@string/tv_activity_account_security"/>
-        <activity android:name=".ModifyPwdActivity"
-                  android:label="@string/tv_activity_modify_pwd"/>
-        <activity android:name=".BindPhoneActivity"
-                  android:label="@string/tv_activity_bind_phone"/>
-        <activity android:name=".AutoCheckActivity"
-                  android:label="@string/tv_activity_auto_check"/>
-        <activity android:name=".UserPatientListActivity"
-                  android:label="@string/tv_activity_patient"/>
+        <activity
+            android:name=".DepartmentDoctorDetailActivity"
+            android:label="@string/tv_activity_department_doctor_detail"/>
+        <activity
+            android:name=".UserCounselDetailActivity"
+            android:label="@string/tv_activity_user_counsel_detail"/>
+        <activity
+            android:name=".AddDrugActivity"
+            android:label="@string/tv_activity_add_drug"/>
+        <activity
+            android:name=".AccountSecurityActivity"
+            android:label="@string/tv_activity_account_security"/>
+        <activity
+            android:name=".ModifyPwdActivity"
+            android:label="@string/tv_activity_modify_pwd"/>
+        <activity
+            android:name=".BindPhoneActivity"
+            android:label="@string/tv_activity_bind_phone"/>
+        <activity
+            android:name=".AutoCheckActivity"
+            android:label="@string/tv_activity_auto_check"/>
+        <activity
+            android:name=".UserPatientListActivity"
+            android:label="@string/tv_activity_patient"/>
 
-        <activity android:name=".AddPatientActivity"
-                  android:label="@string/tv_activity_add_patient"/>
-        <activity android:name=".AddressListActivity"
-                  android:label="@string/tv_activity_address_manager"/>
-        <activity android:name=".AddOrModifyAddressActivity"
-                  android:label="@string/tv_activity_add_address"/>
+        <activity
+            android:name=".AddPatientActivity"
+            android:label="@string/tv_activity_add_patient"/>
+        <activity
+            android:name=".AddressListActivity"
+            android:label="@string/tv_activity_address_manager"/>
+        <activity
+            android:name=".AddOrModifyAddressActivity"
+            android:label="@string/tv_activity_add_address"/>
 
 
-        <activity android:name=".ConfirmOrderActivity"
-                  android:label="@string/tv_activity_confirm_order"/>
+        <activity
+            android:name=".ConfirmOrderActivity"
+            android:label="@string/tv_activity_confirm_order"/>
 
-        <activity android:name=".PayDespatchActivity"
-                  android:label="@string/tv_activity_pay_despatch"/>
+        <activity
+            android:name=".PayDespatchActivity"
+            android:label="@string/tv_activity_pay_despatch"/>
 
-        <activity android:name=".CityListActivity"
-                  android:label="@string/tv_activity_city_list"/>
+        <activity
+            android:name=".CityListActivity"
+            android:label="@string/tv_activity_city_list"/>
+        <activity
+            android:name=".SubscribeActivity"
+            android:label="@string/tv_activity_subscribe"/>
 
     </application>
 

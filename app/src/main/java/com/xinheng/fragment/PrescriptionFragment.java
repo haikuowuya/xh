@@ -361,6 +361,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 if (null != orderPrescItem && !TextUtils.isEmpty(orderPrescItem.orderId))
                 {
                     ConfirmOrderActivity.actionConfirmOrder(mActivity, orderPrescItem.orderId);
+                    mActivity.finish();
                 }
             }
         }

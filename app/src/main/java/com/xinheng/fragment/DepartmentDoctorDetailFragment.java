@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.xinheng.DepartmentDoctorDetailActivity;
 import com.xinheng.R;
+import com.xinheng.SubscribeActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.depart.DepartDoctorItem;
@@ -176,7 +177,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
      *
      * @param doctorDetailItem
      */
-    private void ShowDoctorDetail(DoctorDetailItem doctorDetailItem)
+    private void ShowDoctorDetail(final DoctorDetailItem doctorDetailItem)
     {
         mTvDepart.setText(doctorDetailItem.hospital + " / " + doctorDetailItem.department);
         mTvSkill.setText(doctorDetailItem.skill);
@@ -187,7 +188,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
         {
             for (int i = 0; i < doctorDetailItem.schedule.size(); i++)
             {
-                DoctorScheduleItem doctorScheduleItem = doctorDetailItem.schedule.get(i);
+                final DoctorScheduleItem doctorScheduleItem = doctorDetailItem.schedule.get(i);
                 View item = LayoutInflater.from(mActivity).inflate(R.layout.layout_doctor_schedule_item, null);
                 TextView tvDate = (TextView) item.findViewById(R.id.tv_date);
                 TextView tvTime = (TextView) item.findViewById(R.id.tv_time);
@@ -208,6 +209,14 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                 tvDate.setText(doctorScheduleItem.date);
                 tvTime.setText(doctorScheduleItem.begintime + " - " + doctorScheduleItem.endtime);
                 mLinearScheduleContainer.addView(item);
+                tvStatus.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        SubscribeActivity.actionSubscribe(mActivity, doctorDetailItem.schedule);
+                    }
+                });
             }
         }
     }

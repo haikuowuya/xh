@@ -2,6 +2,7 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.DepartmentNavPresenter;
 import com.xinheng.mvp.presenter.impl.DepartmentNavPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.ACache;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -26,7 +28,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 13:48
- * 说明：
+ * 说明：    首页预约挂号点击进入的界面(科室导航)
  */
 public class DepartmentNavActivity extends BaseActivity implements DataView
 {
@@ -50,6 +52,15 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
         mRightListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_right, R.layout.list_department_right_item));
         mLeftListView.setItemChecked(0, true);
         mRightListView.setItemChecked(0, true);
+        String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
+        if (!TextUtils.isEmpty(cacheJson))
+        {
+            ResultItem resultItem = GsonUtils.jsonToClass(cacheJson, ResultItem.class);
+            if(null != resultItem)
+            {
+                showData(resultItem);
+            }
+        }
         DepartmentNavPresenter departmentNavPresenter = new DepartmentNavPresenterImpl(mActivity, this);
         departmentNavPresenter.doGetDepartmentNav();
     }
@@ -69,37 +80,34 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         if (null != resultItem)
         {
             showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
-                Type type = new TypeToken<List<DepartItem>>()
-                {
-                }.getType();
-                List<DepartItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-                showData(items);
+                showData(resultItem);
             }
         }
     }
 
-    /***
-     * 将获取到的数据显示出来
-     *
-     * @param items
-     */
-    private void showData(List<DepartItem> items)
+    private void showData(ResultItem resultItem)
     {
-        if (null != items)
+        Type type = new TypeToken<List<DepartItem>>()
         {
+        }.getType();
+        String json = GsonUtils.toJson(resultItem);
+        List<DepartItem> items = GsonUtils.jsonToResultItemToList(json, type);
+        if (null != items && !items.isEmpty())
+        {
+            ACache.get(mActivity).put(mActivity.getActivityTitle().toString(), json);
             mLeftListView.setAdapter(new DepartLeftListAdapter(mActivity, items));
             mLeftListView.setItemChecked(0, true);
             List<DepartItem> childItems = items.get(0).childs;
@@ -115,7 +123,6 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
             OnListItemClickListenerImpl onListItemClickListener = new OnListItemClickListenerImpl();
             mLeftListView.setOnItemClickListener(onListItemClickListener);
             mRightListView.setOnItemClickListener(onListItemClickListener);
-
         }
     }
 
@@ -128,12 +135,12 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
             if (adapterView == mLeftListView)
             {
                 mRightListView.setAdapter(new DepartRightListAdapter(mActivity, departItem.childs));
-                mLeftListView.setItemChecked(position,true);
+                mLeftListView.setItemChecked(position, true);
                 mRightListView.setItemChecked(0, true);
             }
             else if (adapterView == mRightListView)
             {
-             //   showCroutonToast(departItem.name);
+                //   showCroutonToast(departItem.name);
                 DepartmentDoctorActivity.actionDepartDoctor(mActivity, departItem);
             }
         }

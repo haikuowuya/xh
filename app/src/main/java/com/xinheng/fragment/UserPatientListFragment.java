@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,6 +16,7 @@ import com.xinheng.R;
 import com.xinheng.adapter.user.UserPatientListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddPatientItemEvent;
+import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.UserPatientPresenter;
@@ -40,13 +42,19 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class UserPatientListFragment extends BaseFragment implements DataView
 {
+    public static final String ARG_FROM_SELECT_PATIENT = "from_select_patient";
     private static final String DATA = UserPatientItem.DEBUG_SUCCESS;
 
-    public static UserPatientListFragment newInstance()
+
+    public static UserPatientListFragment newInstance(boolean fromSelectPatient)
     {
         UserPatientListFragment fragment = new UserPatientListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ARG_FROM_SELECT_PATIENT, fromSelectPatient);
+        fragment.setArguments(bundle);
         return fragment;
     }
+    private boolean mFromSelectPatient = false;
     private LinkedList<UserPatientItem> mUserPatientItems = new LinkedList<>();
     private UserPatientListAdapter mUserPatientListAdapter;
 
@@ -79,6 +87,7 @@ public class UserPatientListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        mFromSelectPatient = getArguments().getBoolean(ARG_FROM_SELECT_PATIENT);
         EventBus.getDefault().register(this);
         mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
@@ -170,6 +179,7 @@ public class UserPatientListFragment extends BaseFragment implements DataView
                     {
                         mUserPatientListAdapter.notifyDataSetChanged();
                     }
+                    mListView.setOnItemClickListener(new OnItemClickListenerImpl());
                 }
             }
         }
@@ -179,6 +189,21 @@ public class UserPatientListFragment extends BaseFragment implements DataView
     public void onGetDataFailured(String msg,String requestTag)
     {
 
+    }
+
+    private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
+    {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            UserPatientItem patientItem = (UserPatientItem) parent.getAdapter().getItem(position);
+            if(mFromSelectPatient)
+            {
+                EventBus.getDefault().post(new OnSelectPatientEvent(patientItem));
+                mActivity.finish();
+            }
+        }
     }
 
     protected  void refreshComplete()

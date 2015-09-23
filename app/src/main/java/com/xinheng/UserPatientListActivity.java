@@ -14,18 +14,26 @@ import com.xinheng.fragment.UserPatientListFragment;
  */
 public class UserPatientListActivity extends BaseActivity
 {
+    public static final String EXTRA_FROM_SELECT_PATIENT = "from_select_patient";
     public static void actionPatient(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, UserPatientListActivity.class);
-        activity.startActivity(intent);
+       actionPatient(activity, false);
     }
 
+    public static void actionPatient(BaseActivity activity,boolean fromSelectPatient)
+    {
+        Intent intent = new Intent(activity, UserPatientListActivity.class);
+        intent.putExtra(EXTRA_FROM_SELECT_PATIENT, fromSelectPatient);
+        activity.startActivity(intent);
+    }
+    private boolean mFromSelectPatient;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mFromSelectPatient = getIntent().getBooleanExtra(EXTRA_FROM_SELECT_PATIENT, false);
           setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserPatientListFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserPatientListFragment.newInstance(mFromSelectPatient)).commit();
 
     }
 

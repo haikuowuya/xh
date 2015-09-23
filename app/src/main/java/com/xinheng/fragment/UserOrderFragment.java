@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +29,6 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.Constants;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
-import com.xinheng.view.CustomListView;
 
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -66,7 +66,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     }
 
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
-    private CustomListView mCustomListView;
+    private ListView mListView;
     private LinkedList<UserOrderItem> mUserOrderItems = new LinkedList<>();
     private UserOrderListAdapter mUserOrderListAdapter;
 
@@ -74,7 +74,10 @@ public class UserOrderFragment extends BaseFragment implements DataView
      * 请求的当前页数
      */
     private int mCurrentPage = 0;
-    private boolean mIsLoadingData;
+    /***
+     * 是否在加载数据的标志
+     */
+    private boolean mIsLoadingData = false;
     /**
      * 搜索按钮
      */
@@ -89,6 +92,10 @@ public class UserOrderFragment extends BaseFragment implements DataView
      */
     private String mOrderStatus = UserOrderItem.ORDER_STATUS_0;
 
+    /***
+     * 搜索HeaderView 布局
+     */
+    private View mHeaderView;
     private View mFooterView;
 
     @Nullable
@@ -106,29 +113,39 @@ public class UserOrderFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
+        setListener();
         mOrderStatus = getArguments().getString(ARG_ORDER_STATUS, mOrderStatus);
         mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
-        mPtrClassicFrameLayout.setPtrHandler(
-                new PtrDefaultHandler()
-                {
-                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-                    {
-                        doRefresh();
-                    }
-                });
-        mCustomListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mCustomListView.setSelector(new ColorDrawable(0x00000000));
-        mCustomListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
-        mCustomListView.setDivider(new ColorDrawable(0x00000000));
-        mIvSearch.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        doSearch();
-                    }
-                });
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
+        {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+            {
+                return  mListView.getFirstVisiblePosition() ==0;
+            }
+
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+            {
+                mCurrentPage = 0;
+                doRefresh();
+            }
+        });
+        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+        mListView.setSelector(new ColorDrawable(0x00000000));
+        mListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
+        mListView.setDivider(new ColorDrawable(0x00000000));
+
+    }
+
+    private void setListener()
+    {
+        mIvSearch.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                doSearch();
+            }
+        });
     }
 
     //===============================EVENT BUS========================
@@ -168,10 +185,11 @@ public class UserOrderFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
-        mCustomListView = (CustomListView) view.findViewById(R.id.lv_custom_listview);
+        mListView = (ListView) view.findViewById(R.id.lv_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_scrollview_container);
-        mIvSearch = (ImageView) view.findViewById(R.id.iv_search);
-        mEtSearch = (EditText) view.findViewById(R.id.et_search);
+        mHeaderView = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_order_search, null);
+        mIvSearch = (ImageView) mHeaderView.findViewById(R.id.iv_search);
+        mEtSearch = (EditText) mHeaderView.findViewById(R.id.et_search);
         mFooterView = LayoutInflater.from(mActivity).inflate(R.layout.layout_listview_footer, null);
     }
 
@@ -184,6 +202,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     protected void doRefresh()
     {
         mUserOrderItems.clear();
+        mListView.setOnScrollListener(new OnScrollListenerImpl());
         doGetData();
     }
 
@@ -194,6 +213,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
         mCurrentPage = mCurrentPage + 1;
         userOrderPresenter.doGetUserOrder(mOrderStatus, mCurrentPage);
         mIsLoadingData = true;
+        mFooterView.findViewById(R.id.pb_progress).setVisibility(View.VISIBLE);
+        ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("正在加载中……");
     }
 
     @Override
@@ -213,27 +234,48 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 //  List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList( DATA, type);
                 if (null != userOrderItems && !userOrderItems.isEmpty())
                 {
+                    System.out.println("userOrderItems.size = " + userOrderItems.size());
                     mUserOrderItems.addAll(userOrderItems);
                     if (null == mUserOrderListAdapter)
                     {
-                        mCustomListView.addFooterView(mFooterView);
+                        mListView.addHeaderView(mHeaderView);
+                        mListView.addFooterView(mFooterView);
                         mUserOrderListAdapter = new UserOrderListAdapter(mActivity, mUserOrderItems);
-                        mCustomListView.setAdapter(mUserOrderListAdapter);
-                    } else
+                        mListView.setAdapter(mUserOrderListAdapter);
+                        mListView.setOnScrollListener(new OnScrollListenerImpl());
+                        if (mUserOrderListAdapter.getCount() < Constants.PRE_PAGE_SIZE)
+                        {
+                            mFooterView.findViewById(R.id.pb_progress).setVisibility(View.INVISIBLE);
+                            ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("数据已经加载完毕");
+                            mActivity.showToast("数据已经加载完毕");
+                            mListView.setOnScrollListener(null);
+                        }
+                    }
+                    else
                     {
                         mUserOrderListAdapter.notifyDataSetChanged();
+                        if (userOrderItems.size() != Constants.PRE_PAGE_SIZE)
+                        {
+                            mFooterView.findViewById(R.id.pb_progress).setVisibility(View.INVISIBLE);
+                            ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("数据已经加载完毕");
+                            mActivity.showToast("数据已经加载完毕");
+                            mListView.setOnScrollListener(null);
+                        }
                     }
-
-                    if (userOrderItems.size() !=Constants.PRE_PAGE_SIZE)
+                }
+                else
+                {
+                    if (mUserOrderListAdapter != null)   //数据加载完毕
                     {
                         mFooterView.findViewById(R.id.pb_progress).setVisibility(View.INVISIBLE);
                         ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("数据已经加载完毕");
                         mActivity.showToast("数据已经加载完毕");
-                        mCustomListView.setOnScrollListener(null);
+                        mListView.setOnScrollListener(null);
                     }
                     else
                     {
-//                        mCustomListView.setOnScrollListener(new OnScrollListenerImpl());
+                        mListView.setAdapter(null);
+                        mListView.setEmptyView(mActivity.findViewById(android.R.id.empty));
                     }
                 }
             }
@@ -261,9 +303,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
         {
-//            System.out.println(" firstVisibleItem = "+firstVisibleItem + " visibleItemCount = "+visibleItemCount
-//            +" totalItemCount = "+totalItemCount);
-            if (firstVisibleItem + visibleItemCount == totalItemCount && !mIsLoadingData && mUserOrderItems != null && mUserOrderListAdapter.getCount() >= Constants.PRE_PAGE_SIZE)
+            System.out.println(" firstVisibleItem = " + firstVisibleItem + " visibleItemCount = " + visibleItemCount + " totalItemCount = " + totalItemCount);
+            if (firstVisibleItem + visibleItemCount == totalItemCount && !mIsLoadingData && null != mUserOrderListAdapter && mUserOrderListAdapter.getCount() >= Constants.PRE_PAGE_SIZE)
             {
                 doGetData();
             }

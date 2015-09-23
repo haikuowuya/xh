@@ -17,10 +17,18 @@ public class UserPatientPresenterImpl implements UserPatientPresenter
     private BaseActivity mActivity;
     private DataView mDataView;
 
+    private String mRequestTag;
     public UserPatientPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
+    }
+
+    public UserPatientPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mDataView = dataView;
+        mRequestTag = requestTag;
     }
 
     @Override
@@ -32,7 +40,7 @@ public class UserPatientPresenterImpl implements UserPatientPresenter
         String mingPostBody = GsonUtils.toJson(postItem );
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userPatientListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userPatientListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 
 
