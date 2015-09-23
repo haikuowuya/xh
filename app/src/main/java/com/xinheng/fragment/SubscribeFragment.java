@@ -221,7 +221,8 @@ public class SubscribeFragment extends BaseFragment implements DataView
         textView.setPadding(paddingLRTB, paddingLRTB, paddingLRTB, paddingLRTB);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.rightMargin = paddingLRTB;
-
+        layoutParams.topMargin = paddingLRTB / 2;
+        layoutParams.bottomMargin = paddingLRTB / 2;
         mLinearPatientContainer.addView(textView, layoutParams);
     }
 
@@ -238,7 +239,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
             switch (v.getId())
             {
                 case R.id.tv_select_patient://选择常用患者
-                    UserPatientListActivity.actionPatient(mActivity);
+                    UserPatientListActivity.actionPatient(mActivity,true);
                     break;
             }
         }
