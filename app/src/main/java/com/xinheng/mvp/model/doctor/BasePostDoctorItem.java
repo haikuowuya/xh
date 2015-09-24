@@ -8,4 +8,6 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 public class BasePostDoctorItem  extends BaseEmptyItem
 {
     public String doctId;
+
+    public String userId;
 }

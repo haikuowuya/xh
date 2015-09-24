@@ -1,6 +1,5 @@
 package com.xinheng.base;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +56,6 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 			convertView = mInflater.inflate(mLayoutId, null);
 		}
 		mPosition = position;
-
 		bindDataToView(convertView, mData.get(position));
 		return convertView;
 	}

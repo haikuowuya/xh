@@ -2,14 +2,10 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.SubscribeFragment;
-import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
-import com.xinheng.util.GsonUtils;
-
-import java.util.List;
+import com.xinheng.mvp.model.doctor.DoctorDetailItem;
 
 /**
  * 作者： raiyi-suzhou
@@ -19,12 +15,14 @@ import java.util.List;
  */
 public class SubscribeActivity extends BaseActivity
 {
-    public static final String EXTRA_JSON_SCHEDULE_ITEMS = "json_schedule_item";
 
-    public static void actionSubscribe(BaseActivity activity, List<DoctorScheduleItem> items)
+    public  static  final  String EXTRA_POSITION="position";
+
+    public static void actionSubscribe(BaseActivity activity,DoctorDetailItem doctorDetailItem ,int position)
     {
         Intent intent = new Intent(activity, SubscribeActivity.class);
-        intent.putExtra(EXTRA_JSON_SCHEDULE_ITEMS, GsonUtils.toJson(items));
+        intent.putExtra(EXTRA_ITEM, doctorDetailItem);
+        intent.putExtra(EXTRA_POSITION,position);
         activity.startActivity(intent);
     }
 
@@ -32,12 +30,13 @@ public class SubscribeActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //医生排班列表信息
-        String scheduleItemsJson = getIntent().getStringExtra(EXTRA_JSON_SCHEDULE_ITEMS);
-        if (!TextUtils.isEmpty(scheduleItemsJson))
+
+        DoctorDetailItem doctorDetailItem = getIntent().getSerializableExtra(EXTRA_ITEM) ==null?null: (DoctorDetailItem) getIntent().getSerializableExtra(EXTRA_ITEM);
+        int position = getIntent().getIntExtra(EXTRA_POSITION,0);
+        if ( null != doctorDetailItem)
         {
             setContentView(R.layout.activity_activity_common);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, SubscribeFragment.newInstance(scheduleItemsJson)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, SubscribeFragment.newInstance( doctorDetailItem,position)).commit();
         }
         else
         {

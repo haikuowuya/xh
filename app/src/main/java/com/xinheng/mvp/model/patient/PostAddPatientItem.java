@@ -8,6 +8,6 @@ import com.xinheng.mvp.model.user.UserPatientItem;
 public class PostAddPatientItem extends UserPatientItem
 {
 
-    public String DEFAULT;       //最后将其替换为default, default 是关键字
+    public String DEFAULT;  //最后将其替换为default, default 是关键字
 
 }

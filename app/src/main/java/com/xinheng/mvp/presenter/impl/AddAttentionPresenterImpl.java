@@ -37,6 +37,7 @@ public class AddAttentionPresenterImpl implements AddAttentionPresenter
         String userMedicalUrl = APIURL.ADD_ATTENTION_URL;
         BasePostDoctorItem item = new BasePostDoctorItem();
         item.doctId = doctId;
+        item.userId = mActivity.getLoginSuccessItem().id;
         String mingPostBody = GsonUtils.toJson(item);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);

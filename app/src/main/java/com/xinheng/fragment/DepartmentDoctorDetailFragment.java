@@ -88,6 +88,11 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     private Button mBtnOnlineCounsel;
     private ScrollView mScrollView;
 
+    /***
+     * 请求接口获取到的医生详情
+     */
+    private DoctorDetailItem mDoctorDetailItem;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -101,11 +106,11 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     {
         mTvDepart = (TextView) view.findViewById(R.id.tv_dept_name);
         mTvDoctorName = (TextView) view.findViewById(R.id.tv_doctor_name);
+        mTvTechnicalPost = (TextView) view.findViewById(R.id.tv_technical_post);
         mTvIntro = (TextView) view.findViewById(R.id.tv_intro);
         mTvAttention = (TextView) view.findViewById(R.id.tv_attention);
         mBtnOnlineCounsel = (Button) view.findViewById(R.id.btn_online_counsel);
         mTvSkill = (TextView) view.findViewById(R.id.tv_skill);
-        mTvTechnicalPost = (TextView) view.findViewById(R.id.tv_technical_post);
         mLinearScheduleContainer = (LinearLayout) view.findViewById(R.id.linear_schedule_container);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
 
@@ -155,6 +160,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                     DoctorDetailItem doctorDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), DoctorDetailItem.class);
                     if (null != doctorDetailItem)
                     {
+                        mDoctorDetailItem = doctorDetailItem;
                         ShowDoctorDetail(doctorDetailItem);
                     }
                 }
@@ -179,7 +185,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
      */
     private void ShowDoctorDetail(final DoctorDetailItem doctorDetailItem)
     {
-        mTvDepart.setText(doctorDetailItem.hospital + " / " + doctorDetailItem.department);
+        mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
         mTvSkill.setText(doctorDetailItem.skill);
         mTvIntro.setText(doctorDetailItem.introduction);
         mTvDoctorName.setText(doctorDetailItem.doctName);
@@ -209,12 +215,13 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                 tvDate.setText(doctorScheduleItem.date);
                 tvTime.setText(doctorScheduleItem.begintime + " - " + doctorScheduleItem.endtime);
                 mLinearScheduleContainer.addView(item);
+                final int finalI = i;
                 tvStatus.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
-                        SubscribeActivity.actionSubscribe(mActivity, doctorDetailItem.schedule);
+                        SubscribeActivity.actionSubscribe(mActivity, mDoctorDetailItem, finalI);
                     }
                 });
             }

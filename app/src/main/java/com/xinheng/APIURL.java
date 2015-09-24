@@ -78,6 +78,10 @@ public class APIURL
      */
     public static final String USER_MEDICAL_LIST_URL=BASE_API_URL+"/interface/patient/myrecord/getlist";
     /**
+     *   根据患者id，医生id获取病历授权信息
+     */
+    public static final String GET_PATIENT_RECORD_LIST_URL=BASE_API_URL+"/interface/patient/appointment/getrecords";
+    /**
      * 根据搜索关键字进行药品的搜索
      */
     public static final String SEARCH_MEDICAL_URL=BASE_API_URL+"/interface/medicaldata/drug/getall";
@@ -92,7 +96,7 @@ public class APIURL
     /***
      * 科室医生-医生详情-添加关注接口URL
      */
-    public static final String ADD_ATTENTION_URL=BASE_API_URL+"/interface/patient/mall/saveconfirm";
+    public static final String ADD_ATTENTION_URL=BASE_API_URL+"/interface/patient/appointment/attention";
     /**
      * 我的报告列表URL
      */
@@ -109,6 +113,10 @@ public class APIURL
      * 按方抓药-提交审核
      */
     public static final String SAVE_PRESCRIPTION_URL = BASE_API_URL + "/interface/patient/mall/submitaudit";
+    /**
+     * 预约挂号-保存
+     */
+    public static final String SUBMIT_SUBSCRIBE_URL = BASE_API_URL + "/interface/patient/ appointment/submit";
 
     /***
      * 校验和修改绑定手机号码

@@ -3,7 +3,7 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.subscribe.PostSubscribeItem;
+import com.xinheng.mvp.model.subscribe.PostUserSubscribeItem;
 import com.xinheng.mvp.presenter.UserSubscribePresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
@@ -28,7 +28,7 @@ public class UserSubscribePresenterImpl implements UserSubscribePresenter
     public void doGetUserSubscribe(String type)
     {
         String userSubscribeUrl = APIURL.USER_SUBSCRIBE_LIST_URL;
-        PostSubscribeItem postItem = new PostSubscribeItem();
+        PostUserSubscribeItem postItem = new PostUserSubscribeItem();
         postItem.userId = mActivity.getLoginSuccessItem().id;
         postItem.type = type;
         String mingPostBody = GsonUtils.toJson(postItem);
@@ -36,20 +36,5 @@ public class UserSubscribePresenterImpl implements UserSubscribePresenter
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
         System.out.println("postBody = " + postBody);
         RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userSubscribeUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
-
-//        OkHttpUtils.customXHasyncExecute(userSubscribeUrl, mActivity.getLoginSuccessItem(), postBody, new Callback()
-//        {
-//            @Override
-//            public void onFailure(Request request, IOException e)
-//            {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(Response response) throws IOException
-//            {
-//
-//            }
-//        });
     }
 }

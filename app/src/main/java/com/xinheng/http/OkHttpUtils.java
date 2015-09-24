@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -62,7 +63,7 @@ public class OkHttpUtils
         asyncExecute(request, callback);
     }
 
-    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
+    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, List<File> files, Callback callback)
     {
         System.out.println("XH  请求URL = " + url );
         //userId要客户端加密
@@ -70,12 +71,16 @@ public class OkHttpUtils
         System.out.println("加密后的userId = " + encryptUserId);
         String sessionId = loginSuccessItem.sessionId;
         Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
-
-        RequestBody fileBody1 = RequestBody.create(MediaType.parse("image/png"), file);
-     //   RequestBody fileBody2 = RequestBody.create(MediaType.parse("image/png"), file);
-        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM).addFormDataPart("file", "file", fileBody1) ;
-//                .addFormDataPart("file", "file", fileBody2)
-// ;
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
+         //添加提交的文件列表
+        if(null != files && !files.isEmpty())
+        {
+            for(File file :files)
+            {
+                RequestBody fileBody  = RequestBody.create(MediaType.parse("image/png"), file);
+                multipartBuilder.addFormDataPart("file", "file", fileBody) ;
+            }
+        }
         if (null != postMap)
         {
             for (String key : postMap.keySet())
@@ -86,7 +91,6 @@ public class OkHttpUtils
                     value="";
                 }
                 multipartBuilder.addFormDataPart(key, value);
-               // System.out.println("key = " + key + " value = " + value);
             }
         }
         RequestBody reqBody = multipartBuilder.build();

@@ -19,6 +19,10 @@ public class DoctorScheduleItem extends BaseEmptyItem
      * -1：约满
      */
     public static final String STATUS__1 = "-1";
+    /***
+     * 排班id
+     */
+    public String  scheduleId ;
     public String type;//出诊类型
     public String date;//出诊日期
     public String begintime;//坐诊开始时间

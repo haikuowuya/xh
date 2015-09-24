@@ -29,5 +29,6 @@ public class PopupListAdapter extends BaseAdapter<IconTextItem>
         textView.setText(iconTextItem.text);
         textView.setCompoundDrawablePadding(DensityUtils.dpToPx(getActivity(), 8.f));
         textView.setCompoundDrawablesWithIntrinsicBounds(iconTextItem.iconId, 0,0,0);
+
     }
 }

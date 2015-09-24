@@ -10,7 +10,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
 
 /**
- * 获取医生详情接口实现
+ * 获取常用就诊人接口实现
  */
 public class UserPatientPresenterImpl implements UserPatientPresenter
 {
