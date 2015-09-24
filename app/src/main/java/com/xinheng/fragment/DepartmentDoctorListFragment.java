@@ -61,6 +61,7 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
     @Override
     protected void doRefresh()
     {
+        mDepartDoctorItems.clear();
         doGetData();
     }
 

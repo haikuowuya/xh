@@ -15,9 +15,7 @@ import com.xinheng.mvp.model.doctor.DoctorDetailItem;
  */
 public class SubscribeActivity extends BaseActivity
 {
-
     public  static  final  String EXTRA_POSITION="position";
-
     public static void actionSubscribe(BaseActivity activity,DoctorDetailItem doctorDetailItem ,int position)
     {
         Intent intent = new Intent(activity, SubscribeActivity.class);

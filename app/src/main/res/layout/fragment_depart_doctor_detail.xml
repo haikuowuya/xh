@@ -74,7 +74,6 @@
                         android:id="@+id/tv_attention"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
-
                         android:layout_marginRight="4dp"
                         android:background="@drawable/user_subscribe_detail_selector"
                         android:drawableLeft="@mipmap/ic_doctor_guanzhu"

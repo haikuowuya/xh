@@ -33,6 +33,7 @@ import com.xinheng.util.GsonUtils;
  */
 public class DepartmentDoctorDetailFragment extends BaseFragment implements DataView
 {
+    public static final String  HAS_ATTENTION="已关注";
     /**
      * 添加关注的请求TAG
      */
@@ -151,7 +152,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+//            mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
                 if (REQUEST_GET_DOCTOR_DETAIL_TAG.equals(requestTag))
@@ -167,6 +168,11 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                 else if (REQUEST_ADD_ATTENTION_TAG.equals(requestTag))
                 {
                     //添加关注成功
+                    mActivity.showToast(resultItem.message);
+                    mTvAttention.setText(HAS_ATTENTION
+
+
+                    );
                 }
             }
         }
@@ -254,8 +260,15 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
 
     private void attention()
     {
-        AddAttentionPresenter addAttentionPresenter = new AddAttentionPresenterImpl(mActivity, this, REQUEST_ADD_ATTENTION_TAG);
-        addAttentionPresenter.doAddAttention(mDepartDoctorItem.doctId);
+        if(!HAS_ATTENTION.equals(mTvAttention.getText().toString()))
+        {
+            AddAttentionPresenter addAttentionPresenter = new AddAttentionPresenterImpl(mActivity, this, REQUEST_ADD_ATTENTION_TAG);
+            addAttentionPresenter.doAddAttention(mDepartDoctorItem.doctId);
+        }
+        else
+        {
+            mActivity.showToast("已经关注成功");
+        }
 
     }
 

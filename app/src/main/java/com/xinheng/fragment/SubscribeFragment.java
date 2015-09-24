@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -210,7 +211,6 @@ public class SubscribeFragment extends BaseFragment implements DataView
             DoctorScheduleItem doctorScheduleItem = mDoctorScheduleItems.get(mPosition);
             showSelectSchedule(doctorScheduleItem);
         }
-
         doGetUserPatient();
         setListener();
     }
@@ -292,7 +292,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+          //  mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
                 if (REQUEST_PATIENT_LIST_TAG.equals(requestTag))
@@ -306,7 +306,8 @@ public class SubscribeFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                } else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
+                }
+                else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<PatientRecordItem>>()
                     {
@@ -314,12 +315,17 @@ public class SubscribeFragment extends BaseFragment implements DataView
                     List<PatientRecordItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
                     if (null != items)
                     {
+                        //测试阶段
+                        if (items.isEmpty())
+                        {
+                            items = GsonUtils.jsonToResultItemToList(PatientRecordItem.DEBUG_SUCCESS, type);
+                        }
                         fillPatientRecord(items);
                     }
                 }
-                else if(REQUEST_SUBMIT_TAG.equals(requestTag))
+                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
-                    mActivity.showCroutonToast(GsonUtils.toJson(resultItem));
+                    mActivity.showToast(resultItem.message);
                 }
             }
         }
@@ -379,7 +385,6 @@ public class SubscribeFragment extends BaseFragment implements DataView
                 case R.id.iv_select_date://选择挂号日期
                     seleteDate();
                     break;
-
                 case R.id.tv_first_visit:
                     mTvSecondVisit.setActivated(false);
                     mTvFirstVisit.setActivated(true);
@@ -398,55 +403,64 @@ public class SubscribeFragment extends BaseFragment implements DataView
     private void submit()
     {
         String content = mEtContent.getText().toString();
-        if(TextUtils.isEmpty(content))
+        if (TextUtils.isEmpty(content))
         {
             content = "我没病";
-//            mActivity.showCroutonToast("症状自述不可以为空");
-//            return;
         }
         PostSubmitSubscribeItem postSubmitSubscribeItem = new PostSubmitSubscribeItem();
         postSubmitSubscribeItem.userId = RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id);
-        postSubmitSubscribeItem.patientId =RSAUtil.clientEncrypt(mUserPatientItem.id);
-        String    scheduleId  = RSAUtil.clientDecrypt(mDoctorScheduleItems.get(mPosition).scheduleId);
-        if(TextUtils.isEmpty(scheduleId))
-        {
-            scheduleId = "110";
-        }
+        postSubmitSubscribeItem.patientId = RSAUtil.clientEncrypt(mUserPatientItem.id);
+        String scheduleId = RSAUtil.clientEncrypt(mDoctorScheduleItems.get(mPosition).scheduleId);
         postSubmitSubscribeItem.scheduleId = scheduleId;
-        postSubmitSubscribeItem.status = mTvFirstVisit.isActivated()?"0":"1";
+        postSubmitSubscribeItem.status = mTvFirstVisit.isActivated() ? "0" : "1";
         postSubmitSubscribeItem.conditionReport = RSAUtil.clientEncrypt(content);
-        postSubmitSubscribeItem.symptoms =  RSAUtil.clientEncrypt(content);
+        postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(content);
         postSubmitSubscribeItem.bmrIds = new LinkedList<>();
         postSubmitSubscribeItem.auths = new LinkedList<>();
-        SubmitSubscribePresenter submitSubscribePresenter = new SubmitSubscribePresenterImpl(mActivity, this,REQUEST_SUBMIT_TAG ) ;
+        SubmitSubscribePresenter submitSubscribePresenter = new SubmitSubscribePresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
         submitSubscribePresenter.doSubmitSubscribe(postSubmitSubscribeItem);
-
-
     }
 
     private void seleteDate()
     {
-
-        final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setSingleChoiceItems(
-                new ScheduleListAdapter(mActivity, mDoctorScheduleItems), mPosition, null)
-
-                .create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setSingleChoiceItems(new ScheduleListAdapter(mActivity, mDoctorScheduleItems), mPosition, null).create();
+        TextView tvTitle = new TextView(mActivity);
+        int height = DensityUtils.dpToPx(mActivity, 44.f);
+        tvTitle.setText("选择专家就诊日期");
+        tvTitle.setPadding(height / 4, height / 4, height / 4, height / 4);
+        tvTitle.setGravity(Gravity.CENTER);
+        tvTitle.setBackgroundColor(0xFF3399FF);
+        tvTitle.setTextColor(0xFFFFFFFF);
+        tvTitle.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, height));
+        alertDialog.setCustomTitle(tvTitle);
+        View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
+        TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
+        tvCancle.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.getListView().addFooterView(footerView);
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
-        alertDialog.getListView().setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        alertDialog.dismiss();
-                        mPosition = position;
-                        showSelectSchedule(mDoctorScheduleItems.get(position));
-                    }
-                });
+                    alertDialog.dismiss();
+                    mPosition = position;
+                    showSelectSchedule(mDoctorScheduleItems.get(position));
+                }
+            }
+        });
         alertDialog.show();
-
     }
 
 }
