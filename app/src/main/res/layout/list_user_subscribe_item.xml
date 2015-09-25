@@ -6,11 +6,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    card_view:cardCornerRadius="4dp"
-
     android:background="@color/color_content_background_color"
-
+    android:descendantFocusability="blocksDescendants"
+    card_view:cardCornerRadius="4dp"
     card_view:cardUseCompatPadding="true"
     card_view:contentPadding="0dp">
 
@@ -19,10 +17,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="4dp"
         android:background="@drawable/list_linear_white_item_selector"
         android:orientation="vertical"
+        android:paddingRight="4dp"
         >
+
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
@@ -42,10 +41,11 @@
                 android:layout_height="match_parent"
 
                 android:gravity="center_vertical"
+                android:text="预约时间:"
                 android:textColor="#FF999999"
                 tools:text="预约时间:"
-                android:text="预约时间:"
                 tools:textColor="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_subscribe_time"
                 android:layout_width="match_parent"
@@ -88,10 +88,11 @@
                 android:layout_height="match_parent"
 
                 android:gravity="center_vertical"
+                android:text="就诊机构:"
                 android:textColor="#FF999999"
                 tools:text="就诊机构:"
-                android:text="就诊机构:"
                 tools:textColor="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_subscribe_hospital"
                 android:layout_width="match_parent"
@@ -134,15 +135,17 @@
                 android:padding="12dp"
                 android:src="@mipmap/ic_subscribe_msg"
                 tools:src="@mipmap/ic_subscribe_msg"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                                   android:paddingTop="12dp"
                 android:gravity="center_vertical|top"
+                android:paddingTop="12dp"
+                android:text="医生留言:"
                 android:textColor="#FF999999"
                 tools:text="医生留言:"
-                android:text="医生留言:"
                 tools:textColor="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_subscribe_msg"
                 android:layout_width="match_parent"
@@ -169,16 +172,18 @@
                 android:padding="12dp"
                 android:src="@mipmap/ic_subscribe_appointment"
                 tools:src="@mipmap/ic_subscribe_appointment"/>
+
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
 
                 android:gravity="center_vertical"
+                android:text="申请时间:"
                 android:textColor="#FF999999"
                 tools:text="申请时间:"
-                android:text="申请时间:"
                 tools:textColor="#FF999999"/>
+
             <TextView
                 android:id="@+id/tv_subscribe_appointment_time"
                 android:layout_width="match_parent"

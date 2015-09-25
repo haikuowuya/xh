@@ -1,4 +1,4 @@
-package com.xinheng.adapter.doctor;
+package com.xinheng.adapter.subscribe;
 
 import android.view.View;
 

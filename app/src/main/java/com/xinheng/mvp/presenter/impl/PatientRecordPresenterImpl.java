@@ -3,7 +3,7 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.subscribe.PostPatientRecordItem;
+import com.xinheng.mvp.model.appointment.PostPatientRecordItem;
 import com.xinheng.mvp.presenter.PatientRecordPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;

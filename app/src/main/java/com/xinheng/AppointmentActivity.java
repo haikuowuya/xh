@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.SubscribeFragment;
+import com.xinheng.fragment.AppointmentFragment;
 import com.xinheng.mvp.model.doctor.DoctorDetailItem;
 
 /**
@@ -13,17 +13,18 @@ import com.xinheng.mvp.model.doctor.DoctorDetailItem;
  * 时间： 13:48
  * 说明：预约挂号界面
  */
-public class SubscribeActivity extends BaseActivity
+public class AppointmentActivity extends BaseActivity
 {
     public  static  final  String EXTRA_POSITION="position";
-    public static void actionSubscribe(BaseActivity activity,DoctorDetailItem doctorDetailItem ,int position)
+    public static void actionAppointment(BaseActivity activity, DoctorDetailItem doctorDetailItem, int position)
     {
-        Intent intent = new Intent(activity, SubscribeActivity.class);
+        Intent intent = new Intent(activity, AppointmentActivity.class);
         intent.putExtra(EXTRA_ITEM, doctorDetailItem);
         intent.putExtra(EXTRA_POSITION,position);
         activity.startActivity(intent);
     }
 
+    private AppointmentFragment mAppointmentFragment;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -34,7 +35,8 @@ public class SubscribeActivity extends BaseActivity
         if ( null != doctorDetailItem)
         {
             setContentView(R.layout.activity_activity_common);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, SubscribeFragment.newInstance( doctorDetailItem,position)).commit();
+            mAppointmentFragment = AppointmentFragment.newInstance(doctorDetailItem, position);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mAppointmentFragment).commit();
         }
         else
         {
@@ -44,8 +46,18 @@ public class SubscribeActivity extends BaseActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(null != mAppointmentFragment)
+        {
+            mAppointmentFragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
     public CharSequence getActivityTitle()
     {
-        return getString(R.string.tv_activity_subscribe);
+        return getString(R.string.tv_activity_appointment);
     }
 }

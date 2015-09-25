@@ -8,7 +8,13 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
+import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 
 import java.io.File;
@@ -36,6 +42,39 @@ public class PhotoUtils
      * 从拍照中选取图片时的请求码
      */
     public static final int REQUEST_FROM_CAMERA = 2222;
+
+    /***
+     * 上传头像
+     */
+    public static void showSelectDialog(final BaseActivity activity)
+    {
+        View view = LayoutInflater.from(activity).inflate(R.layout.layout_dialog_modify_photo, null);
+        LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
+        LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
+        final AlertDialog alertDialog = new AlertDialog.Builder(activity).setView(view).create();
+        int width = DensityUtils.getScreenWidthInPx(activity) - DensityUtils.dpToPx(activity, 40);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+        linearCameraContainer.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        PhotoUtils.selectPicFromCamera(activity);
+                        alertDialog.dismiss();
+                    }
+                });
+        linearGalleryContainer.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        PhotoUtils.selectPicFromSD(activity);
+                        alertDialog.dismiss();
+                    }
+                });
+    }
 
     /**
      * 按原比例缩放图片
@@ -79,13 +118,11 @@ public class PhotoUtils
             // bitmap.recycle();
             return resizedBitmap;
 
-        }
-        catch (FileNotFoundException e)
+        } catch (FileNotFoundException e)
         {
             e.printStackTrace();
             return null;
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
             return null;
@@ -97,7 +134,7 @@ public class PhotoUtils
      *
      * @param activity
      */
-    public static void selectPicFromSD(BaseActivity activity)
+    private static void selectPicFromSD(BaseActivity activity)
     {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -112,7 +149,7 @@ public class PhotoUtils
      * @param activity
      * @return 保存的拍照图片路径
      */
-    public static String selectPicFromCamera(BaseActivity activity)
+    private static String selectPicFromCamera(BaseActivity activity)
     {
         String imageFilePath = null;
         if (!Environment.getExternalStorageState().equals(MEDIA_MOUNTED))
@@ -121,9 +158,10 @@ public class PhotoUtils
         }
         try
         {
-            imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            imageFilePath += "/tmp.jpg";     //设置图片的保存路径
-            File imageFile = new File(imageFilePath);                            //通过路径创建保存文件
+//            imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+//            imageFilePath += "/tmp.jpg";     //设置图片的保存路径
+            System.out.println("activity.getExternalCacheDir() = "+activity.getExternalCacheDir());
+            File imageFile = new File(activity.getExternalCacheDir(),System.currentTimeMillis()+".png");                            //通过路径创建保存文件
             if (imageFile.exists())
             {
                 imageFile.delete();
@@ -132,8 +170,7 @@ public class PhotoUtils
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);            //跳转到相机Activity
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);    //告诉相机拍摄完毕输出图片到指定的Uri
             activity.startActivityForResult(intent, PhotoUtils.REQUEST_FROM_CAMERA);
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -146,7 +183,7 @@ public class PhotoUtils
      * @param path 图片绝对路径
      * @return degree旋转的角度
      */
-    private  static int readPictureDegree(String path)
+    private static int readPictureDegree(String path)
     {
         int degree = 0;
         try
@@ -165,8 +202,7 @@ public class PhotoUtils
                     degree = 270;
                     break;
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -175,9 +211,10 @@ public class PhotoUtils
 
     /***
      * 将图片旋转后返回bitmap ,用于选择图片时图片旋转90度的问题
+     *
      * @return
      */
-    public static Bitmap rotateBitmap(String imagePath,Bitmap bitmap )
+    public static Bitmap rotateBitmap(String imagePath, Bitmap bitmap)
     {
         //旋转图片 动作
         Matrix matrix = new Matrix();

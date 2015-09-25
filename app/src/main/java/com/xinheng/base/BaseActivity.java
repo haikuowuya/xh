@@ -64,6 +64,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
      * Activity 跳转时通过Intent传值的KEY
      */
     protected static final String EXTRA_ITEM = "item";
+    /***
+     * 通过Intent传递根据id获取数据或者根据id操作数据的Activity
+     */
+    protected static final String EXTRA_ID = "id";
     protected SlidingMenu mSlidingMenu;
     /**
      * Activity的一个实例{@link  BaseActivity#onCreate(Bundle) }
@@ -122,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         mProgressDialog = new ProgressDialog(mActivity);
-        mProgressDialog.setMessage("正在获取数据中……");
+        mProgressDialog.setMessage("正在请求服务器中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
         {
@@ -255,7 +259,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         {
             ListView listview = (ListView) LayoutInflater.from(mActivity).inflate(R.layout.layout_listview, null);
             listview.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
-
             String[] strings = getResources().getStringArray(R.array.array_menu_menu);
             List<IconTextItem> iconTextItems = new LinkedList<>();
             for (int i = 0; i < strings.length; i++)

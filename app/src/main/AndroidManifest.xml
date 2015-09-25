@@ -60,7 +60,7 @@
             android:name=".UserRemindActivity"
             android:label="@string/tv_activity_user_remind"/>
         <activity
-            android:name=".UserSubscribeActivity"
+            android:name=".UserAppointmentActivity"
             android:label="@string/tv_activity_user_subscribe"/>
         <activity
             android:name=".UserDoctorActivity"
@@ -121,8 +121,8 @@
             android:name=".DepartmentDoctorActivity"
             android:label="@string/tv_activity_depart_doctor"/>
         <activity
-            android:name=".UserSubscribeDetailActivity"
-            android:label="@string/tv_activity_user_subscribe_detail"/>
+            android:name=".UserAppointmentDetailActivity"
+            android:label="@string/tv_activity_user_appointment_detail"/>
         <activity
             android:name=".DepartmentDoctorDetailActivity"
             android:label="@string/tv_activity_department_doctor_detail"/>
@@ -171,8 +171,11 @@
             android:name=".CityListActivity"
             android:label="@string/tv_activity_city_list"/>
         <activity
-            android:name=".SubscribeActivity"
-            android:label="@string/tv_activity_subscribe"/>
+            android:name=".AppointmentActivity"
+            android:label="@string/tv_activity_appointment"/>
+        <activity android:name=".AppointmentAddActivity"
+                  android:label="@string/tv_activity_appointment_add"/>
+
 
     </application>
 

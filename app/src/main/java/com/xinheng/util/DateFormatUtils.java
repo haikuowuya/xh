@@ -15,24 +15,34 @@ public class DateFormatUtils
 
     public static String format(String time, boolean withYMD)
     {
-        return  format(time,withYMD,true);
+        return format(time, withYMD, true);
     }
 
     /**
      * 格式化时间
-     * @param time ：long字符串类型的时间
+     *
+     * @param time    ：long字符串类型的时间
      * @param withYMD
      * @param withHm
      * @return
      */
-    public static String format(String time, boolean withYMD,boolean withHm )
+    public static String format(String time, boolean withYMD, boolean withHm)
     {
-        Date date = new Date(Long.parseLong(time));
+        Date date = null;
+
+        try
+        {
+            date = new Date(Long.parseLong(time));
+        } catch (Exception e)
+        {
+            System.out.println("格式化的时间不是long类型的");
+            date = new Date(System.currentTimeMillis());
+        }
         String pattern = "MM-dd HH:mm";
-        if (withYMD )
+        if (withYMD)
         {
             pattern = "yyyy-MM-dd";
-            if(withHm)
+            if (withHm)
             {
                 pattern = "yyyy-MM-dd HH:mm";
             }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xinheng.view.CustomGridView
+    android:id="@+id/custom_gridview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white_color"
+    android:fadeScrollbars="false"
+    android:fadingEdge="none"
+    android:fadingEdgeLength="0dp"
+    android:horizontalSpacing="@dimen/dimen_adapter_view_divider_height"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:requiresFadingEdge="none"
+    android:scrollbars="none"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="@dimen/dimen_adapter_view_divider_height"
+    tools:layout_height="120dp"/>

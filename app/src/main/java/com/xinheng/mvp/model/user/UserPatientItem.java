@@ -33,6 +33,5 @@ public class UserPatientItem extends BaseEmptyItem
     public String mobile;//手机号
     public String isDefault;//是否为默认就诊人 0:不是 1:是
     public String userId;
-
     public static final String DEBUG_SUCCESS = "{\"message\":\"获取数据成功\",\"properties\":[{\"age\":\"5\",\"birthday\":\"1279555200000\",\"id\":\"1\",\"idcard\":\"320925199014235\",\"isDefault\":\"0\",\"mobile\":\"15850217019\",\"name\":\"lily\",\"sex\":\"1\"}],\"result\":\"1\"}";
 }

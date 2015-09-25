@@ -6,11 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -18,7 +16,6 @@ import com.xinheng.AccountSecurityActivity;
 import com.xinheng.AddressListActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.util.DensityUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.StorageUtils;
 
@@ -109,7 +106,7 @@ public class UserAccountFragment extends BaseFragment
             switch (v.getId())
             {
                 case R.id.linear_photo_container://上传头像
-                    photo();
+                   PhotoUtils.showSelectDialog(mActivity);
                     break;
                 case R.id.linear_account_secure://账户安全
                     accountSecure();
@@ -126,36 +123,6 @@ public class UserAccountFragment extends BaseFragment
             }
         }
 
-        /***
-         * 上传头像
-         */
-        private void photo()
-        {
-            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_dialog_modify_photo, null);
-            LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
-            LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
-            final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
-            int width = DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 40);
-            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-            alertDialog.show();
-            linearCameraContainer.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    PhotoUtils.selectPicFromCamera(mActivity);
-                    alertDialog.dismiss();
-                }
-            });
-            linearGalleryContainer.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    PhotoUtils.selectPicFromSD(mActivity);
-                    alertDialog.dismiss();
-                }
-            });
-        }
 
         /**
          * 账户安全

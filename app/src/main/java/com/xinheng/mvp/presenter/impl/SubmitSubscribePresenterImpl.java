@@ -7,7 +7,7 @@ import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.OkHttpUtils;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.subscribe.PostSubmitSubscribeItem;
+import com.xinheng.mvp.model.appointment.PostSubmitSubscribeItem;
 import com.xinheng.mvp.presenter.SubmitSubscribePresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DebugUtils;

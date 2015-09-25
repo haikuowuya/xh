@@ -1,6 +1,6 @@
 package com.xinheng.mvp.presenter;
 
-import com.xinheng.mvp.model.subscribe.PostSubmitSubscribeItem;
+import com.xinheng.mvp.model.appointment.PostSubmitSubscribeItem;
 
 /**
  * 提交预约挂号的接口

@@ -1,4 +1,4 @@
-package com.xinheng.mvp.model.subscribe;
+package com.xinheng.mvp.model.appointment;
 
 import com.xinheng.mvp.model.BaseEmptyItem;
 

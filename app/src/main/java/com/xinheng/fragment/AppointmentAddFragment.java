@@ -1,5 +1,7 @@
 package com.xinheng.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,15 +21,17 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
+import com.xinheng.UserAppointmentActivity;
 import com.xinheng.UserPatientListActivity;
-import com.xinheng.adapter.doctor.ScheduleListAdapter;
+import com.xinheng.adapter.subscribe.ImageGridAdapter;
+import com.xinheng.adapter.subscribe.ScheduleListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.doctor.DoctorDetailItem;
 import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
-import com.xinheng.mvp.model.subscribe.PatientRecordItem;
-import com.xinheng.mvp.model.subscribe.PostSubmitSubscribeItem;
+import com.xinheng.mvp.model.appointment.PatientRecordItem;
+import com.xinheng.mvp.model.appointment.PostSubmitSubscribeItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.PatientRecordPresenter;
 import com.xinheng.mvp.presenter.SubmitSubscribePresenter;
@@ -36,10 +40,15 @@ import com.xinheng.mvp.presenter.impl.PatientRecordPresenterImpl;
 import com.xinheng.mvp.presenter.impl.SubmitSubscribePresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.RSAUtil;
+import com.xinheng.util.StorageUtils;
+import com.xinheng.view.CustomGridView;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,9 +60,9 @@ import de.greenrobot.event.Subscribe;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：预约挂号Fragment界面
+ * 说明：预约加号Fragment界面
  */
-public class SubscribeFragment extends BaseFragment implements DataView
+public class AppointmentAddFragment extends BaseFragment implements DataView
 {
     private static final String ARG_DOCTOR_DETAIL_TIEM = "doctor_detail_item";
     public static final String ARG_POSITION = "position";
@@ -70,9 +79,9 @@ public class SubscribeFragment extends BaseFragment implements DataView
      */
     public static final String REQUEST_SUBMIT_TAG = "request_submit";
 
-    public static SubscribeFragment newInstance(DoctorDetailItem doctorDetailItem, int postion)
+    public static AppointmentAddFragment newInstance(DoctorDetailItem doctorDetailItem, int postion)
     {
-        SubscribeFragment fragment = new SubscribeFragment();
+        AppointmentAddFragment fragment = new AppointmentAddFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_DOCTOR_DETAIL_TIEM, doctorDetailItem);
         bundle.putInt(ARG_POSITION, postion);
@@ -156,17 +165,22 @@ public class SubscribeFragment extends BaseFragment implements DataView
     private LinearLayout mLinearPatientRecordContainer;
 
     /***
-     * 用户输入的内容
+     * 用户输入的内容,症状自述
      */
-    private EditText mEtContent;
-
+    private EditText mEtConditionReport;
+    /***
+     * 用户输入的内容,病情自述
+     */
+    private EditText mEtSymptoms;
     private Button mBtnSubmit;
+    private CustomGridView mCustomGridView;
+    private LinkedList<String> mImageFilePaths;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_subscribe, null); //TODO 布局文件
+        View view = inflater.inflate(R.layout.fragment_appointment_add, null); //TODO 布局文件
         initView(view);
         return view;
     }
@@ -186,8 +200,11 @@ public class SubscribeFragment extends BaseFragment implements DataView
         mTvSecondVisit = (TextView) view.findViewById(R.id.tv_second_visit);
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
         mLinearPatientRecordContainer = (LinearLayout) view.findViewById(R.id.linear_patient_record_container);
-        mEtContent = (EditText) view.findViewById(R.id.et_content);
+        mEtConditionReport = (EditText) view.findViewById(R.id.et_conditionReport);
+        mEtSymptoms = (EditText) view.findViewById(R.id.et_symptoms);
         mLinearPatientContainer = (LinearLayout) view.findViewById(R.id.linear_patient_container);
+        mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
+        mCustomGridView.setNumColumns(3);
         mTvFirstVisit.setActivated(true);
         mTvSecondVisit.setActivated(false);
     }
@@ -213,6 +230,9 @@ public class SubscribeFragment extends BaseFragment implements DataView
         }
         doGetUserPatient();
         setListener();
+        mImageFilePaths = new LinkedList<>();
+        mImageFilePaths.add(null);
+        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
     }
 
     /**
@@ -259,6 +279,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
      */
     private void doGetPatientRecord()
     {
+        mLinearPatientRecordContainer.removeAllViews();
         PatientRecordPresenter patientRecordPresenter = new PatientRecordPresenterImpl(mActivity, this, REQUEST_PATIENT_RECORD_TAG);
         patientRecordPresenter.doGetPatientRecord(mUserPatientItem.id, mDoctorDetailItem.doctId);
 
@@ -272,6 +293,19 @@ public class SubscribeFragment extends BaseFragment implements DataView
         mTvFirstVisit.setOnClickListener(onClickListener);
         mTvSecondVisit.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
+        mCustomGridView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
+                        if (TextUtils.isEmpty(str))
+                        {
+                            PhotoUtils.showSelectDialog(mActivity);
+                        }
+                    }
+                });
 
     }
 
@@ -292,7 +326,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
-          //  mActivity.showCroutonToast(resultItem.message);
+            //  mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
             {
                 if (REQUEST_PATIENT_LIST_TAG.equals(requestTag))
@@ -306,8 +340,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                }
-                else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
+                } else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<PatientRecordItem>>()
                     {
@@ -322,8 +355,15 @@ public class SubscribeFragment extends BaseFragment implements DataView
                         }
                         fillPatientRecord(items);
                     }
+                } else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+                {
+                    mActivity.showToast(resultItem.message);
+                    UserAppointmentActivity.actionUserAppointment(mActivity);
+                    mActivity.finish();
                 }
-                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+            } else
+            {
+                if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
                 }
@@ -340,6 +380,20 @@ public class SubscribeFragment extends BaseFragment implements DataView
     {
         if (null != items && !items.isEmpty())
         {
+            for (PatientRecordItem patientRecordItem : items)
+            {
+                View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_patient_record_item, null);
+                TextView tvDate = (TextView) view.findViewById(R.id.tv_date);
+                TextView tvDepatName = (TextView) view.findViewById(R.id.tv_dept_name);
+                ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image);
+                tvDate.setText(DateFormatUtils.format(patientRecordItem.createDate,true,false));
+                tvDepatName.setText(patientRecordItem.departName);
+                if ("1".equals(patientRecordItem.isOpen))
+                {
+                    ivImage.setImageResource(R.mipmap.ic_subscribe_patient_record_auth);
+                }
+                mLinearPatientRecordContainer.addView(view);
+            }
 
         }
     }
@@ -402,21 +456,41 @@ public class SubscribeFragment extends BaseFragment implements DataView
 
     private void submit()
     {
-        String content = mEtContent.getText().toString();
-        if (TextUtils.isEmpty(content))
+        String conditionReport = mEtConditionReport.getText().toString();
+        if (TextUtils.isEmpty(conditionReport))
         {
-            content = "我没病";
+            conditionReport = "我没病";
+        }
+        String symptoms = mEtSymptoms.getText().toString();
+        if (TextUtils.isEmpty(symptoms))
+        {
+            symptoms = "我没病";
         }
         PostSubmitSubscribeItem postSubmitSubscribeItem = new PostSubmitSubscribeItem();
         postSubmitSubscribeItem.userId = RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id);
-        postSubmitSubscribeItem.patientId = RSAUtil.clientEncrypt(mUserPatientItem.id);
+        String patientId = mUserPatientItem.id;
+        System.out.println("patientId = " + patientId);
+        postSubmitSubscribeItem.patientId = RSAUtil.clientEncrypt(patientId);
         String scheduleId = RSAUtil.clientEncrypt(mDoctorScheduleItems.get(mPosition).scheduleId);
         postSubmitSubscribeItem.scheduleId = scheduleId;
         postSubmitSubscribeItem.status = mTvFirstVisit.isActivated() ? "0" : "1";
-        postSubmitSubscribeItem.conditionReport = RSAUtil.clientEncrypt(content);
-        postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(content);
+        postSubmitSubscribeItem.conditionReport = RSAUtil.clientEncrypt(conditionReport);
+        postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(symptoms);
         postSubmitSubscribeItem.bmrIds = new LinkedList<>();
         postSubmitSubscribeItem.auths = new LinkedList<>();
+        if(mImageFilePaths.size() > 1)
+        {
+            List<File> files = new LinkedList<>();
+            for(int i = 0;i < mImageFilePaths.size()-1;i++)//-1的目的去除默认的+
+            {
+                File file = new File(mImageFilePaths.get(i));
+                if(file !=null && file.exists())
+                {
+                    files.add(file);
+                }
+            }
+            postSubmitSubscribeItem.files = files;
+        }
         SubmitSubscribePresenter submitSubscribePresenter = new SubmitSubscribePresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
         submitSubscribePresenter.doSubmitSubscribe(postSubmitSubscribeItem);
     }
@@ -425,7 +499,7 @@ public class SubscribeFragment extends BaseFragment implements DataView
     {
         final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setSingleChoiceItems(new ScheduleListAdapter(mActivity, mDoctorScheduleItems), mPosition, null).create();
         TextView tvTitle = new TextView(mActivity);
-        int height = DensityUtils.dpToPx(mActivity, 44.f);
+        int height = DensityUtils.dpToPx(mActivity, 48.f);
         tvTitle.setText("选择专家就诊日期");
         tvTitle.setPadding(height / 4, height / 4, height / 4, height / 4);
         tvTitle.setGravity(Gravity.CENTER);
@@ -435,32 +509,54 @@ public class SubscribeFragment extends BaseFragment implements DataView
         alertDialog.setCustomTitle(tvTitle);
         View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
         TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
-        tvCancle.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                alertDialog.dismiss();
-            }
-        });
+        tvCancle.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        alertDialog.dismiss();
+                    }
+                });
         alertDialog.getListView().addFooterView(footerView);
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
-        alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
+        alertDialog.getListView().setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
                 {
-                    alertDialog.dismiss();
-                    mPosition = position;
-                    showSelectSchedule(mDoctorScheduleItems.get(position));
-                }
-            }
-        });
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
+                        {
+                            alertDialog.dismiss();
+                            mPosition = position;
+                            showSelectSchedule(mDoctorScheduleItems.get(position));
+                        }
+                    }
+                });
         alertDialog.show();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
+            {
+                if (null != data && data.getData() != null)
+                {
+                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
+                    if(null != imageFilePath)
+                    {
+                        mImageFilePaths.addFirst(imageFilePath);
+                        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
+
+                    }
+                }
+            }
+        }
+    }
 }

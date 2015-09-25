@@ -1,5 +1,6 @@
 package com.xinheng.http;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -32,7 +33,8 @@ public class VolleyUtils
      */
     public static void addRequest(BaseActivity baseActivity, Request<?> request)
     {
-          addRequest(baseActivity, request, baseActivity.getActivityTitle());
+        request.setRetryPolicy(new DefaultRetryPolicy(15 * 1000, 1, 1.0f));
+        addRequest(baseActivity, request, baseActivity.getActivityTitle());
 
     }
 

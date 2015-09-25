@@ -9,10 +9,10 @@
 
     <TextView
         android:id="@+id/tv_cancle"
-        android:layout_width="96dp"
+        android:layout_width="128dp"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:background="#FFFF0000"
+        android:background="@drawable/btn_cancle_click_selector"
         android:gravity="center"
         android:padding="10dp"
         android:text="取消"

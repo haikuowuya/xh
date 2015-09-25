@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -380,7 +378,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             switch (v.getId())
             {
                 case R.id.btn_image://选择图片:
-                    selectPic();
+                    PhotoUtils.showSelectDialog(mActivity);
                     break;
                 case R.id.btn_add_medical://添加药品
                     if (mBtnAddMedical.getText().toString().equals(TEXT_ADD_MEDICAL))
@@ -480,36 +478,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         savePrescriptionPresenter.doSavePrescription(item);
     }
 
-    /***
-     * 浏览图片
-     */
-    private void selectPic()
-    {
-        View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_dialog_modify_photo, null);
-        LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
-        LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
-        final AlertDialog alertDialog = new AlertDialog.Builder(mActivity).setView(view).create();
-        int width = DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 40);
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
-        linearCameraContainer.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                mImageFilePath = PhotoUtils.selectPicFromCamera(mActivity);
-                alertDialog.dismiss();
-            }
-        });
-        linearGalleryContainer.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                PhotoUtils.selectPicFromSD(mActivity);
-                alertDialog.dismiss();
-            }
-        });
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -525,6 +493,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             }
         }
         // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-        mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
+       // mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
     }
 }

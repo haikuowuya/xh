@@ -158,7 +158,7 @@ public class UserCenterActivity extends BaseActivity
             }
             else if (getString(R.string.tv_activity_user_subscribe).equals(mIconTextItem.text))
             {
-                UserSubscribeActivity.actionUserSubscribe(mActivity);
+                UserAppointmentActivity.actionUserAppointment(mActivity);
             }
             else if (getString(R.string.tv_activity_user_doctor).equals(mIconTextItem.text))
             {

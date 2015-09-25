@@ -8,7 +8,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.UserSubscribeListFragment;
+import com.xinheng.fragment.UserAppointmentListFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -16,11 +16,11 @@ import com.xinheng.fragment.UserSubscribeListFragment;
  * 时间： 13:48
  * 说明：我的预约
  */
-public class UserSubscribeActivity extends TabViewPagerActivity
+public class UserAppointmentActivity extends TabViewPagerActivity
 {
-    public static void actionUserSubscribe(BaseActivity activity)
+    public static void actionUserAppointment(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, UserSubscribeActivity.class);
+        Intent intent = new Intent(activity, UserAppointmentActivity.class);
         activity.startActivity(intent);
     }
 
@@ -39,12 +39,12 @@ public class UserSubscribeActivity extends TabViewPagerActivity
             @Override
             public Fragment getItem(int position)
             {
-                String type = UserSubscribeListFragment.TYPE_0;
+                String type = UserAppointmentListFragment.TYPE_0;
                 if(position ==1)
                 {
-                    type = UserSubscribeListFragment.TYPE_1;
+                    type = UserAppointmentListFragment.TYPE_1;
                 }
-                return UserSubscribeListFragment.newInstance(type);
+                return UserAppointmentListFragment.newInstance(type);
             }
 
             @Override

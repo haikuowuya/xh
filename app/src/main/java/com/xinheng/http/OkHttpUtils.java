@@ -36,7 +36,7 @@ public class OkHttpUtils
 
     static
     {
-        sOkHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
+        sOkHttpClient.setConnectTimeout(60, TimeUnit.SECONDS);
         sOkHttpClient.setReadTimeout(20, TimeUnit.SECONDS);
     }
 
@@ -65,20 +65,20 @@ public class OkHttpUtils
 
     public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, List<File> files, Callback callback)
     {
-        System.out.println("XH  请求URL = " + url );
+        System.out.println("XH  请求URL = " + url);
         //userId要客户端加密
         String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
         System.out.println("加密后的userId = " + encryptUserId);
         String sessionId = loginSuccessItem.sessionId;
         Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
         MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
-         //添加提交的文件列表
-        if(null != files && !files.isEmpty())
+        //添加提交的文件列表
+        if (null != files && !files.isEmpty())
         {
-            for(File file :files)
+            for (File file : files)
             {
-                RequestBody fileBody  = RequestBody.create(MediaType.parse("image/png"), file);
-                multipartBuilder.addFormDataPart("file", "file", fileBody) ;
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                multipartBuilder.addFormDataPart("files", file.getName(), fileBody);
             }
         }
         if (null != postMap)
@@ -86,9 +86,9 @@ public class OkHttpUtils
             for (String key : postMap.keySet())
             {
                 String value = postMap.get(key);
-                if(TextUtils.isEmpty(value))
+                if (TextUtils.isEmpty(value))
                 {
-                    value="";
+                    value = "";
                 }
                 multipartBuilder.addFormDataPart(key, value);
             }
@@ -106,21 +106,22 @@ public class OkHttpUtils
 
     public static void asyncExecute(Request request)
     {
-        asyncExecute(request, new Callback()
-        {
-            @Override
-            public void onFailure(Request request, IOException e)
-            {
-                //空实现
-            }
+        asyncExecute(
+                request, new Callback()
+                {
+                    @Override
+                    public void onFailure(Request request, IOException e)
+                    {
+                        //空实现
+                    }
 
-            @Override
-            public void onResponse(Response response) throws IOException
-            {
+                    @Override
+                    public void onResponse(Response response) throws IOException
+                    {
 
-                //空实现
-            }
-        });
+                        //空实现
+                    }
+                });
     }
 
     /**
@@ -153,8 +154,7 @@ public class OkHttpUtils
                     String json = stringBuffer.toString();
                     System.out.println("json = " + json);
                     callback.onResponse(new Response.Builder().request(new Request.Builder().url(url).build()).code(HttpStatus.SC_OK).protocol(Protocol.HTTP_1_1).message(json).build());
-                }
-                catch (IOException e)
+                } catch (IOException e)
                 {
                     callback.onFailure(new Request.Builder().build(), new IOException("请求发生错误"));
                 }
