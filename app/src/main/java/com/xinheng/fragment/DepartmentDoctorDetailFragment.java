@@ -163,9 +163,10 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                     if (null != doctorDetailItem)
                     {
                         mDoctorDetailItem = doctorDetailItem;
-                        ShowDoctorDetail(doctorDetailItem);
+                        ShowDoctorDetailAndScheduleInfo(doctorDetailItem);
                     }
-                } else if (REQUEST_ADD_ATTENTION_TAG.equals(requestTag))
+                }
+                else if (REQUEST_ADD_ATTENTION_TAG.equals(requestTag))
                 {
                     //添加关注成功
                     mActivity.showToast(resultItem.message);
@@ -182,11 +183,11 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
     }
 
     /***
-     * 显示获取的医生详情
+     * 显示获取的医生详情 ，以及对应的排班信息
      *
      * @param doctorDetailItem
      */
-    private void ShowDoctorDetail(final DoctorDetailItem doctorDetailItem)
+    private void ShowDoctorDetailAndScheduleInfo(final DoctorDetailItem doctorDetailItem)
     {
         mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
         mTvSkill.setText(doctorDetailItem.skill);
@@ -198,17 +199,20 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
             for (int i = 0; i < doctorDetailItem.schedule.size(); i++)
             {
                 final DoctorScheduleItem doctorScheduleItem = doctorDetailItem.schedule.get(i);
-                View item = LayoutInflater.from(mActivity).inflate(R.layout.layout_doctor_schedule_item, null);
+                final View item = LayoutInflater.from(mActivity).inflate(R.layout.layout_doctor_schedule_item, null);
                 TextView tvDate = (TextView) item.findViewById(R.id.tv_date);
                 TextView tvTime = (TextView) item.findViewById(R.id.tv_time);
                 TextView tvStatus = (TextView) item.findViewById(R.id.tv_status);
                 if (DoctorScheduleItem.STATUS_0.equals(doctorScheduleItem.status))
                 {
                     tvStatus.setText("暂时无号");
-                } else if (DoctorScheduleItem.STATUS_1.equals(doctorScheduleItem.status))
+                    tvStatus.setTextColor(0x88FF0000);
+                }
+                else if (DoctorScheduleItem.STATUS_1.equals(doctorScheduleItem.status))
                 {
                     tvStatus.setText("预约挂号");
-                } else if (DoctorScheduleItem.STATUS__1.equals(doctorScheduleItem.status))
+                }
+                else if (DoctorScheduleItem.STATUS__1.equals(doctorScheduleItem.status))
                 {
                     tvStatus.setText("预约已满");
                     tvStatus.setBackground(getResources().getDrawable(R.drawable.user_subscribe_evaluation_selector));
@@ -224,27 +228,36 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                 {
                     tvStatus.setText("预约已满");
                     tvStatus.setBackground(getResources().getDrawable(R.drawable.user_subscribe_evaluation_selector));
-                    tvStatus.setOnClickListener(
-                            new View.OnClickListener()
-                            {
-                                @Override
-                                public void onClick(View v)
-                                {
-                                    AppointmentAddActivity.actionAppointmentAdd(mActivity, mDoctorDetailItem, finalI);
-                                }
-                            });
+                    tvStatus.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            AppointmentAddActivity.actionAppointmentAdd(mActivity, mDoctorDetailItem, finalI);
+                        }
+                    });
                     return;
                 }
 
-                tvStatus.setOnClickListener(
-                        new View.OnClickListener()
+                tvStatus.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (DoctorScheduleItem.STATUS_0.equals(doctorScheduleItem.status))
                         {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                AppointmentActivity.actionAppointment(mActivity, mDoctorDetailItem, finalI);
-                            }
-                        });
+                            mActivity.showToast("暂时无号！");
+                        }
+                        else if (DoctorScheduleItem.STATUS_1.equals(doctorScheduleItem.status))
+                        {
+                            AppointmentActivity.actionAppointment(mActivity, mDoctorDetailItem, finalI);
+                        }
+                        else if (DoctorScheduleItem.STATUS__1.equals(doctorScheduleItem.status))
+                        {
+                            AppointmentAddActivity.actionAppointmentAdd(mActivity, mDoctorDetailItem, finalI);
+                        }
+                    }
+                });
             }
         }
     }
@@ -279,7 +292,8 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
         {
             AddAttentionPresenter addAttentionPresenter = new AddAttentionPresenterImpl(mActivity, this, REQUEST_ADD_ATTENTION_TAG);
             addAttentionPresenter.doAddAttention(mDepartDoctorItem.doctId);
-        } else
+        }
+        else
         {
             mActivity.showToast("已经关注成功");
         }

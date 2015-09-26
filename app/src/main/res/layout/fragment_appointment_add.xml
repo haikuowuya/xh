@@ -35,12 +35,13 @@
                 <TextView
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@mipmap/ic_subscribe_date"
+                    android:drawableLeft="@mipmap/ic_appointment_add_date"
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="就诊时间"
-                    android:textColor="@color/color_main_text_gray_color"/>
+                    android:textColor="@color/color_main_text_gray_color"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -56,17 +57,17 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
-                android:background="@color/color_main_text_color">
+                android:background="#FFD4E1CF">
 
                 <TextView
                     android:layout_width="200dp"
                     android:layout_height="44dp"
-                    android:drawableLeft="@mipmap/ic_subscribe_date"
+                    android:drawableLeft="@mipmap/ic_patient_info"
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text="患者信息"
-                    android:textColor="@color/color_white_color"/>
+                    android:textColor="@color/color_main_text_gray_color"/>
 
             </LinearLayout>
 
@@ -76,7 +77,7 @@
                 android:layout_height="44dp">
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="10dp"
@@ -85,12 +86,12 @@
 
                 <RadioGroup
                     android:id="@+id/rg_gender"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:gravity="right|center_vertical"
+
+
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -112,192 +113,64 @@
                 </RadioGroup>
 
                 <EditText
-
+                    android:id="@+id/et_age"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="6dp"
                     android:background="@drawable/shape_edittext_background"
                     android:gravity="center"
+                    android:digits="0123456789"
+                    android:inputType="phone"
+                    android:hint="年龄"
                     android:minWidth="72dp"
+                    android:textColorHint="#FF999999"
                     />
-
-
             </LinearLayout>
 
-            <View
+            <EditText
+                android:id="@+id/et_disease_name"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#FF999999"/>
+                android:layout_height="44dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:gravity="center_vertical"
+                android:hint="请填写你的疾病名称"
+                android:padding="6dp"
+                android:textColorHint="#FFCCCCCC"/>
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_disease_desc"
                 android:layout_width="match_parent"
-                android:layout_height="44dp">
-
-                <TextView
-                    android:layout_width="160dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="就诊地点"
-                    android:textColor="@color/color_main_text_gray_color"/>
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/color_main_text_gray_color"
-                    tools:text="门诊楼二楼"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#FF999999"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="就诊人"
-                    android:textColor="@color/color_main_text_gray_color"/>
-
-                <LinearLayout
-                    android:id="@+id/linear_patient_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_select_patient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/user_subscribe_detail_selector"
-                    android:drawableLeft="@mipmap/ic_subscribe_select_patient"
-                    android:drawablePadding="4dp"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:src="@mipmap/ic_subscribe_date"
-                    android:text="选择患者"
-                    android:textColor="#FFF17E56"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="初复诊"
-
-                    android:textColor="@color/color_main_text_gray_color"/>
-
-                <TextView
-                    android:id="@+id/tv_first_visit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/activated_first_second_visit"
-                    android:gravity="center"
-                    android:minWidth="72dp"
-                    android:text="初诊"
-                    android:textColor="@drawable/activated_first_second_visit_text_color"/>
-
-                <TextView
-                    android:id="@+id/tv_second_visit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/activated_first_second_visit"
-                    android:gravity="center"
-                    android:minWidth="72dp"
-                    android:text="复诊"
-                    android:textColor="@drawable/activated_first_second_visit_text_color"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:gravity="top"
+                android:hint="请详细描述您的健康问题，疾病症状等信息。
+请尽量上传化验单及患病部位照片。"
+                android:minHeight="120dp"
+                android:padding="6dp"
+                android:textColorHint="#FFCCCCCC"/>
         </LinearLayout>
 
 
-        <EditText
-            android:id="@+id/et_conditionReport"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_round_background"
-            android:gravity="top"
-            android:hint="病情自述 ，请详细描述您的健康问题，疾病症状等信息。"
-            android:orientation="vertical"
-            android:padding="4dp"
-            android:textColor="#FF333333"
-            android:textColorHint="@color/color_main_text_gray_color">
-        </EditText>
-
-        <EditText
-            android:id="@+id/et_symptoms"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_round_background"
-            android:gravity="top"
-            android:hint="症状自述，请详细描述您的健康问题，疾病症状等信息 。"
-            android:orientation="vertical"
-            android:padding="4dp"
-            android:textColor="#FF333333"
-            android:textColorHint="@color/color_main_text_gray_color">
-        </EditText>
-
-
         <LinearLayout
-
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/shape_edittext_round_background"
-            android:orientation="vertical">
+            android:background="#FFF5E6CF">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="病历授权"
-                android:textColor="#FF333333"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#FF999999"/>
-
-            <LinearLayout
-                android:id="@+id/linear_patient_record_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
+                android:lineSpacingExtra="4dp"
+                android:text="上传疾病照片（只有您预约的医生可见)\n
+加号申请需医生审核，请耐心等待。"
+                android:textColor="@color/color_main_text_gray_color"/>
 
         </LinearLayout>
 
@@ -306,13 +179,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/color_white_color"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:minHeight="60dp">
 
             <include layout="@layout/layout_custom_gridview"/>
+        </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFD4E1CF">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="44dp"
+                android:drawableLeft="@mipmap/ic_patient_msg"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="患者留言"
+                android:textColor="@color/color_main_text_gray_color"/>
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_disease_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_edittext_background"
+
+            android:gravity="top"
+            android:hint="请详细描述您的健康问题，疾病症状等信息。
+请尽量上传化验单及患病部位照片。"
+            android:minHeight="120dp"
+            android:padding="6dp"
+            android:textColorHint="#FFCCCCCC"/>
 
 
         <Button
