@@ -31,13 +31,13 @@ import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.doctor.DoctorDetailItem;
 import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;
-import com.xinheng.mvp.model.appointment.PostSubmitSubscribeItem;
+import com.xinheng.mvp.model.appointment.PostSubmitAppointmentItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.PatientRecordPresenter;
-import com.xinheng.mvp.presenter.SubmitSubscribePresenter;
+import com.xinheng.mvp.presenter.SubmitAppointmentPresenter;
 import com.xinheng.mvp.presenter.UserPatientPresenter;
 import com.xinheng.mvp.presenter.impl.PatientRecordPresenterImpl;
-import com.xinheng.mvp.presenter.impl.SubmitSubscribePresenterImpl;
+import com.xinheng.mvp.presenter.impl.SubmitAppointmentPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DateFormatUtils;
@@ -470,7 +470,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         {
             symptoms = "我没病";
         }
-        PostSubmitSubscribeItem postSubmitSubscribeItem = new PostSubmitSubscribeItem();
+        PostSubmitAppointmentItem postSubmitSubscribeItem = new PostSubmitAppointmentItem();
         postSubmitSubscribeItem.userId = RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id);
         String patientId = mUserPatientItem.id;
         System.out.println("patientId = " + patientId);
@@ -495,7 +495,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
             }
             postSubmitSubscribeItem.files = files;
         }
-        SubmitSubscribePresenter submitSubscribePresenter = new SubmitSubscribePresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
+        SubmitAppointmentPresenter submitSubscribePresenter = new SubmitAppointmentPresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
         submitSubscribePresenter.doSubmitSubscribe(postSubmitSubscribeItem);
     }
 

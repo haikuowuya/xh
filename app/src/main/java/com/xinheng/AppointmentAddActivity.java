@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.AppointmentAddFragment;
-import com.xinheng.mvp.model.doctor.DoctorDetailItem;
+import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
 
 /**
  * 作者： raiyi-suzhou
@@ -15,13 +15,11 @@ import com.xinheng.mvp.model.doctor.DoctorDetailItem;
  */
 public class AppointmentAddActivity extends BaseActivity
 {
-    public static final String EXTRA_POSITION = "position";
 
-    public static void actionAppointmentAdd(BaseActivity activity, DoctorDetailItem doctorDetailItem, int position)
+    public static void actionAppointmentAdd(BaseActivity activity, DoctorScheduleItem doctorScheduleItem)
     {
         Intent intent = new Intent(activity, AppointmentAddActivity.class);
-        intent.putExtra(EXTRA_ITEM, doctorDetailItem);
-        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(EXTRA_ITEM, doctorScheduleItem);
         activity.startActivity(intent);
     }
 
@@ -31,15 +29,14 @@ public class AppointmentAddActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        DoctorDetailItem doctorDetailItem = getIntent().getSerializableExtra(EXTRA_ITEM) == null ? null : (DoctorDetailItem) getIntent().getSerializableExtra(EXTRA_ITEM);
-        int position = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        if (null != doctorDetailItem)
+        DoctorScheduleItem doctorScheduleItem = getIntent().getSerializableExtra(EXTRA_ITEM) == null ? null : (DoctorScheduleItem) getIntent().getSerializableExtra(EXTRA_ITEM);
+        if (null != doctorScheduleItem)
         {
             setContentView(R.layout.activity_activity_common);
-            mAppointmentAddFragment = AppointmentAddFragment.newInstance(doctorDetailItem, position);
+            mAppointmentAddFragment = AppointmentAddFragment.newInstance(doctorScheduleItem);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, mAppointmentAddFragment).commit();
-        } else
+        }
+        else
         {
             mActivity.showCroutonToast("医生排班信息为空， 非法操作");
             mActivity.finish();

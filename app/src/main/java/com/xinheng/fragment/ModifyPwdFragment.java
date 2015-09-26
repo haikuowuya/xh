@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.util.Constants;
 import com.xinheng.util.VerifyCodeUtils;
 
 /**
@@ -23,7 +24,9 @@ import com.xinheng.util.VerifyCodeUtils;
  */
 public class ModifyPwdFragment extends BaseFragment
 {
-      public static final String  MODIFY="修改";
+    public static final String MODIFY = "修改";
+    public static final String HAS_BIND_PHONE_TEXT = "已绑定手机号码：";
+
     public static ModifyPwdFragment newInstance()
     {
         ModifyPwdFragment fragment = new ModifyPwdFragment();
@@ -62,9 +65,14 @@ public class ModifyPwdFragment extends BaseFragment
      */
     private LinearLayout mLinear2;
 
-
     private EditText mEtPwd1;
     private EditText mEtPwd2;
+
+    /***
+     * 已经绑定手机号码的提示
+     */
+    private TextView mTvBindPhoneHint;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -78,12 +86,14 @@ public class ModifyPwdFragment extends BaseFragment
     {
         mTv1 = (TextView) view.findViewById(R.id.tv_1);
         mTv2 = (TextView) view.findViewById(R.id.tv_2);
+
+        mTvBindPhoneHint = (TextView) view.findViewById(R.id.tv_bind_phone_hint);
         mBtnCode = (Button) view.findViewById(R.id.btn_code);
         mEtCode = (EditText) view.findViewById(R.id.et_code);
         mBtnNext = (Button) view.findViewById(R.id.btn_next);
         mLinear1 = (LinearLayout) view.findViewById(R.id.linear_1);
         mLinear2 = (LinearLayout) view.findViewById(R.id.linear_2);
-        mEtPwd1 = (EditText) view.findViewById(R.id.et_pwd1) ;
+        mEtPwd1 = (EditText) view.findViewById(R.id.et_pwd1);
         mEtPwd2 = (EditText) view.findViewById(R.id.et_pwd2);
 
     }
@@ -93,6 +103,7 @@ public class ModifyPwdFragment extends BaseFragment
     {
         super.onActivityCreated(savedInstanceState);
         setListener();
+        mTvBindPhoneHint.setText(HAS_BIND_PHONE_TEXT + mActivity.getLoginSuccessItem().mobile);
     }
 
     private void setListener()
@@ -116,12 +127,12 @@ public class ModifyPwdFragment extends BaseFragment
             switch (v.getId())
             {
                 case R.id.btn_code://
-                    getVerifyCode();
+                    getVerifyCode( mActivity.getLoginSuccessItem().mobile);
                     break;
                 case R.id.btn_next://下一步
                     if (MODIFY.equals(mBtnNext.getText().toString()))
                     {
-                         modifyPwd();
+                        modifyPwd();
                     }
                     else
                     {
@@ -135,13 +146,13 @@ public class ModifyPwdFragment extends BaseFragment
     private void modifyPwd()
     {
         String pwd1 = mEtPwd1.getText().toString();
-        if(TextUtils.isEmpty(pwd1))
+        if (TextUtils.isEmpty(pwd1))
         {
             mActivity.showCroutonToast("新密码不可以为空");
             return;
         }
         String pwd2 = mEtPwd2.getText().toString();
-        if(!pwd1.equals(pwd2))
+        if (!pwd1.equals(pwd2))
         {
             mActivity.showCroutonToast("两次输入的密码不一致");
             return;
@@ -151,15 +162,15 @@ public class ModifyPwdFragment extends BaseFragment
 
     private void next()
     {
-        if("1234".equals(mEtCode.getText().toString()))
+        if (Constants.ALL_OK_CODE.equals(mEtCode.getText().toString()))
         {
             mBtnNext.setText(MODIFY);
             mLinear1.setVisibility(View.GONE);
             mLinear2.setVisibility(View.VISIBLE);
             mTv1.setTextColor(0xFF999999);
             mTv2.setTextColor(0xFF333333);
-            mTv1.setCompoundDrawablesWithIntrinsicBounds(0,R.mipmap.ic_verify_1_disable,0,0);
-            mTv2.setCompoundDrawablesWithIntrinsicBounds(0,R.mipmap.ic_verify_2_enable,0,0);
+            mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
+            mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
             mActivity.hideSoftKeyBorard(mEtCode);
         }
         else
@@ -171,9 +182,9 @@ public class ModifyPwdFragment extends BaseFragment
     /***
      * 获取手机验证码
      */
-    private void getVerifyCode()
+    private void getVerifyCode(String phone )
     {
-        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, "15236163846");
+        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
         mActivity.showCroutonToast("此时请求服务器获取验证码");
     }
 }

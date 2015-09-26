@@ -7,8 +7,8 @@ import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.OkHttpUtils;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.appointment.PostSubmitSubscribeItem;
-import com.xinheng.mvp.presenter.SubmitSubscribePresenter;
+import com.xinheng.mvp.model.appointment.PostSubmitAppointmentAddItem;
+import com.xinheng.mvp.presenter.SubmitAppointmentAddPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
@@ -19,22 +19,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 提交预约挂号的接口实现
+ * 提交预约加号的接口实现
  */
-public class SubmitSubscribePresenterImpl implements SubmitSubscribePresenter
+public class SubmitAppointmentAddPresenterImpl implements SubmitAppointmentAddPresenter
 {
     private BaseActivity mActivity;
     private DataView mDataView;
 
     private String mRequestTag;
 
-    public SubmitSubscribePresenterImpl(BaseActivity activity, DataView dataView)
+    public SubmitAppointmentAddPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
     }
 
-    public SubmitSubscribePresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
+    public SubmitAppointmentAddPresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
     {
         mActivity = activity;
         mDataView = dataView;
@@ -42,9 +42,9 @@ public class SubmitSubscribePresenterImpl implements SubmitSubscribePresenter
     }
 
     @Override
-    public void doSubmitSubscribe(PostSubmitSubscribeItem item)
+    public void doAppointmentAdd(PostSubmitAppointmentAddItem item)
     {
-        String submitSubscribeUrl = APIURL.SUBMIT_SUBSCRIBE_URL;
+        String submitSubscribeUrl = APIURL.SUBMIT_APPOINTMENT_ADD_URL;
         // item.userId = RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id);//特殊。 userId需要加密
         String mingPostBody = GsonUtils.toJson(item);
         System.out.println("mingPostBody = " + mingPostBody);
@@ -97,14 +97,16 @@ public class SubmitSubscribePresenterImpl implements SubmitSubscribePresenter
         Map<String, String> postMap = new HashMap<>();
         postMap.put("userId", item.userId);
         postMap.put("scheduleId", item.scheduleId);
-        postMap.put("patientId", item.patientId);
-        postMap.put("status", item.status);
+        postMap.put("age", item.age);
+        postMap.put("sex", item.sex);
         postMap.put("conditionReport", item.conditionReport);
         postMap.put("symptoms", item.symptoms);
-        postMap.put("bmrIds", GsonUtils.toJson(item.bmrIds));
-        postMap.put("auths", GsonUtils.toJson(item.auths));
+        postMap.put("checkcode", item.checkcode);
+        postMap.put("message", item.message);
+
         mActivity.showProgressDialog();
         OkHttpUtils.customXHasyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
     }
+
 
 }

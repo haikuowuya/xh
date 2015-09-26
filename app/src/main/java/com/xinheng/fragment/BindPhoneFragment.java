@@ -159,6 +159,11 @@ public class BindPhoneFragment extends BaseFragment
                         mActivity.showCroutonToast("新手机号码不可以为空");
                         return;
                     }
+                    if(newPhone.length() != 11)
+                    {
+                        mActivity.showCroutonToast("新手机号码长度应该为11位");
+                        return;
+                    }
                     if(!PatternUtils.isPhoneNumber(newPhone))
                     {
                         mActivity.showCroutonToast("新手机号码格式不正确");

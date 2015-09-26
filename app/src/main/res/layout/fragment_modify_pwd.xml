@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_content_background_color"
-
     android:fitsSystemWindows="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -68,11 +68,12 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
+                    android:id="@+id/tv_bind_phone_hint"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="已绑定手机号码：15236163846"
+                    tools:text="已绑定手机号码：15236163846"
                     android:textColor="@color/color_main_text_gray_color"/>
 
                 <Button

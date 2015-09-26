@@ -12,6 +12,8 @@
           android:paddingTop="15dp"
           android:singleLine="true"
           android:paddingBottom="15dp"
+          android:drawablePadding="4dp"
+          android:paddingRight="10dp"
           android:drawableRight="@mipmap/ic_department_right_arrow"
           android:textColor="@color/color_white_color"
           android:textSize="16sp"

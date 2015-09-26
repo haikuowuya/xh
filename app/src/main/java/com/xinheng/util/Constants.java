@@ -9,7 +9,11 @@ package com.xinheng.util;
 public class Constants
 {
 
-    public static final int  PRE_PAGE_SIZE=10;
+    /**
+     * 测试的万能验证码
+     */
+    public static final String ALL_OK_CODE = "123456";
+    public static final int PRE_PAGE_SIZE = 10;
     /**
      * HTTP header中的cookie值KEY
      */
@@ -17,11 +21,11 @@ public class Constants
     /**
      * HTTP header中的cookie值VALUE的前缀
      */
-    public static final String SID="sid=";
+    public static final String SID = "sid=";
     /***
      * 字符串使用到的分隔符
      */
-    public static final String SPLIT="~";
+    public static final String SPLIT = "~";
     /**
      * 自己手机的IMEI
      */
@@ -29,10 +33,10 @@ public class Constants
     /***
      * http请求中添加的header key
      */
-    public static final String  SESSION_ID="sessionId";
+    public static final String SESSION_ID = "sessionId";
     /***
      * http请求中添加的header key
      */
-    public static final String USER_ID="userId";
-    public static final String PREF_LOGIN="login";
+    public static final String USER_ID = "userId";
+    public static final String PREF_LOGIN = "login";
 }

@@ -1,7 +1,7 @@
 package com.xinheng.mvp.presenter;
 
 /**
- * Created by Steven on 2015/9/17 0017.
+ * 发送短信验证码的接口
  */
 public interface SendCodePresenter
 {

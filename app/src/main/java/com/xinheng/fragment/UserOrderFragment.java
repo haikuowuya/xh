@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -130,7 +129,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 doRefresh();
             }
         });
-        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mListView.setSelector(new ColorDrawable(0x00000000));
         mListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
         mListView.setDivider(new ColorDrawable(0x00000000));

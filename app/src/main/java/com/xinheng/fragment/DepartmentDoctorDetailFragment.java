@@ -233,7 +233,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                         @Override
                         public void onClick(View v)
                         {
-                            AppointmentAddActivity.actionAppointmentAdd(mActivity, mDoctorDetailItem, finalI);
+                            AppointmentAddActivity.actionAppointmentAdd(mActivity, doctorScheduleItem);
                         }
                     });
                     return;
@@ -254,7 +254,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                         }
                         else if (DoctorScheduleItem.STATUS__1.equals(doctorScheduleItem.status))
                         {
-                            AppointmentAddActivity.actionAppointmentAdd(mActivity, mDoctorDetailItem, finalI);
+                            AppointmentAddActivity.actionAppointmentAdd(mActivity, doctorScheduleItem);
                         }
                     }
                 });

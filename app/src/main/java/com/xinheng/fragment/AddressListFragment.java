@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -90,7 +89,7 @@ public class AddressListFragment extends BaseFragment implements DataView
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         mFromConfirmOrder = getArguments().getBoolean(ARG_FROM_CONFIRM_ORDER);
-        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(
                 new PtrDefaultHandler()
                 {

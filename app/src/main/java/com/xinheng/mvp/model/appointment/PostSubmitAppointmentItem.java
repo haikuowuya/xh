@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 提交预约时向服务器的发送的post请求体
  */
-public class PostSubmitSubscribeItem extends BaseEmptyItem
+public class PostSubmitAppointmentItem extends BaseEmptyItem
 {
     public String userId;//用户id（加密）
     public String scheduleId;//医生排班id（加密）

@@ -117,6 +117,7 @@ public class APIURL
      * 预约挂号-保存
      */
     public static final String SUBMIT_SUBSCRIBE_URL = BASE_API_URL + "/interface/patient/ appointment/submit";
+    public static final String SUBMIT_APPOINTMENT_ADD_URL = BASE_API_URL + "/interface/patient/ appointment/submit";
 
     /***
      * 校验和修改绑定手机号码
@@ -125,7 +126,7 @@ public class APIURL
     /***
      * 根据给定的手机号码发送验证码
      */
-    public static final String SEND_SMS_CODE_URL = BASE_API_URL + "/interface/sms/sendValided";
+    public static final String SEND_SMS_CODE_URL = BASE_API_URL + "/public/sms/sendValided";
 
     /**
      * 我的医生列表URL

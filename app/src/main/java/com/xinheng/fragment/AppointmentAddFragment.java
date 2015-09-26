@@ -10,20 +10,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.xinheng.R;
-import com.xinheng.UserPatientListActivity;
 import com.xinheng.adapter.subscribe.ImageGridAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;
-import com.xinheng.mvp.model.doctor.DoctorDetailItem;
+import com.xinheng.mvp.model.appointment.PostSubmitAppointmentAddItem;
+import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
+import com.xinheng.mvp.presenter.SendCodePresenter;
+import com.xinheng.mvp.presenter.SubmitAppointmentAddPresenter;
+import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
+import com.xinheng.mvp.presenter.impl.SubmitAppointmentAddPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 import com.xinheng.util.DateFormatUtils;
+import com.xinheng.util.PatternUtils;
 import com.xinheng.util.PhotoUtils;
+import com.xinheng.util.RSAUtil;
 import com.xinheng.util.StorageUtils;
+import com.xinheng.util.VerifyCodeUtils;
 import com.xinheng.view.CustomGridView;
 
 import java.io.File;
@@ -38,21 +48,74 @@ import java.util.List;
  */
 public class AppointmentAddFragment extends BaseFragment implements DataView
 {
-    private static final String ARG_DOCTOR_DETAIL_TIEM = "doctor_detail_item";
-    public static final String ARG_POSITION = "position";
-    public static AppointmentAddFragment newInstance(DoctorDetailItem doctorDetailItem, int postion)
+    private static final String ARG_DOCTOR_SCHEDULE_TIEM = "doctor_schedule_item";
+
+    /***
+     * 获取验证码请求
+     */
+    public static final String REQUEST_CODE_TAG = "request_code";
+    /***
+     * 提交请求
+     */
+    public static final String REQUEST_SUBMIT_TAG = "request_submit";
+
+    public static AppointmentAddFragment newInstance(DoctorScheduleItem doctorScheduleItem)
     {
         AppointmentAddFragment fragment = new AppointmentAddFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_DOCTOR_DETAIL_TIEM, doctorDetailItem);
-        bundle.putInt(ARG_POSITION, postion);
+        bundle.putSerializable(ARG_DOCTOR_SCHEDULE_TIEM, doctorScheduleItem);
         fragment.setArguments(bundle);
         return fragment;
     }
 
+    /***
+     * 预约加号的排班信息
+     */
+    private DoctorScheduleItem mDoctorScheduleItem;
     private Button mBtnSubmit;
     private CustomGridView mCustomGridView;
     private LinkedList<String> mImageFilePaths;
+
+    /***
+     * 性别
+     */
+    private RadioGroup mRgGender;
+    /***
+     * 年龄
+     */
+    private EditText mEtAge;
+
+    /***
+     * 预约加号时间
+     */
+    private TextView mTvDate;
+
+    /***
+     * 疾病名称
+     */
+    private EditText mEtDiseaseName;
+
+    /****
+     * 疾病描述
+     */
+    private EditText mEtDiseaseDesc;
+    /***
+     * 患者留言
+     */
+    private EditText mEtPatientMsg;
+
+    /***
+     * 手机号码输入框
+     */
+    private EditText mEtPhone;
+    /**
+     * 验证码输入框
+     */
+    private EditText mEtCode;
+    /**
+     * 获取验证码
+     */
+    private Button mBtnCode;
 
     @Nullable
     @Override
@@ -66,6 +129,15 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     private void initView(View view)
     {
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
+        mEtAge = (EditText) view.findViewById(R.id.et_age);
+        mEtCode = (EditText) view.findViewById(R.id.et_code);
+        mEtDiseaseDesc = (EditText) view.findViewById(R.id.et_disease_desc);
+        mEtDiseaseName = (EditText) view.findViewById(R.id.et_disease_name);
+        mEtPatientMsg = (EditText) view.findViewById(R.id.et_patient_msg);
+        mTvDate = (TextView) view.findViewById(R.id.tv_date);
+        mEtPhone = (EditText) view.findViewById(R.id.et_phone);
+        mRgGender = (RadioGroup) view.findViewById(R.id.rg_gender);
+        mBtnCode = (Button) view.findViewById(R.id.btn_code);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         mCustomGridView.setNumColumns(3);
     }
@@ -74,6 +146,11 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        mDoctorScheduleItem = getArguments().getSerializable(ARG_DOCTOR_SCHEDULE_TIEM) == null ? null : (DoctorScheduleItem) getArguments().getSerializable(ARG_DOCTOR_SCHEDULE_TIEM);
+        if (null != mDoctorScheduleItem)
+        {
+            mTvDate.setText(mDoctorScheduleItem.date);
+        }
         setListener();
         mImageFilePaths = new LinkedList<>();
         mImageFilePaths.add(null);
@@ -90,6 +167,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnSubmit.setOnClickListener(onClickListener);
+        mBtnCode.setOnClickListener(onClickListener);
         mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -122,6 +200,20 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
+            mActivity.showCroutonToast(resultItem.message);
+            if (REQUEST_CODE_TAG.equals(requestTag))
+            {
+                System.out.println("info = " + resultItem.properties);
+            }
+        }
+    }
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+        mActivity.showCroutonToast(msg);
+        if (REQUEST_CODE_TAG.equals(requestTag))
+        {
+             mBtnCode.setClickable(true);
         }
     }
 
@@ -151,11 +243,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         }
     }
 
-    @Override
-    public void onGetDataFailured(String msg, String requestTag)
-    {
-        mActivity.showCroutonToast(msg);
-    }
+
 
     private class OnClickListenerImpl implements View.OnClickListener
     {
@@ -163,8 +251,24 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         {
             switch (v.getId())
             {
-                case R.id.tv_select_patient://选择常用患者
-                    UserPatientListActivity.actionPatient(mActivity, true);
+                case R.id.btn_code://获取验证码
+                    String phone = mEtPhone.getText().toString();
+                    if (TextUtils.isEmpty(phone))
+                    {
+                        mActivity.showToast("手机号码不可以为空");
+                        return;
+                    }
+                    if (phone.length() != 11)
+                    {
+                        mActivity.showCroutonToast("手机号码长度应该为11位");
+                        return;
+                    }
+                    if (!PatternUtils.isPhoneNumber(phone))
+                    {
+                        mActivity.showCroutonToast("手机号码格式不正确");
+                        return;
+                    }
+                    doGetVerifyCode(phone);
                     break;
                 case R.id.btn_submit://提交
                     submit();
@@ -173,8 +277,88 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         }
     }
 
+    private void doGetVerifyCode(String phone)
+    {
+        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(phone);
+    }
+
     private void submit()
     {
+        String age = mEtAge.getText().toString();
+        if(TextUtils.isEmpty(age))
+        {
+            mActivity.showToast("请输入年龄");
+            return;
+        }
+        if (TextUtils.isDigitsOnly(age))
+        {
+            int ageInt = Integer.parseInt(age);
+            if (ageInt > 120)
+            {
+                mActivity.showToast("你是千年老妖吗");
+                return;
+            }
+        }
+        else
+        {
+            mActivity.showToast("请输入合理的年龄");
+            return;
+        }
+        String diseaseName = mEtDiseaseName.getText().toString();
+        if (TextUtils.isEmpty(diseaseName))
+        {
+            diseaseName = "未知疾病";
+        }
+        String diseaseDesc = mEtDiseaseDesc.getText().toString();
+        if (TextUtils.isEmpty(diseaseDesc))
+        {
+            diseaseDesc = "暂无描述";
+        }
+        String patientMsg = mEtPatientMsg.getText().toString();
+        if (TextUtils.isEmpty(patientMsg))
+        {
+            patientMsg = "暂无留言";
+        }
+        String sex = "0";
+        if (R.id.rb_woman == mRgGender.getCheckedRadioButtonId())
+        {
+            sex = "1";
+        }
+
+        String phone = mEtPhone.getText().toString();
+        if (TextUtils.isEmpty(phone))
+        {
+            mActivity.showToast("手机号码不可以为空");
+            return;
+        }
+        if (phone.length() != 11)
+        {
+            mActivity.showCroutonToast("手机号码长度应该为11位");
+            return;
+        }
+        if (!PatternUtils.isPhoneNumber(phone))
+        {
+            mActivity.showCroutonToast("手机号码格式不正确");
+            return;
+        }
+        String code = mEtCode.getText().toString();
+        if (!Constants.ALL_OK_CODE.equals(code))
+        {
+            mActivity.showToast("验证码不正确");
+            return;
+        }
+
+        PostSubmitAppointmentAddItem postSubmitAppointmentAddItem = new PostSubmitAppointmentAddItem();
+        postSubmitAppointmentAddItem.userId = RSAUtil.clientEncrypt(mActivity.getLoginSuccessItem().id);
+        postSubmitAppointmentAddItem.scheduleId = RSAUtil.clientEncrypt(mDoctorScheduleItem.scheduleId);
+        postSubmitAppointmentAddItem.symptoms = RSAUtil.clientEncrypt(diseaseName);
+        postSubmitAppointmentAddItem.conditionReport = RSAUtil.clientEncrypt(diseaseDesc);
+        postSubmitAppointmentAddItem.checkcode = code;
+        postSubmitAppointmentAddItem.age = age;
+        postSubmitAppointmentAddItem.message = patientMsg;
+        postSubmitAppointmentAddItem.sex = sex;
         if (mImageFilePaths.size() > 1)
         {
             List<File> files = new LinkedList<>();
@@ -186,8 +370,10 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
                     files.add(file);
                 }
             }
-            //   postSubmitSubscribeItem.files = files;
+            postSubmitAppointmentAddItem.files = files;
         }
+        SubmitAppointmentAddPresenter appointmentAddPresenter = new SubmitAppointmentAddPresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
+        appointmentAddPresenter.doAppointmentAdd(postSubmitAppointmentAddItem);
     }
 
     @Override

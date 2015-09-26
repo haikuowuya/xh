@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
@@ -61,7 +60,7 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
         {
             mType = getArguments().getString(ARG_TYPE);
         }
-        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         getListView().setSelector(new ColorDrawable(0x00000000));
         getListView().setDividerHeight(0);
         getListView().setBackgroundColor(0xFFF0F0F0);

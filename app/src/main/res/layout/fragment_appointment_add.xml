@@ -81,7 +81,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="行别"
+                    android:text="性别"
                     android:textColor="@color/color_main_text_gray_color"/>
 
                 <RadioGroup
@@ -118,10 +118,10 @@
                     android:layout_height="match_parent"
                     android:layout_margin="6dp"
                     android:background="@drawable/shape_edittext_background"
-                    android:gravity="center"
                     android:digits="0123456789"
-                    android:inputType="phone"
+                    android:gravity="center"
                     android:hint="年龄"
+                    android:inputType="phone"
                     android:minWidth="72dp"
                     android:textColorHint="#FF999999"
                     />
@@ -166,8 +166,8 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:padding="10dp"
                 android:lineSpacingExtra="4dp"
+                android:padding="10dp"
                 android:text="上传疾病照片（只有您预约的医生可见)\n
 加号申请需医生审核，请耐心等待。"
                 android:textColor="@color/color_main_text_gray_color"/>
@@ -205,13 +205,12 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/et_disease_msg"
+            android:id="@+id/et_patient_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/shape_edittext_background"
-
             android:gravity="top"
             android:hint="请详细描述您的健康问题，疾病症状等信息。
 请尽量上传化验单及患病部位照片。"
@@ -219,6 +218,92 @@
             android:padding="6dp"
             android:textColorHint="#FFCCCCCC"/>
 
+        <LinearLayout
+            android:id="@+id/linear_phone_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="手机号码"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:inputType="phone"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入手机号码"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:id="@+id/btn_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text=" 验 证 码 "
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入验证码"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"
