@@ -21,17 +21,17 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.UserPatientListActivity;
 import com.xinheng.UserAppointmentActivity;
+import com.xinheng.UserPatientListActivity;
 import com.xinheng.adapter.subscribe.ImageGridAdapter;
 import com.xinheng.adapter.subscribe.ScheduleListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.doctor.DoctorDetailItem;
-import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;
 import com.xinheng.mvp.model.appointment.PostSubmitAppointmentItem;
+import com.xinheng.mvp.model.doctor.DoctorDetailItem;
+import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.PatientRecordPresenter;
 import com.xinheng.mvp.presenter.SubmitAppointmentPresenter;
@@ -297,19 +297,18 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvFirstVisit.setOnClickListener(onClickListener);
         mTvSecondVisit.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
-        mCustomGridView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
+                if (TextUtils.isEmpty(str))
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
-                        if (TextUtils.isEmpty(str))
-                        {
-                            PhotoUtils.showSelectDialog(mActivity);
-                        }
-                    }
-                });
+                    PhotoUtils.showSelectDialog(mActivity);
+                }
+            }
+        });
 
     }
 
@@ -344,7 +343,8 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                } else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
+                }
+                else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<PatientRecordItem>>()
                     {
@@ -359,13 +359,15 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         }
                         fillPatientRecord(items);
                     }
-                } else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+                }
+                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
                     UserAppointmentActivity.actionUserAppointment(mActivity);
                     mActivity.finish();
                 }
-            } else
+            }
+            else
             {
                 if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
@@ -389,13 +391,25 @@ public class AppointmentFragment extends BaseFragment implements DataView
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_patient_record_item, null);
                 TextView tvDate = (TextView) view.findViewById(R.id.tv_date);
                 TextView tvDepatName = (TextView) view.findViewById(R.id.tv_dept_name);
-                ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image);
-                tvDate.setText(DateFormatUtils.format(patientRecordItem.createDate,true,false));
+                final ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image);
+                tvDate.setText(DateFormatUtils.format(patientRecordItem.createDate, true, false));
                 tvDepatName.setText(patientRecordItem.departName);
                 if ("1".equals(patientRecordItem.isOpen))
                 {
-                    ivImage.setImageResource(R.mipmap.ic_subscribe_patient_record_auth);
+                    ivImage.setActivated(true);
                 }
+                else
+                {
+                    ivImage.setActivated(false);
+                }
+                ivImage.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        ivImage.setActivated(!ivImage.isActivated());
+                    }
+                });
                 mLinearPatientRecordContainer.addView(view);
             }
 
@@ -482,13 +496,13 @@ public class AppointmentFragment extends BaseFragment implements DataView
         postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(symptoms);
         postSubmitSubscribeItem.bmrIds = new LinkedList<>();
         postSubmitSubscribeItem.auths = new LinkedList<>();
-        if(mImageFilePaths.size() > 1)
+        if (mImageFilePaths.size() > 1)
         {
             List<File> files = new LinkedList<>();
-            for(int i = 0;i < mImageFilePaths.size()-1;i++)//-1的目的去除默认的+
+            for (int i = 0; i < mImageFilePaths.size() - 1; i++)//-1的目的去除默认的+
             {
                 File file = new File(mImageFilePaths.get(i));
-                if(file !=null && file.exists())
+                if (file != null && file.exists())
                 {
                     files.add(file);
                 }
@@ -513,33 +527,31 @@ public class AppointmentFragment extends BaseFragment implements DataView
         alertDialog.setCustomTitle(tvTitle);
         View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
         TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
-        tvCancle.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        alertDialog.dismiss();
-                    }
-                });
+        tvCancle.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.getListView().addFooterView(footerView);
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
-        alertDialog.getListView().setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
-                        {
-                            alertDialog.dismiss();
-                            mPosition = position;
-                            showSelectSchedule(mDoctorScheduleItems.get(position));
-                        }
-                    }
-                });
+                    alertDialog.dismiss();
+                    mPosition = position;
+                    showSelectSchedule(mDoctorScheduleItems.get(position));
+                }
+            }
+        });
         alertDialog.show();
     }
 
@@ -553,7 +565,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
                 if (null != data && data.getData() != null)
                 {
                     String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                    if(null != imageFilePath)
+                    if (null != imageFilePath)
                     {
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));

@@ -5,7 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.xinheng.fragment.OnlineGridItemFragment;
-import com.xinheng.mvp.model.online.HomeOnLineItem;
+import com.xinheng.mvp.model.online.OnLineBottomItem;
+import com.xinheng.util.GsonUtils;
 
 import java.util.List;
 
@@ -18,16 +19,18 @@ import java.util.List;
 public class OnlineViewPagerAdapter extends FragmentPagerAdapter
 {
 
-   private  List<HomeOnLineItem.Item> items = null;
-    public OnlineViewPagerAdapter(FragmentManager fm, List<HomeOnLineItem.Item> items)
+    private List<OnLineBottomItem> items = null;
+
+    public OnlineViewPagerAdapter(FragmentManager fm, List<OnLineBottomItem> items)
     {
         super(fm);
         this.items = items;
     }
+
     @Override
     public Fragment getItem(int position)
     {
-        return OnlineGridItemFragment.newInstance();
+        return OnlineGridItemFragment.newInstance(GsonUtils.toJson(items.get(position).items));
     }
 
     @Override
@@ -40,6 +43,6 @@ public class OnlineViewPagerAdapter extends FragmentPagerAdapter
     public CharSequence getPageTitle(int position)
     {
 
-        return items.get(position).title;
+        return items.get(position).name;
     }
 }

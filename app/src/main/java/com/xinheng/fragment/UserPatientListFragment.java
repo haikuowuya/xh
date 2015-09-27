@@ -159,7 +159,7 @@ public class UserPatientListFragment extends BaseFragment implements DataView
         refreshComplete();
         if(null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserPatientItem>>()

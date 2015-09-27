@@ -95,7 +95,39 @@ public class OkHttpUtils
         }
         RequestBody reqBody = multipartBuilder.build();
         Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
+        asyncExecute(request, callback);
+    }
 
+    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
+    {
+        System.out.println("XH  请求URL = " + url);
+        //userId要客户端加密
+        String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
+        System.out.println("加密后的userId = " + encryptUserId);
+        String sessionId = loginSuccessItem.sessionId;
+        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        //添加提交的文件列表
+        if (null != file)
+        {
+            RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+            multipartBuilder.addFormDataPart("file", file.getName(), fileBody);
+
+        }
+        if (null != postMap)
+        {
+            for (String key : postMap.keySet())
+            {
+                String value = postMap.get(key);
+                if (TextUtils.isEmpty(value))
+                {
+                    value = "";
+                }
+                multipartBuilder.addFormDataPart(key, value);
+            }
+        }
+        RequestBody reqBody = multipartBuilder.build();
+        Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
         asyncExecute(request, callback);
     }
 
@@ -106,8 +138,7 @@ public class OkHttpUtils
 
     public static void asyncExecute(Request request)
     {
-        asyncExecute(
-                request, new Callback()
+        asyncExecute(request, new Callback()
                 {
                     @Override
                     public void onFailure(Request request, IOException e)
@@ -154,7 +185,8 @@ public class OkHttpUtils
                     String json = stringBuffer.toString();
                     System.out.println("json = " + json);
                     callback.onResponse(new Response.Builder().request(new Request.Builder().url(url).build()).code(HttpStatus.SC_OK).protocol(Protocol.HTTP_1_1).message(json).build());
-                } catch (IOException e)
+                }
+                catch (IOException e)
                 {
                     callback.onFailure(new Request.Builder().build(), new IOException("请求发生错误"));
                 }

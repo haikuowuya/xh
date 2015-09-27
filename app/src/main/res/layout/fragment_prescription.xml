@@ -62,7 +62,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
-
             android:background="@color/color_white_color">
 
             <TextView
@@ -100,6 +99,12 @@
                 android:gravity="center_vertical"
                 android:text="未选择文件"
                 android:textColor="#FF999999"/>
+            <ImageView
+                android:layout_width="44dp"
+                android:id="@+id/iv_image"
+                android:padding="4dp"
+                tools:src="@mipmap/ic_photo"
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <TextView

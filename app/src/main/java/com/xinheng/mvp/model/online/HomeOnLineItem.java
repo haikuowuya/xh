@@ -6,14 +6,14 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 import java.util.List;
 
 /**
- *  在线售药的首页数据
+ * 在线售药的首页数据
  */
 public class HomeOnLineItem extends BaseEmptyItem
 {
-    public static final String  KEY_ADVERTISEMENT="advertisement";
-    public static final String KEY_SUBJECT="subject";
+    public static final String KEY_ADVERTISEMENT = "advertisement";
+    public static final String KEY_SUBJECT = "subject";
 
-    public static final String KEY_LIST="list";
+    public static final String KEY_LIST = "list";
 
     /**
      * 顶部的广告
@@ -31,12 +31,12 @@ public class HomeOnLineItem extends BaseEmptyItem
     /**
      * 在线售药首界面中间和底部每一个Item的数据
      */
-    public static class  Item
+    public static class Item
     {
-        public  String id;
+        public String id;
         public String drugId;
-        public  String title;
-        public  String img;
+        public String title;
+        public String img;
     }
 
     @Override
@@ -45,60 +45,36 @@ public class HomeOnLineItem extends BaseEmptyItem
 
         StringBuffer stringBuffer = new StringBuffer();
 
-        if(null != advertisement && !advertisement.isEmpty())
+        if (null != advertisement && !advertisement.isEmpty())
         {
-            stringBuffer.append("advertisement.size = " + advertisement.size() );
-            for(AdItem adItem : advertisement)
+            stringBuffer.append("advertisement.size = " + advertisement.size());
+            for (AdItem adItem : advertisement)
             {
-                 stringBuffer.append(" adItem = " + adItem);
+                stringBuffer.append(" adItem = " + adItem);
             }
         }
 
-        if(null != subject && !subject.isEmpty())
+        if (null != subject && !subject.isEmpty())
         {
-            stringBuffer.append(" subject.size = " + subject.size() );
-            for(OnLineCenterItem centerItem : subject)
+            stringBuffer.append(" subject.size = " + subject.size());
+            for (OnLineCenterItem centerItem : subject)
             {
                 stringBuffer.append(" centerItem = " + centerItem);
             }
         }
 
-        if(null != list && !list.isEmpty())
+        if (null != list && !list.isEmpty())
         {
-            stringBuffer.append(" list.size = " + list.size() );
-            for(OnLineBottomItem bottomItem : list)
+            stringBuffer.append(" list.size = " + list.size());
+            for (OnLineBottomItem bottomItem : list)
             {
                 stringBuffer.append(" bottomItem = " + bottomItem);
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        return  stringBuffer.toString();
+        return stringBuffer.toString();
     }
 
-    public static final String  DEBUG_SUCCESS="{\"result\":\"1\",\"message\":\"获取在线售药首页数据成功\",\"properties\":[{\"advertisement\":[{\"id\":\"40288af44ee35f3f014ee36081cf1000\",\"title\":\"0元换健康\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"title\":\"0元换健康2\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"title\":\"0元换健康3\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f01443445544cf2000\",\"title\":\"0元换健康4\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f01443445544cf2000\",\"title\":\"0元换健康5\",\"img\":\"/ad/20150512/001.jpg\"}]},{\"subject\":[{\"id\":\"1\",\"name\":\"养生汤料\",\"items\":[{\"id\":\"40288af44ee35f3f014ee36081cf1000\",\"drugId\":\"2\",\"title\":\"四君子汤\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"drugId\":\"2\",\"title\":\"八珍汤\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"drugId\":\"2\",\"title\":\"养胃汤\",\"img\":\"/ad/20150512/001.jpg\"}]}]},{\"list\":[{\"id\":\"1\",\"name\":\"解表药\",\"items\":[{\"id\":\"40288af44ee35f3f014ee36081cf1000\",\"drugId\":\"2\",\"title\":\"四君子汤\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"drugId\":\"2\",\"title\":\"八珍汤\",\"img\":\"/ad/20150512/001.jpg\"},{\"id\":\"40288af44ee35f3f014e45544cf2000\",\"drugId\":\"2\",\"title\":\"养胃汤\",\"img\":\"/ad/20150512/001.jpg\"}]}]}]}";
-    public static final String DEBUG_FAILURED="{\"result\":\"-1\",\"message\":\"获取在线售药首页数据失败\"}";
+    public static final String DEBUG_SUCCESS = "{\"message\":\"获取首页数据成功!\",\"properties\":{\"advertisement\":[{\"id\":\"1\",\"img\":\"/uploads/1.png\",\"title\":\"test1\"},{\"id\":\"2\",\"img\":\"/uploads/2.png\",\"title\":\"test2\"}],\"list\":[{\"id\":\"402882f84f4e01da014f4e02ca420000\",\"items\":[{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"0b44984d500ed9d701500f3080920010\",\"title\":\"通草\"},{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"0b44984d500ed9d701500f3067bb000f\",\"title\":\"王不留行\"},{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"40288af44f815794014f8169d5fd000a\",\"img\":\"/uploads/20150831/0940311440985241061.jpg\",\"title\":\"枳壳\"},{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"40288af44f811f47014f812148b4000f\",\"title\":\"川芎\"},{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"40288af44f811f47014f8120d1f50006\",\"title\":\"酒萸肉\"},{\"drugId\":\"402882f84f4e01da014f4e02ca420000\",\"id\":\"40288af44f811f47014f8120c6eb0005\",\"title\":\"地黄\"}],\"name\":\"化湿药\"},{\"id\":\"402882f84f4e2a44014f4e5423ca0008\",\"items\":[{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"0b44984d500ed9d701500f30eb050012\",\"title\":\"陈皮\"},{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"0b44984d500ed9d701500f300ff5000e\",\"title\":\"香附\"},{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"40288af44f815794014f816a2c7d000f\",\"title\":\"香附\"},{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"40288af44f815794014f81699b7c0009\",\"img\":\"/uploads/20150831/0940311440985226095.jpg\",\"title\":\"柴胡\"},{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"40288af44f811f47014f81211869000d\",\"title\":\"炒白术\"},{\"drugId\":\"402882f84f4e2a44014f4e5423ca0008\",\"id\":\"40288af44f811f47014f81210ff8000c\",\"title\":\"炒白芍\"}],\"name\":\"理气药\"}],\"subject\":[]},\"result\":\"1\"}";
+    public static final String DEBUG_FAILURED = "{\"result\":\"-1\",\"message\":\"获取在线售药首页数据失败\"}";
 }

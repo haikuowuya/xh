@@ -90,7 +90,7 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
             if (resultItem.success())
             {
                 showData(resultItem);
@@ -140,7 +140,6 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
             }
             else if (adapterView == mRightListView)
             {
-                //   showCroutonToast(departItem.name);
                 DepartmentDoctorActivity.actionDepartDoctor(mActivity, departItem);
             }
         }

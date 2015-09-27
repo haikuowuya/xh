@@ -1,23 +1,29 @@
 package com.xinheng.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.AddressListActivity;
 import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
+import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;
@@ -170,7 +176,6 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             //TODO 得到支付配送方式
             mPostPayDespatchItem.payType = event.mPostPayDespatchItem.payType;
             mPostPayDespatchItem.despatchType = event.mPostPayDespatchItem.despatchType;
-
             String payText = PostPayDespatchItem.PAY_ONLINE_TEXT;
             if (PostPayDespatchItem.PAY_OFFLINE.equals(event.mPostPayDespatchItem.payType))
             {
@@ -238,7 +243,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             {
                 if (REQUEST_ORDER_INFO_TAG.equals(requestTag))
                 {
-                    mActivity.showCroutonToast(resultItem.message);
+                    mActivity.showToast(resultItem.message);
                     ConfirmOrderItem confirmOrderItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), ConfirmOrderItem.class);
                     if (null != confirmOrderItem && null != confirmOrderItem.list && !confirmOrderItem.list.isEmpty())
                     {
@@ -272,7 +277,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_CONFIRM_ORDER_TAG.equals(requestTag))
                 {
-                    mActivity.showCroutonToast(resultItem.message);
+                    mActivity.showToast(resultItem.message);
                     if (resultItem.success())
                     {
                         UserOrderActivity.actionUserOrder(mActivity);
@@ -317,10 +322,32 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             {
                 final ConfirmOrderItem.ListItem item = drugItems.get(i);
                 final View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_prescription_drug_item, null);  //TODO
+                final ImageView ivImageView = (ImageView) view.findViewById(R.id.iv_image);
                 RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_normal);
                 LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_edit_container);
                 relativeLayout.setVisibility(View.VISIBLE);
                 linearLayout.setVisibility(View.GONE);
+
+                String img = item.img;
+                if (!TextUtils.isEmpty(img))
+                {
+                    if (!img.startsWith(APIURL.BASE_API_URL))
+                    {
+                        img = APIURL.BASE_API_URL + img;
+                    }
+                    ivImageView.setTag(img);
+                    ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                    {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                        {
+                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                            {
+                                ivImageView.setImageBitmap(loadedImage);
+                            }
+                        }
+                    });
+                }
                 TextView tvDrugName = (TextView) relativeLayout.findViewById(R.id.tv_drug_name);
                 TextView tvDrugInfo = (TextView) relativeLayout.findViewById(R.id.tv_drug_info);
                 TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
@@ -334,7 +361,6 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 mLinearDrugContainer.addView(view, layoutParams);
             }
-
         }
     }
 

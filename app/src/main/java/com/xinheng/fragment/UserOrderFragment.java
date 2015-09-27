@@ -233,7 +233,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 //  List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList( DATA, type);
                 if (null != userOrderItems && !userOrderItems.isEmpty())
                 {
-                    System.out.println("userOrderItems.size = " + userOrderItems.size());
+                  //  System.out.println("userOrderItems.size = " + userOrderItems.size());
                     mUserOrderItems.addAll(userOrderItems);
                     if (null == mUserOrderListAdapter)
                     {

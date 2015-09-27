@@ -14,11 +14,8 @@ import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,13 +99,6 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
         postMap.put("quantity", item.quantity);
         postMap.put("drugQuantitys", GsonUtils.toJson(item.drugQuantity));
         mActivity.showProgressDialog();
-        List<File> files = null;
-        if(null != item.file)
-        {
-            files = new LinkedList<>();
-            files.add(item.file);
-        }
-        OkHttpUtils.customXHasyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap,files, callback);
+        OkHttpUtils.customXHasyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap,item.file, callback);
     }
-
 }

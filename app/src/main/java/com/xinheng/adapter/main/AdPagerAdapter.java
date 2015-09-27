@@ -3,12 +3,13 @@ package com.xinheng.adapter.main;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.mvp.model.AdItem;
@@ -51,17 +52,27 @@ public class AdPagerAdapter extends PagerAdapter
         imageView.setImageResource(R.mipmap.ic_ad_banner);
         container.addView(imageView);
         String imageUrl = item.img;
-        if(URLUtil.isNetworkUrl(imageUrl))
+        if (!TextUtils.isEmpty(imageUrl))
         {
-            ImageLoader.getInstance().loadImage(
-                    imageUrl, new AbsImageLoadingListener()
+            if (!imageUrl.startsWith(APIURL.BASE_API_URL))
+            {
+                imageUrl = APIURL.BASE_API_URL + imageUrl;
+            }
+
+            imageView.setTag(imageUrl);
+            ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
+            {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                {
+                    if (null != loadedImage && imageUri.equals(imageView.getTag()))
                     {
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                        {
-                              imageView.setImageBitmap(loadedImage);
-                        }
-                    });
+                        imageView.setImageBitmap(loadedImage);
+                    }
+                }
+            });
         }
+
         return imageView;
     }
 

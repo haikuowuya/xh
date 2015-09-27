@@ -107,6 +107,11 @@ public class UserOrderItem extends BaseEmptyItem
          * 药品名称
          */
         public String drugName;
+
+        /**
+         * 药品图片
+         */
+        public  String drugImg;
         /**
          * 药品单价
          */

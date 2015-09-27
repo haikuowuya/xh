@@ -207,13 +207,14 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
             }
         }
     }
+
     @Override
     public void onGetDataFailured(String msg, String requestTag)
     {
         mActivity.showCroutonToast(msg);
         if (REQUEST_CODE_TAG.equals(requestTag))
         {
-             mBtnCode.setClickable(true);
+            mBtnCode.setClickable(true);
         }
     }
 
@@ -236,14 +237,12 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
                 tvDepatName.setText(patientRecordItem.departName);
                 if ("1".equals(patientRecordItem.isOpen))
                 {
-                    ivImage.setImageResource(R.mipmap.ic_subscribe_patient_record_auth);
+                    ivImage.setImageResource(R.mipmap.ic_subscribe_patient_record_open);
                 }
             }
 
         }
     }
-
-
 
     private class OnClickListenerImpl implements View.OnClickListener
     {
@@ -287,7 +286,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     private void submit()
     {
         String age = mEtAge.getText().toString();
-        if(TextUtils.isEmpty(age))
+        if (TextUtils.isEmpty(age))
         {
             mActivity.showToast("请输入年龄");
             return;
@@ -346,7 +345,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         String code = mEtCode.getText().toString();
         if (!Constants.ALL_OK_CODE.equals(code))
         {
-            mActivity.showToast("验证码不正确");
+            mActivity.showToast("验证码不正确," + Constants.ALL_OK_CODE + "可以通过验证(开发阶段)");
             return;
         }
 
@@ -390,7 +389,6 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
                     {
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
-
                     }
                 }
             }

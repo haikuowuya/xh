@@ -2,19 +2,22 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
 import com.xinheng.adapter.online.OnlineBottomGridAdapter;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.mvp.model.HomeGridItem;
+import com.xinheng.mvp.model.online.HomeOnLineItem;
+import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomGridView;
 
-import java.util.LinkedList;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -26,10 +29,14 @@ import java.util.List;
 public class OnlineGridItemFragment extends BaseFragment
 {
     private CustomGridView mCustomGridView;
+    public static final String ARG_ITM_LIST_STRING = "item_list_string";
 
-    public static OnlineGridItemFragment newInstance()
+    public static OnlineGridItemFragment newInstance(String adItemListString)
     {
         OnlineGridItemFragment fragment = new OnlineGridItemFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_ITM_LIST_STRING, adItemListString);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -47,17 +54,21 @@ public class OnlineGridItemFragment extends BaseFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mCustomGridView.setAdapter(genGridAdapter());
+        String adJsonArrayString = getArguments().getString(ARG_ITM_LIST_STRING);
+        if (!TextUtils.isEmpty(adJsonArrayString))
+        {
+            Type type = new TypeToken<List<HomeOnLineItem.Item>>()
+            {
+            }.getType();
+            List<HomeOnLineItem.Item> adItems = GsonUtils.jsonToList(adJsonArrayString, type);
+            mCustomGridView.setNumColumns(adItems.size() / 2);
+            mCustomGridView.setAdapter(genGridAdapter(adItems));
+        }
     }
 
-    private BaseAdapter genGridAdapter()
+    private BaseAdapter genGridAdapter(List<HomeOnLineItem.Item> adItems)
     {
-        List<HomeGridItem> data = new LinkedList<>();
-        data.add(new HomeGridItem(R.mipmap.ic_online_0, "按方抓药"));
-        data.add(new HomeGridItem(R.mipmap.ic_online_1, "轻松找药"));
-        data.add(new HomeGridItem(R.mipmap.ic_online_2, "购物车"));
-        data.add(new HomeGridItem(R.mipmap.ic_online_3, "我的订单"));
-        OnlineBottomGridAdapter gridAdapter = new OnlineBottomGridAdapter(mActivity, data);
+        OnlineBottomGridAdapter gridAdapter = new OnlineBottomGridAdapter(mActivity, adItems);
         return gridAdapter;
     }
 

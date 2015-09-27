@@ -81,7 +81,7 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
         refreshComplete();
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 Type type = new TypeToken<List<DepartDoctorItem>>()

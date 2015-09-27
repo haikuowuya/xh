@@ -1,17 +1,22 @@
 package com.xinheng.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.FindMedicalActivity;
 import com.xinheng.PrescriptionActivity;
 import com.xinheng.R;
@@ -19,6 +24,7 @@ import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
 import com.xinheng.adapter.online.OnlineCenterGridAdapter;
 import com.xinheng.adapter.online.OnlineViewPagerAdapter;
+import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
@@ -30,6 +36,7 @@ import com.xinheng.mvp.model.online.OnLineCenterItem;
 import com.xinheng.mvp.presenter.OnLinePresenter;
 import com.xinheng.mvp.presenter.impl.OnLinePresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.ACache;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomGridView;
@@ -40,6 +47,10 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+
 /**
  * 作者： raiyi-suzhou
  * 日期： 2015/8/17 0017
@@ -48,6 +59,7 @@ import java.util.List;
  */
 public class OnlineFragment extends BaseFragment implements DataView
 {
+
     /**
      * 顶部的滚动广告位置
      */
@@ -71,6 +83,8 @@ public class OnlineFragment extends BaseFragment implements DataView
      */
     private TabViewPagerIndicator mTabViewPagerIndicator;
 
+    private PtrClassicFrameLayout mPtrClassicFrameLayout;
+
     public static OnlineFragment newInstance()
     {
         OnlineFragment fragment = new OnlineFragment();
@@ -88,6 +102,7 @@ public class OnlineFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
+        mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_scrollview_container);
         mInfiniteViewPagerIndicatorView = (InfiniteViewPagerIndicatorView) view.findViewById(R.id.infinite_viewpager);
         mTabViewPagerIndicator = (TabViewPagerIndicator) view.findViewById(R.id.tab_viewpager_online_indicator);
         mLinearCenterContainer = (LinearLayout) view.findViewById(R.id.linear_online_center_container);
@@ -118,35 +133,76 @@ public class OnlineFragment extends BaseFragment implements DataView
         if (null != centerItems && !centerItems.isEmpty())
         {
             count = centerItems.size();
-        }
-        for (int i = 0; i < count; i++)
-        {
-            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_online_center_item, null);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.bottomMargin = DensityUtils.dpToPx(mActivity, 10.f);
-            mLinearCenterContainer.addView(view, layoutParams);
+            for (int i = 0; i < count; i++)
+            {
+                OnLineCenterItem item = centerItems.get(i);
+                View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_online_center_item, null);
+                final ImageView imageView0 = (ImageView) view.findViewById(R.id.iv_0);
+                final ImageView imageView1 = (ImageView) view.findViewById(R.id.iv_1);
+                final ImageView imageView2 = (ImageView) view.findViewById(R.id.iv_2);
+                if (item.items != null && !item.items.isEmpty())
+                {
+                    HomeOnLineItem.Item adItem = item.items.get(0);
+                    String img = adItem.img;
+                    if (!TextUtils.isEmpty(img))
+                    {
+                        if (!img.startsWith(APIURL.BASE_API_URL))
+                        {
+                            img = APIURL.BASE_API_URL + img;
+                        }
+                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage)
+                                {
+                                    imageView0.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+
+                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage)
+                                {
+
+                                    imageView1.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+
+                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage)
+                                {
+                                    imageView2.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+                    }
+                }
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.bottomMargin = DensityUtils.dpToPx(mActivity, 10.f);
+                mLinearCenterContainer.addView(view, layoutParams);
+            }
         }
     }
 
     private void fillBottomContainer(List<OnLineBottomItem> bottomItems)
     {
-        List<HomeOnLineItem.Item> items = items = new LinkedList<>();
-        if (null == bottomItems)
+        if (null != bottomItems && !bottomItems.isEmpty())
         {
-            for (int i = 0; i < 4; i++)
-            {
-                HomeOnLineItem.Item item = new HomeOnLineItem.Item();
-                item.title = "TAB " + (1 + i);
-                items.add(item);
-            }
+            mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
+            OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), bottomItems);
+            mTabViewPagerIndicator.setViewPagerAdapter(pagerAdapter);
         }
-        else
-        {
-            items.addAll( bottomItems.get(0).items);
-        }
-        mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
-        OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), items);
-        mTabViewPagerIndicator.setViewPagerAdapter(pagerAdapter);
     }
 
     @Override
@@ -172,7 +228,37 @@ public class OnlineFragment extends BaseFragment implements DataView
                 }
             }
         });
+
+        mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
+        {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+            {
+                return mScrollView.getScrollY() == 0;
+            }
+
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+            {
+                doGetData();
+            }
+        });
+        String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
+        if (!TextUtils.isEmpty(cacheJson))
+        {
+            HomeOnLineItem homeOnLineItem = GsonUtils.jsonToClass(cacheJson, HomeOnLineItem.class);
+            if (null != homeOnLineItem)
+            {
+                fillHomeOnLineItemDataToView(homeOnLineItem);
+            }
+        }
         doGetData();
+    }
+
+    public boolean canDoRefresh()
+    {
+        //  return mScrollView.getScrollY() == 0;
+        return false;
     }
 
     @Override
@@ -193,32 +279,27 @@ public class OnlineFragment extends BaseFragment implements DataView
         return gridAdapter;
     }
 
-    public boolean canDoRefresh()
-    {
-//   return  mScrollView.getScrollY() == 0;
-        return false;
-    }
-
     private PagerAdapter genAdapter(List<AdItem> items)
     {
         if (items == null)
         {
             items = new LinkedList<>();
-            items.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2832113025,1191479993&fm=80"));
-            items.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2898205578,742300433&fm=80"));
-            items.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=396845035,2757297576&fm=80"));
-            items.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=947584711,2775882058&fm=80"));
+            items.add(new AdItem(null));
+            items.add(new AdItem(null));
+            items.add(new AdItem(null));
+            items.add(new AdItem(null));
         }
         AdPagerAdapter adPagerAdapter = new AdPagerAdapter(mActivity, items);
         return adPagerAdapter;
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
+        mPtrClassicFrameLayout.refreshComplete();
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
         }
         handleResultItem(resultItem);
     }
@@ -226,11 +307,11 @@ public class OnlineFragment extends BaseFragment implements DataView
     private void handleResultItem(ResultItem resultItem)
     {
         HomeOnLineItem homeOnLineItem = new HomeOnLineItem();
-        resultItem = GsonUtils.jsonToClass(HomeOnLineItem.DEBUG_SUCCESS, ResultItem.class);
-        if (null != resultItem && resultItem.properties.isJsonArray())
+        // resultItem = GsonUtils.jsonToClass(HomeOnLineItem.DEBUG_SUCCESS, ResultItem.class);
+        if (null != resultItem && resultItem.properties.isJsonObject())
         {
-            JsonArray jsonArray = resultItem.properties.getAsJsonArray();
-            if (jsonArray.size() == 3)
+            JsonObject jsonObject = resultItem.properties.getAsJsonObject();
+            if (jsonObject != null)
             {
                 Type adType = new TypeToken<List<AdItem>>()
                 {
@@ -241,15 +322,15 @@ public class OnlineFragment extends BaseFragment implements DataView
                 Type listType = new TypeToken<List<OnLineBottomItem>>()
                 {
                 }.getType();
-                List<AdItem> advertisement = GsonUtils.jsonToList(jsonArray.get(0).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_ADVERTISEMENT).toString(), adType);
-                List<OnLineCenterItem> subject = GsonUtils.jsonToList(jsonArray.get(1).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_SUBJECT).toString(), subjectType);
-                List<OnLineBottomItem> list = GsonUtils.jsonToList(jsonArray.get(2).getAsJsonObject().getAsJsonArray(HomeOnLineItem.KEY_LIST).toString(), listType);
+                List<AdItem> advertisement = GsonUtils.jsonToList(jsonObject.getAsJsonArray(HomeOnLineItem.KEY_ADVERTISEMENT).toString(), adType);
+                List<OnLineCenterItem> subject = GsonUtils.jsonToList(jsonObject.getAsJsonArray(HomeOnLineItem.KEY_SUBJECT).toString(), subjectType);
+                List<OnLineBottomItem> list = GsonUtils.jsonToList(jsonObject.getAsJsonArray(HomeOnLineItem.KEY_LIST).toString(), listType);
                 homeOnLineItem.advertisement = advertisement;
                 homeOnLineItem.subject = subject;
                 homeOnLineItem.list = list;
             }
-            System.out.println("homeOnLineItem = " + homeOnLineItem);
             fillHomeOnLineItemDataToView(homeOnLineItem);
+            ACache.get(mActivity).put(mActivity.getActivityTitle().toString(), GsonUtils.toJson(homeOnLineItem));
         }
     }
 
@@ -270,9 +351,10 @@ public class OnlineFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
-        mActivity.showCroutonToast(msg);
+        mPtrClassicFrameLayout.refreshComplete();
+        mActivity.showToast(msg);
         handleResultItem(null);
     }
 

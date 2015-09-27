@@ -2,6 +2,8 @@ package com.xinheng.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -15,9 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.AddDrugActivity;
 import com.xinheng.ConfirmOrderActivity;
 import com.xinheng.R;
+import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddDrugItemEvent;
 import com.xinheng.mvp.model.ResultItem;
@@ -60,7 +65,20 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     private List<DrugItem> mDrugItems = null;
     private List<String> mDrugItemCounts = new LinkedList<>();
 
+    /***
+     * 选择的图片路径
+     */
     private String mImageFilePath;
+
+    /***
+     * 选择的图片
+     */
+    private ImageView mIvImage;
+
+    /***
+     * 文件是否选取的状态
+     */
+    private TextView mTvFileStatus;
 
     @Nullable
     @Override
@@ -147,6 +165,8 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mEtDoctorName = (EditText) view.findViewById(R.id.et_doctor_name);
         mEtHospital = (EditText) view.findViewById(R.id.et_hospital);
         mEtQuantity = (EditText) view.findViewById(R.id.et_quantity);
+        mIvImage = (ImageView) view.findViewById(R.id.iv_image);
+        mTvFileStatus = (TextView) view.findViewById(R.id.tv_file_status);
         mEtMedicalName = (EditText) view.findViewById(R.id.et_medical_name);
         mEtUserName = (EditText) view.findViewById(R.id.et_username);
         mBtnImage = (Button) view.findViewById(R.id.btn_image);
@@ -225,14 +245,34 @@ public class PrescriptionFragment extends BaseFragment implements DataView
             for (int i = 0; i < drugItems.size(); i++)
             {
                 final DrugItem item = drugItems.get(i);
-
                 final View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_prescription_drug_item, null);  //TODO
+                final ImageView ivImageView = (ImageView) view.findViewById(R.id.iv_image);
                 RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_normal);
                 LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_edit_container);
                 relativeLayout.setVisibility(View.VISIBLE);
                 linearLayout.setVisibility(View.GONE);
                 TextView tvDrugName = (TextView) relativeLayout.findViewById(R.id.tv_drug_name);
                 TextView tvDrugInfo = (TextView) relativeLayout.findViewById(R.id.tv_drug_info);
+                String img = item.img;
+                if (!TextUtils.isEmpty(img))
+                {
+                    if (!img.startsWith(APIURL.BASE_API_URL))
+                    {
+                        img = APIURL.BASE_API_URL + img;
+                    }
+                    ivImageView.setTag(img);
+                    ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                    {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                        {
+                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                            {
+                                ivImageView.setImageBitmap(loadedImage);
+                            }
+                        }
+                    });
+                }
                 TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
                 final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
                 tvDrugName.setText(item.name);
@@ -278,7 +318,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                         mPrice = mPrice - cost;
                         tvEditCount.setText(count + "");
                         tvDrugCount.setText(count + "");
-
                         setTextPrice(mPrice);
                     }
                 });
@@ -352,7 +391,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 OrderPrescItem orderPrescItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), OrderPrescItem.class);
@@ -423,7 +462,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         if (null == mDrugItems || mDrugItems.isEmpty())
         {
-            mActivity.showCroutonToast("处方中药品不可以为空");
+            mActivity.showToast("处方中药品不可以为空");
             return;
         }
         //获取添加到处方中的药品数目
@@ -447,7 +486,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         }
         if (TextUtils.isEmpty(mImageFilePath))
         {
-            mActivity.showCroutonToast("请选择处方图片");
+            mActivity.showToast("请选择处方图片");
             return;
         }
         String quantity = mEtQuantity.getText().toString();
@@ -455,7 +494,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         {
 //            mActivity.showCroutonToast("请输入服用剂数");
 //            return;
-            quantity ="1";
+            quantity = "1";
         }
         //userid字段此处可以不赋值，后面会获取登录信息的userid
         PostSavePrescriptionItem item = new PostSavePrescriptionItem();
@@ -478,7 +517,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         savePrescriptionPresenter.doSavePrescription(item);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -491,8 +529,14 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                     mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
             }
+
+            if (!TextUtils.isEmpty(mImageFilePath))
+            {
+                mTvFileStatus.setVisibility(View.GONE);
+                mIvImage.setImageBitmap(BitmapFactory.decodeFile(mImageFilePath));
+            }
         }
         // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-       // mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
+        // mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
     }
 }

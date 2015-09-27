@@ -44,8 +44,6 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
 {
 
     public static final String ARG_USER_APPOINTMENT_ID = "user_appointment_id";
-
-
     public static UserAppointmentDetailFragment newInstance(String appointmentId)
     {
         UserAppointmentDetailFragment fragment = new UserAppointmentDetailFragment();
@@ -279,10 +277,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                 }
                 tvDate.setText(DateFormatUtils.format(dateTime, true, false));
                 tvDepatName.setText(patientRecordItem.departName);
-                if ("1".equals(patientRecordItem.isOpen))
-                {
-                    ivImage.setImageResource(R.mipmap.ic_subscribe_patient_record_auth);
-                }
+                ivImage.setActivated("1".equals(patientRecordItem.isOpen));
                 mLinearPatientRecordContainer.addView(view);
             }
         } else

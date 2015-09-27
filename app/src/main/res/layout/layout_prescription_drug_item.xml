@@ -20,6 +20,7 @@
         android:paddingRight="10dp">
 
         <ImageView
+            android:id="@+id/iv_image"
             android:layout_width="72dp"
             android:layout_height="73dp"
             android:gravity="center_vertical"
@@ -27,7 +28,7 @@
             android:singleLine="true"
             android:background="#FFFFFF"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/ic_photo"
+            tools:src="@mipmap/ic_photo"
             tools:text="2015-05-20"/>
 
         <FrameLayout

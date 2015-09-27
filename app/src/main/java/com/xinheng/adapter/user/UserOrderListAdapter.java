@@ -1,16 +1,22 @@
 package com.xinheng.adapter.user;
 
+import android.graphics.Bitmap;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.R;
+import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
@@ -44,19 +50,20 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
     {
         if (null != item)
         {
-        LinearLayout linearDrugContainer = ViewHolder.getView(convertView , R.id.linear_drug_container);
+            LinearLayout linearDrugContainer = ViewHolder.getView(convertView, R.id.linear_drug_container);
             linearDrugContainer.removeAllViews();
             setTextViewText(convertView, R.id.tv_hospital_name, item.hospital);
             if (null != item.orderList && !item.orderList.isEmpty())
             {
-                String countInfo =  "共" + item.orderList.size() + "件商品,合计：￥:";
-                String countFeeInfo  =countInfo  + item.fee + "(含运费￥0.00)";
+                String countInfo = "共" + item.orderList.size() + "件商品,合计：￥:";
+                String countFeeInfo = countInfo + item.fee + "(含运费￥0.00)";
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(countFeeInfo);
-                spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800),countInfo.length(), (countInfo+item.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), (countInfo + item.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 setTextViewText(convertView, R.id.tv_order_fee_info, spannableStringBuilder);
-                for(UserOrderItem.OrderMedicalItem medicalItem :item.orderList)
+                for (UserOrderItem.OrderMedicalItem medicalItem : item.orderList)
                 {
                     final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_prescription_drug_item, null);  //TODO
+                    final ImageView ivImageView = (ImageView) view.findViewById(R.id.iv_image);
                     RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.relative_normal);
                     LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_edit_container);
                     relativeLayout.setVisibility(View.VISIBLE);
@@ -64,6 +71,28 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                     TextView tvDrugName = (TextView) relativeLayout.findViewById(R.id.tv_drug_name);
                     TextView tvDrugInfo = (TextView) relativeLayout.findViewById(R.id.tv_drug_info);
                     TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
+
+                    String img = medicalItem.drugImg;
+                    if (!TextUtils.isEmpty(img))
+                    {
+                        if (!img.startsWith(APIURL.BASE_API_URL))
+                        {
+                            img = APIURL.BASE_API_URL + img;
+                        }
+                        ivImageView.setTag(img);
+                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                                {
+                                    ivImageView.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+                    }
+
                     final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
                     tvDrugName.setText(medicalItem.drugName);
                     tvDrugPrice.setText("￥" + medicalItem.unitPrice);
@@ -99,12 +128,12 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                     DataView dataView = new DataView()
                     {
                         @Override
-                        public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+                        public void onGetDataSuccess(ResultItem resultItem, String requestTag)
                         {
-                            if(resultItem != null)
+                            if (resultItem != null)
                             {
                                 getActivity().showCroutonToast(resultItem.message);
-                                if(resultItem.success())
+                                if (resultItem.success())
                                 {
                                     EventBus.getDefault().post(new OnDeleteUserOrderEvent(item));
                                 }
@@ -113,9 +142,9 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                         }
 
                         @Override
-                        public void onGetDataFailured(String msg,String requestTag)
+                        public void onGetDataFailured(String msg, String requestTag)
                         {
-                            getActivity().showCroutonToast( msg );
+                            getActivity().showCroutonToast(msg);
                         }
                     };
                     DeleteUserOrderPresenter deleteUserOrderPresenter = new DeleteUserOrderPresenterImpl(getActivity(), dataView);

@@ -77,15 +77,15 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position ==0)
+                if (position == 0)
                 {
                     AutoCheckActivity.actionAutoCheck(mActivity);
                 }
-               else if(position ==1)
+                else if (position == 1)
                 {
                     DepartmentNavActivity.actionDepartmentNav(mActivity);
                 }
-                else if(position ==3)
+                else if (position == 3)
                 {
                     OnlineActivity.actionOnline(mActivity);
                 }
@@ -118,10 +118,10 @@ public class MainFragment extends BaseFragment
     private PagerAdapter genAdapter()
     {
         List<AdItem> data = new LinkedList<>();
-        data.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2832113025,1191479993&fm=80"));
-        data.add(new AdItem("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2898205578,742300433&fm=80"));
-        data.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=396845035,2757297576&fm=80"));
-        data.add(new AdItem("https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=947584711,2775882058&fm=80"));
+        data.add(new AdItem(null));
+        data.add(new AdItem(null));
+        data.add(new AdItem(null));
+        data.add(new AdItem(null));
         AdPagerAdapter adPagerAdapter = new AdPagerAdapter(mActivity, data);
         return adPagerAdapter;
     }
