@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.adapter.subscribe.ImageGridAdapter;
+import com.xinheng.adapter.subscribe.AppointmentDetailImageGridAdapter;
 import com.xinheng.base.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
@@ -44,6 +44,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
 {
 
     public static final String ARG_USER_APPOINTMENT_ID = "user_appointment_id";
+
     public static UserAppointmentDetailFragment newInstance(String appointmentId)
     {
         UserAppointmentDetailFragment fragment = new UserAppointmentDetailFragment();
@@ -116,7 +117,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
      */
     private CircularImageView mCivPhoto;
 
-    private  TextView mTvDoctMsg;
+    private TextView mTvDoctMsg;
 
     @Nullable
     @Override
@@ -208,7 +209,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
 
                     if (userAppointmentDetailItem.imgs != null && !userAppointmentDetailItem.imgs.isEmpty())
                     {
-                        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, userAppointmentDetailItem.imgs));
+                        mCustomGridView.setAdapter(new AppointmentDetailImageGridAdapter(mActivity, userAppointmentDetailItem.imgs));
                     }
                 }
             }
@@ -271,7 +272,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                 TextView tvDepatName = (TextView) view.findViewById(R.id.tv_dept_name);
                 ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image);
                 String dateTime = patientRecordItem.createDate;
-                if(TextUtils.isEmpty(dateTime))
+                if (TextUtils.isEmpty(dateTime))
                 {
                     dateTime = patientRecordItem.createTime;
                 }

@@ -217,27 +217,26 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                     tvStatus.setText("预约已满");
                     tvStatus.setBackground(getResources().getDrawable(R.drawable.user_subscribe_evaluation_selector));
                 }
-
                 tvDate.setText(doctorScheduleItem.date);
                 tvTime.setText(doctorScheduleItem.begintime + " - " + doctorScheduleItem.endtime);
                 mLinearScheduleContainer.addView(item);
                 final int finalI = i;
 
                 //测试使用预约加号
-                if (i == doctorDetailItem.schedule.size() - 1)
-                {
-                    tvStatus.setText("预约已满");
-                    tvStatus.setBackground(getResources().getDrawable(R.drawable.user_subscribe_evaluation_selector));
-                    tvStatus.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            AppointmentAddActivity.actionAppointmentAdd(mActivity, doctorScheduleItem);
-                        }
-                    });
-                    return;
-                }
+//                if (i == doctorDetailItem.schedule.size() - 1)
+//                {
+//                    tvStatus.setText("预约已满");
+//                    tvStatus.setBackground(getResources().getDrawable(R.drawable.user_subscribe_evaluation_selector));
+//                    tvStatus.setOnClickListener(new View.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick(View v)
+//                        {
+//                            AppointmentAddActivity.actionAppointmentAdd(mActivity, doctorScheduleItem);
+//                        }
+//                    });
+//                    return;
+//                }
 
                 tvStatus.setOnClickListener(new View.OnClickListener()
                 {

@@ -6,6 +6,7 @@ import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.BaseEmptyItem;
 import com.xinheng.mvp.presenter.SendCodePresenter;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.MD5;
 import com.xinheng.util.RSAUtil;
@@ -36,9 +37,10 @@ public class SendCodePresenterImpl implements SendCodePresenter
         String mingPostBody = null;
         PostSendCodeItem postSendCodeItem = new PostSendCodeItem();
         postSendCodeItem.mobile = phone;
-        String Str1 = new StringBuffer(phone).reverse().toString() + PostSendCodeItem.UA;
-        String Str2 = new MD5().getMD5_32(Str1) + PostSendCodeItem.UA;
-        String key = new MD5().getMD5_32(Str2);
+        String Str1 = new StringBuffer(phone).reverse().toString() + Constants.USER_AGENT_VALUE;
+        MD5 md5 = new MD5();
+        String Str2 = md5.getMD5_32(Str1) + PostSendCodeItem.SALT;
+        String key = md5.getMD5_32(Str2);
         postSendCodeItem.key = key;
         mingPostBody = GsonUtils.toJson(postSendCodeItem);
         System.out.println("mingPostBody = " + mingPostBody);
@@ -48,7 +50,7 @@ public class SendCodePresenterImpl implements SendCodePresenter
 
     public static class PostSendCodeItem extends BaseEmptyItem
     {
-        public static final String UA = "ua";
+
         public static final String SALT = "wWw.XhkJ.C0m";
         public String mobile;//手机号码
         public String key;//验证key 策略：MD5(MD5(mobile(倒序)+ua)+salt)

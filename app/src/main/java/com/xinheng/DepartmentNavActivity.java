@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
@@ -48,10 +47,10 @@ public class DepartmentNavActivity extends BaseActivity implements DataView
         setContentView(R.layout.activity_department_nav);//TODO
         initView();
         setIvRightVisibility(View.VISIBLE);
-        mLeftListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_left, R.layout.list_department_left_item));
-        mRightListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_right, R.layout.list_department_right_item));
-        mLeftListView.setItemChecked(0, true);
-        mRightListView.setItemChecked(0, true);
+//        mLeftListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_left, R.layout.list_department_left_item));
+//        mRightListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_department_right, R.layout.list_department_right_item));
+//        mLeftListView.setItemChecked(0, true);
+//        mRightListView.setItemChecked(0, true);
         String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
         if (!TextUtils.isEmpty(cacheJson))
         {

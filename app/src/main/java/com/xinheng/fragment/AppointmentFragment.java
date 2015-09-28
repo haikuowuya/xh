@@ -180,6 +180,9 @@ public class AppointmentFragment extends BaseFragment implements DataView
 
     private LinkedList<String> mImageFilePaths;
 
+    private LinkedList<String> mAuths = new LinkedList<>();
+    private LinkedList<String> mBmrIds = new LinkedList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -199,13 +202,13 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvType = (TextView) view.findViewById(R.id.tv_type);
         mTvDate = (TextView) view.findViewById(R.id.tv_date);
         mIvSelectDate = (ImageView) view.findViewById(R.id.iv_select_date);
-        mTvSelectPatient = (TextView) view.findViewById(R.id.tv_select_patient);
         mTvFirstVisit = (TextView) view.findViewById(R.id.tv_first_visit);
         mTvSecondVisit = (TextView) view.findViewById(R.id.tv_second_visit);
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
         mLinearPatientRecordContainer = (LinearLayout) view.findViewById(R.id.linear_patient_record_container);
         mEtConditionReport = (EditText) view.findViewById(R.id.et_conditionReport);
         mEtSymptoms = (EditText) view.findViewById(R.id.et_symptoms);
+        mTvSelectPatient = (TextView) view.findViewById(R.id.tv_select_patient);
         mLinearPatientContainer = (LinearLayout) view.findViewById(R.id.linear_patient_container);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         mCustomGridView.setNumColumns(3);
@@ -252,7 +255,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvType.setText(doctorScheduleItem.type);
     }
 
-    //选择支付配送方式事件
+    //选择就诊人事件
     @Subscribe
     public void onEventMainThread(OnSelectPatientEvent event)
     {
@@ -297,18 +300,19 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvFirstVisit.setOnClickListener(onClickListener);
         mTvSecondVisit.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
-        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
-                if (TextUtils.isEmpty(str))
+        mCustomGridView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
                 {
-                    PhotoUtils.showSelectDialog(mActivity);
-                }
-            }
-        });
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
+                        if (TextUtils.isEmpty(str))
+                        {
+                            PhotoUtils.showSelectDialog(mActivity);
+                        }
+                    }
+                });
 
     }
 
@@ -343,8 +347,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                }
-                else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
+                } else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<PatientRecordItem>>()
                     {
@@ -359,15 +362,13 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         }
                         fillPatientRecord(items);
                     }
-                }
-                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+                } else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
                     UserAppointmentActivity.actionUserAppointment(mActivity);
                     mActivity.finish();
                 }
-            }
-            else
+            } else
             {
                 if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
@@ -386,8 +387,9 @@ public class AppointmentFragment extends BaseFragment implements DataView
     {
         if (null != items && !items.isEmpty())
         {
-            for (PatientRecordItem patientRecordItem : items)
+            for (int i = 0; i < items.size(); i++)
             {
+                PatientRecordItem patientRecordItem = items.get(i);
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_patient_record_item, null);
                 TextView tvDate = (TextView) view.findViewById(R.id.tv_date);
                 TextView tvDepatName = (TextView) view.findViewById(R.id.tv_dept_name);
@@ -397,22 +399,26 @@ public class AppointmentFragment extends BaseFragment implements DataView
                 if ("1".equals(patientRecordItem.isOpen))
                 {
                     ivImage.setActivated(true);
-                }
-                else
+                } else
                 {
                     ivImage.setActivated(false);
                 }
-                ivImage.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        ivImage.setActivated(!ivImage.isActivated());
-                    }
-                });
+                mAuths.add(i, ivImage.isActivated() ? "1" : "0");
+                mBmrIds.add(i, patientRecordItem.bmrId);
+                final int finalI = i;
+                ivImage.setOnClickListener(
+                        new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                ivImage.setActivated(!ivImage.isActivated());
+                                mAuths.add(finalI, ivImage.isActivated() ? "1" : "0");
+                            }
+                        });
                 mLinearPatientRecordContainer.addView(view);
-            }
 
+            }
         }
     }
 
@@ -495,7 +501,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         postSubmitSubscribeItem.conditionReport = RSAUtil.clientEncrypt(conditionReport);
         postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(symptoms);
         postSubmitSubscribeItem.bmrIds = new LinkedList<>();
-        postSubmitSubscribeItem.auths = new LinkedList<>();
+        postSubmitSubscribeItem.auths = mAuths;
         if (mImageFilePaths.size() > 1)
         {
             List<File> files = new LinkedList<>();
@@ -527,31 +533,33 @@ public class AppointmentFragment extends BaseFragment implements DataView
         alertDialog.setCustomTitle(tvTitle);
         View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
         TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
-        tvCancle.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                alertDialog.dismiss();
-            }
-        });
+        tvCancle.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        alertDialog.dismiss();
+                    }
+                });
         alertDialog.getListView().addFooterView(footerView);
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
-        alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
+        alertDialog.getListView().setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
                 {
-                    alertDialog.dismiss();
-                    mPosition = position;
-                    showSelectSchedule(mDoctorScheduleItems.get(position));
-                }
-            }
-        });
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
+                        {
+                            alertDialog.dismiss();
+                            mPosition = position;
+                            showSelectSchedule(mDoctorScheduleItems.get(position));
+                        }
+                    }
+                });
         alertDialog.show();
     }
 

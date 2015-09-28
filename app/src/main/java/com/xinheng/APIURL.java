@@ -8,8 +8,8 @@ package com.xinheng;
  */
 public class APIURL
 {
-    public static final String BASE_API_URL = "http://139.196.24.205";
-    //public static final String BASE_API_URL = " http://192.168.2.119";
+         public static final String BASE_API_URL = "http://139.196.24.205";
+//    public static final String BASE_API_URL = " http://192.168.2.119";
     /**
      * 用户登录URL
      */
@@ -116,8 +116,11 @@ public class APIURL
     /**
      * 预约挂号-保存
      */
-    public static final String SUBMIT_SUBSCRIBE_URL = BASE_API_URL + "/interface/patient/ appointment/submit";
-    public static final String SUBMIT_APPOINTMENT_ADD_URL = BASE_API_URL + "/interface/patient/ appointment/submit";
+    public static final String SUBMIT_SUBSCRIBE_URL = BASE_API_URL + "/interface/patient/appointment/submit";
+    /**
+     * 预约加号-保存
+     */
+    public static final String SUBMIT_APPOINTMENT_ADD_URL = BASE_API_URL + "/interface/patient/appointment/addplus";
 
     /***
      * 校验和修改绑定手机号码

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.DepartmentDoctorActivity;
@@ -49,7 +48,7 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
     {
         super.onActivityCreated(savedInstanceState);
         mDepartItem = getArguments().getSerializable(DepartmentDoctorActivity.EXTRA_DEPAET_ITEM) == null ? null : (DepartItem) getArguments().getSerializable(DepartmentDoctorActivity.EXTRA_DEPAET_ITEM);
-        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
+//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
     }
 
     @Override
@@ -76,7 +75,7 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
         if (null != resultItem)
@@ -90,37 +89,42 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
                 List<DepartDoctorItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
                 if (null != items)
                 {
-                    if(items.isEmpty())
+                    if (items.isEmpty())
                     {
-                        items = GsonUtils.jsonToResultItemToList(DepartDoctorItem.DEBUG_SUCCESS, type);
+                        //  items = GsonUtils.jsonToResultItemToList(DepartDoctorItem.DEBUG_SUCCESS, type);
                     }
                     mDepartDoctorItems.addAll(items);
                     if (null == mDepartDoctorListAdapter)
                     {
                         mDepartDoctorListAdapter = new DepartDoctorListAdapter(mActivity, mDepartDoctorItems);
                         getListView().setAdapter(mDepartDoctorListAdapter);
-                    }
-                    else
+                    } else
                     {
                         mDepartDoctorListAdapter.notifyDataSetChanged();
                     }
-                    getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-                    {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                        {
-                            DepartDoctorItem doctorItem = (DepartDoctorItem) parent.getAdapter().getItem(position);
-                            DepartmentDoctorDetailActivity.actionDepartDoctorDetail(mActivity, doctorItem);
+                    getListView().setOnItemClickListener(
+                            new AdapterView.OnItemClickListener()
+                            {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                                {
+                                    DepartDoctorItem doctorItem = (DepartDoctorItem) parent.getAdapter().getItem(position);
+                                    DepartmentDoctorDetailActivity.actionDepartDoctorDetail(mActivity, doctorItem);
 
-                        }
-                    });
+                                }
+                            });
+                }
+                if (mDepartDoctorItems.isEmpty())
+                {
+                    getListView().setAdapter(null);
+                    getListView().setEmptyView(getView().findViewById(android.R.id.empty));
                 }
             }
         }
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }

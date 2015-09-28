@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -129,63 +130,76 @@ public class OnlineFragment extends BaseFragment implements DataView
     private void fillCenterContainer(List<OnLineCenterItem> centerItems)
     {
         mLinearCenterContainer.removeAllViews();
-        int count = 2;
+
         if (null != centerItems && !centerItems.isEmpty())
         {
-            count = centerItems.size();
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < centerItems.size(); i++)
             {
                 OnLineCenterItem item = centerItems.get(i);
                 View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_online_center_item, null);
+                TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 final ImageView imageView0 = (ImageView) view.findViewById(R.id.iv_0);
                 final ImageView imageView1 = (ImageView) view.findViewById(R.id.iv_1);
                 final ImageView imageView2 = (ImageView) view.findViewById(R.id.iv_2);
+                tvName.setText(item.name);
                 if (item.items != null && !item.items.isEmpty())
                 {
-                    HomeOnLineItem.Item adItem = item.items.get(0);
-                    String img = adItem.img;
-                    if (!TextUtils.isEmpty(img))
+                    for (int ii = 0; ii < item.items.size(); ii++)
                     {
-                        if (!img.startsWith(APIURL.BASE_API_URL))
+                        HomeOnLineItem.Item adItem = item.items.get(ii);
+                        String img = adItem.img;
+                        if (!TextUtils.isEmpty(img))
                         {
-                            img = APIURL.BASE_API_URL + img;
+                            if (!img.startsWith(APIURL.BASE_API_URL))
+                            {
+                                img = APIURL.BASE_API_URL + img;
+                            }
+                            if (ii == 0)
+                            {
+                                ImageLoader.getInstance().loadImage(
+                                        img, new AbsImageLoadingListener()
+                                        {
+                                            @Override
+                                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                            {
+                                                if (null != loadedImage)
+                                                {
+                                                    imageView0.setImageBitmap(loadedImage);
+                                                }
+                                            }
+                                        });
+
+                            } else if (ii == 1)
+                            {
+                                ImageLoader.getInstance().loadImage(
+                                        img, new AbsImageLoadingListener()
+                                        {
+                                            @Override
+                                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                            {
+                                                if (null != loadedImage)
+                                                {
+                                                    imageView1.setImageBitmap(loadedImage);
+                                                }
+                                            }
+                                        });
+
+                            } else if (ii == 2)
+                            {
+                                ImageLoader.getInstance().loadImage(
+                                        img, new AbsImageLoadingListener()
+                                        {
+                                            @Override
+                                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                            {
+                                                if (null != loadedImage)
+                                                {
+                                                    imageView2.setImageBitmap(loadedImage);
+                                                }
+                                            }
+                                        });
+                            }
                         }
-                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                        {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage)
-                                {
-                                    imageView0.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
-
-                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                        {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage)
-                                {
-
-                                    imageView1.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
-
-                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                        {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage)
-                                {
-                                    imageView2.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
                     }
                 }
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -193,6 +207,7 @@ public class OnlineFragment extends BaseFragment implements DataView
                 mLinearCenterContainer.addView(view, layoutParams);
             }
         }
+
     }
 
     private void fillBottomContainer(List<OnLineBottomItem> bottomItems)
@@ -209,40 +224,42 @@ public class OnlineFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (position == 0)//按方抓药
+        mCustomGridView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
                 {
-                    PrescriptionActivity.actionGetMedical(mActivity);
-                }
-                if (position == 1)    //轻松找药
-                {
-                    FindMedicalActivity.actionFindMedical(mActivity);
-                }
-                if (position == 3)//我的订单
-                {
-                    UserOrderActivity.actionUserOrder(mActivity);
-                }
-            }
-        });
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        if (position == 0)//按方抓药
+                        {
+                            PrescriptionActivity.actionGetMedical(mActivity);
+                        }
+                        if (position == 1)    //轻松找药
+                        {
+                            FindMedicalActivity.actionFindMedical(mActivity);
+                        }
+                        if (position == 3)//我的订单
+                        {
+                            UserOrderActivity.actionUserOrder(mActivity);
+                        }
+                    }
+                });
 
         mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
-            {
-                return mScrollView.getScrollY() == 0;
-            }
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+                    @Override
+                    public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+                    {
+                        return mScrollView.getScrollY() == 0;
+                    }
 
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                doGetData();
-            }
-        });
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        doGetData();
+                    }
+                });
         String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
         if (!TextUtils.isEmpty(cacheJson))
         {
@@ -281,7 +298,7 @@ public class OnlineFragment extends BaseFragment implements DataView
 
     private PagerAdapter genAdapter(List<AdItem> items)
     {
-        if (items == null)
+        if (items == null || items.isEmpty())
         {
             items = new LinkedList<>();
             items.add(new AdItem(null));

@@ -184,6 +184,7 @@ public class RequestUtils
                 {
                     HashMap<String, String> headerMap = new HashMap<>();
                     headerMap.put(Constants.SESSION_ID, successItem.sessionId);
+                    headerMap.put(Constants.USER_AGENT_KEY, Constants.USER_AGENT_VALUE)    ;
                     headerMap.put(Constants.COOKIE, Constants.SID + successItem.sessionId);
                     //userId要客户端加密
                     String encryptUserId = RSAUtil.clientEncrypt(successItem.id);

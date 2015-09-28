@@ -8,7 +8,10 @@ package com.xinheng.util;
  */
 public class Constants
 {
-
+    /***
+     * HTTP头部写的user_agent的值
+     */
+    public static final String  USER_AGENT_VALUE="UA_HKWY";
     /**
      * 测试的万能验证码
      */
@@ -34,6 +37,11 @@ public class Constants
      * http请求中添加的header key
      */
     public static final String SESSION_ID = "sessionId";
+
+    /***
+     * http请求中添加的header key
+     */
+    public static final String USER_AGENT_KEY = "user-agent";
     /***
      * http请求中添加的header key
      */

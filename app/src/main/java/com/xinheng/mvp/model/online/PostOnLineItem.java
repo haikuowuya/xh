@@ -16,7 +16,7 @@ public class PostOnLineItem  extends BaseEmptyItem
     /**
      * 广告数，默认是5
      */
-    public String adsize = DEFAULT_AD_SIZE;
+    public String adSize = DEFAULT_AD_SIZE;
     /***
      * 推荐主题记录数， 默认3
      */
@@ -28,7 +28,7 @@ public class PostOnLineItem  extends BaseEmptyItem
     /***
      * 推荐类型记录数， 默认3
      */
-    public String typesize = DEFAULT_TYPE_SIZE;
+    public String typeSize = DEFAULT_TYPE_SIZE;
     /**
      *每类推荐类型的记录数，默认6
      */
@@ -40,10 +40,10 @@ public class PostOnLineItem  extends BaseEmptyItem
 
     public PostOnLineItem(String adsize, String subjectSize, String perSubjectSize, String typesize, String pertypesize)
     {
-        this.adsize = adsize;
+        this.adSize = adsize;
         this.subjectSize = subjectSize;
         this.perSubjectSize = perSubjectSize;
-        this.typesize = typesize;
+        this.typeSize = typesize;
         this.pertypesize = pertypesize;
     }
 }

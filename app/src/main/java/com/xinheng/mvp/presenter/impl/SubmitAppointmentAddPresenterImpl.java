@@ -95,18 +95,19 @@ public class SubmitAppointmentAddPresenterImpl implements SubmitAppointmentAddPr
             }
         };
         Map<String, String> postMap = new HashMap<>();
-        postMap.put("userId", item.userId);
+//        postMap.put("userId", item.userId);
         postMap.put("scheduleId", item.scheduleId);
-        postMap.put("age", item.age);
-        postMap.put("sex", item.sex);
+//        postMap.put("age", item.age);
+//        postMap.put("sex", item.sex);
         postMap.put("conditionReport", item.conditionReport);
+        postMap.put("mobile", item.mobile);
         postMap.put("symptoms", item.symptoms);
         postMap.put("checkcode", item.checkcode);
         postMap.put("message", item.message);
+        postMap.put("patientId", item.patientId);
 
         mActivity.showProgressDialog();
         OkHttpUtils.customXHasyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
     }
-
 
 }
