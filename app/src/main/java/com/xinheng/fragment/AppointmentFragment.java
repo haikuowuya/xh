@@ -40,6 +40,7 @@ import com.xinheng.mvp.presenter.impl.PatientRecordPresenterImpl;
 import com.xinheng.mvp.presenter.impl.SubmitAppointmentPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
@@ -287,7 +288,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
     private void doGetPatientRecord()
     {
         mLinearPatientRecordContainer.removeAllViews();
-        PatientRecordPresenter patientRecordPresenter = new PatientRecordPresenterImpl(mActivity, this, REQUEST_PATIENT_RECORD_TAG);
+        PatientRecordPresenter patientRecordPresenter = new PatientRecordPresenterImpl(mActivity, this, REQUEST_PATIENT_RECORD_TAG,false);
         patientRecordPresenter.doGetPatientRecord(mUserPatientItem.id, mDoctorDetailItem.doctId);
 
     }
@@ -404,16 +405,18 @@ public class AppointmentFragment extends BaseFragment implements DataView
                     ivImage.setActivated(false);
                 }
                 mAuths.add(i, ivImage.isActivated() ? "1" : "0");
-                mBmrIds.add(i, patientRecordItem.bmrId);
+                mBmrIds.add(i, RSAUtil.clientEncrypt(patientRecordItem.bmrId));
                 final int finalI = i;
                 ivImage.setOnClickListener(
                         new View.OnClickListener()
                         {
-                            @Override
                             public void onClick(View v)
                             {
                                 ivImage.setActivated(!ivImage.isActivated());
+                                System.out.println("finalI = " + finalI);
+                                mAuths.remove(finalI);
                                 mAuths.add(finalI, ivImage.isActivated() ? "1" : "0");
+
                             }
                         });
                 mLinearPatientRecordContainer.addView(view);
@@ -500,7 +503,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         postSubmitSubscribeItem.status = mTvFirstVisit.isActivated() ? "0" : "1";
         postSubmitSubscribeItem.conditionReport = RSAUtil.clientEncrypt(conditionReport);
         postSubmitSubscribeItem.symptoms = RSAUtil.clientEncrypt(symptoms);
-        postSubmitSubscribeItem.bmrIds = new LinkedList<>();
+        postSubmitSubscribeItem.bmrIds = mBmrIds;
         postSubmitSubscribeItem.auths = mAuths;
         if (mImageFilePaths.size() > 1)
         {
@@ -575,6 +578,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
                     String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                     if (null != imageFilePath)
                     {
+                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
 

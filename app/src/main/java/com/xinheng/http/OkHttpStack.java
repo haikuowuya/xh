@@ -31,33 +31,36 @@ import java.util.concurrent.TimeUnit;
  * OkHttp backed {@link HttpStack HttpStack} that does not
  * use okhttp-urlconnection
  */
-public class OkHttpStack implements HttpStack {
+public class OkHttpStack implements HttpStack
+{
     private final OkHttpClient mClient;
 
-    public OkHttpStack(OkHttpClient client) {
+    public OkHttpStack(OkHttpClient client)
+    {
         this.mClient = client;
     }
 
     @Override
-    public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders)
-            throws IOException, AuthFailureError {
+    public HttpResponse performRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError
+    {
         OkHttpClient client = mClient.clone();
         int timeoutMs = request.getTimeoutMs();
         client.setConnectTimeout(timeoutMs, TimeUnit.MILLISECONDS);
         client.setReadTimeout(timeoutMs, TimeUnit.MILLISECONDS);
         client.setWriteTimeout(timeoutMs, TimeUnit.MILLISECONDS);
 
-        com.squareup.okhttp.Request.Builder okHttpRequestBuilder =
-                new com.squareup.okhttp.Request.Builder();
+        com.squareup.okhttp.Request.Builder okHttpRequestBuilder = new com.squareup.okhttp.Request.Builder();
         okHttpRequestBuilder.url(request.getUrl());
 
         Map<String, String> headers = request.getHeaders();
 
-        for (final String name : headers.keySet()) {
+        for (final String name : headers.keySet())
+        {
             okHttpRequestBuilder.addHeader(name, headers.get(name));
         }
 
-        for (final String name : additionalHeaders.keySet()) {
+        for (final String name : additionalHeaders.keySet())
+        {
             okHttpRequestBuilder.addHeader(name, additionalHeaders.get(name));
         }
 
@@ -72,22 +75,20 @@ public class OkHttpStack implements HttpStack {
         Call okHttpCall = client.newCall(okHttpRequest);
         Response okHttpResponse = okHttpCall.execute();
 
-        StatusLine responseStatus = new BasicStatusLine
-                (
-                        parseProtocol(okHttpResponse.protocol()),
-                        okHttpResponse.code(),
-                        okHttpResponse.message()
-                );
+        StatusLine responseStatus = new BasicStatusLine(
+                parseProtocol(okHttpResponse.protocol()), okHttpResponse.code(), okHttpResponse.message());
 
         BasicHttpResponse response = new BasicHttpResponse(responseStatus);
         response.setEntity(entityFromOkHttpResponse(okHttpResponse));
 
         Headers responseHeaders = okHttpResponse.headers();
 
-        for (int i = 0, len = responseHeaders.size(); i < len; i++) {
+        for (int i = 0, len = responseHeaders.size(); i < len; i++)
+        {
             final String name = responseHeaders.name(i), value = responseHeaders.value(i);
 
-            if (name != null) {
+            if (name != null)
+            {
                 response.addHeader(new BasicHeader(name, value));
             }
         }
@@ -95,7 +96,8 @@ public class OkHttpStack implements HttpStack {
         return response;
     }
 
-    private static HttpEntity entityFromOkHttpResponse(Response r) throws IOException {
+    private static HttpEntity entityFromOkHttpResponse(Response r) throws IOException
+    {
         BasicHttpEntity entity = new BasicHttpEntity();
         ResponseBody body = r.body();
 
@@ -103,25 +105,27 @@ public class OkHttpStack implements HttpStack {
         entity.setContentLength(body.contentLength());
         entity.setContentEncoding(r.header("Content-Encoding"));
 
-        if (body.contentType() != null) {
+        if (body.contentType() != null)
+        {
             entity.setContentType(body.contentType().type());
         }
         return entity;
     }
 
     @SuppressWarnings("deprecation")
-    private static void setConnectionParametersForRequest
-            (com.squareup.okhttp.Request.Builder builder, Request<?> request)
-            throws IOException, AuthFailureError {
-        switch (request.getMethod()) {
+    private static void setConnectionParametersForRequest(com.squareup.okhttp.Request.Builder builder, Request<?> request) throws IOException, AuthFailureError
+    {
+        switch (request.getMethod())
+        {
             case Request.Method.DEPRECATED_GET_OR_POST:
                 // Ensure backwards compatibility.
                 // Volley assumes a request with a null body is a GET.
                 byte[] postBody = request.getPostBody();
 
-                if (postBody != null) {
-                    builder.post(RequestBody.create
-                            (MediaType.parse(request.getPostBodyContentType()), postBody));
+                if (postBody != null)
+                {
+                    builder.post(
+                            RequestBody.create(MediaType.parse(request.getPostBodyContentType()), postBody));
                 }
                 break;
 
@@ -162,8 +166,10 @@ public class OkHttpStack implements HttpStack {
         }
     }
 
-    private static ProtocolVersion parseProtocol(final Protocol p) {
-        switch (p) {
+    private static ProtocolVersion parseProtocol(final Protocol p)
+    {
+        switch (p)
+        {
             case HTTP_1_0:
                 return new ProtocolVersion("HTTP", 1, 0);
             case HTTP_1_1:
@@ -177,7 +183,8 @@ public class OkHttpStack implements HttpStack {
         throw new IllegalAccessError("Unkwown protocol");
     }
 
-    private static RequestBody createRequestBody(Request r) throws AuthFailureError {
+    private static RequestBody createRequestBody(Request r) throws AuthFailureError
+    {
         //================================DEFAULT============================================
         // final byte[] body = r.getBody();
         // if (body == null) return null;
@@ -187,17 +194,20 @@ public class OkHttpStack implements HttpStack {
         //自己重写定制：
         RequestBody requestBody = null;
         final byte[] body = r.getBody();
-        if (null != body) {
-            try {
+        if (null != body)
+        {
+            try
+            {
                 if (r.getMethod() == Request.Method.POST)//POST请求处理
                 {
                     String postBody = new String(body, HTTP.UTF_8);
                     requestBody = RequestBody.create(MediaType.parse("application/json"), postBody);
-                } else {
+                } else
+                {
                     requestBody = RequestBody.create(MediaType.parse(r.getBodyContentType()), body);
                 }
-
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException e)
+            {
                 e.printStackTrace();
             }
         }

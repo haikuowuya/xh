@@ -21,12 +21,14 @@ import com.xinheng.crash.CrashWoodpecker;
 import java.util.LinkedList;
 
 /**
- *  应用程序的入口
+ * 应用程序的入口
  */
 public class XHApplication extends android.app.Application
 {
     private LinkedList<Activity> mActivities = new LinkedList<Activity>();
     private static XHApplication sInstance;
+
+   // public RefWatcher mRefWatcher;
 
     @Override
     public void onCreate()
@@ -34,10 +36,10 @@ public class XHApplication extends android.app.Application
         super.onCreate();
         sInstance = this;
         CrashWoodpecker.fly().to(this);
+//        mRefWatcher = LeakCanary.install(this);
         DisplayImageOptions options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.mipmap.ic_launcher).showImageOnLoading(R.mipmap.ic_launcher).showImageOnFail(R.mipmap.ic_launcher).delayBeforeLoading(0).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY_STRETCHED).bitmapConfig(Bitmap.Config.RGB_565).imageScaleType(ImageScaleType.IN_SAMPLE_INT).build();
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).defaultDisplayImageOptions(options).threadPriority(Thread.NORM_PRIORITY).threadPoolSize(4).denyCacheImageMultipleSizesInMemory().memoryCache(new WeakMemoryCache()).discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).imageDownloader(new BaseImageDownloader(this, 30 * 1000, 30 * 1000)).build();
         ImageLoader.getInstance().init(configuration);
-
     }
 
     public static final XHApplication getInstance()
@@ -78,22 +80,24 @@ public class XHApplication extends android.app.Application
 
     public void showExitDialog(BaseActivity activity)
     {
-        AlertDialog alertDialog = new AlertDialog.Builder(activity).setTitle("提示").setMessage("确定退出吗").setPositiveButton("确定", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                exitClient();
-            }
-        }).setNegativeButton("取消", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-            }
-        }).show();
+        AlertDialog alertDialog = new AlertDialog.Builder(activity).setTitle("提示").setMessage("确定退出吗").setPositiveButton(
+                "确定", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                        exitClient();
+                    }
+                }).setNegativeButton(
+                "取消", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
 }

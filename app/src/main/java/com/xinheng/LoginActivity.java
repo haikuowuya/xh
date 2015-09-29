@@ -85,7 +85,6 @@ public class LoginActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);//TODO
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         configTitleLayout();
         initView();
         setListener();

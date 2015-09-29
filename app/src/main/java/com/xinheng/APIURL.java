@@ -8,8 +8,8 @@ package com.xinheng;
  */
 public class APIURL
 {
-         public static final String BASE_API_URL = "http://139.196.24.205";
-//    public static final String BASE_API_URL = " http://192.168.2.119";
+     public static final String BASE_API_URL = "http://139.196.24.205";
+   // public static final String BASE_API_URL = " http://192.168.2.119";
     /**
      * 用户登录URL
      */

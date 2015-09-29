@@ -20,7 +20,7 @@ public abstract class BaseFragment extends Fragment implements IFragmentTitle
      */
     protected boolean mIsInit = false;
     protected boolean mCanPullToRefresh = false;
-    protected  BaseFragment mFragment;
+    protected BaseFragment mFragment;
 
     @Override
     public void onAttach(Activity activity)
@@ -65,6 +65,16 @@ public abstract class BaseFragment extends Fragment implements IFragmentTitle
                 doGetData();
             }
         }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+//        if (null != XHApplication.getInstance().mRefWatcher)
+//        {
+//            XHApplication.getInstance().mRefWatcher.watch(this);
+//        }
     }
 
     /**

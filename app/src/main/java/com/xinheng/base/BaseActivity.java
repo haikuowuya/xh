@@ -128,20 +128,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在请求服务器中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                if (keyCode == KeyEvent.KEYCODE_BACK)
+        mProgressDialog.setOnKeyListener(
+                new DialogInterface.OnKeyListener()
                 {
-                    mProgressDialog.dismiss();
-                    mActivity.finish();
-                    return true;
-                }
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+                    {
+                        if (keyCode == KeyEvent.KEYCODE_BACK)
+                        {
+                            mProgressDialog.dismiss();
+                            mActivity.finish();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
 
         if (!IntentUtils.isLauncherIntent(getIntent()) && !(this instanceof RegisterActivity))
         {
@@ -231,24 +232,26 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         {
             mIvBack.setVisibility(View.GONE);
         }
-        mIvBack.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                onBackPressed();
-            }
-        });
+        mIvBack.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        onBackPressed();
+                    }
+                });
 
-        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                // mSlidingMenu.toggle(true);
-                showPopupWindow();
-            }
-        });
+        findViewById(R.id.iv_right).setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        // mSlidingMenu.toggle(true);
+                        showPopupWindow();
+                    }
+                });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
         initSlidingMenu();
     }
@@ -257,21 +260,22 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         if (null == mPopupWindow)
         {
-            ListView listview = (ListView) LayoutInflater.from(mActivity).inflate(R.layout.layout_listview, null);
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_listview, null);
+            ListView listview = (ListView) view.findViewById(R.id.lv_listview);
+
             listview.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             String[] strings = getResources().getStringArray(R.array.array_menu_menu);
             List<IconTextItem> iconTextItems = new LinkedList<>();
             for (int i = 0; i < strings.length; i++)
             {
                 String[] tmp = SplitUtils.split(strings[i]);
-
                 if (null != tmp && tmp.length > 0 && tmp.length == 2)
                 {
                     int iconId = getResources().getIdentifier(tmp[0], "mipmap", getPackageName());
                     String text = tmp[1];
-                    View view = LayoutInflater.from(mActivity).inflate(R.layout.list_icon_text_item, null);
-                    TextView textView = (TextView) view.findViewById(R.id.tv_text);
-                    ImageView imageView = (ImageView) view.findViewById(R.id.iv_icon);
+                    View itemView = LayoutInflater.from(mActivity).inflate(R.layout.list_icon_text_item, null);
+                    TextView textView = (TextView) itemView.findViewById(R.id.tv_text);
+                    ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_icon);
                     textView.setText(text);
                     imageView.setImageResource(iconId);
                     iconTextItems.add(new IconTextItem(iconId, text));
@@ -281,54 +285,53 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             listview.setItemChecked(0, true);
             int width = DensityUtils.dpToPx(mActivity, 160.f);
             int height = AbsListView.LayoutParams.WRAP_CONTENT;
-            mPopupWindow = new PopupWindow(listview, width, height);
+            mPopupWindow = new PopupWindow(view, width, height);
             mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
             mPopupWindow.setOutsideTouchable(true);// 设置点击窗口外边窗口消失
             mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    mPopupWindow.dismiss();
-                    switch (position)
+            listview.setOnItemClickListener(
+                    new AdapterView.OnItemClickListener()
                     {
-                        case 0:
-                            if (!(mActivity instanceof MainActivity))
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            mPopupWindow.dismiss();
+                            switch (position)
                             {
-                                MainActivity.actioMain(mActivity);
-                            }
-                            break;
+                                case 0:
+                                    if (!(mActivity instanceof MainActivity))
+                                    {
+                                        MainActivity.actioMain(mActivity);
+                                    }
+                                    break;
 
-                        case 1:
-                            if (!(mActivity instanceof DepartmentNavActivity))
-                            {
-                                DepartmentNavActivity.actionDepartmentNav(mActivity);
-                            }
-                            break;
-                        case 2:
-                            if (!(mActivity instanceof UserCenterActivity))
-                            {
-                                UserCenterActivity.actionUserCenter(mActivity);
-                            }
-                            break;
+                                case 1:
+                                    if (!(mActivity instanceof DepartmentNavActivity))
+                                    {
+                                        DepartmentNavActivity.actionDepartmentNav(mActivity);
+                                    }
+                                    break;
+                                case 2:
+                                    if (!(mActivity instanceof UserCenterActivity))
+                                    {
+                                        UserCenterActivity.actionUserCenter(mActivity);
+                                    }
+                                    break;
 
-                        case 3:
-                            mActivity.showCroutonToast("系统设置");
-                            break;
-                    }
-                }
-            });
-        }
-        if (mPopupWindow != null && mPopupWindow.isShowing())
-        {
-            mPopupWindow.dismiss();
-        }
-        else
-        {
-            mPopupWindow.showAsDropDown(mIvRight, 0, DensityUtils.dpToPx(mActivity, 4.f));
-        }
+                                case 3:
+                                    mActivity.showCroutonToast("系统设置");
+                                    break;
+                            }
+                        }
+                    });
+        } if (mPopupWindow != null && mPopupWindow.isShowing())
+    {
+        mPopupWindow.dismiss();
+    } else
+    {
+        mPopupWindow.showAsDropDown(mIvRight, 0, DensityUtils.dpToPx(mActivity, 4.f));
+    }
     }
 
     private void initSlidingMenu()
@@ -339,8 +342,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        }
-        else
+        } else
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         }
@@ -350,16 +352,17 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);
         mSlidingMenu.setFadeDegree(0.65f);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
-        {
-            @Override
-            public void transformCanvas(Canvas canvas, float percentOpen)
-            {
-                float scale = (float) (percentOpen * 0.25 + 0.75);
-                canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                // canvas.scale(percentOpen, 1, 0, 0);
-            }
-        });
+        mSlidingMenu.setBehindCanvasTransformer(
+                new SlidingMenu.CanvasTransformer()
+                {
+                    @Override
+                    public void transformCanvas(Canvas canvas, float percentOpen)
+                    {
+                        float scale = (float) (percentOpen * 0.25 + 0.75);
+                        canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                        // canvas.scale(percentOpen, 1, 0, 0);
+                    }
+                });
         mSlidingMenu.setMenu(R.layout.layout_menu);
         // 设置隐藏在AboveMenu菜单后面的菜单
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_container, MenuFragment.newInstance()).commit();
@@ -395,8 +398,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             {
                 mSlidingMenu.showContent(true);
                 return true;
-            }
-            else if (mActivity instanceof MainActivity)
+            } else if (mActivity instanceof MainActivity)
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
@@ -483,14 +485,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         @Override
         public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
         {
-            ptrFrameLayout.postDelayed(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    mPtrClassicFrameLayout.refreshComplete();
-                }
-            }, 2000L);
+            ptrFrameLayout.postDelayed(
+                    new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            mPtrClassicFrameLayout.refreshComplete();
+                        }
+                    }, 2000L);
         }
     }
 

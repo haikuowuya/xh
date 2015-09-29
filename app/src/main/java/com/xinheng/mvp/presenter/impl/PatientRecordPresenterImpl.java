@@ -18,6 +18,8 @@ public class PatientRecordPresenterImpl implements PatientRecordPresenter
     private DataView mDataView;
     private String mRequestTag;
 
+    private boolean mShowProgressDialog ;
+
     public PatientRecordPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
@@ -30,6 +32,13 @@ public class PatientRecordPresenterImpl implements PatientRecordPresenter
         mRequestTag = requestTag;
     }
 
+    public PatientRecordPresenterImpl(BaseActivity activity, DataView dataView,String requestTag,boolean showProgressDialog)
+    {
+        mActivity = activity;
+        mDataView = dataView;
+        this.mShowProgressDialog = showProgressDialog;
+        mRequestTag = requestTag;
+    }
     @Override
     public  void  doGetPatientRecord(String patientId, String doctId)
     {
@@ -41,6 +50,6 @@ public class PatientRecordPresenterImpl implements PatientRecordPresenter
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
         System.out.println("postBody = " + postBody );
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, patientRecordUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, patientRecordUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag ,mShowProgressDialog);
     }
 }

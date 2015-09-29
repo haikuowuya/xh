@@ -40,6 +40,7 @@ import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.presenter.impl.SubmitAppointmentAddPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
@@ -519,6 +520,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
                     String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                     if (null != imageFilePath)
                     {
+                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
                     }

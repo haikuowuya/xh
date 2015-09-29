@@ -16,6 +16,7 @@ import com.xinheng.AccountSecurityActivity;
 import com.xinheng.AddressListActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.StorageUtils;
 
@@ -195,7 +196,7 @@ public class UserAccountFragment extends BaseFragment
                 //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
                 options.inJustDecodeBounds = false;
                 mBitmap = BitmapFactory.decodeFile(mImageFilePath, options);
-                mBitmap = PhotoUtils.rotateBitmap(mImageFilePath, mBitmap);
+                mBitmap = BitmapUtils.rotateBitmap(mImageFilePath, mBitmap);
                 mIvPhoto.setImageBitmap(mBitmap);
             }
         }
