@@ -245,6 +245,7 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
         item.doctId = mUserCounselReplyItem.doctId;
         item.question = mUserCounselItem.question;
         userCounselPresenter.doUserCounselQuestion(item);
+        mActivity.hideSoftKeyBorard(mEtContent);
     }
 
 }
