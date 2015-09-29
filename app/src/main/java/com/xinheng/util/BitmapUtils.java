@@ -58,7 +58,8 @@ public class BitmapUtils
     }
 
     /***
-     *  获取压缩后的bitmap保存的文件路径
+     * 获取压缩后的bitmap保存的文件路径
+     *
      * @param context
      * @param bitmap
      * @param originalPath
@@ -74,11 +75,13 @@ public class BitmapUtils
                 File file = new File(StorageUtils.getCacheDir(context), new MD5().getMD5_32(originalPath));
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(file));
                 compressBitmapFielPath = file.getAbsolutePath();
-            } catch (FileNotFoundException e)
+            }
+            catch (FileNotFoundException e)
             {
                 e.printStackTrace();
             }
         }
+        System.out.println("新的处理之后的图片路径 = " + compressBitmapFielPath);
         return compressBitmapFielPath;
 
     }
@@ -121,11 +124,56 @@ public class BitmapUtils
             }
             resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, w0, h0, matrix, true);
             input.close();
-        } catch (FileNotFoundException e)
+        }
+        catch (FileNotFoundException e)
         {
             e.printStackTrace();
 
-        } catch (IOException e)
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return resizedBitmap;
+    }
+
+    public static Bitmap scaleBitmap(String path)
+    {
+        Bitmap resizedBitmap = null;
+        try
+        {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            InputStream input = new FileInputStream(path);
+            BitmapFactory.decodeStream(input, null, options);
+            int sourceWidth = options.outWidth;
+            int sourceHeight = options.outHeight;
+            input.close();
+            float rate = Math.max(sourceWidth / (float) PhotoUtils.W_H, sourceHeight / (float) PhotoUtils.W_H);
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = (int) rate;
+            input = new FileInputStream(path);
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
+            int w0 = bitmap.getWidth();
+            int h0 = bitmap.getHeight();
+            float scaleWidth = PhotoUtils.W_H / (float) w0;
+            float scaleHeight = PhotoUtils.W_H / (float) h0;
+            float maxScale = Math.min(scaleWidth, scaleHeight);
+            Matrix matrix = new Matrix();
+            matrix.reset();
+            if (maxScale < 1)
+            {
+                matrix.postScale(maxScale, maxScale);
+            }
+            resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, w0, h0, matrix, true);
+            input.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -157,7 +205,8 @@ public class BitmapUtils
                     degree = 270;
                     break;
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }

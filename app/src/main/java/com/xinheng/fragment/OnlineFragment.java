@@ -25,7 +25,7 @@ import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
 import com.xinheng.adapter.online.OnlineCenterGridAdapter;
 import com.xinheng.adapter.online.OnlineViewPagerAdapter;
-import com.xinheng.base.AbsImageLoadingListener;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:id="@+id/sv_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_linear_item_selector"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/linear_schedule_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@mipmap/ic_appointment_add_date"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="就诊时间"
+                    android:textColor="@color/color_main_text_gray_color"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:textColor="@color/color_main_text_gray_color"
+                    tools:text="2015-05-20周四下午"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:background="#FFD4E1CF">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="44dp"
+                    android:drawableLeft="@mipmap/ic_patient_info"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="患者信息"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="性别"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <RadioGroup
+                    android:id="@+id/rg_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+
+
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:checked="true"
+                        android:text="男"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_woman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="女"/>
+
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/et_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/shape_edittext_background"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:hint="年龄"
+                    android:inputType="phone"
+                    android:minWidth="72dp"
+                    android:textColorHint="#FF999999"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="就诊人"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <LinearLayout
+                    android:id="@+id/linear_patient_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_select_patient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/user_subscribe_detail_selector"
+                    android:drawableLeft="@mipmap/ic_subscribe_select_patient"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:src="@mipmap/ic_subscribe_date"
+                    android:text="选择患者"
+                    android:textColor="#FFF17E56"/>
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_disease_name"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:gravity="center_vertical"
+                android:hint="请填写你的疾病名称"
+                android:padding="6dp"
+                android:textColorHint="#FFCCCCCC"/>
+
+            <EditText
+                android:id="@+id/et_disease_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:gravity="top"
+                android:hint="请详细描述您的健康问题，疾病症状等信息。
+请尽量上传化验单及患病部位照片。"
+                android:minHeight="120dp"
+                android:padding="6dp"
+                android:textColorHint="#FFCCCCCC"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFF5E6CF">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:lineSpacingExtra="4dp"
+                android:padding="10dp"
+                android:text="上传疾病照片（只有您预约的医生可见)\n
+加号申请需医生审核，请耐心等待。"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_grid_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            tools:minHeight="60dp">
+
+            <include layout="@layout/layout_custom_gridview"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFD4E1CF">
+
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="44dp"
+                android:drawableLeft="@mipmap/ic_patient_msg"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="患者留言"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_patient_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_edittext_background"
+            android:gravity="top"
+            android:hint="请详细描述您的健康问题，疾病症状等信息。
+请尽量上传化验单及患病部位照片。"
+            android:minHeight="120dp"
+            android:padding="6dp"
+            android:textColorHint="#FFCCCCCC"/>
+
+        <LinearLayout
+            android:id="@+id/linear_phone_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="手机号码"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入手机号码"
+                    android:inputType="phone"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:id="@+id/btn_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="phone"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text=" 验 证 码 "
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入验证码"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_register_code_selector"
+            android:text="@string/tv_submit"
+            android:textColor="#FFFFFFFF"/>
+
+
+    </LinearLayout>
+</ScrollView>
+

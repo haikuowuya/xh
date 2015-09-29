@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.xinheng.AppointmentActivity;
 import com.xinheng.AppointmentAddActivity;
 import com.xinheng.DepartmentDoctorDetailActivity;
+import com.xinheng.OnLineCounselActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
@@ -24,6 +25,7 @@ import com.xinheng.mvp.presenter.DoctorDetailPresenter;
 import com.xinheng.mvp.presenter.impl.AddAttentionPresenterImpl;
 import com.xinheng.mvp.presenter.impl.DoctorDetailPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.ACache;
 import com.xinheng.util.GsonUtils;
 
 /**
@@ -125,6 +127,11 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
         mDepartDoctorItem = getArguments().getSerializable(DepartmentDoctorDetailActivity.EXTRA_DEPART_DOCTOR_ITEM) == null ? null : (DepartDoctorItem) getArguments().getSerializable(DepartmentDoctorDetailActivity.EXTRA_DEPART_DOCTOR_ITEM);
         doGetData();
         setListener();
+        if (Boolean.parseBoolean(ACache.get(mActivity).getAsString(mDepartDoctorItem.doctId)))
+        {
+            mTvAttention.setText(HAS_ATTENTION);
+        }
+
     }
 
     private void setListener()
@@ -171,6 +178,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
                     //添加关注成功
                     mActivity.showToast(resultItem.message);
                     mTvAttention.setText(HAS_ATTENTION);
+                    ACache.get(mActivity).put(mDepartDoctorItem.doctId,Boolean.TRUE.toString());
                 }
             }
         }
@@ -282,6 +290,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
      */
     private void onlineCounsel()
     {
+        OnLineCounselActivity.actionOnLineCounsel(mActivity, mDoctorDetailItem);
 
     }
 

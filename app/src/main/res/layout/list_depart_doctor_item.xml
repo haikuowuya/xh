@@ -30,6 +30,7 @@
             android:orientation="horizontal">
 
             <com.xinheng.view.CircularImageView
+                android:id="@+id/civ_image"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
                 android:layout_gravity="center"

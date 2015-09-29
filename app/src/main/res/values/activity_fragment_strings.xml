@@ -36,6 +36,7 @@
     <string name="tv_activity_get_medical">按方抓药</string>
     <string name="tv_activity_appointment">预约挂号</string>
     <string name="tv_activity_appointment_add">预约加号</string>
+    <string name="tv_activity_online_counsel">在线咨询</string>
     <string name="tv_activity_add_drug">添加药品</string>
     <string name="tv_activity_patient">常用就诊人</string>
     <string name="tv_activity_address_manager">收货地址管理</string>

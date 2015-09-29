@@ -23,7 +23,7 @@ import com.xinheng.AddressListActivity;
 import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
-import com.xinheng.base.AbsImageLoadingListener;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;

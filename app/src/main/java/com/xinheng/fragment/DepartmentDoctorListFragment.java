@@ -48,7 +48,6 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
     {
         super.onActivityCreated(savedInstanceState);
         mDepartItem = getArguments().getSerializable(DepartmentDoctorActivity.EXTRA_DEPAET_ITEM) == null ? null : (DepartItem) getArguments().getSerializable(DepartmentDoctorActivity.EXTRA_DEPAET_ITEM);
-//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
     }
 
     @Override

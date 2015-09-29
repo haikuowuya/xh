@@ -16,7 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.adapter.subscribe.AppointmentDetailImageGridAdapter;
-import com.xinheng.base.AbsImageLoadingListener;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;

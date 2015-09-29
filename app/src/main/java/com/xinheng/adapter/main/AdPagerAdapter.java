@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.base.AbsImageLoadingListener;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.AdItem;
 
 import java.util.List;

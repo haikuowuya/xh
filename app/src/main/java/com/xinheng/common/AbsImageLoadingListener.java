@@ -1,4 +1,4 @@
-package com.xinheng.base;
+package com.xinheng.common;
 
 import android.view.View;
 import android.widget.ImageView;

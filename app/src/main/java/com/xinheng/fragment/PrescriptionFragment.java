@@ -22,7 +22,7 @@ import com.xinheng.APIURL;
 import com.xinheng.AddDrugActivity;
 import com.xinheng.ConfirmOrderActivity;
 import com.xinheng.R;
-import com.xinheng.base.AbsImageLoadingListener;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddDrugItemEvent;
 import com.xinheng.mvp.model.ResultItem;

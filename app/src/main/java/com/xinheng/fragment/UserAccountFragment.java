@@ -3,19 +3,26 @@ package com.xinheng.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.AccountSecurityActivity;
 import com.xinheng.AddressListActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.UserPhotoPresenter;
+import com.xinheng.mvp.presenter.impl.UserPhotoPresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.StorageUtils;
@@ -24,9 +31,9 @@ import com.xinheng.util.StorageUtils;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：  我的帐号页面
+ * 说明：  我的帐号Fragment页面
  */
-public class UserAccountFragment extends BaseFragment
+public class UserAccountFragment extends BaseFragment implements DataView
 {
     private Bitmap mBitmap;
 
@@ -55,7 +62,9 @@ public class UserAccountFragment extends BaseFragment
      * 账户安全
      */
     private LinearLayout mLinearAccountSecure;
-
+    /***
+     * 我的头像
+     */
     private ImageView mIvPhoto;
 
     @Nullable
@@ -82,6 +91,28 @@ public class UserAccountFragment extends BaseFragment
     {
         super.onActivityCreated(savedInstanceState);
         setListener();
+        if (null != mActivity.getLoginSuccessItem())
+        {
+            String photo = mActivity.getLoginSuccessItem().photo;
+            if (!TextUtils.isEmpty(photo))
+            {
+                if (!photo.startsWith(APIURL.BASE_API_URL))
+                {
+                    photo = APIURL.BASE_API_URL + photo;
+                }
+                ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage)
+                                {
+                                    mIvPhoto.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+            }
+        }
     }
 
     private void setListener()
@@ -100,6 +131,21 @@ public class UserAccountFragment extends BaseFragment
         return getString(R.string.tv_fragment_user_account);
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if (null != resultItem)
+        {
+            mActivity.showToast(resultItem.message);
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+        mActivity.showToast(msg);
+    }
+
     private class OnClickListenerImpl implements View.OnClickListener
     {
         public void onClick(View v)
@@ -107,7 +153,7 @@ public class UserAccountFragment extends BaseFragment
             switch (v.getId())
             {
                 case R.id.linear_photo_container://上传头像
-                   PhotoUtils.showSelectDialog(mActivity);
+                    PhotoUtils.showSelectDialog(mActivity);
                     break;
                 case R.id.linear_account_secure://账户安全
                     accountSecure();
@@ -124,13 +170,11 @@ public class UserAccountFragment extends BaseFragment
             }
         }
 
-
         /**
          * 账户安全
          */
         private void accountSecure()
         {
-           // mActivity.showCroutonToast("账户安全");
             AccountSecurityActivity.actionAccountSecurity(mActivity);
         }
 
@@ -139,10 +183,8 @@ public class UserAccountFragment extends BaseFragment
          */
         private void address()
         {
-//            mActivity.showCroutonToast("地址管理");
             AddressListActivity.actionAddressManager(mActivity);
         }
-
 
         /**
          * 昵称
@@ -175,29 +217,20 @@ public class UserAccountFragment extends BaseFragment
             }
             if (null != mImageFilePath)
             {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options); //此时返回bm为空
-                int scale = 1;
-                while (true)
-                {
-                    if (options.outWidth / 2 >= PhotoUtils.W_H && options.outHeight / 2 >= PhotoUtils.W_H)
-                    {
-                        options.outWidth /= 2;
-                        options.outHeight /= 2;
-                        scale++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                options.inSampleSize = scale;
-                //重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
-                options.inJustDecodeBounds = false;
-                mBitmap = BitmapFactory.decodeFile(mImageFilePath, options);
+                mImageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);
+
+                mBitmap = BitmapUtils.scaleBitmap(mImageFilePath);
                 mBitmap = BitmapUtils.rotateBitmap(mImageFilePath, mBitmap);
                 mIvPhoto.setImageBitmap(mBitmap);
+                if (null != mImageFilePath)
+                {
+                    UserPhotoPresenter userPhotoPresenter = new UserPhotoPresenterImpl(mActivity, this);
+                    userPhotoPresenter.doUploadPhoto(mImageFilePath);
+                }
+            }
+            else
+            {
+                mActivity.showToast("图片选取失败");
             }
         }
         System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);

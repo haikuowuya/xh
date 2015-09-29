@@ -44,7 +44,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:padding="10dp"
+                android:padding="14dp"
                 android:src="@mipmap/ic_find_medical_arrow"/>
 
         </LinearLayout>

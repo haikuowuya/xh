@@ -175,6 +175,8 @@
             android:label="@string/tv_activity_appointment"/>
         <activity android:name=".AppointmentAddActivity"
                   android:label="@string/tv_activity_appointment_add"/>
+        <activity android:name=".OnLineCounselActivity"
+                  android:label="@string/tv_activity_online_counsel"/>
 
 
     </application>

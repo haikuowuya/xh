@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/color_content_background_color">
+    android:background="@color/color_content_background_color"
+    android:fitsSystemWindows="true">
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:background="@color/color_content_background_color"
         android:fillViewport="true"
-        android:scrollbars="none"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:scrollbars="none">
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,8 +26,8 @@
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_register_logo"/>
 
@@ -92,7 +92,9 @@
                     android:layout_height="44dp"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:digits="0123456789"
                     android:hint="输入收到的验证码"
+                    android:inputType="phone"
                     android:singleLine="true"
                     android:textColorHint="#FF666666"/>
 

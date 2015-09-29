@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:cacheColorHint="#00000000"
-             
+               android:listSelector="@color/color_department_right_default_color"
             android:layout_marginLeft="10dp"
             />
 

@@ -112,7 +112,6 @@ public class OkHttpUtils
         {
             RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
             multipartBuilder.addFormDataPart("file", file.getName(), fileBody);
-
         }
         if (null != postMap)
         {

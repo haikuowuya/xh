@@ -16,10 +16,17 @@ public class UserCounselDetailPresenterImpl implements UserCounselDetailPresente
 {
     private BaseActivity mActivity;
     private DataView mDataView;
+    private String mRequestTag;
 
     public UserCounselDetailPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
+        mDataView = dataView;
+    }
+    public UserCounselDetailPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mRequestTag = requestTag;
         mDataView = dataView;
     }
 
@@ -34,6 +41,6 @@ public class UserCounselDetailPresenterImpl implements UserCounselDetailPresente
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
         System.out.println("postBody = " + postBody );
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userCounselUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, userCounselUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 }

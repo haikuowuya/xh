@@ -14,6 +14,10 @@ public class APIURL
      * 用户登录URL
      */
     public static final String LOGIN_URL = BASE_API_URL + "/public/patient/user/login";
+    /***
+     * 用户头像修改URL
+     */
+    public static final String USER_UPLOAD_PHOTO = BASE_API_URL + "/interface/patient/user/uploadphoto";
     /**
      * 获取科室导航的数据URL
      */
@@ -118,9 +122,18 @@ public class APIURL
      */
     public static final String SUBMIT_SUBSCRIBE_URL = BASE_API_URL + "/interface/patient/appointment/submit";
     /**
-     * 预约加号-保存
+     * 预约加号-保存URL
      */
     public static final String SUBMIT_APPOINTMENT_ADD_URL = BASE_API_URL + "/interface/patient/appointment/addplus";
+    /***
+     * 在线咨询URL
+     */
+    public static final String ONLINE_COUNSEL_URL = BASE_API_URL + "/interface/patient/appointment/onlineconsult";
+    /***
+     * 我的咨询-咨询详情-追问URL
+     */
+    public static final String USER_COUNSEL_QUESTION_URL = BASE_API_URL + "/interface/patient/myconsultation/add";
+
 
     /***
      * 校验和修改绑定手机号码

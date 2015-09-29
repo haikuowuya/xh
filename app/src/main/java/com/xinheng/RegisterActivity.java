@@ -11,11 +11,12 @@ import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.RegisterPresenter;
+import com.xinheng.mvp.presenter.SendCodePresenter;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.mvp.presenter.impl.RegisterPresenterImpl;
+import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.mvp.view.impl.LoginViewImpl;
-import com.xinheng.slidingmenu.SlidingMenu;
 import com.xinheng.util.PatternUtils;
 import com.xinheng.util.VerifyCodeUtils;
 
@@ -24,6 +25,15 @@ import com.xinheng.util.VerifyCodeUtils;
  */
 public class RegisterActivity extends BaseActivity implements DataView
 {
+
+    /***
+     * 请求获取验证码的TAG
+     */
+    public static final String  REQUEST_CODE_TAG="request_code";
+    /***
+     * 请求注册的TAG
+     */
+    public static final String  REQUEST_REGISTER_TAG="request_register";
     /**
      * 跳转到用户注册界面
      * @param activity:跳转时所在的Activity
@@ -60,7 +70,6 @@ public class RegisterActivity extends BaseActivity implements DataView
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);//TODO
-        mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         configTitleLayout();
         initView();
         setListener();
@@ -99,16 +108,22 @@ public class RegisterActivity extends BaseActivity implements DataView
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
+
             if(resultItem.success())
             {
-                LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
-                loginPresenter.doLogin(mEtMobile.getText().toString(), mEtPwd.getText().toString());
+                if(REQUEST_REGISTER_TAG.equals(requestTag))
+                {
+                    LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
+                    loginPresenter.doLogin(mEtMobile.getText().toString(), mEtPwd.getText().toString());
+                }
+                else if(REQUEST_CODE_TAG.equals(requestTag))
+                {
+                    VerifyCodeUtils.cancle();
+                    mBtnCode.setText("获取验证码成功");
+                }
             }
-            else
-            {
-              //  LoginActivity.actionLogin(mActivity,mEtMobile.getText().toString(), mEtPwd.getText().toString());
-            }
+
         }
     }
 
@@ -117,7 +132,7 @@ public class RegisterActivity extends BaseActivity implements DataView
     {
         if (!TextUtils.isEmpty(msg))
         {
-            showCroutonToast(msg);
+            showToast(msg);
         }
     }
 
@@ -146,28 +161,28 @@ public class RegisterActivity extends BaseActivity implements DataView
         String mobile = mEtMobile.getText().toString();
         if (TextUtils.isEmpty(mobile))
         {
-            showCroutonToast("手机号码不可以为空");
+            showToast("手机号码不可以为空");
             return;
         }
         if (mobile.length() != 11)
         {
-            showCroutonToast("手机号码应该为11位数字");
+            showToast("手机号码应该为11位数字");
             return;
         }
         if (!PatternUtils.isPhoneNumber(mobile))
         {
-            showCroutonToast("手机号码格式不正确");
+            showToast("手机号码格式不正确");
             return;
         }
         String pwd = mEtPwd.getText().toString();
         if (TextUtils.isEmpty(pwd))
         {
-            showCroutonToast("密码不可以为空");
+            showToast("密码不可以为空");
             return;
         }
         if (TextUtils.getTrimmedLength(pwd) < 6)
         {
-            showCroutonToast("密码的长度最少为6位");
+            showToast("密码的长度最少为6位");
             return;
         }
         String code = mEtCode.getText().toString();
@@ -193,8 +208,10 @@ public class RegisterActivity extends BaseActivity implements DataView
             showCroutonToast("手机号码格式不正确");
             return;
         }
-        showCroutonToast("正在获取验证码");
+
         VerifyCodeUtils.getVerifyCode(mActivity,mBtnCode,60*1000,mEtMobile.getText().toString());
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this,REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(mobile);
     }
 
     @Override

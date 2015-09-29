@@ -18,11 +18,11 @@ public class VerifyCodeUtils
 
     public static void getVerifyCode(final BaseActivity activity, final Button button, long millisInFuture, String mobile)
     {
-        new CountDownTimer(millisInFuture, 1000)
+        if (sCountDownTimer == null)
         {
-            public void onTick(long millisUntilFinished)
+            sCountDownTimer = new CountDownTimer(millisInFuture, 1000)
             {
-                if (!button.getText().toString().contains("成功") && button.isClickable())
+                public void onTick(long millisUntilFinished)
                 {
                     button.setClickable(false);//设置不能点击
                     String second = (int) (millisUntilFinished / 1000) + "";
@@ -31,20 +31,51 @@ public class VerifyCodeUtils
                     Spannable span = new SpannableString(button.getText().toString());//获取按钮的文字
                     span.setSpan(new ForegroundColorSpan(Color.RED), 0, second.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);//讲倒计时时间显示为红色
                     button.setText(span);
-                } else
-                {
-                    cancel();
-                    button.setText("验证码发送成功");
-
                 }
-            }
 
-            @Override
-            public void onFinish()
-            {
-                button.setText("重新获取验证码");
-                button.setClickable(true);//重新获得点击
-            }
-        }.start();
+                @Override
+                public void onFinish()
+                {
+                    button.setText("重新获取验证码");
+                    button.setClickable(true);//重新获得点击
+                }
+            };
+        }
+        sCountDownTimer.start();
+//        new CountDownTimer(millisInFuture, 1000)
+//        {
+//            public void onTick(long millisUntilFinished)
+//            {
+//                if (!button.getText().toString().contains("成功") && button.isClickable())
+//                {
+//                    button.setClickable(false);//设置不能点击
+//                    String second = (int) (millisUntilFinished / 1000) + "";
+//                    button.setText(second + "秒后可重发");//设置倒计时时间
+//                    //设置按钮为灰色，这时是不能点击的
+//                    Spannable span = new SpannableString(button.getText().toString());//获取按钮的文字
+//                    span.setSpan(new ForegroundColorSpan(Color.RED), 0, second.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);//讲倒计时时间显示为红色
+//                    button.setText(span);
+//                } else
+//                {
+//                    cancel();
+//                    button.setText("验证码发送成功");
+//                }
+//            }
+//
+//            @Override
+//            public void onFinish()
+//            {
+//                button.setText("重新获取验证码");
+//                button.setClickable(true);//重新获得点击
+//            }
+//        }.start();
+    }
+
+    public static void cancle()
+    {
+        if (null != sCountDownTimer)
+        {
+            sCountDownTimer.cancel();
+        }
     }
 }

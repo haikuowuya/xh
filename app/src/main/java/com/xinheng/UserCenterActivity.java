@@ -1,7 +1,9 @@
 package com.xinheng;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.base.BaseActivity;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.IconTextItem;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.SplitUtils;
@@ -52,6 +56,29 @@ public class UserCenterActivity extends BaseActivity
         fillLinearListContainer();
         setListener();
         mTvUserName.setText(mActivity.getLoginSuccessItem().name);
+
+        if (null != mActivity.getLoginSuccessItem())
+        {
+            String photo = mActivity.getLoginSuccessItem().photo;
+            if (!TextUtils.isEmpty(photo))
+            {
+                if (!photo.startsWith(APIURL.BASE_API_URL))
+                {
+                    photo = APIURL.BASE_API_URL + photo;
+                }
+                ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+                {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                    {
+                        if (null != loadedImage)
+                        {
+                            mIvPhoto.setImageBitmap(loadedImage);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     private void setListener()
@@ -126,7 +153,6 @@ public class UserCenterActivity extends BaseActivity
         mIvPhoto = (CircularImageView) findViewById(R.id.iv_photo);
         mTvUserName = (TextView) findViewById(R.id.tv_username);
         mScrollView = (ScrollView) findViewById(R.id.sv_scrollview);
-
     }
 
     @Override

@@ -74,7 +74,7 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
         if (null != resultItem)
@@ -105,7 +105,7 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
-                            UserCounselDetailActivity.actionUserCounselDetail(mActivity,mUserCounselItems.get(position));
+                            UserCounselDetailActivity.actionUserCounselDetail(mActivity, mUserCounselItems.get(position));
                         }
                     });
                 }
@@ -115,7 +115,7 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }

@@ -581,7 +581,6 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
-
                     }
                 }
             }
