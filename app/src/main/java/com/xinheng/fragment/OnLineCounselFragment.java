@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.UserAppointmentActivity;
 import com.xinheng.UserPatientListActivity;
 import com.xinheng.adapter.subscribe.ImageGridAdapter;
 import com.xinheng.base.BaseFragment;
@@ -316,7 +315,7 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
-                    UserAppointmentActivity.actionUserAppointment(mActivity);
+
                     mActivity.finish();
                 }
             }
@@ -448,6 +447,7 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
             sex = "1";
         }
         String phone = mEtPhone.getText().toString();
+        /*
         if (TextUtils.isEmpty(phone))
         {
             mActivity.showToast("手机号码不可以为空");
@@ -463,15 +463,16 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
             mActivity.showCroutonToast("手机号码格式不正确");
             return;
         }
+        */
         String code = mEtCode.getText().toString();
-        if (!"18625273625".equals(phone))
-        {
-            if (TextUtils.isEmpty(code))
-            {
-                mActivity.showToast("验证码不可以为空");
-                return;
-            }
-        }
+//        if (!"18625273625".equals(phone))
+//        {
+//            if (TextUtils.isEmpty(code))
+//            {
+//                mActivity.showToast("验证码不可以为空");
+//                return;
+//            }
+//        }
 //        if (!Constants.ALL_OK_CODE.equals(code))
 //        {
 //            mActivity.showToast("验证码不正确," + Constants.ALL_OK_CODE + "可以通过验证(开发阶段)");

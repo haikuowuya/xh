@@ -5,7 +5,7 @@ package com.xinheng.mvp.model.doctor;
  */
 public class PostDoctorEvaluationItem extends BasePostDoctorItem
 {
-    public String userId;//用户id 必选
+   // public String userId;//用户id 必选
     public String serviceGrade;//服务分 必选
     public String serviceDescribe;//服务描述
     public String effectGrade;//疗效分 必选

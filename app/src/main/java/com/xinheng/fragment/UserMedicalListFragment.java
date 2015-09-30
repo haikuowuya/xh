@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddRecipeActivity;
 import com.xinheng.R;
+import com.xinheng.UserMedicalDetailActivity;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
@@ -87,23 +89,24 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mListView.addHeaderView(mListHeaderImageView);
 //        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                doRefresh();
-            }
-        });
-        mIvAddMedical.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                AddRecipeActivity.actionAddRecipe(mActivity);
-            }
-        });
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        doRefresh();
+                    }
+                });
+        mIvAddMedical.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        AddRecipeActivity.actionAddRecipe(mActivity);
+                    }
+                });
     }
     @Override
     public String getFragmentTitle()
@@ -112,7 +115,7 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     }
 
     protected void doRefresh()
-    {
+    {   mUserMedicalItems.clear();
         doGetData();
     }
     @Override
@@ -128,25 +131,40 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
         refreshComplete();
         if(null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserMedicalItem>>()
                 {
                 }.getType();
                 List<UserMedicalItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-                if (null != items)
+                if (null != items && !items.isEmpty())
                 {
                     mUserMedicalItems.addAll(items);
                     if (null == mUserMedicalListAdapter)
                     {
+                        mListView.addHeaderView(mListHeaderImageView);
                         mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
                         mListView.setAdapter(mUserMedicalListAdapter);
+                        mListView.setOnItemClickListener(
+                                new AdapterView.OnItemClickListener()
+                                {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                                    {
+                                        UserMedicalItem item = (UserMedicalItem) parent.getAdapter().getItem(position);
+                                        UserMedicalDetailActivity.actionUserMedicalDetail(mActivity, item.id);
+                                    }
+                                });
                     }
                     else
                     {
                         mUserMedicalListAdapter.notifyDataSetChanged();
                     }
+                }
+                else
+                {
+                    mActivity.showToast("我的病历列表为空");
                 }
             }
         }

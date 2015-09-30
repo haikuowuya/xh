@@ -40,7 +40,6 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
     }
 
     @Override
@@ -52,6 +51,7 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
     @Override
     protected void doRefresh()
     {
+        mUserDoctorItems.clear();
         doGetData();
     }
 
@@ -68,7 +68,7 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
         refreshComplete();
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             Type type = new TypeToken<List<UserDoctorItem>>()
             {
             }.getType();

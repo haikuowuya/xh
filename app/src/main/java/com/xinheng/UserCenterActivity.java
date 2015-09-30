@@ -56,7 +56,6 @@ public class UserCenterActivity extends BaseActivity
         fillLinearListContainer();
         setListener();
         mTvUserName.setText(mActivity.getLoginSuccessItem().name);
-
         if (null != mActivity.getLoginSuccessItem())
         {
             String photo = mActivity.getLoginSuccessItem().photo;

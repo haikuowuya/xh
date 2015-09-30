@@ -71,7 +71,6 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                     TextView tvDrugName = (TextView) relativeLayout.findViewById(R.id.tv_drug_name);
                     TextView tvDrugInfo = (TextView) relativeLayout.findViewById(R.id.tv_drug_info);
                     TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
-
                     String img = medicalItem.drugImg;
                     if (!TextUtils.isEmpty(img))
                     {

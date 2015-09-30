@@ -20,9 +20,17 @@ public class DoctorEvaluationPresenterImpl implements DoctorEvaluationPresenter
     private DataView mDataView;
     private BaseActivity mActivity;
 
+    private String mRequestTag;
+
     public DoctorEvaluationPresenterImpl(BaseActivity activity,DataView dataView)
     {
         mDataView = dataView;
+        mActivity = activity;
+    }
+    public DoctorEvaluationPresenterImpl(BaseActivity activity,DataView dataView,String requestTag)
+    {
+        mDataView = dataView;
+        mRequestTag = requestTag;
         mActivity = activity;
     }
 
@@ -42,7 +50,7 @@ public class DoctorEvaluationPresenterImpl implements DoctorEvaluationPresenter
         String mingPostBody = GsonUtils.toJson(postDoctorEvaluationItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, doctorEvaluationUrl,postBody,mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, doctorEvaluationUrl,postBody,mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 
     @Override
@@ -54,6 +62,6 @@ public class DoctorEvaluationPresenterImpl implements DoctorEvaluationPresenter
         String mingPostBody = GsonUtils.toJson(postDoctorItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, doctorEvaluationUrl,postBody,mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, doctorEvaluationUrl,postBody,mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 }

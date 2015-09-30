@@ -8,7 +8,8 @@
     android:background="@color/color_content_background_color"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -105,12 +106,14 @@
                     android:text="昵称"/>
 
                 <TextView
+                    android:id="@+id/tv_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:hint="点击可以修改昵称"
                     android:gravity="center_vertical|right"
                     android:padding="10dp"
-                    android:text="花花"/>
+                    tools:text="花花"/>
 
                 <ImageView
                     android:layout_width="@dimen/dimen_list_single_item_height"

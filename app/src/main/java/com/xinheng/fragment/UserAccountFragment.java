@@ -11,14 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.AccountSecurityActivity;
 import com.xinheng.AddressListActivity;
 import com.xinheng.R;
+import com.xinheng.UserNicknameActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.eventbus.OnModifyNicknameEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.UserPhotoPresenter;
 import com.xinheng.mvp.presenter.impl.UserPhotoPresenterImpl;
@@ -26,6 +29,9 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.StorageUtils;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * 作者： raiyi-suzhou
@@ -67,6 +73,8 @@ public class UserAccountFragment extends BaseFragment implements DataView
      */
     private ImageView mIvPhoto;
 
+    private TextView mTvNickname;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -84,12 +92,14 @@ public class UserAccountFragment extends BaseFragment implements DataView
         mLinearUserName = (LinearLayout) view.findViewById(R.id.linear_username_container);
         mLinearPhotoContainer = (LinearLayout) view.findViewById(R.id.linear_photo_container);
         mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+        mTvNickname = (TextView) view.findViewById(R.id.tv_nickname);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         setListener();
         if (null != mActivity.getLoginSuccessItem())
         {
@@ -113,6 +123,21 @@ public class UserAccountFragment extends BaseFragment implements DataView
                         });
             }
         }
+    }
+    @Subscribe
+    public void onEventMainThread(OnModifyNicknameEvent event)
+    {
+        if (null != event &&!TextUtils.isEmpty(event.newNickname))
+        {
+            mTvNickname.setText(event.newNickname);
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     private void setListener()
@@ -191,7 +216,8 @@ public class UserAccountFragment extends BaseFragment implements DataView
          */
         private void nick()
         {
-            mActivity.showCroutonToast("昵称");
+//            mActivity.showCroutonToast("昵称");
+            UserNicknameActivity.actionUserNickname(mActivity);
         }
 
         /***

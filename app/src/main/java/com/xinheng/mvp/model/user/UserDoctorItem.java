@@ -41,6 +41,11 @@ public class UserDoctorItem extends BaseEmptyItem
      */
     public String grade;
 
+    /***
+     * 医生头像
+     */
+    public String photo;
+
 
 
 

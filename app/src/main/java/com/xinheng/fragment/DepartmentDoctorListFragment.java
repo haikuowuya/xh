@@ -116,7 +116,8 @@ public class DepartmentDoctorListFragment extends PTRListFragment implements Dat
                 if (mDepartDoctorItems.isEmpty())
                 {
                     getListView().setAdapter(null);
-                    getListView().setEmptyView(getView().findViewById(android.R.id.empty));
+                    //   getListView().setEmptyView(getView().findViewById(android.R.id.empty));
+                    mActivity.showToast("医生列表为空");
                 }
             }
         }

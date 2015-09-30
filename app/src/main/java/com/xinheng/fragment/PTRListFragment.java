@@ -58,13 +58,15 @@ public class PTRListFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
 //        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                doRefresh();
-            }
-        });
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        doRefresh();
+                    }
+                });
     }
 
     /**
@@ -72,16 +74,18 @@ public class PTRListFragment extends BaseFragment
      */
     protected void doRefresh()
     {
-        mPtrClassicFrameLayout.postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mPtrClassicFrameLayout.refreshComplete();
-            }
-        }, 2000L);
+        mPtrClassicFrameLayout.postDelayed(
+                new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mPtrClassicFrameLayout.refreshComplete();
+                    }
+                }, 2000L);
     }
-    protected  void refreshComplete()
+
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }

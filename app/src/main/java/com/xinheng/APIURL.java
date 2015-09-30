@@ -15,6 +15,10 @@ public class APIURL
      */
     public static final String LOGIN_URL = BASE_API_URL + "/public/patient/user/login";
     /***
+     * 修改昵称URL
+     */
+    public static final String MODIFY_USER_NICKNAME_URL = BASE_API_URL + "/interface/patient/myaccount/editnickname";
+    /***
      * 用户头像修改URL
      */
     public static final String USER_UPLOAD_PHOTO = BASE_API_URL + "/interface/patient/user/uploadphoto";
@@ -60,6 +64,10 @@ public class APIURL
      * 我的咨询详情URL
      */
     public static final String GET_USER_COUNSEL_DETAIL_URL = BASE_API_URL + "/interface/patient/myconsultation/getdetail";
+    /**
+     * 我的病历详情URL
+     */
+    public static final String GET_USER_MEDICAL_DETAIL_URL = BASE_API_URL + "/interface/patient/myrecord/getdetail";
 
     /**
      * 用户注册URL

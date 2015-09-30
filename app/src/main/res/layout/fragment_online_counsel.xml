@@ -25,11 +25,13 @@
             android:id="@+id/linear_schedule_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp">
+                android:layout_height="44dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="160dp"
@@ -128,9 +130,9 @@
 
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="44dp">
+                android:layout_height="44dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -223,45 +225,53 @@
             <include layout="@layout/layout_custom_gridview"/>
         </LinearLayout>
 
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:layout_marginTop="10dp"
-            android:background="#FFD4E1CF">
-
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="44dp"
-                android:drawableLeft="@mipmap/ic_patient_msg"
-                android:drawablePadding="4dp"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="患者留言"
-                android:textColor="@color/color_main_text_gray_color"/>
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/et_patient_msg"
+            android:id="@+id/linear_patient_msg_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/shape_edittext_background"
-            android:gravity="top"
-            android:hint="请详细描述您的健康问题，疾病症状等信息。
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="#FFD4E1CF">
+
+                <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="44dp"
+                    android:drawableLeft="@mipmap/ic_patient_msg"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="患者留言"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_patient_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:gravity="top"
+                android:hint="请详细描述您的健康问题，疾病症状等信息。
 请尽量上传化验单及患病部位照片。"
-            android:minHeight="120dp"
-            android:padding="6dp"
-            android:textColorHint="#FFCCCCCC"/>
+                android:minHeight="120dp"
+                android:padding="6dp"
+                android:textColorHint="#FFCCCCCC"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linear_phone_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -301,8 +311,7 @@
                     android:inputType="phone"
                     android:padding="4dp"
                     android:text="获取验证码"
-                    android:textColor="@color/color_white_color"
-                    />
+                    android:textColor="@color/color_white_color"/>
             </LinearLayout>
 
             <LinearLayout

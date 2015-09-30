@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:name=".XHApplication"
@@ -173,10 +174,19 @@
         <activity
             android:name=".AppointmentActivity"
             android:label="@string/tv_activity_appointment"/>
-        <activity android:name=".AppointmentAddActivity"
-                  android:label="@string/tv_activity_appointment_add"/>
-        <activity android:name=".OnLineCounselActivity"
-                  android:label="@string/tv_activity_online_counsel"/>
+        <activity
+            android:name=".AppointmentAddActivity"
+            android:label="@string/tv_activity_appointment_add"/>
+        <activity
+            android:name=".OnLineCounselActivity"
+            android:label="@string/tv_activity_online_counsel"/>
+
+
+        <activity
+            android:name=".UserMedicalDetailActivity"
+            android:label="@string/tv_activity_user_medical_detail"/>
+        <activity android:name=".UserNicknameActivity"
+                  android:label="@string/tv_activity_user_nickname"/>
 
 
     </application>

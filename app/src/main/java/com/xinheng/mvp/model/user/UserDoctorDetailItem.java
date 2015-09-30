@@ -24,8 +24,4 @@ public class UserDoctorDetailItem extends UserDoctorItem
      */
     public String feeGrade;
 
-    /***
-     * 医生头像
-     */
-    public String photo;
 }
