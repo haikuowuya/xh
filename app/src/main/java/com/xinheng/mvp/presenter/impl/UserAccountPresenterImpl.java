@@ -42,6 +42,6 @@ public class UserAccountPresenterImpl implements UserAccountPresenter
         String mingPostBody = GsonUtils.toJson(postItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, getUserAccountUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, getUserAccountUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag,false);
     }
 }

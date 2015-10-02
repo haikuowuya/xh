@@ -42,6 +42,10 @@ public class APIURL
 
     public static final String GET_BODY_PART_LIST_URL = BASE_API_URL + "/interface/patient/selfcheck/getbodypart";
     /***
+     * 智能导诊-获取症状列表URL
+     */
+    public static final String GET_BODY_PART_DETAIL_LIST_URL = BASE_API_URL + "/interface/patient/selfcheck/getsymptom";
+    /***
      * 获取科室医生列表URL
      */
     public static final String GET_DEPARTMENT_DOCTOR_LIST_URL = BASE_API_URL + "/interface/patient/appointment/getdoctors";

@@ -9,6 +9,7 @@ import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -16,10 +17,13 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
+import com.xinheng.adapter.auto.PopupListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.auto.BodyKV;
+import com.xinheng.mvp.presenter.BodypartDetailPresenter;
 import com.xinheng.mvp.presenter.BodypartPresenter;
+import com.xinheng.mvp.presenter.impl.BodypartDetailPresenterImpl;
 import com.xinheng.mvp.presenter.impl.BodypartPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
@@ -37,6 +41,9 @@ import java.util.List;
  */
 public class AutoCheckFragment extends BaseFragment implements DataView
 {
+    public static final String REQUEST_BODY_PART_DETAIL_LIST_TAG = "body_part_detail_list";
+    public static final String REQUEST_BODY_PART_LIST_TAG = "body_part_list";
+
     public static AutoCheckFragment newInstance()
     {
         AutoCheckFragment fragment = new AutoCheckFragment();
@@ -125,25 +132,22 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                Type type = new TypeToken<List<BodyKV>>()
+                if (REQUEST_BODY_PART_LIST_TAG.equals(requestTag))
                 {
-                }.getType();
-                List<BodyKV> bodyKVs = GsonUtils.jsonToList(resultItem.properties.getAsJsonArray().toString(), type);
-                if (null != bodyKVs && !bodyKVs.isEmpty())
+                    Type type = new TypeToken<List<BodyKV>>()
+                    {
+                    }.getType();
+                    List<BodyKV> bodyKVs = GsonUtils.jsonToList(resultItem.properties.getAsJsonArray().toString(), type);
+                    if (null != bodyKVs && !bodyKVs.isEmpty())
+                    {
+                        mBodyKVs = new LinkedList<>();
+                        mBodyKVs.addAll(bodyKVs);
+                        ShowListPopupWindow();
+                    }
+                }
+                else if (REQUEST_BODY_PART_DETAIL_LIST_TAG.equals(requestTag))
                 {
-                    mBodyKVs = new LinkedList<>();
-                    mBodyKVs.addAll(bodyKVs);
-                    mListPopupWindow.setAdapter(new com.xinheng.adapter.auto.PopupListAdapter(mActivity, mBodyKVs));
-                    if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
-                    {
-                        mListPopupWindow.dismiss();
-                        return;
-                    }
-                    else
-                    {
-                        mListPopupWindow.setAnchorView(mSwitchType);
-                        mListPopupWindow.show();
-                    }
+
                 }
             }
 
@@ -189,7 +193,6 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                             mIvImage.setImageResource(R.mipmap.ic_auto_check_woman_0);
                         }
                     }
-
                     break;
 
             }
@@ -217,22 +220,12 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     mTvText.setText("器官列表");
                     if (mBodyKVs == null)
                     {
-                        BodypartPresenter bodypartPresenter = new BodypartPresenterImpl(mActivity, AutoCheckFragment.this);
+                        BodypartPresenter bodypartPresenter = new BodypartPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_LIST_TAG);
                         bodypartPresenter.doGetBodypartList();
                     }
                     else
                     {
-                        mListPopupWindow.setAdapter(new com.xinheng.adapter.auto.PopupListAdapter(mActivity, mBodyKVs));
-                        if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
-                        {
-                            mListPopupWindow.dismiss();
-                            return;
-                        }
-                        else
-                        {
-                            mListPopupWindow.setAnchorView(mSwitchType);
-                            mListPopupWindow.show();
-                        }
+                        ShowListPopupWindow();
                     }
                 }
             }
@@ -253,6 +246,32 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                 }
             }
         }
+    }
+
+    private void ShowListPopupWindow()
+    {
+        mListPopupWindow.setAdapter(new PopupListAdapter(mActivity, mBodyKVs));
+        if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
+        {
+            mListPopupWindow.dismiss();
+            return;
+        }
+        else
+        {
+            mListPopupWindow.setAnchorView(mSwitchType);
+            mListPopupWindow.show();
+
+        }
+        mListPopupWindow.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                BodyKV bodyKV = (BodyKV) parent.getAdapter().getItem(position);
+                BodypartDetailPresenter bodypartDetailPresenter = new BodypartDetailPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_DETAIL_LIST_TAG);
+                bodypartDetailPresenter.doGetBodypartDetailList(bodyKV.key);
+            }
+        });
     }
 
 }

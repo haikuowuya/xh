@@ -16,8 +16,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.adapter.subscribe.AppointmentDetailImageGridAdapter;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;
 import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
@@ -119,6 +119,11 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
 
     private TextView mTvDoctMsg;
 
+    /***
+     * 显示是否有图片的标志
+     */
+    private TextView mTvGridViewStatus;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -141,6 +146,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
         mTvDate = (TextView) view.findViewById(R.id.tv_date);
         mTvPatientName = (TextView) view.findViewById(R.id.tv_patient_name);
         mtvPatientVisit = (TextView) view.findViewById(R.id.tv_patient_visit);
+        mTvGridViewStatus = (TextView) view.findViewById(R.id.tv_gridview_status);
         mLinearPatientRecordContainer = (LinearLayout) view.findViewById(R.id.linear_patient_record_container);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         mCustomGridView.setNumColumns(3);
@@ -206,10 +212,14 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                     showSelectSchedule(userAppointmentDetailItem.schedule);
                     showPatientInfo(userAppointmentDetailItem.patient);
                     showPatientRecord(userAppointmentDetailItem.authrecord);
-
                     if (userAppointmentDetailItem.imgs != null && !userAppointmentDetailItem.imgs.isEmpty())
                     {
+                        mTvGridViewStatus.setVisibility(View.GONE);
                         mCustomGridView.setAdapter(new AppointmentDetailImageGridAdapter(mActivity, userAppointmentDetailItem.imgs));
+                    }
+                    else
+                    {
+                        mTvGridViewStatus.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -239,8 +249,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
             {
                 photo = APIURL.BASE_API_URL + photo;
             }
-            ImageLoader.getInstance().loadImage(
-                    photo, new AbsImageLoadingListener()
+            ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
                     {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
@@ -281,7 +290,8 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                 ivImage.setActivated("1".equals(patientRecordItem.isOpen));
                 mLinearPatientRecordContainer.addView(view);
             }
-        } else
+        }
+        else
         {
             TextView textView = new TextView(mActivity);
             int height = DensityUtils.dpToPx(mActivity, 44.f);

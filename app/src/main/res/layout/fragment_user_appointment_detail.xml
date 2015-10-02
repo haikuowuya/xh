@@ -269,6 +269,7 @@
             android:textColor="#FF333333"
             android:textColorHint="@color/color_main_text_gray_color">
         </TextView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -308,7 +309,23 @@
             android:layout_marginTop="10dp"
             android:background="@color/color_white_color"
             android:orientation="vertical">
-            <include layout="@layout/layout_custom_gridview"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/layout_custom_gridview"/>
+
+                <TextView
+                    android:id="@+id/tv_gridview_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="暂无图片信息"
+                    android:visibility="gone"/>
+            </FrameLayout>
 
         </LinearLayout>
 

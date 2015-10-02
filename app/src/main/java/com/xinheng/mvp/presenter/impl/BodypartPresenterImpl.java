@@ -13,10 +13,18 @@ public class BodypartPresenterImpl implements BodypartPresenter
 {
     private BaseActivity mActivity;
     private DataView mDataView;
+    private String mRequestTag;
 
     public BodypartPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
+        mDataView = dataView;
+    }
+
+    public BodypartPresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
+    {
+        mActivity = activity;
+        mRequestTag = requestTag;
         mDataView = dataView;
     }
 
@@ -25,7 +33,7 @@ public class BodypartPresenterImpl implements BodypartPresenter
     {
         String bodyPartListUrl = APIURL.GET_BODY_PART_LIST_URL;
         String postBody = "1";
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, bodyPartListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, bodyPartListUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
 
     }
 }
