@@ -20,9 +20,16 @@ public class OkHttpCallbackImpl implements Callback
     private BaseActivity mActivity;
     private DataView mDataView;
 
+    private String mRequestTag;
     public OkHttpCallbackImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
+        mDataView = dataView;
+    }
+    public OkHttpCallbackImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mRequestTag = requestTag  ;
         mDataView = dataView;
     }
 
@@ -35,7 +42,7 @@ public class OkHttpCallbackImpl implements Callback
             public void run()
             {
                 mActivity.dismissProgressDialog();
-                mDataView.onGetDataFailured(e.getMessage(), null);
+                mDataView.onGetDataFailured(e.getMessage(), mRequestTag);
             }
         });
     }
@@ -43,7 +50,7 @@ public class OkHttpCallbackImpl implements Callback
     @Override
     public void onResponse(Response response) throws IOException
     {
-        final String result = (response != null) ? response.body().string() : null;
+        final String result = (response != null) ? response.body().string() : mRequestTag;
         ResultItem resultItem = null;
         if (null != result)
         {
@@ -63,7 +70,7 @@ public class OkHttpCallbackImpl implements Callback
             public void run()
             {
                 mActivity.dismissProgressDialog();
-                mDataView.onGetDataSuccess(finalResultItem, null);
+                mDataView.onGetDataSuccess(finalResultItem, mRequestTag);
             }
         });
     }

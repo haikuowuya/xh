@@ -11,8 +11,37 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_margin="10dp"
-        android:background="@color/color_white_color">
+        android:background="#FFDBEABF"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp">
 
+        <Switch
+            android:id="@+id/switch_sex"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:gravity="center"
+            android:textOff=" 女  "
+            android:textOn=" 男  "/>
+
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="身体部位"
+            android:textColor="@color/color_main_text_gray_color"/>
+
+        <Switch
+            android:id="@+id/switch_type"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:gravity="center"
+            android:textOff="列表"
+            android:textOn="图片"/>
     </LinearLayout>
 
     <FrameLayout
@@ -20,16 +49,20 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/iv_image"
+            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_auto_check_man_1"/>
 
         <ImageView
+            android:id="@+id/iv_switch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom|right"
             android:layout_margin="15dp"
-            android:src="@mipmap/ic_auto_switch"
-            android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:background="@drawable/list_linear_item_selector"
+            android:src="@mipmap/ic_auto_switch"/>
 
     </FrameLayout>
 

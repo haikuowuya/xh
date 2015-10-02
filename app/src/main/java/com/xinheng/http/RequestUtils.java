@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.xinheng.LoginActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
@@ -386,6 +387,12 @@ public class RequestUtils
                                     System.out.println("解密后结果数据 = 【 " + decryptResult + " 】");
                                 }
                                 resultItem = GsonUtils.jsonToClass(decryptResult, ResultItem.class);
+
+                                if(null != resultItem && resultItem.sessionIsDisabled())
+                                {
+                                    LoginActivity.actionLogin(mActivity);
+                                    return;
+                                }
                             }
                             mDataView.onGetDataSuccess(resultItem, mRequestTag);
                         }

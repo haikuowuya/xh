@@ -3,6 +3,7 @@ package com.xinheng.adapter.depart;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
@@ -30,10 +31,19 @@ public class DepartDoctorListAdapter extends BaseAdapter<DepartDoctorItem>
     public void bindDataToView(View convertView, DepartDoctorItem departDoctorItem)
     {
         setTextViewText(convertView, R.id.tv_skill, departDoctorItem.skill);
-        setTextViewText(convertView, R.id.tv_doctor_name, departDoctorItem.doctorName);
+        setTextViewText(convertView, R.id.tv_doctor_name, departDoctorItem.doctName);
         setTextViewText(convertView, R.id.tv_technical_post, departDoctorItem.technicalPost);
         setTextViewText(convertView, R.id.tv_dept_name, departDoctorItem.department);
         final CircularImageView imageView = ViewHolder.getView(convertView, R.id.civ_image);
+        TextView tvAppointment = ViewHolder.getView(convertView, R.id.tv_action_subscribe);
+        if("-1".equals(departDoctorItem.status))
+        {
+            tvAppointment.setText("约  满");
+        }
+        else
+        {
+            tvAppointment.setText("有  号");
+        }
         String img = departDoctorItem.img;
         if (!TextUtils.isEmpty(img))
         {

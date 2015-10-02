@@ -74,12 +74,14 @@
                     android:text="姓名"/>
 
                 <TextView
+                    android:id="@+id/tv_account_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|right"
                     android:padding="10dp"
-                    android:text="张花花"/>
+                    android:hint="只准允许修改设置一次"
+                    tools:text="张花花"/>
 
                 <ImageView
                     android:layout_width="@dimen/dimen_list_single_item_height"

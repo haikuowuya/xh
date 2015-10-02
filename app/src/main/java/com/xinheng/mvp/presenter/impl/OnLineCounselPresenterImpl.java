@@ -49,6 +49,6 @@ public class OnLineCounselPresenterImpl implements OnLineCounselPresenter
         postMap.put("pathema", item.pathema);
         postMap.put("desc", item.desc);
         mActivity.showProgressDialog();
-        OkHttpUtils.customXHasyncExecuteWithFile(onlineCounselUrl, mActivity.getLoginSuccessItem(), postMap, item.files, new OkHttpCallbackImpl(mActivity, mDataView));
+        OkHttpUtils.customXHasyncExecuteWithFile(onlineCounselUrl, mActivity.getLoginSuccessItem(), postMap, item.files, new OkHttpCallbackImpl(mActivity, mDataView,mRequestTag));
     }
 }

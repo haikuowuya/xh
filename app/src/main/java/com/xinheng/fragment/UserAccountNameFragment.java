@@ -11,10 +11,10 @@ import android.widget.EditText;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.eventbus.OnModifyNicknameEvent;
+import com.xinheng.eventbus.OnModifyAccountNameEvent;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.presenter.UserNicknamePresenter;
-import com.xinheng.mvp.presenter.impl.UserNicknamePresenterImpl;
+import com.xinheng.mvp.presenter.UserAccountNamePresenter;
+import com.xinheng.mvp.presenter.impl.UserAccountNamePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 
 import de.greenrobot.event.EventBus;
@@ -25,23 +25,23 @@ import de.greenrobot.event.EventBus;
  * 时间： 17:48
  * 说明： 修改昵称Fragment界面
  */
-public class UserNicknameFragment extends BaseFragment implements DataView
+public class UserAccountNameFragment extends BaseFragment implements DataView
 {
-    public static UserNicknameFragment newInstance()
+    public static UserAccountNameFragment newInstance()
     {
-        UserNicknameFragment fragment = new UserNicknameFragment();
+        UserAccountNameFragment fragment = new UserAccountNameFragment();
         return fragment;
     }
 
     private EditText mEtName;
     private Button mBtnSubmit;
-    private String mOldNickname;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_nickname, null);      //TODO
+        View view = inflater.inflate(R.layout.fragment_user_account_name, null);      //TODO
         initView(view);
         return view;
     }
@@ -58,9 +58,9 @@ public class UserNicknameFragment extends BaseFragment implements DataView
         super.onActivityCreated(savedInstanceState);
         if (null != mActivity.getLoginSuccessItem() && null != mActivity.getLoginSuccessItem().account)
         {
-            mOldNickname = mActivity.getLoginSuccessItem().account.nickname;
-            mEtName.setText(mOldNickname);
-            mEtName.setSelection(mOldNickname.length());
+
+            mEtName.setText(mActivity.getLoginSuccessItem().account.account);
+            mEtName.setSelection(mEtName.getText().length());
         }
         setListener();
     }
@@ -85,7 +85,7 @@ public class UserNicknameFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                EventBus.getDefault().post(new OnModifyNicknameEvent(mEtName.getText().toString()));
+                EventBus.getDefault().post(new OnModifyAccountNameEvent(mEtName.getText().toString()));
                 mActivity.finish();
             }
         }
@@ -123,13 +123,9 @@ public class UserNicknameFragment extends BaseFragment implements DataView
             mActivity.showToast("昵称必须4~20位数字、字母或下划线");
             return;
         }
-        if(name.equals(mOldNickname))
-        {
-            mActivity.showToast("新的昵称和旧的昵称一样");
-            return;
-        }
-        UserNicknamePresenter userNicknamePresenter = new UserNicknamePresenterImpl(mActivity, this);
-        userNicknamePresenter.doModifyUserNickname(name);
+
+        UserAccountNamePresenter userAccountNamePresenter = new UserAccountNamePresenterImpl(mActivity,this);
+        userAccountNamePresenter.doModifyUserAccountName(name);
         mActivity.hideSoftKeyBorard(mEtName);
     }
 

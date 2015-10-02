@@ -18,26 +18,30 @@ import com.xinheng.util.RSAUtil;
 public class UserAccountPresenterImpl implements UserAccountPresenter
 {
     private BaseActivity mActivity;
-
     private DataView mDataView;
+    private  String mRequestTag;
 
     public UserAccountPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
     }
-
-
+    public UserAccountPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mRequestTag = requestTag;
+        mDataView = dataView;
+    }
 
     @Override
     public void doGetUserAccount()
     {
-        String getUserAccountUrl  = APIURL.MODIFY_USER_NICKNAME_URL;
+        String getUserAccountUrl  = APIURL.GET_USER_ACCOUNT_DETAIL_URL;
         PostItem postItem = new PostItem();
         postItem.userId = mActivity.getLoginSuccessItem().id;
         String mingPostBody = GsonUtils.toJson(postItem);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, getUserAccountUrl, postBody, mActivity.getLoginSuccessItem(), mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, getUserAccountUrl, postBody, mActivity.getLoginSuccessItem(), mDataView,mRequestTag);
     }
 }

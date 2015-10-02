@@ -18,7 +18,7 @@ public class DepartDoctorItem extends BaseEmptyItem
     /**
      * 医生姓名
      */
-    public String doctorName;
+    public String doctName;
     /**
      * 医生头像
      */

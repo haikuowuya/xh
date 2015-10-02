@@ -8,6 +8,7 @@ import android.support.v4.view.PagerAdapter;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.AutoCheckFragment;
+import com.xinheng.fragment.AutoCheckFragment2;
 
 /**
  * 作者： raiyi-suzhou
@@ -34,35 +35,38 @@ public class AutoCheckActivity extends TabViewPagerActivity
     {
         FragmentPagerAdapter pagerAdapter = null;
 
-            pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
+        pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager())
+        {
+            @Override
+            public Fragment getItem(int position)
             {
-                @Override
-                public Fragment getItem(int position)
+                if (position == 0)
                 {
                     return AutoCheckFragment.newInstance();
                 }
+                return AutoCheckFragment2.newInstance();
+            }
 
-                @Override
-                public int getCount()
-                {
-                    return 2;
-                }
+            @Override
+            public int getCount()
+            {
+                return 2;
+            }
 
-                @Override
-                public CharSequence getPageTitle(int position)
+            @Override
+            public CharSequence getPageTitle(int position)
+            {
+                String title = "智能导诊";
+                if (position == 1)
                 {
-                    String title = "智能导诊";
-                    if(position ==1)
-                    {
-                        title = "自述导航";
-                    }
-                    return   title;
+                    title = "自述导航";
                 }
-            };
+                return title;
+            }
+        };
 
         return pagerAdapter;
     }
-
 
     @Override
     public CharSequence getActivityTitle()

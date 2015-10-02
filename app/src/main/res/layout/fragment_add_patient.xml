@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-
     android:background="@color/color_white_color"
     android:scrollbars="none">
 
@@ -223,9 +222,7 @@
                     android:checked="true"
                     android:gravity="center"
                     android:textOff="否"
-                    android:textOn="是"
-
-                    />
+                    android:textOn="是"/>
             </LinearLayout>
             <Button
                 android:id="@+id/btn_add_patient"

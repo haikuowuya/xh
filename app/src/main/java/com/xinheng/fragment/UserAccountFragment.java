@@ -18,9 +18,11 @@ import com.xinheng.APIURL;
 import com.xinheng.AccountSecurityActivity;
 import com.xinheng.AddressListActivity;
 import com.xinheng.R;
+import com.xinheng.UserAccountNameActivity;
 import com.xinheng.UserNicknameActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.eventbus.OnModifyAccountNameEvent;
 import com.xinheng.eventbus.OnModifyNicknameEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.UserPhotoPresenter;
@@ -74,6 +76,7 @@ public class UserAccountFragment extends BaseFragment implements DataView
     private ImageView mIvPhoto;
 
     private TextView mTvNickname;
+    private TextView mTvAccountName;
 
     @Nullable
     @Override
@@ -93,6 +96,7 @@ public class UserAccountFragment extends BaseFragment implements DataView
         mLinearPhotoContainer = (LinearLayout) view.findViewById(R.id.linear_photo_container);
         mIvPhoto = (ImageView) view.findViewById(R.id.iv_photo);
         mTvNickname = (TextView) view.findViewById(R.id.tv_nickname);
+        mTvAccountName = (TextView) view.findViewById(R.id.tv_account_name);
     }
 
     @Override
@@ -111,25 +115,41 @@ public class UserAccountFragment extends BaseFragment implements DataView
                     photo = APIURL.BASE_API_URL + photo;
                 }
                 ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+                {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                    {
+                        if (null != loadedImage)
                         {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage)
-                                {
-                                    mIvPhoto.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
+                            mIvPhoto.setImageBitmap(loadedImage);
+                        }
+                    }
+                });
+            }
+
+            if (null != mActivity.getLoginSuccessItem().account)
+            {
+                mTvNickname.setText(mActivity.getLoginSuccessItem().account.nickname);
+                mTvAccountName.setText(mActivity.getLoginSuccessItem().account.account);
             }
         }
     }
+
     @Subscribe
     public void onEventMainThread(OnModifyNicknameEvent event)
     {
-        if (null != event &&!TextUtils.isEmpty(event.newNickname))
+        if (null != event && !TextUtils.isEmpty(event.newNickname))
         {
             mTvNickname.setText(event.newNickname);
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(OnModifyAccountNameEvent event)
+    {
+        if (null != event && !TextUtils.isEmpty(event.mNewAccountName))
+        {
+            mTvAccountName.setText(event.mNewAccountName);
         }
     }
 
@@ -225,7 +245,13 @@ public class UserAccountFragment extends BaseFragment implements DataView
          */
         private void username()
         {
-            mActivity.showCroutonToast("姓名");
+//            mActivity.showCroutonToast("姓名");
+            if (!TextUtils.isEmpty(mTvAccountName.getText()))
+            {
+                mActivity.showToast("账户只允许设置一次");
+                return;
+            }
+            UserAccountNameActivity.actionUserAccountName(mActivity);
         }
     }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/et_disease_desc"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_round_background"
+        android:gravity="top"
+        android:hint="请输入您的病情及症状描述，字数不得少于50字！"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:textColor="#FF333333"
+        android:textColorHint="@color/color_main_text_gray_color">
+    </EditText>
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_register_code_selector"
+        android:text="@string/tv_submit"
+        android:textColor="#FFFFFFFF"/>
+</LinearLayout>
+

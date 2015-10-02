@@ -8,8 +8,8 @@ package com.xinheng;
  */
 public class APIURL
 {
-     public static final String BASE_API_URL = "http://139.196.24.205";
-   // public static final String BASE_API_URL = " http://192.168.2.119";
+    public static final String BASE_API_URL = "http://139.196.24.205";
+    // public static final String BASE_API_URL = " http://192.168.2.119";
     /**
      * 用户登录URL
      */
@@ -18,6 +18,16 @@ public class APIURL
      * 修改昵称URL
      */
     public static final String MODIFY_USER_NICKNAME_URL = BASE_API_URL + "/interface/patient/myaccount/editnickname";
+
+    /**
+     * 我的账户设置
+     * 修改账户昵称URL
+     */
+    public static final String MODIFY_USER_ACCOUNT_NAME_URL = BASE_API_URL + "/interface/patient/myaccount/addaccount";
+    /**
+     * 获取我的账户详情URL
+     */
+    public static final String GET_USER_ACCOUNT_DETAIL_URL = BASE_API_URL + "/interface/patient/myaccount/getdetail";
     /***
      * 用户头像修改URL
      */
@@ -26,6 +36,11 @@ public class APIURL
      * 获取科室导航的数据URL
      */
     public static final String GET_DEPARTMENT_NAV_URL = BASE_API_URL + "/interface/patient/appointment/getdepart";
+    /**
+     * 智能导诊-获取身体部位列表URL
+     */
+
+    public static final String GET_BODY_PART_LIST_URL = BASE_API_URL + "/interface/patient/selfcheck/getbodypart";
     /***
      * 获取科室医生列表URL
      */
@@ -141,7 +156,6 @@ public class APIURL
      * 我的咨询-咨询详情-追问URL
      */
     public static final String USER_COUNSEL_QUESTION_URL = BASE_API_URL + "/interface/patient/myconsultation/add";
-
 
     /***
      * 校验和修改绑定手机号码

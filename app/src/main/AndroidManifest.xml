@@ -185,9 +185,13 @@
         <activity
             android:name=".UserMedicalDetailActivity"
             android:label="@string/tv_activity_user_medical_detail"/>
-        <activity android:name=".UserNicknameActivity"
-                  android:label="@string/tv_activity_user_nickname"/>
+        <activity
+            android:name=".UserNicknameActivity"
+            android:label="@string/tv_activity_user_nickname"/>
 
+        <activity
+            android:name=".UserAccountNameActivity"
+            android:label="@string/tv_activity_user_account_name"/>
 
     </application>
 

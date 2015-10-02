@@ -16,7 +16,13 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.IconTextItem;
+import com.xinheng.mvp.model.LoginSuccessItem;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.UserAccountPresenter;
+import com.xinheng.mvp.presenter.impl.UserAccountPresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
+import com.xinheng.util.GsonUtils;
 import com.xinheng.util.SplitUtils;
 import com.xinheng.view.CircularImageView;
 
@@ -26,8 +32,9 @@ import com.xinheng.view.CircularImageView;
  * 时间： 11:27
  * 说明：个人中心
  */
-public class UserCenterActivity extends BaseActivity
+public class UserCenterActivity extends BaseActivity implements DataView
 {
+    public static final String REQUEST_GET_USER_ACCOUNT_DETAIL_TAG = "get_user_account_detail";
     private LinearLayout mLinearListContainer;
     private LinearLayout mLinearGridContainer;
     /**
@@ -78,6 +85,22 @@ public class UserCenterActivity extends BaseActivity
                 });
             }
         }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        doGetUserAccountDetail();
+    }
+
+    /***
+     * 根据用户id获取用户详情
+     */
+    private void doGetUserAccountDetail()
+    {
+        UserAccountPresenter userAccountPresenter = new UserAccountPresenterImpl(mActivity, this, REQUEST_GET_USER_ACCOUNT_DETAIL_TAG);
+        userAccountPresenter.doGetUserAccount();
     }
 
     private void setListener()
@@ -160,6 +183,36 @@ public class UserCenterActivity extends BaseActivity
         return getString(R.string.tv_activity_user_center);
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if(resultItem != null)
+        {
+         //   mActivity.showToast(resultItem.message);
+            if(resultItem.success())
+            {
+                if(REQUEST_GET_USER_ACCOUNT_DETAIL_TAG.equals(requestTag))
+                {
+                    LoginSuccessItem.AccountItem accountItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.AccountItem.class);
+                    if(null != accountItem)
+                    {
+                        LoginSuccessItem loginSuccessItem = getLoginSuccessItem();
+                        loginSuccessItem.account = accountItem;
+                        mActivity.saveLoginSuccessItem(loginSuccessItem);
+                        mTvUserName.setText(accountItem.nickname);
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+
+    }
+
     private class OnLinearItemClickListenerImpl implements View.OnClickListener
     {
         private IconTextItem mIconTextItem;
@@ -209,7 +262,7 @@ public class UserCenterActivity extends BaseActivity
             {
                 UserOrderActivity.actionUserOrder(mActivity);
             }
-            else if(getString(R.string.tv_activity_patient).equals(mIconTextItem.text))
+            else if (getString(R.string.tv_activity_patient).equals(mIconTextItem.text))
             {
                 UserPatientListActivity.actionPatient(mActivity);
             }

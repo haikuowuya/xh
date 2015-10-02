@@ -315,7 +315,6 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
-
                     mActivity.finish();
                 }
             }
@@ -504,7 +503,7 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
             }
             postOnlineCounselItem.files = files;
         }
-        OnLineCounselPresenter onLineCounselPresenter = new OnLineCounselPresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        OnLineCounselPresenter onLineCounselPresenter = new OnLineCounselPresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
         onLineCounselPresenter.doOnLineCounsel(postOnlineCounselItem);
     }
 

@@ -12,6 +12,7 @@ public class ResultItem extends  BaseEmptyItem
      */
     public static final String RESULT_SUCCESS="1";
 //    public static final String RESULT_FAILURED="-1";
+    public static  final  String RESULT_SESSION_DISABLED="-4" ;
     public String  result;
     public String  message;
     public JsonElement properties;
@@ -24,6 +25,14 @@ public class ResultItem extends  BaseEmptyItem
     {
         boolean flag = RESULT_SUCCESS.equals(result)  ;
         return flag;
+    }
+
+
+    public  boolean sessionIsDisabled()
+    {
+        boolean flag = RESULT_SESSION_DISABLED.equals(result)  ;
+        return flag;
+
     }
 
 

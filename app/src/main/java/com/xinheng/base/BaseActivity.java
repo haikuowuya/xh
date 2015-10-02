@@ -128,8 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mProgressDialog = new ProgressDialog(mActivity);
         mProgressDialog.setMessage("正在请求服务器中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setOnKeyListener(
-                new DialogInterface.OnKeyListener()
+        mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
                 {
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
@@ -232,8 +231,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         {
             mIvBack.setVisibility(View.GONE);
         }
-        mIvBack.setOnClickListener(
-                new View.OnClickListener()
+        mIvBack.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -242,8 +240,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                     }
                 });
 
-        findViewById(R.id.iv_right).setOnClickListener(
-                new View.OnClickListener()
+        findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -290,8 +287,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             mPopupWindow.setOutsideTouchable(true);// 设置点击窗口外边窗口消失
             mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
 
-            listview.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener()
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -325,13 +321,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                             }
                         }
                     });
-        } if (mPopupWindow != null && mPopupWindow.isShowing())
-    {
-        mPopupWindow.dismiss();
-    } else
-    {
-        mPopupWindow.showAsDropDown(mIvRight, 0, DensityUtils.dpToPx(mActivity, 4.f));
-    }
+        }
+        if (mPopupWindow != null && mPopupWindow.isShowing())
+        {
+            mPopupWindow.dismiss();
+        }
+        else
+        {
+            mPopupWindow.showAsDropDown(mIvRight, 0, DensityUtils.dpToPx(mActivity, 4.f));
+        }
     }
 
     private void initSlidingMenu()
@@ -342,7 +340,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        } else
+        }
+        else
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         }
@@ -352,8 +351,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu.setBehindOffsetRes(R.dimen.dimen_slidingmenu_offset);
         mSlidingMenu.setFadeDegree(0.65f);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        mSlidingMenu.setBehindCanvasTransformer(
-                new SlidingMenu.CanvasTransformer()
+        mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
                 {
                     @Override
                     public void transformCanvas(Canvas canvas, float percentOpen)
@@ -398,7 +396,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             {
                 mSlidingMenu.showContent(true);
                 return true;
-            } else if (mActivity instanceof MainActivity)
+            }
+            else if (mActivity instanceof MainActivity)
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
@@ -485,8 +484,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         @Override
         public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
         {
-            ptrFrameLayout.postDelayed(
-                    new Runnable()
+            ptrFrameLayout.postDelayed(new Runnable()
                     {
                         @Override
                         public void run()

@@ -113,7 +113,7 @@ public class UserDoctorListAdapter extends BaseAdapter<UserDoctorItem>
 //            ToastUtils.showCrouton(getActivity(), "预约挂号");
             DepartDoctorItem item = new DepartDoctorItem();
             item.doctId = userDoctorItem.doctId;
-            item.doctorName = userDoctorItem.doctName;
+            item.doctName = userDoctorItem.doctName;
             item.department = userDoctorItem.department;
             DepartmentDoctorDetailActivity.actionDepartDoctorDetail(getActivity(), item);
         }
