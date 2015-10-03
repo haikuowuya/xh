@@ -2,6 +2,7 @@ package com.xinheng.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,12 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.UserAppointmentActivity;
 import com.xinheng.UserPatientListActivity;
 import com.xinheng.adapter.subscribe.ImageGridAdapter;
 import com.xinheng.adapter.subscribe.ScheduleListAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.appointment.PatientRecordItem;
@@ -47,6 +51,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.PhotoUtils;
 import com.xinheng.util.RSAUtil;
 import com.xinheng.util.StorageUtils;
+import com.xinheng.view.CircularImageView;
 import com.xinheng.view.CustomGridView;
 
 import java.io.File;
@@ -184,6 +189,8 @@ public class AppointmentFragment extends BaseFragment implements DataView
     private LinkedList<String> mAuths = new LinkedList<>();
     private LinkedList<String> mBmrIds = new LinkedList<>();
 
+    private CircularImageView mCivImage;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -224,13 +231,36 @@ public class AppointmentFragment extends BaseFragment implements DataView
         EventBus.getDefault().register(this);
         mDoctorDetailItem = getArguments().getSerializable(ARG_DOCTOR_DETAIL_TIEM) == null ? null : (DoctorDetailItem) getArguments().getSerializable(ARG_DOCTOR_DETAIL_TIEM);
         mPosition = getArguments().getInt(ARG_POSITION);
-        if (null != mDoctorDetailItem && null != mDoctorDetailItem.schedule)
+
+        if (null != mDoctorDetailItem)
         {
-            mDoctorScheduleItems = mDoctorDetailItem.schedule;
-            mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
-            mTvDoctorName.setText(mDoctorDetailItem.doctName);
-            mTvTechnicalPost.setText(mDoctorDetailItem.technicalPost);
-        }
+            String img = mDoctorDetailItem.img;
+            if (!TextUtils.isEmpty(img))
+            {
+                if (!img.startsWith(APIURL.BASE_API_URL))
+                {
+                    img = APIURL.BASE_API_URL + img;
+                }
+                ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                if (null != loadedImage)
+                                {
+                                    mCivImage.setImageBitmap(loadedImage);
+                                }
+                            }
+                        });
+            }
+        } if (null != mDoctorDetailItem && null != mDoctorDetailItem.schedule)
+    {
+        mDoctorScheduleItems = mDoctorDetailItem.schedule;
+        mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
+        mTvDoctorName.setText(mDoctorDetailItem.doctName);
+        mTvTechnicalPost.setText(mDoctorDetailItem.technicalPost);
+
+    }
         if (null != mDoctorScheduleItems && !mDoctorScheduleItems.isEmpty() && mPosition < mDoctorScheduleItems.size())
         {
             DoctorScheduleItem doctorScheduleItem = mDoctorScheduleItems.get(mPosition);
@@ -288,7 +318,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
     private void doGetPatientRecord()
     {
         mLinearPatientRecordContainer.removeAllViews();
-        PatientRecordPresenter patientRecordPresenter = new PatientRecordPresenterImpl(mActivity, this, REQUEST_PATIENT_RECORD_TAG,false);
+        PatientRecordPresenter patientRecordPresenter = new PatientRecordPresenterImpl(mActivity, this, REQUEST_PATIENT_RECORD_TAG, false);
         patientRecordPresenter.doGetPatientRecord(mUserPatientItem.id, mDoctorDetailItem.doctId);
 
     }
@@ -301,8 +331,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvFirstVisit.setOnClickListener(onClickListener);
         mTvSecondVisit.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
-        mCustomGridView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -348,7 +377,8 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                } else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
+                }
+                else if (REQUEST_PATIENT_RECORD_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<PatientRecordItem>>()
                     {
@@ -363,13 +393,15 @@ public class AppointmentFragment extends BaseFragment implements DataView
                         }
                         fillPatientRecord(items);
                     }
-                } else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+                }
+                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
                     UserAppointmentActivity.actionUserAppointment(mActivity);
                     mActivity.finish();
                 }
-            } else
+            }
+            else
             {
                 if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
@@ -400,15 +432,15 @@ public class AppointmentFragment extends BaseFragment implements DataView
                 if ("1".equals(patientRecordItem.isOpen))
                 {
                     ivImage.setActivated(true);
-                } else
+                }
+                else
                 {
                     ivImage.setActivated(false);
                 }
                 mAuths.add(i, ivImage.isActivated() ? "1" : "0");
                 mBmrIds.add(i, RSAUtil.clientEncrypt(patientRecordItem.bmrId));
                 final int finalI = i;
-                ivImage.setOnClickListener(
-                        new View.OnClickListener()
+                ivImage.setOnClickListener(new View.OnClickListener()
                         {
                             public void onClick(View v)
                             {
@@ -536,8 +568,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         alertDialog.setCustomTitle(tvTitle);
         View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
         TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
-        tvCancle.setOnClickListener(
-                new View.OnClickListener()
+        tvCancle.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -549,8 +580,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
-        alertDialog.getListView().setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)

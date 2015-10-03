@@ -192,6 +192,11 @@
         <activity
             android:name=".UserAccountNameActivity"
             android:label="@string/tv_activity_user_account_name"/>
+        <activity
+            android:name=".UserAppointmentAddDetailActivity"
+            android:label="@string/tv_activity_user_appointment_add_detail"/>
+        <activity android:name=".AddMedicalRecordActivity"
+                  android:label="@string/tv_activity_add_medical_record"/>
 
     </application>
 

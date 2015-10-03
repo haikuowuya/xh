@@ -2,6 +2,7 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.eventbus.OnModifyPhotoEvent;
 import com.xinheng.mvp.model.IconTextItem;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
@@ -24,7 +26,11 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.SplitUtils;
+import com.xinheng.util.StorageUtils;
 import com.xinheng.view.CircularImageView;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * 作者： raiyi-suzhou
@@ -57,6 +63,7 @@ public class UserCenterActivity extends BaseActivity implements DataView
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_user_center); //TODO
         initView();
         fillLinearGridContainer();
@@ -68,23 +75,47 @@ public class UserCenterActivity extends BaseActivity implements DataView
             String photo = mActivity.getLoginSuccessItem().photo;
             if (!TextUtils.isEmpty(photo))
             {
-                if (!photo.startsWith(APIURL.BASE_API_URL))
+                if (photo.startsWith(StorageUtils.getCacheDir(mActivity).getAbsolutePath()))
+                {
+                    mIvPhoto.setImageBitmap(BitmapFactory.decodeFile(photo));
+                }
+                else if (!photo.startsWith(APIURL.BASE_API_URL))
                 {
                     photo = APIURL.BASE_API_URL + photo;
-                }
-                ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+                } ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+            {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
                 {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                    if (null != loadedImage)
                     {
-                        if (null != loadedImage)
-                        {
-                            mIvPhoto.setImageBitmap(loadedImage);
-                        }
+                        mIvPhoto.setImageBitmap(loadedImage);
                     }
-                });
+                }
+            });
             }
         }
+    }
+
+    //=============================头像发生改变============================
+    @Subscribe
+    public void onEventMainThread(OnModifyPhotoEvent event)
+    {
+        if (null != event && null != event.mImageFilePath && mIvPhoto != null)
+        {
+            mIvPhoto.setImageBitmap(BitmapFactory.decodeFile(event.mImageFilePath));
+            LoginSuccessItem loginSuccessItem = getLoginSuccessItem();
+            loginSuccessItem.photo = event.mImageFilePath;
+            mActivity.saveLoginSuccessItem(loginSuccessItem);
+        }
+        //=============================头像发生改变============================
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -186,15 +217,15 @@ public class UserCenterActivity extends BaseActivity implements DataView
     @Override
     public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
-        if(resultItem != null)
+        if (resultItem != null)
         {
-         //   mActivity.showToast(resultItem.message);
-            if(resultItem.success())
+            //   mActivity.showToast(resultItem.message);
+            if (resultItem.success())
             {
-                if(REQUEST_GET_USER_ACCOUNT_DETAIL_TAG.equals(requestTag))
+                if (REQUEST_GET_USER_ACCOUNT_DETAIL_TAG.equals(requestTag))
                 {
                     LoginSuccessItem.AccountItem accountItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.AccountItem.class);
-                    if(null != accountItem)
+                    if (null != accountItem)
                     {
                         LoginSuccessItem loginSuccessItem = getLoginSuccessItem();
                         loginSuccessItem.account = accountItem;

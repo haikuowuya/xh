@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
+import com.xinheng.UserAppointmentAddDetailActivity;
 import com.xinheng.UserAppointmentDetailActivity;
 import com.xinheng.adapter.user.UserAppointmentListAdapter;
 import com.xinheng.mvp.model.ResultItem;
@@ -31,9 +32,15 @@ import java.util.List;
 public class UserAppointmentListFragment extends PTRListFragment implements DataView
 {
     private static final String DATA = UserAppointmentItem.DEBUG_SUCCESS;
-
+    /***
+     * 预约挂号的标志
+     */
     public static final String TYPE_0 = "0";
+    /**
+     * 预约加号的标志
+     */
     public static final String TYPE_1 = "1";
+
     public static final String ARG_TYPE = "type";
 
     public static UserAppointmentListFragment newInstance(String type)
@@ -56,11 +63,8 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        if (null != getArguments().getString(ARG_TYPE))
-        {
+
             mType = getArguments().getString(ARG_TYPE);
-        }
-//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         getListView().setSelector(new ColorDrawable(0x00000000));
         getListView().setDividerHeight(0);
         getListView().setBackgroundColor(0xFFF0F0F0);
@@ -95,7 +99,7 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
         refreshComplete();
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserAppointmentItem>>()
@@ -105,20 +109,27 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
                 mUserSubscribeItems.addAll(items);
                 if (null == mUserAppointmentListAdapter)
                 {
-                    mUserAppointmentListAdapter = new UserAppointmentListAdapter(mActivity, mUserSubscribeItems);
+                    mUserAppointmentListAdapter = new UserAppointmentListAdapter(mActivity, mUserSubscribeItems,mType);
                     getListView().setAdapter(mUserAppointmentListAdapter);
-                } else
+                }
+                else
                 {
                     mUserAppointmentListAdapter.notifyDataSetChanged();
                 }
-                getListView().setOnItemClickListener(
-                        new AdapterView.OnItemClickListener()
+                getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
                         {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                             {
                                 UserAppointmentItem item = (UserAppointmentItem) parent.getAdapter().getItem(position);
-                                UserAppointmentDetailActivity.actionUserAppointmentDetail(mActivity, item.id);
+                                if (TYPE_0.equals(mType))
+                                {
+                                    UserAppointmentDetailActivity.actionUserAppointmentDetail(mActivity, item.id);
+                                }
+                                else if (TYPE_1.equals(mType))
+                                {
+                                    UserAppointmentAddDetailActivity.actionUserAppointmentAddDetail(mActivity, item.id);
+                                }
                             }
                         });
             }

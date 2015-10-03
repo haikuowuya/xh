@@ -7,6 +7,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.UserCounselDetailActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.mvp.model.user.UserCounselItem;
@@ -26,7 +27,7 @@ public class UserCounselListAdapter extends BaseAdapter<UserCounselItem>
     }
 
     @Override
-    public void bindDataToView(View convertView, UserCounselItem item)
+    public void bindDataToView(View convertView, final UserCounselItem item)
     {
         setTextViewText(convertView, R.id.tv_counsel_question, item.title);
         String counselTime = DateFormatUtils.format(item.createTime);
@@ -37,25 +38,31 @@ public class UserCounselListAdapter extends BaseAdapter<UserCounselItem>
         {
             total = Integer.parseInt(item.total);
         }
-        setTextViewText(convertView, R.id.tv_answer_count, "医生回答(" +total + ")");
+        setTextViewText(convertView, R.id.tv_answer_count, "医生回答(" + total + ")");
         setViewVisibility(convertView, R.id.linear_doctor_answer_container, View.GONE);
         if (total > 0)
         {
             setViewVisibility(convertView, R.id.linear_doctor_answer_container, View.VISIBLE);
-            if (item.replys != null && !item.replys.isEmpty())
+            if (item.replys != null && !item.replys.isEmpty() && item.replys.get(0).list != null && !item.replys.get(0).list.isEmpty())
             {
                 UserCounselReplyItem reply = item.replys.get(0);
-                String answerTime = DateFormatUtils.format(reply.createTime);
+                UserCounselReplyItem.ListItem listItem = reply.list.get(0);
+                String answerTime = DateFormatUtils.format(listItem.createTime);
                 setTextViewText(convertView, R.id.tv_answer_time, answerTime);
                 String doctorInfo = reply.doctName + " " + reply.hospital + "  " + reply.department + "/" + reply.technicalPost;
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(doctorInfo);
                 ForegroundColorSpan span = new ForegroundColorSpan(0xFF2FAD68);
                 spannableStringBuilder.setSpan(span, 0, reply.doctName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 setTextViewText(convertView, R.id.tv_doctor_info, spannableStringBuilder);
-                setTextViewText(convertView, R.id.tv_answer_content, reply.content);
+                String replyContent = "医生暂无回复内容";
+                if (!TextUtils.isEmpty(listItem.content))
+                {
+                    replyContent = listItem.content;
+                }
+                setTextViewText(convertView, R.id.tv_answer_content, replyContent);
             }
 
-            if(total >1)
+            if (total > 1)
             {
                 setViewVisibility(convertView, R.id.tv_more, View.VISIBLE);
                 setViewOnClick(convertView, R.id.tv_more, new View.OnClickListener()
@@ -63,7 +70,8 @@ public class UserCounselListAdapter extends BaseAdapter<UserCounselItem>
                     @Override
                     public void onClick(View v)
                     {
-                        getActivity().showCroutonToast("正在完善中……");
+                        //   getActivity().showCroutonToast("正在完善中……");
+                        UserCounselDetailActivity.actionUserCounselDetail(getActivity(), item);
                     }
                 });
             }

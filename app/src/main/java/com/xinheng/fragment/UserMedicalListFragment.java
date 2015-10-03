@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.AddRecipeActivity;
+import com.xinheng.AddMedicalRecordActivity;
 import com.xinheng.R;
 import com.xinheng.UserMedicalDetailActivity;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
@@ -47,14 +47,13 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
         UserMedicalListFragment fragment = new UserMedicalListFragment();
         return fragment;
     }
+
     private LinkedList<UserMedicalItem> mUserMedicalItems = new LinkedList<>();
     private UserMedicalListAdapter mUserMedicalListAdapter;
-
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**
-     *
      * 添加病历
      */
     private ImageView mIvAddMedical;
@@ -72,6 +71,7 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -89,25 +89,22 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mPtrClassicFrameLayout.setPtrHandler(
-                new PtrDefaultHandler()
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
                 {
                     public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
                     {
                         doRefresh();
                     }
                 });
-        mIvAddMedical.setOnClickListener(
-                new View.OnClickListener()
+        mIvAddMedical.setOnClickListener(new View.OnClickListener()
                 {
-                    @Override
                     public void onClick(View v)
                     {
-                        AddRecipeActivity.actionAddRecipe(mActivity);
+                        AddMedicalRecordActivity.actionAddMedicalRecord(mActivity);
                     }
                 });
     }
+
     @Override
     public String getFragmentTitle()
     {
@@ -115,9 +112,11 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     }
 
     protected void doRefresh()
-    {   mUserMedicalItems.clear();
+    {
+        mUserMedicalItems.clear();
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
@@ -126,10 +125,10 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
@@ -146,8 +145,7 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
                         mListView.addHeaderView(mListHeaderImageView);
                         mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
                         mListView.setAdapter(mUserMedicalListAdapter);
-                        mListView.setOnItemClickListener(
-                                new AdapterView.OnItemClickListener()
+                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                                 {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -171,12 +169,12 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
-
+        mActivity.showToast(msg);
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }

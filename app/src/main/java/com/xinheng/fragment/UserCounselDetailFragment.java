@@ -196,30 +196,55 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
                 TextView tvAnswerTime = (TextView) itemView.findViewById(R.id.tv_answer_time);
                 //医生信息
                 TextView tvDoctorInfo = (TextView) itemView.findViewById(R.id.tv_doctor_info);
-                //医生回答内容
-                TextView tvAnswerContent = (TextView) itemView.findViewById(R.id.tv_answer_content);
-                TextView tvAddMsg = (TextView) itemView.findViewById(R.id.tv_add_msg);
+                LinearLayout linearAnswerContainer = (LinearLayout) itemView.findViewById(R.id.linear_doctor_answer_detail_container);
                 final UserCounselReplyItem reply = userCounselItem.replys.get(i);
-                String answerTime = DateFormatUtils.format(reply.createTime);
-                tvAnswerTime.setText(answerTime);
+                if (null != reply.list && !reply.list.isEmpty())
+                {
+                    for (int j = 0; j < reply.list.size(); j++)
+                    {
+                        UserCounselReplyItem.ListItem listItem = reply.list.get(j);
+                        View childAnswerItem = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_counsel_detail_reply_msg_add_item, null);
+                        //医生回答内容
+                        TextView tvAnswerContent = (TextView) childAnswerItem.findViewById(R.id.tv_answer_content);
+                        TextView tvAddMsg = (TextView) childAnswerItem.findViewById(R.id.tv_add_msg);
+                        tvAddMsg.setVisibility(View.GONE);
+                        tvAnswerContent.setText(listItem.content);
+                        if (!Boolean.parseBoolean(listItem.isUser))
+                        {
+                            tvAddMsg.setVisibility(View.VISIBLE);
+                            final int finalI = i;
+                            tvAddMsg.setOnClickListener(new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    // mActivity.showCroutonToast("追问:回答"+(1+ finalI));
+                                    if(null != mUserCounselReplyItem && reply.doctId.equals(mUserCounselReplyItem.doctId))
+                                    {
+                                        if(mLinearQuestionContainer.getVisibility() ==View.VISIBLE)
+                                        {
+                                            mLinearQuestionContainer.setVisibility(View.GONE);
+                                            mUserCounselReplyItem = null;
+                                        }
+                                        return;
+                                    }
+                                    mUserCounselReplyItem = reply;
+                                    mLinearQuestionContainer.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                        linearAnswerContainer.addView(childAnswerItem);
+                    }
+                    String answerTime = DateFormatUtils.format(reply.list.get(0).createTime);
+                    tvAnswerTime.setText(answerTime);
+                }
+
                 String doctorInfo = reply.doctName + " " + reply.hospital + "  " + reply.department + "/" + reply.technicalPost;
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(doctorInfo);
                 ForegroundColorSpan span = new ForegroundColorSpan(0xFF2FAD68);
                 spannableStringBuilder.setSpan(span, 0, reply.doctName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 tvDoctorInfo.setText(spannableStringBuilder);
-                tvAnswerContent.setText(reply.content);
                 mLinearReplyContainer.addView(itemView);
-                final int finalI = i;
-                tvAddMsg.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        // mActivity.showCroutonToast("追问:回答"+(1+ finalI));
-                        mUserCounselReplyItem = reply;
-                        mLinearQuestionContainer.setVisibility(View.VISIBLE);
-                    }
-                });
             }
         }
     }
@@ -239,11 +264,18 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
 
     private void submit()
     {
+        String content = mEtContent.getText().toString();
+        if (TextUtils.isEmpty(content))
+        {
+            mActivity.showToast("追问医生的内容不可以为空");
+            return;
+        }
         UserCounselQuestionPresenter userCounselPresenter = new UserCounselQuestionPresenterImpl(mActivity, this, REQUEST_COUNSEL_QUESTION_TAG);
         PostUserCounselItem item = new PostUserCounselItem();
-        item.userId = mActivity.getLoginSuccessItem().id;
+        item.id = mUserCounselItem.id;
         item.doctId = mUserCounselReplyItem.doctId;
         item.question = mUserCounselItem.question;
+        item.content = content;
         userCounselPresenter.doUserCounselQuestion(item);
         mActivity.hideSoftKeyBorard(mEtContent);
     }

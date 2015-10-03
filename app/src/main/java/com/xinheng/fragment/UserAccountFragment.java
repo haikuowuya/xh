@@ -3,6 +3,7 @@ package com.xinheng.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -24,6 +25,7 @@ import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnModifyAccountNameEvent;
 import com.xinheng.eventbus.OnModifyNicknameEvent;
+import com.xinheng.eventbus.OnModifyPhotoEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.UserPhotoPresenter;
 import com.xinheng.mvp.presenter.impl.UserPhotoPresenterImpl;
@@ -108,7 +110,11 @@ public class UserAccountFragment extends BaseFragment implements DataView
         if (null != mActivity.getLoginSuccessItem())
         {
             String photo = mActivity.getLoginSuccessItem().photo;
-            if (!TextUtils.isEmpty(photo))
+            if (photo.startsWith(StorageUtils.getCacheDir(mActivity).getAbsolutePath()))
+            {
+                mIvPhoto.setImageBitmap(BitmapFactory.decodeFile(photo));
+            }
+            else  if (!TextUtils.isEmpty(photo))
             {
                 if (!photo.startsWith(APIURL.BASE_API_URL))
                 {
@@ -182,6 +188,10 @@ public class UserAccountFragment extends BaseFragment implements DataView
         if (null != resultItem)
         {
             mActivity.showToast(resultItem.message);
+            if(resultItem.success())
+            {
+                EventBus.getDefault().post(new OnModifyPhotoEvent(mImageFilePath));
+            }
         }
     }
 
@@ -270,7 +280,6 @@ public class UserAccountFragment extends BaseFragment implements DataView
             if (null != mImageFilePath)
             {
                 mImageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);
-
                 mBitmap = BitmapUtils.scaleBitmap(mImageFilePath);
                 mBitmap = BitmapUtils.rotateBitmap(mImageFilePath, mBitmap);
                 mIvPhoto.setImageBitmap(mBitmap);

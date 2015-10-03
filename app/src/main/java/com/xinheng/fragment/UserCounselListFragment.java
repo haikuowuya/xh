@@ -45,7 +45,6 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-//        getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         getListView().setDividerHeight(0);
         getListView().setBackgroundColor(0xFFF0F0F0);
         int leftRight = DensityUtils.dpToPx(mActivity, 10.f);
@@ -79,7 +78,7 @@ public class UserCounselListFragment extends PTRListFragment implements DataView
         refreshComplete();
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserCounselItem>>()

@@ -4,9 +4,11 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.xinheng.R;
+import com.xinheng.UserAppointmentAddDetailActivity;
 import com.xinheng.UserAppointmentDetailActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
+import com.xinheng.fragment.UserAppointmentListFragment;
 import com.xinheng.mvp.model.user.UserAppointmentItem;
 import com.xinheng.util.DateFormatUtils;
 
@@ -17,9 +19,11 @@ import java.util.List;
  */
 public class UserAppointmentListAdapter extends BaseAdapter<UserAppointmentItem>
 {
-    public UserAppointmentListAdapter(BaseActivity activity, List<UserAppointmentItem> data)
+    private String mType;
+    public UserAppointmentListAdapter(BaseActivity activity, List<UserAppointmentItem> data,String type)
     {
         super(activity, R.layout.list_user_subscribe_item, data);
+        mType = type;
     }
 
     @Override
@@ -45,7 +49,16 @@ public class UserAppointmentListAdapter extends BaseAdapter<UserAppointmentItem>
                     public void onClick(View v)
                     {
 //                getActivity().showCroutonToast("查看详情");
-                        UserAppointmentDetailActivity.actionUserAppointmentDetail(getActivity(), userAppointmentItem.id);
+
+                        if (UserAppointmentListFragment.TYPE_0.equals(mType))
+                        {
+                            UserAppointmentDetailActivity.actionUserAppointmentDetail(getActivity(), userAppointmentItem.id);
+                        }
+                        else if (UserAppointmentListFragment.TYPE_1.equals(mType))
+                        {
+                            UserAppointmentAddDetailActivity.actionUserAppointmentAddDetail(getActivity(), userAppointmentItem.id);
+
+                        }
                     }
                 });
 

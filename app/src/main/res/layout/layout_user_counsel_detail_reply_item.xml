@@ -40,30 +40,15 @@
             android:textColor="#FFD5D7DA"
             tools:text="12-24 14:30"/>
 
-        <TextView
-
-            android:id="@+id/tv_answer_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear_doctor_answer_detail_container"
+            android:layout_width="match_parent"
             android:layout_below="@+id/tv_doctor_info"
-            android:gravity="left"
-            android:textColor="@color/color_main_text_gray_color"
-            tools:text="获取信息成功获取信息成功获取信息成功获取信息成功"/>
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_add_msg"
-            android:layout_below="@id/tv_answer_content"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:textColor="@color/color_main_text_color"
-            android:text="追问"
-            android:gravity="center"
-            android:padding="10dp"
-            android:background="@drawable/list_linear_item_selector"
-            android:drawablePadding="4dp"
-            android:drawableLeft="@mipmap/ic_user_counsel_add_msg"
-            android:layout_gravity="right"
-            android:layout_height="wrap_content"/>
+
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/tv_doctor_info"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_answer_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_doctor_info"
+        android:gravity="left"
+        android:padding="10dp"
+        android:textColor="#FF999999"
+        tools:text="获取信息成功获取信息成功获取信息成功获取信息成功"/>
+
+    <TextView
+        android:id="@+id/tv_add_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_answer_content"
+        android:layout_gravity="right"
+        android:background="@drawable/list_linear_item_selector"
+        android:drawableLeft="@mipmap/ic_user_counsel_add_msg"
+        android:drawablePadding="4dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="追问"
+        android:textColor="@color/color_main_text_color"/>
+
+</LinearLayout>

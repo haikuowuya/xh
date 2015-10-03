@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -42,9 +43,7 @@ import java.util.List;
  */
 public class UserAppointmentDetailFragment extends BaseFragment implements DataView
 {
-
     public static final String ARG_USER_APPOINTMENT_ID = "user_appointment_id";
-
     public static UserAppointmentDetailFragment newInstance(String appointmentId)
     {
         UserAppointmentDetailFragment fragment = new UserAppointmentDetailFragment();
@@ -124,6 +123,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
      */
     private TextView mTvGridViewStatus;
 
+    private ScrollView mScrollView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -135,6 +135,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
 
     private void initView(View view)
     {
+        mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mTvDepart = (TextView) view.findViewById(R.id.tv_dept_name);
         mCivPhoto = (CircularImageView) view.findViewById(R.id.iv_photo);
         mTvDoctorName = (TextView) view.findViewById(R.id.tv_doctor_name);
@@ -150,6 +151,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
         mLinearPatientRecordContainer = (LinearLayout) view.findViewById(R.id.linear_patient_record_container);
         mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
         mCustomGridView.setNumColumns(3);
+
     }
 
     @Override
@@ -202,7 +204,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 UserAppointmentDetailItem userAppointmentDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserAppointmentDetailItem.class);
@@ -221,6 +223,7 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                     {
                         mTvGridViewStatus.setVisibility(View.VISIBLE);
                     }
+                    mScrollView.fullScroll(ScrollView.FOCUS_UP);
                 }
             }
         }

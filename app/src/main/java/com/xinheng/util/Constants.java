@@ -9,9 +9,13 @@ package com.xinheng.util;
 public class Constants
 {
     /***
+     * 默认搜索药品时的医院id
+     */
+    public static final String HID = "402881b44e706cab014e7075fdff0004";
+    /***
      * HTTP头部写的user_agent的值
      */
-    public static final String  USER_AGENT_VALUE="UA_HKWY";
+    public static final String USER_AGENT_VALUE = "UA_HKWY";
     /**
      * 测试的万能验证码
      */

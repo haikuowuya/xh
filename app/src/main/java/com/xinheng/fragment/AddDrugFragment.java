@@ -20,6 +20,7 @@ import com.xinheng.mvp.model.prescription.DrugItem;
 import com.xinheng.mvp.presenter.DrugSearchPresenter;
 import com.xinheng.mvp.presenter.impl.DrugSearchPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -152,6 +153,6 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         mActivity.hideSoftKeyBorard(mEtSearch);
         String keyword = searchText;
         DrugSearchPresenter drugSearchPresenter = new DrugSearchPresenterImpl(mActivity, this);
-        drugSearchPresenter.doSearchDrug("402881b44e706cab014e7075fdff0004", keyword);
+        drugSearchPresenter.doSearchDrug(Constants.HID, keyword);
     }
 }
