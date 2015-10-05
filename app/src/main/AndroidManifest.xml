@@ -195,9 +195,16 @@
         <activity
             android:name=".UserAppointmentAddDetailActivity"
             android:label="@string/tv_activity_user_appointment_add_detail"/>
-        <activity android:name=".AddMedicalRecordActivity"
-                  android:label="@string/tv_activity_add_medical_record"/>
+        <activity
+            android:name=".AddMedicalRecordActivity"
+            android:label="@string/tv_activity_add_medical_record"/>
 
+        <activity
+            android:name=".AddReportActivity"
+            android:label="@string/tv_activity_add_report"/>
+        <activity
+            android:name=".AddCheckActivity"
+            android:label="@string/tv_activity_add_check"/>
     </application>
 
 </manifest>

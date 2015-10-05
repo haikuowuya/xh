@@ -22,9 +22,6 @@ public class UserRecipePresenterImpl implements UserRecipePresenter
         mActivity = activity;
         mDataView = dataView;
     }
-
-
-
     @Override
     public void doGetUserRecipe()
     {

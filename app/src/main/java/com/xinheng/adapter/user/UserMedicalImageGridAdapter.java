@@ -1,7 +1,6 @@
 package com.xinheng.adapter.user;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -33,9 +32,10 @@ public class UserMedicalImageGridAdapter extends BaseAdapter<String>
         if (TextUtils.isEmpty(s))
         {
             circularImageView.setImageResource(R.mipmap.ic_add_recipe);
-        } else
+        }
+        else
         {
-            circularImageView.setImageBitmap(BitmapFactory.decodeFile(s));
+        //    circularImageView.setImageBitmap(BitmapFactory.decodeFile(s));
             String photo = s;
             if (!TextUtils.isEmpty(photo))
             {
@@ -43,11 +43,10 @@ public class UserMedicalImageGridAdapter extends BaseAdapter<String>
                 {
                     photo = APIURL.BASE_API_URL + photo;
                 }
-                circularImageView.setTag(s);
-                ImageLoader.getInstance().loadImage(
-                        photo, new AbsImageLoadingListener()
+               // System.out.println("photo = " + photo);
+                circularImageView.setTag(photo);
+                ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
                         {
-                            @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
                             {
                                 if (null != loadedImage && imageUri.equals(circularImageView.getTag()))

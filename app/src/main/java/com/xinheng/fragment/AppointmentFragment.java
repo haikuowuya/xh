@@ -70,7 +70,6 @@ import de.greenrobot.event.Subscribe;
  */
 public class AppointmentFragment extends BaseFragment implements DataView
 {
-
     private static final String ARG_DOCTOR_DETAIL_TIEM = "doctor_detail_item";
     public static final String ARG_POSITION = "position";
     /***
@@ -188,7 +187,6 @@ public class AppointmentFragment extends BaseFragment implements DataView
 
     private LinkedList<String> mAuths = new LinkedList<>();
     private LinkedList<String> mBmrIds = new LinkedList<>();
-
     private CircularImageView mCivImage;
 
     @Nullable
@@ -213,6 +211,7 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvFirstVisit = (TextView) view.findViewById(R.id.tv_first_visit);
         mTvSecondVisit = (TextView) view.findViewById(R.id.tv_second_visit);
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
+        mCivImage = (CircularImageView) view.findViewById(R.id.civ_image);
         mLinearPatientRecordContainer = (LinearLayout) view.findViewById(R.id.linear_patient_record_container);
         mEtConditionReport = (EditText) view.findViewById(R.id.et_conditionReport);
         mEtSymptoms = (EditText) view.findViewById(R.id.et_symptoms);
@@ -231,7 +230,6 @@ public class AppointmentFragment extends BaseFragment implements DataView
         EventBus.getDefault().register(this);
         mDoctorDetailItem = getArguments().getSerializable(ARG_DOCTOR_DETAIL_TIEM) == null ? null : (DoctorDetailItem) getArguments().getSerializable(ARG_DOCTOR_DETAIL_TIEM);
         mPosition = getArguments().getInt(ARG_POSITION);
-
         if (null != mDoctorDetailItem)
         {
             String img = mDoctorDetailItem.img;

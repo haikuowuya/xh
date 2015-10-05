@@ -46,6 +46,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.IntentUtils;
 import com.xinheng.util.SplitUtils;
 import com.xinheng.util.ToastUtils;
+import com.xinheng.util.UILUtils;
 import com.xinheng.util.ViewUtils;
 
 import java.util.LinkedList;
@@ -116,6 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         super.onCreate(savedInstanceState);
         mActivity = this;
+        UILUtils.config(this);
         XHApplication application = (XHApplication) getApplication();
         application.recordActivity(mActivity);
         mPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
@@ -129,19 +131,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mProgressDialog.setMessage("正在请求服务器中……");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.setOnKeyListener(new DialogInterface.OnKeyListener()
+        {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+            {
+                if (keyCode == KeyEvent.KEYCODE_BACK)
                 {
-                    @Override
-                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-                    {
-                        if (keyCode == KeyEvent.KEYCODE_BACK)
-                        {
-                            mProgressDialog.dismiss();
-                            mActivity.finish();
-                            return true;
-                        }
-                        return false;
-                    }
-                });
+                    mProgressDialog.dismiss();
+                    mActivity.finish();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         if (!IntentUtils.isLauncherIntent(getIntent()) && !(this instanceof RegisterActivity))
         {
@@ -232,23 +234,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             mIvBack.setVisibility(View.GONE);
         }
         mIvBack.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        onBackPressed();
-                    }
-                });
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onBackPressed();
+            }
+        });
 
         findViewById(R.id.iv_right).setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        // mSlidingMenu.toggle(true);
-                        showPopupWindow();
-                    }
-                });
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // mSlidingMenu.toggle(true);
+                showPopupWindow();
+            }
+        });
         mPtrClassicFrameLayout.setPtrHandler(new PtrHandlerImpl());
         initSlidingMenu();
     }
@@ -288,39 +290,39 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
 
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    mPopupWindow.dismiss();
+                    switch (position)
                     {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                        {
-                            mPopupWindow.dismiss();
-                            switch (position)
+                        case 0:
+                            if (!(mActivity instanceof MainActivity))
                             {
-                                case 0:
-                                    if (!(mActivity instanceof MainActivity))
-                                    {
-                                        MainActivity.actioMain(mActivity);
-                                    }
-                                    break;
-
-                                case 1:
-                                    if (!(mActivity instanceof DepartmentNavActivity))
-                                    {
-                                        DepartmentNavActivity.actionDepartmentNav(mActivity);
-                                    }
-                                    break;
-                                case 2:
-                                    if (!(mActivity instanceof UserCenterActivity))
-                                    {
-                                        UserCenterActivity.actionUserCenter(mActivity);
-                                    }
-                                    break;
-
-                                case 3:
-                                    mActivity.showCroutonToast("系统设置");
-                                    break;
+                                MainActivity.actioMain(mActivity);
                             }
-                        }
-                    });
+                            break;
+
+                        case 1:
+                            if (!(mActivity instanceof DepartmentNavActivity))
+                            {
+                                DepartmentNavActivity.actionDepartmentNav(mActivity);
+                            }
+                            break;
+                        case 2:
+                            if (!(mActivity instanceof UserCenterActivity))
+                            {
+                                UserCenterActivity.actionUserCenter(mActivity);
+                            }
+                            break;
+
+                        case 3:
+                            mActivity.showCroutonToast("系统设置");
+                            break;
+                    }
+                }
+            });
         }
         if (mPopupWindow != null && mPopupWindow.isShowing())
         {
@@ -352,15 +354,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu.setFadeDegree(0.65f);
         mSlidingMenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
         mSlidingMenu.setBehindCanvasTransformer(new SlidingMenu.CanvasTransformer()
-                {
-                    @Override
-                    public void transformCanvas(Canvas canvas, float percentOpen)
-                    {
-                        float scale = (float) (percentOpen * 0.25 + 0.75);
-                        canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
-                        // canvas.scale(percentOpen, 1, 0, 0);
-                    }
-                });
+        {
+            @Override
+            public void transformCanvas(Canvas canvas, float percentOpen)
+            {
+                float scale = (float) (percentOpen * 0.25 + 0.75);
+                canvas.scale(scale, scale, canvas.getWidth() / 2, canvas.getHeight() / 2);
+                // canvas.scale(percentOpen, 1, 0, 0);
+            }
+        });
         mSlidingMenu.setMenu(R.layout.layout_menu);
         // 设置隐藏在AboveMenu菜单后面的菜单
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_container, MenuFragment.newInstance()).commit();
@@ -485,13 +487,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
         {
             ptrFrameLayout.postDelayed(new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            mPtrClassicFrameLayout.refreshComplete();
-                        }
-                    }, 2000L);
+            {
+                @Override
+                public void run()
+                {
+                    mPtrClassicFrameLayout.refreshComplete();
+                }
+            }, 2000L);
         }
     }
 

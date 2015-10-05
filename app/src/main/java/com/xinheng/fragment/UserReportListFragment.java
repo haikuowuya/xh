@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.AddRecipeActivity;
+import com.xinheng.AddReportActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserReportListAdapter;
 import com.xinheng.base.BaseFragment;
@@ -46,14 +46,13 @@ public class UserReportListFragment extends BaseFragment implements DataView
         UserReportListFragment fragment = new UserReportListFragment();
         return fragment;
     }
+
     private LinkedList<UserReportItem> mUserReportItems = new LinkedList<>();
     private UserReportListAdapter mUserReportListAdapter;
-
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**
-     *
      * 添加报告
      */
     private ImageView mIvAddReport;
@@ -71,6 +70,7 @@ public class UserReportListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -102,10 +102,11 @@ public class UserReportListFragment extends BaseFragment implements DataView
             @Override
             public void onClick(View v)
             {
-                AddRecipeActivity.actionAddRecipe(mActivity);
+                AddReportActivity.actionAddReport(mActivity);
             }
         });
     }
+
     @Override
     public String getFragmentTitle()
     {
@@ -114,8 +115,10 @@ public class UserReportListFragment extends BaseFragment implements DataView
 
     protected void doRefresh()
     {
+        mUserReportItems.clear();
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
@@ -124,13 +127,13 @@ public class UserReportListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
-            if(resultItem.success())
+            if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserReportItem>>()
                 {
@@ -155,12 +158,12 @@ public class UserReportListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }

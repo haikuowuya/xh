@@ -16,6 +16,7 @@ import com.xinheng.R;
 import com.xinheng.UserMedicalDetailActivity;
 import com.xinheng.adapter.user.UserMedicalListAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnAddMedicalRecordEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserMedicalItem;
 import com.xinheng.mvp.presenter.UserMedicalPresenter;
@@ -28,6 +29,8 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -38,13 +41,13 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 时间： 17:48
  * 说明：  我的病历列表
  */
-public class UserMedicalListFragment extends BaseFragment implements DataView
+public class UserMedicalRecordListFragment extends BaseFragment implements DataView
 {
     private static final String DATA = UserMedicalItem.DEBUG_SUCCESS;
 
-    public static UserMedicalListFragment newInstance()
+    public static UserMedicalRecordListFragment newInstance()
     {
-        UserMedicalListFragment fragment = new UserMedicalListFragment();
+        UserMedicalRecordListFragment fragment = new UserMedicalRecordListFragment();
         return fragment;
     }
 
@@ -89,20 +92,39 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-                {
-                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-                    {
-                        doRefresh();
-                    }
-                });
+        {
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+            {
+                doRefresh();
+            }
+        });
         mIvAddMedical.setOnClickListener(new View.OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        AddMedicalRecordActivity.actionAddMedicalRecord(mActivity);
-                    }
-                });
+        {
+            public void onClick(View v)
+            {
+                AddMedicalRecordActivity.actionAddMedicalRecord(mActivity);
+            }
+        });
+    }
+
+    //==============病历添加成功事件==========================
+    @Subscribe
+    public void onEventMainThread(OnAddMedicalRecordEvent event)
+    {
+        if (null != event)
+        {
+            doRefresh();
+        }
+    }
+
+    //==============病历添加成功事件==========================
+    @Override
+    public void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -146,14 +168,14 @@ public class UserMedicalListFragment extends BaseFragment implements DataView
                         mUserMedicalListAdapter = new UserMedicalListAdapter(mActivity, mUserMedicalItems);
                         mListView.setAdapter(mUserMedicalListAdapter);
                         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                                {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                                    {
-                                        UserMedicalItem item = (UserMedicalItem) parent.getAdapter().getItem(position);
-                                        UserMedicalDetailActivity.actionUserMedicalDetail(mActivity, item.id);
-                                    }
-                                });
+                        {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                            {
+                                UserMedicalItem item = (UserMedicalItem) parent.getAdapter().getItem(position);
+                                UserMedicalDetailActivity.actionUserMedicalDetail(mActivity, item.id);
+                            }
+                        });
                     }
                     else
                     {

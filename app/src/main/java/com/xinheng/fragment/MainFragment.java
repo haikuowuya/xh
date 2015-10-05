@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.xinheng.AddCheckActivity;
 import com.xinheng.AutoCheckActivity;
 import com.xinheng.DepartmentNavActivity;
 import com.xinheng.OnlineActivity;
@@ -84,6 +85,10 @@ public class MainFragment extends BaseFragment
                 else if (position == 1)
                 {
                     DepartmentNavActivity.actionDepartmentNav(mActivity);
+                }
+                else if (position == 2)
+                {
+                    AddCheckActivity.actionAddCheck(mActivity);
                 }
                 else if (position == 3)
                 {

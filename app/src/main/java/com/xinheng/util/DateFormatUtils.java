@@ -1,5 +1,6 @@
 package com.xinheng.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,9 +33,10 @@ public class DateFormatUtils
         try
         {
             date = new Date(Long.parseLong(time));
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
-            System.out.println("格式化的时间不是long类型的  time = " +time);
+            System.out.println("格式化的时间不是long类型的  time = " + time);
             date = new Date(System.currentTimeMillis());
         }
         String pattern = "MM-dd HH:mm";
@@ -47,5 +49,21 @@ public class DateFormatUtils
             }
         }
         return new SimpleDateFormat(pattern).format(date);
+    }
+
+    public static String timeToLongString(String time)
+    {
+        String result = System.currentTimeMillis() + "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+            Date date = sdf.parse(time);
+            result = date.getTime() + "";
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

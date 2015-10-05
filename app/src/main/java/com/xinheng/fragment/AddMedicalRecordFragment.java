@@ -18,22 +18,23 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
-import com.xinheng.UserAppointmentActivity;
 import com.xinheng.UserPatientListActivity;
 import com.xinheng.adapter.subscribe.ImageGridAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnAddMedicalRecordEvent;
 import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.appointment.PatientRecordItem;
 import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
+import com.xinheng.mvp.model.user.PostAddMedicalRecordItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
+import com.xinheng.mvp.presenter.SubmitAddMedicalRecordPresenter;
 import com.xinheng.mvp.presenter.UserPatientPresenter;
+import com.xinheng.mvp.presenter.impl.SubmitAddMedicalRecordPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.BitmapUtils;
@@ -41,9 +42,11 @@ import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.PhotoUtils;
+import com.xinheng.util.RSAUtil;
 import com.xinheng.util.StorageUtils;
 import com.xinheng.view.CustomGridView;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
@@ -127,6 +130,11 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
      */
     private EditText mEtDoctorName;
 
+    /***
+     * 诊断记录
+     */
+    private EditText mEtRecord;
+
     private SMSBroadcastReceiver mSMSBroadcastReceiver = new SMSBroadcastReceiver();
 
     @Nullable
@@ -143,6 +151,7 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
         mTvDate = (TextView) view.findViewById(R.id.tv_date);
         mEtDepart = (EditText) view.findViewById(R.id.et_depart);
+        mEtRecord = (EditText) view.findViewById(R.id.et_record);
         mEtDoctorName = (EditText) view.findViewById(R.id.et_doctor_name);
         mEtHospital = (EditText) view.findViewById(R.id.et_hospital);
         mTvSelectPatient = (TextView) view.findViewById(R.id.tv_select_patient);
@@ -153,6 +162,7 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
         mCustomGridView0.setNumColumns(3);
         mCustomGridView1.setNumColumns(3);
         mCustomGridView2.setNumColumns(3);
+        mTvDate.setText(DateFormatUtils.format(System.currentTimeMillis() + "", true, false));
     }
 
     @Override
@@ -226,14 +236,14 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
         mLinearPatientContainer.removeAllViews();
         TextView textView = new TextView(mActivity);
         textView.setText(patientItem.name);
-        int marginLTB = DensityUtils.dpToPx(mActivity, 6.f);
+        int marginRTB = DensityUtils.dpToPx(mActivity, 6.f);
         textView.setGravity(Gravity.CENTER);
         textView.setBackgroundResource(R.drawable.shape_edittext_background);
         int width = DensityUtils.dpToPx(mActivity, 72.f);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.leftMargin = marginLTB;
-        layoutParams.topMargin = marginLTB;
-        layoutParams.bottomMargin = marginLTB;
+        layoutParams.rightMargin = marginRTB;
+        layoutParams.topMargin = marginRTB;
+        layoutParams.bottomMargin = marginRTB;
         mLinearPatientContainer.addView(textView, layoutParams);
 
     }
@@ -248,7 +258,6 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
         mCustomGridView0.setOnItemClickListener(onItemClickListener);
         mCustomGridView1.setOnItemClickListener(onItemClickListener);
         mCustomGridView2.setOnItemClickListener(onItemClickListener);
-
     }
 
     @Override
@@ -285,7 +294,7 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
-                    UserAppointmentActivity.actionUserAppointment(mActivity);
+                    EventBus.getDefault().post(new OnAddMedicalRecordEvent());
                     mActivity.finish();
                 }
             }
@@ -296,29 +305,6 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
     public void onGetDataFailured(String msg, String requestTag)
     {
         mActivity.showToast(msg);
-
-    }
-
-    /***
-     * 将选中的就诊人的病历显示出来
-     *
-     * @param items
-     */
-    private void fillPatientRecord(List<PatientRecordItem> items)
-    {
-        if (null != items && !items.isEmpty())
-        {
-            for (PatientRecordItem patientRecordItem : items)
-            {
-                View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_patient_record_item, null);
-                TextView tvDate = (TextView) view.findViewById(R.id.tv_date);
-                TextView tvDepatName = (TextView) view.findViewById(R.id.tv_dept_name);
-                ImageView ivImage = (ImageView) view.findViewById(R.id.iv_image);
-                tvDate.setText(DateFormatUtils.format(patientRecordItem.createDate, true, false));
-                tvDepatName.setText(patientRecordItem.departName);
-                ivImage.setActivated("1".equals(patientRecordItem.isOpen));
-            }
-        }
     }
 
     private class OnClickListenerImpl implements View.OnClickListener
@@ -356,6 +342,84 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
 
     private void submit()
     {
+        if (null == mUserPatientItem)
+        {
+            mActivity.showToast("请选择就诊的患者");
+            return;
+        }
+        String hospital = mEtHospital.getText().toString();
+        if (TextUtils.isEmpty(hospital))
+        {
+            mActivity.showToast("请填写医疗机构");
+            return;
+        }
+        String doctorName = mEtDoctorName.getText().toString();
+        if (TextUtils.isEmpty(doctorName))
+        {
+            mActivity.showToast("请填写主治医师");
+            return;
+        }
+        String depart = mEtDepart.getText().toString();
+        if (TextUtils.isEmpty(depart))
+        {
+            mActivity.showToast("请填写门诊科室");
+            return;
+        }
+        String record = mEtRecord.getText().toString();
+        if (TextUtils.isEmpty(record))
+        {
+            record = "诊断记录为空";
+        }
+        String seeDate = DateFormatUtils.timeToLongString(mTvDate.getText().toString());
+        PostAddMedicalRecordItem postAddMedicalRecordItem = new PostAddMedicalRecordItem();
+        postAddMedicalRecordItem.seeDate = seeDate;
+        postAddMedicalRecordItem.patientId = RSAUtil.clientEncrypt(mUserPatientItem.id);
+        postAddMedicalRecordItem.institution = hospital;
+        postAddMedicalRecordItem.department = depart;
+        postAddMedicalRecordItem.doctor = doctorName;
+        postAddMedicalRecordItem.record = RSAUtil.clientEncrypt(record);
+        if (mImageFilePaths0.size() > 0)
+        {
+            List<File> sickfiles = new LinkedList<>();
+            for (int i = 0; i < mImageFilePaths0.size() - 1; i++)//-1的目的去除默认的+
+            {
+                File file = new File(mImageFilePaths0.get(i));
+                if (file != null && file.exists())
+                {
+                    sickfiles.add(file);
+                }
+            }
+            postAddMedicalRecordItem.sickfiles = sickfiles;
+        }
+        if (mImageFilePaths1.size() > 0)
+        {
+            List<File> reportfiles = new LinkedList<>();
+            for (int i = 0; i < mImageFilePaths1.size() - 1; i++)//-1的目的去除默认的+
+            {
+                File file = new File(mImageFilePaths1.get(i));
+                if (file != null && file.exists())
+                {
+                    reportfiles.add(file);
+                }
+            }
+            postAddMedicalRecordItem.reportfiles = reportfiles;
+        }
+
+        if (mImageFilePaths2.size() > 0)
+        {
+            List<File> prescfiles = new LinkedList<>();
+            for (int i = 0; i < mImageFilePaths2.size() - 1; i++)//-1的目的去除默认的+
+            {
+                File file = new File(mImageFilePaths2.get(i));
+                if (file != null && file.exists())
+                {
+                    prescfiles.add(file);
+                }
+            }
+            postAddMedicalRecordItem.prescfiles = prescfiles;
+        }
+        SubmitAddMedicalRecordPresenter submitAddMedicalRecordPresenter = new SubmitAddMedicalRecordPresenterImpl(mActivity, this, REQUEST_SUBMIT_TAG);
+        submitAddMedicalRecordPresenter.doAddMedicalRecord(postAddMedicalRecordItem);
     }
 
     @Override
@@ -371,7 +435,7 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
                     if (null != imageFilePath)
                     {
                         imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
-                     //   mActivity.showToast(" mFlag = " + mFlag);
+                        //   mActivity.showToast(" mFlag = " + mFlag);
                         if (mFlag == 0)
                         {
                             mImageFilePaths0.addFirst(imageFilePath);

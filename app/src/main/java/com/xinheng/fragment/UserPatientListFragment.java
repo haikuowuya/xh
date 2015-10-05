@@ -56,8 +56,6 @@ public class UserPatientListFragment extends BaseFragment implements DataView
     private boolean mFromSelectPatient = false;
     private LinkedList<UserPatientItem> mUserPatientItems = new LinkedList<>();
     private UserPatientListAdapter mUserPatientListAdapter;
-
-
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**

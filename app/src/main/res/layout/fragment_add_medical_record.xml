@@ -160,7 +160,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请填写你的疾病名称"
+                android:hint="请填写医疗机构"
                 android:padding="6dp"
                 android:textColorHint="#FFCCCCCC"/>
         </LinearLayout>
@@ -187,7 +187,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请填写你的疾病名称"
+                android:hint="请填写门诊科室"
                 android:padding="6dp"
                 android:textColorHint="#FFCCCCCC"/>
         </LinearLayout>
@@ -214,7 +214,7 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:hint="请填写你的疾病名称"
+                android:hint="请填写主治医师"
                 android:padding="6dp"
                 android:textColorHint="#FFCCCCCC"/>
         </LinearLayout>
@@ -229,7 +229,7 @@
             android:textColor="@color/color_main_text_gray_color"/>
 
         <EditText
-            android:id="@+id/et_disease_name"
+            android:id="@+id/et_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"

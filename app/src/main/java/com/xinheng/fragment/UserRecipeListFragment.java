@@ -89,7 +89,6 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         mListView.addHeaderView(mListHeaderImageView);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -114,6 +113,7 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
 
     protected void doRefresh()
     {
+        mUserRecipeItems.clear();
         doGetData();
     }
     @Override

@@ -1,17 +1,16 @@
 package com.xinheng.adapter.subscribe;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.view.CircularImageView;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class AppointmentDetailImageGridAdapter extends BaseAdapter<String>
             circularImageView.setImageResource(R.mipmap.ic_add_recipe);
         } else
         {
-            circularImageView.setImageBitmap(BitmapFactory.decodeFile(s));
+           // circularImageView.setImageBitmap(BitmapFactory.decodeFile(s));
             String photo = s;
             if (!TextUtils.isEmpty(photo))
             {
@@ -43,7 +42,7 @@ public class AppointmentDetailImageGridAdapter extends BaseAdapter<String>
                 {
                     photo = APIURL.BASE_API_URL + photo;
                 }
-                circularImageView.setTag(s);
+                circularImageView.setTag(photo);
                 ImageLoader.getInstance().loadImage(
                         photo, new AbsImageLoadingListener()
                         {

@@ -44,7 +44,7 @@ public class UserPhotoPresenterImpl implements UserPhotoPresenter
         postMobileItem.mobile = RSAUtil.clientEncrypt(phone);
         Map<String, String> postMap = new HashMap<>();
         postMap.put("mobile", postMobileItem.mobile);
-        OkHttpUtils.customXHasyncExecuteWithFile(uploadUrl, mActivity.getLoginSuccessItem(), postMap, new File(imageFilePath), new OkHttpCallbackImpl(mActivity, mDataView));
+        OkHttpUtils.customXHAsyncExecuteWithFile(uploadUrl, mActivity.getLoginSuccessItem(), postMap, new File(imageFilePath), new OkHttpCallbackImpl(mActivity, mDataView));
 
     }
 }

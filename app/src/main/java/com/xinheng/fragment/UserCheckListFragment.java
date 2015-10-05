@@ -10,10 +10,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.AddRecipeActivity;
+import com.xinheng.AddCheckActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserCheckListAdapter;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnAddCheckEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserChecktItem;
 import com.xinheng.mvp.model.user.UserMedicalItem;
@@ -27,6 +28,8 @@ import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -46,14 +49,13 @@ public class UserCheckListFragment extends BaseFragment implements DataView
         UserCheckListFragment fragment = new UserCheckListFragment();
         return fragment;
     }
+
     private LinkedList<UserChecktItem> mUserChecktItems = new LinkedList<>();
     private UserCheckListAdapter mUserCheckListAdapter;
-
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**
-     *
      * 添加病历
      */
     private ImageView mIvAddCheck;
@@ -71,6 +73,7 @@ public class UserCheckListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -88,6 +91,7 @@ public class UserCheckListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         mListView.addHeaderView(mListHeaderImageView);
 //        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
@@ -102,10 +106,28 @@ public class UserCheckListFragment extends BaseFragment implements DataView
             @Override
             public void onClick(View v)
             {
-                AddRecipeActivity.actionAddRecipe(mActivity);
+                AddCheckActivity.actionAddCheck(mActivity, true);
             }
         });
     }
+
+    //添加检查成功事件
+    @Subscribe
+    public void onEventMainThread(OnAddCheckEvent event)
+    {
+        if (null != event)
+        {
+            doRefresh();
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
     @Override
     public String getFragmentTitle()
     {
@@ -114,20 +136,22 @@ public class UserCheckListFragment extends BaseFragment implements DataView
 
     protected void doRefresh()
     {
+        mUserChecktItems.clear();
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
-        UserCheckPresenter userCheckPresenter = new UserCheckPresenterImpl(mActivity,this);
+        UserCheckPresenter userCheckPresenter = new UserCheckPresenterImpl(mActivity, this);
         userCheckPresenter.doGetUserCheck();
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
             if (resultItem.success())
@@ -154,12 +178,12 @@ public class UserCheckListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }

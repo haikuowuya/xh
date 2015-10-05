@@ -40,6 +40,7 @@
     <string name="tv_activity_get_medical">按方抓药</string>
     <string name="tv_activity_appointment">预约挂号</string>
     <string name="tv_activity_appointment_add">预约加号</string>
+    <string name="tv_activity_add_check">便捷检查</string>
     <string name="tv_activity_online_counsel">在线咨询</string>
     <string name="tv_activity_add_drug">添加药品</string>
     <string name="tv_activity_patient">常用就诊人</string>
@@ -53,6 +54,7 @@
     <string name="tv_activity_user_recipe">我的处方</string>
     <string name="tv_activity_add_recipe">添加处方</string>
     <string name="tv_activity_add_medical_record">添加病历</string>
+    <string name="tv_activity_add_report">添加报告</string>
     <string name="tv_activity_add_patient">添加就诊人</string>
     <string name="tv_activity_department_doctor_detail">医生详情</string>
     <string name="tv_activity_user_order">我的订单</string>

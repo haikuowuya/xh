@@ -40,8 +40,8 @@ public class VerifyCodeUtils
                     button.setClickable(true);//重新获得点击
                 }
             };
+            sCountDownTimer.start();
         }
-        sCountDownTimer.start();
 //        new CountDownTimer(millisInFuture, 1000)
 //        {
 //            public void onTick(long millisUntilFinished)
@@ -76,6 +76,7 @@ public class VerifyCodeUtils
         if (null != sCountDownTimer)
         {
             sCountDownTimer.cancel();
+            sCountDownTimer = null;
         }
     }
 }

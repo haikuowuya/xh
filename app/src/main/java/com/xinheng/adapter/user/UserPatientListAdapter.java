@@ -40,5 +40,13 @@ public class UserPatientListAdapter extends BaseAdapter<UserPatientItem>
         setTextViewText(convertView, R.id.tv_patient_card, idCard);
         String mobile ="手机号"+FLAG_4_BLANK+item.mobile;
         setTextViewText(convertView, R.id.tv_phone, mobile);
+        if("1".equals(item.isDefault))
+        {
+            setViewVisibility(convertView, R.id.tv_default, View.VISIBLE);
+        }
+        else
+        {
+            setViewVisibility(convertView, R.id.tv_default, View.GONE);
+        }
     }
 }

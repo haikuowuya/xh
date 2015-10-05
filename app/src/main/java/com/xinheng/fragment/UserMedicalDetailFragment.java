@@ -70,9 +70,13 @@ public class UserMedicalDetailFragment extends BaseFragment implements DataView
      */
     private TextView mTvRecord;
 
-    private CustomGridView mCustomGridView;
+    private CustomGridView mCustomReportGridView;
+    private CustomGridView mCustomPresGridView;
+    private CustomGridView mCustomIllnessGridView;
 
-    private TextView mTvRecordImgStatus;
+    private TextView mTvReportImgStatus;
+    private TextView mTvPresImgStatus;
+    private TextView mTvIllnessImgStatus;
 
     @Nullable
     @Override
@@ -85,16 +89,23 @@ public class UserMedicalDetailFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
+
         mTvBirthday = (TextView) view.findViewById(R.id.tv_birthday);
         mTvRecord = (TextView) view.findViewById(R.id.tv_record);
         mTvMedicalNo = (TextView) view.findViewById(R.id.tv_medical_no);
         mTvPatientName = (TextView) view.findViewById(R.id.tv_patient_name);
-        mTvRecordImgStatus = (TextView) view.findViewById(R.id.tv_record_img_status);
+        mTvReportImgStatus = (TextView) view.findViewById(R.id.tv_reprot_img_status);
+        mTvIllnessImgStatus = (TextView) view.findViewById(R.id.tv_illness_img_status);
+        mTvPresImgStatus = (TextView) view.findViewById(R.id.tv_pres_img_status);
         mTvPatientSex = (TextView) view.findViewById(R.id.tv_patient_sex);
         mTvSeeTime = (TextView) view.findViewById(R.id.tv_see_time);
-        mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
+        mCustomReportGridView = (CustomGridView) view.findViewById(R.id.linear_grid_report_container).findViewById(R.id.custom_gridview);
+        mCustomIllnessGridView = (CustomGridView) view.findViewById(R.id.linear_grid_illness_container).findViewById(R.id.custom_gridview);
+        mCustomPresGridView = (CustomGridView) view.findViewById(R.id.linear_grid_pres_container).findViewById(R.id.custom_gridview);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
-
+        mCustomIllnessGridView.setNumColumns(3);
+        mCustomPresGridView.setNumColumns(3);
+        mCustomReportGridView.setNumColumns(3);
     }
 
     @Override
@@ -162,13 +173,42 @@ public class UserMedicalDetailFragment extends BaseFragment implements DataView
             mTvRecord.setText(userMedicalDetailItem.medicalrecord.record);
             if (userMedicalDetailItem.medicalrecord.reportimgs != null && !userMedicalDetailItem.medicalrecord.reportimgs.isEmpty())
             {
-                mTvRecordImgStatus.setVisibility(View.GONE);
-                mCustomGridView.setVisibility(View.VISIBLE);
-                mCustomGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.reportimgs));
-            } else
+                mTvReportImgStatus.setVisibility(View.GONE);
+                mCustomReportGridView.setVisibility(View.VISIBLE);
+                mCustomReportGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.reportimgs));
+            }
+            else
             {
-                mTvRecordImgStatus.setVisibility(View.VISIBLE);
-                mCustomGridView.setVisibility(View.GONE);
+                mTvReportImgStatus.setVisibility(View.VISIBLE);
+                mCustomReportGridView.setVisibility(View.GONE);
+            }
+
+            //
+
+            if (userMedicalDetailItem.medicalrecord.illnessimgs != null && !userMedicalDetailItem.medicalrecord.illnessimgs.isEmpty())
+            {
+                mTvIllnessImgStatus.setVisibility(View.GONE);
+                mCustomIllnessGridView.setVisibility(View.VISIBLE);
+                mCustomIllnessGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.illnessimgs));
+            }
+            else
+            {
+                mTvIllnessImgStatus.setVisibility(View.VISIBLE);
+                mCustomIllnessGridView.setVisibility(View.GONE);
+            }
+
+            //
+
+            if (userMedicalDetailItem.medicalrecord.prescimgs != null && !userMedicalDetailItem.medicalrecord.prescimgs.isEmpty())
+            {
+                mTvPresImgStatus.setVisibility(View.GONE);
+                mCustomPresGridView.setVisibility(View.VISIBLE);
+                mCustomPresGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.prescimgs));
+            }
+            else
+            {
+                mTvPresImgStatus.setVisibility(View.VISIBLE);
+                mCustomPresGridView.setVisibility(View.GONE);
             }
         }
         mTvBirthday.setText("出生年月：" + DateFormatUtils.format(userMedicalDetailItem.birthday, true, false));

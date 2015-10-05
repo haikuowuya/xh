@@ -104,7 +104,7 @@ public class SubmitAppointmentPresenterImpl implements SubmitAppointmentPresente
         postMap.put("bmrIds", GsonUtils.toJson(item.bmrIds));
         postMap.put("auths", GsonUtils.toJson(item.auths));
         mActivity.showProgressDialog();
-        OkHttpUtils.customXHasyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
+        OkHttpUtils.customXHAsyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
     }
 
 }

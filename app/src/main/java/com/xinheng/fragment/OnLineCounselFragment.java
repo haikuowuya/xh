@@ -414,7 +414,7 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
         if (TextUtils.isDigitsOnly(age))
         {
             int ageInt = Integer.parseInt(age);
-            if (ageInt > 120)
+            if (ageInt > 1000)
             {
                 mActivity.showToast("你是千年老妖吗");
                 return;

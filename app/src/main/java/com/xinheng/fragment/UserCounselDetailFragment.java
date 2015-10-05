@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xinheng.R;
@@ -86,6 +87,8 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
     private EditText mEtContent;
     private Button mBtnSubmit;
 
+    private ScrollView mScrollView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -100,6 +103,7 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
         mTvAnswerCount = (TextView) view.findViewById(R.id.tv_answer_count);
         mTvCounselDesc = (TextView) view.findViewById(R.id.tv_counsel_desc);
         mTvCounselTime = (TextView) view.findViewById(R.id.tv_counsel_time);
+        mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mTvQuestion = (TextView) view.findViewById(R.id.tv_counsel_question);
         mLinearReplyContainer = (LinearLayout) view.findViewById(R.id.linear_doctor_answer_container);
         mLinearQuestionContainer = (LinearLayout) view.findViewById(R.id.linear_question_container);
@@ -230,6 +234,8 @@ public class UserCounselDetailFragment extends BaseFragment implements DataView
                                     }
                                     mUserCounselReplyItem = reply;
                                     mLinearQuestionContainer.setVisibility(View.VISIBLE);
+                                    mScrollView.fullScroll(View.FOCUS_DOWN);
+
                                 }
                             });
                         }

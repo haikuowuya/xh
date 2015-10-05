@@ -49,6 +49,11 @@ public class APIURL
      * 获取科室医生列表URL
      */
     public static final String GET_DEPARTMENT_DOCTOR_LIST_URL = BASE_API_URL + "/interface/patient/appointment/getdoctors";
+
+    /***
+     * 预约检查-提交URL
+     */
+    public static final String ADD_CHECK_URL = BASE_API_URL + "/interface/patient/mycheck/add";
     /**
      * 获取医生详情URL
      */
@@ -112,6 +117,10 @@ public class APIURL
      * 根据患者id，医生id获取病历授权信息
      */
     public static final String GET_PATIENT_RECORD_LIST_URL = BASE_API_URL + "/interface/patient/appointment/getrecords";
+    /***
+     * 便捷检查-获取科室检查项目
+     */
+    public static final String GET_DEPART_CHECK_LIST_URL = BASE_API_URL + "/interface/medicaldata/check/getall";
     /**
      * 根据搜索关键字进行药品的搜索
      */
@@ -152,6 +161,18 @@ public class APIURL
      * 预约加号-保存URL
      */
     public static final String SUBMIT_APPOINTMENT_ADD_URL = BASE_API_URL + "/interface/patient/appointment/addplus";
+    /***
+     * 我的病历添加URL
+     */
+    public static final String SUBMIT_ADD_MEDICAL_RECORD_URL = BASE_API_URL + "/interface/patient/myrecord/add";
+    /***
+     * 我的报告添加URL
+     */
+    public static final String SUBMIT_ADD_REPORT_URL = BASE_API_URL + "/interface/patient/myreport/add";
+    /***
+     * 我的处方添加URL
+     */
+    public static final String SUBMIT_ADD_RECIPE_URL = BASE_API_URL + "/interface/patient/myprescription/add";
     /***
      * 在线咨询URL
      */

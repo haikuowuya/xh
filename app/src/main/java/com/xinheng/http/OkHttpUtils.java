@@ -63,7 +63,7 @@ public class OkHttpUtils
         asyncExecute(request, callback);
     }
 
-    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, List<File> files, Callback callback)
+    public static void customXHAsyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, List<File> files, Callback callback)
     {
         System.out.println("XH  请求URL = " + url);
         //userId要客户端加密
@@ -78,7 +78,12 @@ public class OkHttpUtils
             for (File file : files)
             {
                 RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
-                multipartBuilder.addFormDataPart("files", file.getName(), fileBody);
+                String fileName = file.getName();
+                if(!fileName.endsWith(".png"))
+                {
+                    fileName = fileName+".png";
+                }
+                multipartBuilder.addFormDataPart("files", fileName, fileBody);
             }
         }
         if (null != postMap)
@@ -98,7 +103,92 @@ public class OkHttpUtils
         asyncExecute(request, callback);
     }
 
-    public static void customXHasyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
+
+
+
+
+
+    public static void customXHAddMedicalRecordAsyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, List<File> sickfiles, List<File> reportfiles, List<File> prescfiles, Callback callback)
+    {
+        System.out.println("XH  请求URL = " + url);
+        //userId要客户端加密
+        String encryptUserId = RSAUtil.clientEncrypt(loginSuccessItem.id);
+        System.out.println("加密后的userId = " + encryptUserId);
+        String sessionId = loginSuccessItem.sessionId;
+        Headers headers = new Headers.Builder().add(Constants.SESSION_ID, sessionId).add(Constants.COOKIE, Constants.SID + sessionId).add(Constants.USER_ID, encryptUserId).build();
+        MultipartBuilder multipartBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        //添加提交的文件列表   诊疗图片，文件流提交
+        if (null != sickfiles && !sickfiles.isEmpty())
+        {
+            for (File file : sickfiles)
+            {
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                String fileName = file.getName();
+                if(!fileName.endsWith(".png"))
+                {
+                    fileName = fileName+".png";
+                }
+                multipartBuilder.addFormDataPart("sickfiles", fileName, fileBody);
+            }
+        }
+
+        //添加提交的文件列表  检查报告图片，文件流提交
+        if (null != reportfiles && !reportfiles.isEmpty())
+        {
+            for (File file : reportfiles)
+            {
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                String fileName = file.getName();
+                if(!fileName.endsWith(".png"))
+                {
+                    fileName = fileName+".png";
+                }
+                multipartBuilder.addFormDataPart("reportfiles", fileName, fileBody);
+            }
+        }
+
+        //添加提交的文件列表  处方图片，文件流提交
+        if (null != prescfiles && !prescfiles.isEmpty())
+        {
+            for (File file : prescfiles)
+            {
+                RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+                String fileName = file.getName();
+                if(!fileName.endsWith(".png"))
+                {
+                    fileName = fileName+".png";
+                }
+                multipartBuilder.addFormDataPart("prescfiles", fileName, fileBody);
+            }
+        }
+
+
+
+        if (null != postMap)
+        {
+            for (String key : postMap.keySet())
+            {
+                String value = postMap.get(key);
+                if (TextUtils.isEmpty(value))
+                {
+                    value = "";
+                }
+                multipartBuilder.addFormDataPart(key, value);
+            }
+        }
+        RequestBody reqBody = multipartBuilder.build();
+        Request request = new Request.Builder().url(url).headers(headers).post(reqBody).build();
+        asyncExecute(request, callback);
+    }
+
+
+
+
+
+
+
+
+    public static void customXHAsyncExecuteWithFile(String url, LoginSuccessItem loginSuccessItem, Map<String, String> postMap, File file, Callback callback)
     {
         System.out.println("XH  请求URL = " + url);
         //userId要客户端加密

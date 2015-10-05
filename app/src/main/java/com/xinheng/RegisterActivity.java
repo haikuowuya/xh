@@ -25,7 +25,6 @@ import com.xinheng.util.VerifyCodeUtils;
  */
 public class RegisterActivity extends BaseActivity implements DataView
 {
-
     /***
      * 请求获取验证码的TAG
      */

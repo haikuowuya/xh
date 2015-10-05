@@ -15,7 +15,6 @@ import com.xinheng.mvp.model.depart.DepartDoctorItem;
  */
 public class DepartmentDoctorDetailActivity extends BaseActivity
 {
-
     public static final String EXTRA_DEPART_DOCTOR_ITEM = "depart_doctor_item";
 
     public static void actionDepartDoctorDetail(BaseActivity activity, DepartDoctorItem item)

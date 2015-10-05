@@ -99,6 +99,6 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
         postMap.put("quantity", item.quantity);
         postMap.put("drugQuantitys", GsonUtils.toJson(item.drugQuantity));
         mActivity.showProgressDialog();
-        OkHttpUtils.customXHasyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap,item.file, callback);
+        OkHttpUtils.customXHAsyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap, item.file, callback);
     }
 }

@@ -1,7 +1,9 @@
 package com.xinheng.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinheng.APIURL;
 import com.xinheng.AppointmentActivity;
 import com.xinheng.AppointmentAddActivity;
 import com.xinheng.DepartmentDoctorDetailActivity;
 import com.xinheng.OnLineCounselActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.depart.DepartDoctorItem;
 import com.xinheng.mvp.model.doctor.DoctorDetailItem;
@@ -27,6 +32,7 @@ import com.xinheng.mvp.presenter.impl.DoctorDetailPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.ACache;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.view.CircularImageView;
 
 /**
  * 作者： raiyi-suzhou
@@ -96,6 +102,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
      * 请求接口获取到的医生详情
      */
     private DoctorDetailItem mDoctorDetailItem;
+    private CircularImageView mCivImage;
 
     @Nullable
     @Override
@@ -115,6 +122,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
         mTvAttention = (TextView) view.findViewById(R.id.tv_attention);
         mBtnOnlineCounsel = (Button) view.findViewById(R.id.btn_online_counsel);
         mTvSkill = (TextView) view.findViewById(R.id.tv_skill);
+        mCivImage = (CircularImageView) view.findViewById(R.id.civ_image);
         mLinearScheduleContainer = (LinearLayout) view.findViewById(R.id.linear_schedule_container);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
 
@@ -197,6 +205,25 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
      */
     private void ShowDoctorDetailAndScheduleInfo(final DoctorDetailItem doctorDetailItem)
     {
+        String img = doctorDetailItem.img;
+        if (!TextUtils.isEmpty(img))
+        {
+            if (!img.startsWith(APIURL.BASE_API_URL))
+            {
+                img = APIURL.BASE_API_URL + img;
+            }
+            ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+            {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                {
+                    if (null != loadedImage)
+                    {
+                        mCivImage.setImageBitmap(loadedImage);
+                    }
+                }
+            });
+        }
         mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
         mTvSkill.setText(doctorDetailItem.skill);
         mTvIntro.setText(doctorDetailItem.introduction);

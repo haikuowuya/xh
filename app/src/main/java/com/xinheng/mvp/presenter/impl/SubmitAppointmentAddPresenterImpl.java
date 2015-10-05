@@ -107,7 +107,7 @@ public class SubmitAppointmentAddPresenterImpl implements SubmitAppointmentAddPr
         postMap.put("patientId", item.patientId);
 
         mActivity.showProgressDialog();
-        OkHttpUtils.customXHasyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
+        OkHttpUtils.customXHAsyncExecuteWithFile(submitSubscribeUrl, mActivity.getLoginSuccessItem(), postMap, item.files, callback);
     }
 
 }

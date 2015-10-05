@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.UserMedicalListFragment;
+import com.xinheng.fragment.UserMedicalRecordListFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -25,7 +25,7 @@ public class UserMedicalActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
           setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserMedicalListFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, UserMedicalRecordListFragment.newInstance()).commit();
 
     }
 

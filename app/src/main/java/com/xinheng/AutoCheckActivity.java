@@ -50,7 +50,7 @@ public class AutoCheckActivity extends TabViewPagerActivity
             @Override
             public int getCount()
             {
-                return 2;
+                return 1;
             }
 
             @Override

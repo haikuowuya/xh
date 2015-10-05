@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.xinheng.util.UILUtils;
+
 import java.util.List;
 
 public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
@@ -24,6 +26,7 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter
 		this.mActivity = activity;
 		mLayoutId = layoutId;
 		mInflater = LayoutInflater.from(mActivity);
+		UILUtils.config(activity);
 	}
 	public BaseActivity getActivity()
 	{

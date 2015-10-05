@@ -17,7 +17,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-             android:background="@drawable/list_linear_item_selector"
+        android:background="@drawable/list_linear_item_selector"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -27,6 +27,7 @@
             android:background="@color/color_white_color"
             android:orientation="horizontal"
             android:paddingEnd="10dp"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
             <com.xinheng.view.CircularImageView
@@ -35,12 +36,13 @@
                 android:layout_height="64dp"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:layout_margin="10dp"
                 android:src="@mipmap/ic_photo"/>
 
             <TextView
                 android:id="@+id/tv_counsel_question"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_list_single_item_height"
                 android:layout_toLeftOf="@+id/tv_counsel_time"
                 android:layout_toRightOf="@+id/civ_image"
@@ -62,10 +64,9 @@
                 tools:text="12-24 14:30"/>
 
             <TextView
-
+                android:id="@+id/tv_counsel_desc_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_list_single_item_height"
-                android:layout_alignParentRight="true"
                 android:layout_below="@+id/tv_counsel_question"
                 android:layout_toRightOf="@+id/civ_image"
                 android:gravity="center_vertical|top"
@@ -75,13 +76,13 @@
 
             <TextView
                 android:id="@+id/tv_counsel_desc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_list_single_item_height"
-                android:layout_alignParentRight="true"
+
                 android:layout_below="@+id/tv_counsel_question"
-                android:layout_toRightOf="@+id/civ_image"
+                android:layout_toRightOf="@+id/tv_counsel_desc_hint"
                 android:gravity="center_vertical|top"
-                android:paddingLeft="64dp"
+
                 android:textColor="#FF666666"
                 tools:text="获取信息成功获取信息成功获取信息成功获取信息成功"/>
 
@@ -111,16 +112,16 @@
 
                 <TextView
                     android:id="@+id/tv_more"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_list_single_item_height"
+
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
                     android:text="查看更多"
                     android:textColor="@color/color_main_text_color"
-                    tools:text="查看更多"/>
+                    android:visibility="gone"
+                    tools:text="查看更多"
+                    tools:visibility="visible"/>
 
             </RelativeLayout>
 
@@ -145,10 +146,10 @@
                     android:id="@+id/tv_doctor_info"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen_list_single_item_height"
-                    android:gravity="center_vertical"
-                    android:textColor="#FF999999"
-                           android:singleLine="true"
                     android:layout_toLeftOf="@+id/tv_answer_time"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="#FF999999"
                     tools:text="张三  苏州市中医院 外科/主任医师"/>
 
                 <TextView

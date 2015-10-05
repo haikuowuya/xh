@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:id="@+id/sv_scrollview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_linear_item_selector"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="#FFD4E1CF">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="预约信息"
+                android:textColor="@color/color_main_text_gray_color"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="性别"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+            <RadioGroup
+                android:id="@+id/rg_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+
+
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <RadioButton
+                    android:id="@+id/rb_man"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:checked="true"
+                    android:text="男"/>
+
+                <RadioButton
+                    android:id="@+id/rb_woman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:text="女"/>
+
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/et_age"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="6dp"
+                android:background="@drawable/shape_edittext_background"
+                android:digits="0123456789"
+                android:gravity="center"
+                android:hint="年龄"
+                android:inputType="phone"
+                android:minWidth="72dp"
+                android:textColorHint="#FF999999"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_depart_container"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="检测科室"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edittext_background">
+
+                <Spinner
+                    android:id="@+id/spinner_depart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="检测项目"
+                android:textColor="@color/color_main_text_gray_color"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_edittext_background">
+
+                <Spinner
+                    android:id="@+id/spinner_depart_child"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_schedule_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="就诊时间"
+                    android:textColor="@color/color_main_text_gray_color"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:drawableRight="@mipmap/ic_appointment_add_date"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:textColor="@color/color_main_text_gray_color"
+                    tools:text="2015-05-20周四下午"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_phone_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="手机号码"
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入手机号码"
+                    android:inputType="phone"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:id="@+id/btn_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:inputType="phone"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text=" 验 证 码 "
+                    android:textColor="@color/color_main_text_gray_color"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:inputType="phone"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="请输入验证码"
+                    android:padding="6dp"
+                    android:textColorHint="#FFCCCCCC"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/user_subscribe_evaluation_selector"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_white_color"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_register_code_selector"
+            android:text="@string/tv_submit"
+            android:textColor="#FFFFFFFF"/>
+
+
+    </LinearLayout>
+</ScrollView>
+
