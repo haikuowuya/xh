@@ -120,8 +120,8 @@ public class UserNicknameFragment extends BaseFragment implements DataView
         }
         if (name.length() < 4 || name.length() > 20)
         {
-            mActivity.showToast("昵称必须4~20位数字、字母或下划线");
-            return;
+//            mActivity.showToast("昵称必须4~20位数字、字母或下划线");
+//            return;
         }
         if(name.equals(mOldNickname))
         {

@@ -93,6 +93,19 @@ public class APIURL
      */
     public static final String GET_USER_MEDICAL_DETAIL_URL = BASE_API_URL + "/interface/patient/myrecord/getdetail";
 
+    /***
+     * 我的处方详情URL
+     */
+    public static final String GET_USER_RECIPE_DETAIL_URL = BASE_API_URL + "/interface/patient/myprescription/getdetail";
+    /***
+     *  智能导诊-获取症状起始问题 URL
+     */
+    public static final String GET_SYMPTOM_CHECK_FIRST_URL = BASE_API_URL + "/interface/patient/selfcheck/getfirst";
+    /***
+     * 智能导诊-获取下一步流程URL
+     */
+    public static final String GET_SYMPTOM_CHECK_NEXT_URL = BASE_API_URL + "/interface/patient/selfcheck/getnext";
+
     /**
      * 用户注册URL
      */

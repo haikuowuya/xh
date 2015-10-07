@@ -71,7 +71,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="姓名"/>
+                    android:text="用户名"/>
 
                 <TextView
                     android:id="@+id/tv_account_name"

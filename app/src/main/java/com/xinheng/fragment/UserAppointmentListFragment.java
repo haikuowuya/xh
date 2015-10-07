@@ -63,8 +63,7 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-            mType = getArguments().getString(ARG_TYPE);
+        mType = getArguments().getString(ARG_TYPE);
         getListView().setSelector(new ColorDrawable(0x00000000));
         getListView().setDividerHeight(0);
         getListView().setBackgroundColor(0xFFF0F0F0);
@@ -109,7 +108,7 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
                 mUserSubscribeItems.addAll(items);
                 if (null == mUserAppointmentListAdapter)
                 {
-                    mUserAppointmentListAdapter = new UserAppointmentListAdapter(mActivity, mUserSubscribeItems,mType);
+                    mUserAppointmentListAdapter = new UserAppointmentListAdapter(mActivity, mUserSubscribeItems, mType);
                     getListView().setAdapter(mUserAppointmentListAdapter);
                 }
                 else
@@ -117,21 +116,21 @@ public class UserAppointmentListFragment extends PTRListFragment implements Data
                     mUserAppointmentListAdapter.notifyDataSetChanged();
                 }
                 getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+                {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                    {
+                        UserAppointmentItem item = (UserAppointmentItem) parent.getAdapter().getItem(position);
+                        if (TYPE_0.equals(mType))
                         {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                            {
-                                UserAppointmentItem item = (UserAppointmentItem) parent.getAdapter().getItem(position);
-                                if (TYPE_0.equals(mType))
-                                {
-                                    UserAppointmentDetailActivity.actionUserAppointmentDetail(mActivity, item.id);
-                                }
-                                else if (TYPE_1.equals(mType))
-                                {
-                                    UserAppointmentAddDetailActivity.actionUserAppointmentAddDetail(mActivity, item.id);
-                                }
-                            }
-                        });
+                            UserAppointmentDetailActivity.actionUserAppointmentDetail(mActivity, item.id);
+                        }
+                        else if (TYPE_1.equals(mType))
+                        {
+                            UserAppointmentAddDetailActivity.actionUserAppointmentAddDetail(mActivity, item.id);
+                        }
+                    }
+                });
             }
         }
     }

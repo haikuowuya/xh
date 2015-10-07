@@ -38,6 +38,10 @@ public class PayDespatchFragment extends BaseFragment
      */
     private Button mBtnPayOffLine;
     /**
+     * 余额扣款
+     */
+    private Button mBtnPayAccount;
+    /**
      * 上门自提
      */
     private Button mBtnDespatchSelf;
@@ -51,7 +55,7 @@ public class PayDespatchFragment extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_pay_dispatch, null);
+        View view = inflater.inflate(R.layout.fragment_pay_dispatch, null);  //TODO
         initView(view);
         mIsInit = true;
         return view;
@@ -65,6 +69,7 @@ public class PayDespatchFragment extends BaseFragment
         mBtnPayOffLine.setOnClickListener(onClickListener);
         mBtnDespatchSelf.setOnClickListener(onClickListener);
         mBtnPayOnLine.setOnClickListener(onClickListener);
+        mBtnPayAccount.setOnClickListener(onClickListener);
         mBtnDespatchNormal.setOnClickListener(onClickListener);
 
     }
@@ -74,6 +79,7 @@ public class PayDespatchFragment extends BaseFragment
         mBtnDespatchNormal = (Button) view.findViewById(R.id.btn_despatch_normal);
         mBtnDespatchSelf = (Button) view.findViewById(R.id.btn_despatch_self);
         mBtnPayOffLine = (Button) view.findViewById(R.id.btn_pay_offline);
+        mBtnPayAccount = (Button) view.findViewById(R.id.btn_pay_account);
         mBtnPayOnLine = (Button) view.findViewById(R.id.btn_pay_online);
         mBtnPayOnLine.setActivated(true);
         mBtnPayOnLine.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
@@ -116,13 +122,27 @@ public class PayDespatchFragment extends BaseFragment
                     mBtnPayOnLine.setActivated(true);
                     mBtnPayOnLine.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
                     mBtnPayOffLine.setActivated(false);
+                    mBtnPayAccount.setActivated(false);
                     mBtnPayOffLine.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    mBtnPayAccount.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_ONLINE;
+                    break;
+
+                case R.id.btn_pay_account:
+                    mBtnPayAccount.setActivated(true);
+                    mBtnPayAccount.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
+                    mBtnPayOffLine.setActivated(false);
+                    mBtnPayOnLine.setActivated(false);
+                    mBtnPayOffLine.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    mBtnPayOnLine.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_ACCOUNT;
                     break;
                 case R.id.btn_pay_offline:
                     mBtnPayOffLine.setActivated(true);
                     mBtnPayOffLine.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
                     mBtnPayOnLine.setActivated(false);
+                    mBtnPayAccount.setActivated(false);
+                    mBtnPayAccount.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     mBtnPayOnLine.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_OFFLINE;
                     break;

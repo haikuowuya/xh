@@ -181,6 +181,10 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             {
                 payText = PostPayDespatchItem.PAY_OFFLINE_TEXT;
             }
+            else if(PostPayDespatchItem.PAY_ACCOUNT.equals(event.mPostPayDespatchItem.payType))
+            {
+                payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
+            }
             String despatchText = PostPayDespatchItem.DESPATCH_NORMA_TEXT;
             if (PostPayDespatchItem.DESPATCH_SELF.equals(event.mPostPayDespatchItem.despatchType))
             {

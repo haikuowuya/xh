@@ -30,8 +30,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="10dp"
             android:text="身体部位"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textColor="@color/color_main_text_gray_color"/>
 
         <Switch
@@ -54,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_auto_check_man_1"/>
-
+        <include layout="@layout/layout_listview"/>
         <ImageView
             android:id="@+id/iv_switch"
             android:layout_width="48dp"

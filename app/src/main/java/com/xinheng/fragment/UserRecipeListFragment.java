@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddRecipeActivity;
 import com.xinheng.R;
+import com.xinheng.UserRecipeDetailActivity;
 import com.xinheng.adapter.user.UserRecipeListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
@@ -46,14 +48,13 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
         UserRecipeListFragment fragment = new UserRecipeListFragment();
         return fragment;
     }
+
     private LinkedList<UserRecipeItem> mUserRecipeItems = new LinkedList<>();
     private UserRecipeListAdapter mUserRecipeListAdapter;
-
 
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**
-     *
      * 添加处方
      */
     private ImageView mIvAddRecipe;
@@ -71,6 +72,7 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -88,7 +90,6 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mListView.addHeaderView(mListHeaderImageView);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -105,6 +106,7 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
             }
         });
     }
+
     @Override
     public String getFragmentTitle()
     {
@@ -116,21 +118,22 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
         mUserRecipeItems.clear();
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
-        UserRecipePresenter userRecipePresenter = new UserRecipePresenterImpl(mActivity, this) ;
+        UserRecipePresenter userRecipePresenter = new UserRecipePresenterImpl(mActivity, this);
         userRecipePresenter.doGetUserRecipe();
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
-            if(resultItem.success())
+            if (resultItem.success())
             {
                 Type type = new TypeToken<List<UserRecipeItem>>()
                 {
@@ -141,9 +144,10 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
                     mUserRecipeItems.addAll(items);
                     if (null == mUserRecipeListAdapter)
                     {
+                        mListView.addHeaderView(mListHeaderImageView);
                         mUserRecipeListAdapter = new UserRecipeListAdapter(mActivity, mUserRecipeItems);
-
                         mListView.setAdapter(mUserRecipeListAdapter);
+                        mListView.setOnItemClickListener(new OnItemClickListenerImpl());
                     }
                     else
                     {
@@ -155,13 +159,29 @@ public class UserRecipeListFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
+    }
+
+    private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
+    {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (!(parent.getAdapter().getItemViewType(position) == AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER))
+            {
+                UserRecipeItem item = (UserRecipeItem) parent.getAdapter().getItem(position);
+                UserRecipeDetailActivity.actionUserRecipeDetail(mActivity, item.id);
+            }
+            else
+            {
+                //点击的是headerview
+            }
+        }
     }
 }

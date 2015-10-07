@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * 身体部位popupwindow列表适配器
  */
-public class PopupListAdapter extends BaseAdapter<BodyKV>
+public class BodyPartListAdapter extends BaseAdapter<BodyKV>
 {
-    public PopupListAdapter(BaseActivity activity, List<BodyKV> data)
+    public BodyPartListAdapter(BaseActivity activity, List<BodyKV> data)
     {
         super(activity, R.layout.list_auto_popup_list_item, data);
     }

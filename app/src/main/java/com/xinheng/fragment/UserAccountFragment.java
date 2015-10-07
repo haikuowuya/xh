@@ -217,7 +217,7 @@ public class UserAccountFragment extends BaseFragment implements DataView
                     address();
                     break;
                 case R.id.linear_nick_container://昵称
-                    nick();
+                    nickName();
                     break;
                 case R.id.linear_username_container://用户名/姓名
                     username();
@@ -244,7 +244,7 @@ public class UserAccountFragment extends BaseFragment implements DataView
         /**
          * 昵称
          */
-        private void nick()
+        private void nickName()
         {
 //            mActivity.showCroutonToast("昵称");
             UserNicknameActivity.actionUserNickname(mActivity);

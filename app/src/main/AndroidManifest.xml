@@ -205,6 +205,10 @@
         <activity
             android:name=".AddCheckActivity"
             android:label="@string/tv_activity_add_check"/>
+        <activity android:name=".UserRecipeDetailActivity"
+                  android:label="@string/tv_activity_user_recipe_detail"/>
+        <activity android:name=".SettingsActivity"
+                  android:label="@string/tv_activity_settings"/>
     </application>
 
 </manifest>

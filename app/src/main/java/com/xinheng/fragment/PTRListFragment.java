@@ -29,7 +29,7 @@ public class PTRListFragment extends BaseFragment
     }
 
     private ListView mListView;
-    private PtrClassicFrameLayout mPtrClassicFrameLayout;
+    protected PtrClassicFrameLayout mPtrClassicFrameLayout;
 
     @Nullable
     @Override

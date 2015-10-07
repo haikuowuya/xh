@@ -48,7 +48,6 @@ import java.util.List;
  */
 public class AddRecipeFragment extends BaseFragment implements DataView
 {
-
     /***
      * 提交请求
      */

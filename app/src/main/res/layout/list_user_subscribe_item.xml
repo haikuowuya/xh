@@ -123,11 +123,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linear_doctor_msg_container"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-
-            android:layout_height="66dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:layout_width="@dimen/dimen_list_single_item_height"
@@ -152,7 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:maxLines="3"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="#FF666666"
                 tools:text="就诊机构:苏州市中医院就诊机构:苏州市中医院就诊机构:苏州市中医院"
                 tools:textColor="#FF666666"/>

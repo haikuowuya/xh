@@ -46,7 +46,7 @@ public class SubmitAddRecipePresenterImpl implements SubmitAddRecipePresenter
     {
         String submitSubscribeUrl = APIURL.SUBMIT_ADD_RECIPE_URL;
         String mingPostBody = GsonUtils.toJson(item);
-        System.out.println("mingPostBody = " + mingPostBody);
+      //  System.out.println("mingPostBody = " + mingPostBody);
         Callback callback = new Callback()
         {
             @Override

@@ -2,31 +2,28 @@ package com.xinheng.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
+import com.xinheng.AutoCheckActivity;
 import com.xinheng.R;
-import com.xinheng.adapter.auto.PopupListAdapter;
+import com.xinheng.adapter.auto.BodyPartListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.auto.BodyKV;
-import com.xinheng.mvp.presenter.BodypartDetailPresenter;
 import com.xinheng.mvp.presenter.BodypartPresenter;
-import com.xinheng.mvp.presenter.impl.BodypartDetailPresenterImpl;
 import com.xinheng.mvp.presenter.impl.BodypartPresenterImpl;
 import com.xinheng.mvp.view.DataView;
-import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
@@ -62,7 +59,6 @@ public class AutoCheckFragment extends BaseFragment implements DataView
      * 性别选择switch
      */
     private Switch mSwitchSex;
-    private ListPopupWindow mListPopupWindow;
     /***
      * 图片
      */
@@ -72,12 +68,18 @@ public class AutoCheckFragment extends BaseFragment implements DataView
      */
     private ImageView mIvSwitch;
     private List<BodyKV> mBodyKVs = null;
+    /***
+     * 点击获取的身体部位对应的症状
+     */
+    private BodyKV mClickBodyKv;
+
+    private ListView mListView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_auto_check, null);
+        View view = inflater.inflate(R.layout.fragment_auto_check, null);    //TODO
         initView(view);
         mIsInit = true;
         return view;
@@ -106,16 +108,18 @@ public class AutoCheckFragment extends BaseFragment implements DataView
         mSwitchType = (Switch) view.findViewById(R.id.switch_type);
         mIvImage = (ImageView) view.findViewById(R.id.iv_image);
         mIvSwitch = (ImageView) view.findViewById(R.id.iv_switch);
+        mListView = (ListView) view.findViewById(R.id.lv_listview);
+        mListView.setVisibility(View.GONE);
         initListPopupWindow();
     }
 
     private void initListPopupWindow()
     {
-        mListPopupWindow = new ListPopupWindow(mActivity);
-        mListPopupWindow.setWidth(DensityUtils.getScreenWidthInPx(mActivity));
-        mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mListPopupWindow.setForceIgnoreOutsideTouch(true);
-        mListPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFFF2F2F2));
+//        mListPopupWindow = new ListPopupWindow(mActivity);
+//        mListPopupWindow.setWidth(DensityUtils.getScreenWidthInPx(mActivity));
+//        mListPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        mListPopupWindow.setForceIgnoreOutsideTouch(true);
+//        mListPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFFF2F2F2));
     }
 
     @Override
@@ -142,15 +146,11 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     {
                         mBodyKVs = new LinkedList<>();
                         mBodyKVs.addAll(bodyKVs);
-                        ShowListPopupWindow();
+                        showBodyListView();
                     }
                 }
-                else if (REQUEST_BODY_PART_DETAIL_LIST_TAG.equals(requestTag))
-                {
 
-                }
             }
-
         }
     }
 
@@ -194,7 +194,6 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                         }
                     }
                     break;
-
             }
         }
     }
@@ -209,15 +208,13 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                 if (isChecked)
                 {
                     mTvText.setText("身体部位");
-                    if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
-                    {
-                        mListPopupWindow.dismiss();
-                        return;
-                    }
+                    mListView.setVisibility(View.GONE);
+                    mIvSwitch.setVisibility(View.VISIBLE);
                 }
                 else
                 {
                     mTvText.setText("器官列表");
+                    mIvSwitch.setVisibility(View.GONE);
                     if (mBodyKVs == null)
                     {
                         BodypartPresenter bodypartPresenter = new BodypartPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_LIST_TAG);
@@ -225,17 +222,13 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     }
                     else
                     {
-                        ShowListPopupWindow();
+                        showBodyListView();
                     }
                 }
             }
             else if (buttonView == mSwitchSex)
             {
-                if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
-                {
-                    mSwitchType.setChecked(true);
-                }
-
+                mSwitchType.setChecked(true);
                 if (isChecked)
                 {
                     mIvImage.setImageResource(R.mipmap.ic_auto_check_man_1);
@@ -248,28 +241,23 @@ public class AutoCheckFragment extends BaseFragment implements DataView
         }
     }
 
-    private void ShowListPopupWindow()
+    /**
+     * 显示身体部位ListView
+     */
+    private void showBodyListView()
     {
-        mListPopupWindow.setAdapter(new PopupListAdapter(mActivity, mBodyKVs));
-        if (mListPopupWindow.getAnchorView() == mSwitchType && mListPopupWindow.isShowing())
+        mListView.setVisibility(View.VISIBLE);
+        mListView.setAdapter(new BodyPartListAdapter(mActivity, mBodyKVs));
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
-            mListPopupWindow.dismiss();
-            return;
-        }
-        else
-        {
-            mListPopupWindow.setAnchorView(mSwitchType);
-            mListPopupWindow.show();
-
-        }
-        mListPopupWindow.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                BodyKV bodyKV = (BodyKV) parent.getAdapter().getItem(position);
-                BodypartDetailPresenter bodypartDetailPresenter = new BodypartDetailPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_DETAIL_LIST_TAG);
-                bodypartDetailPresenter.doGetBodypartDetailList(bodyKV.key);
+                mClickBodyKv = (BodyKV) parent.getAdapter().getItem(position);
+                if (mActivity instanceof AutoCheckActivity)
+                {
+                    AutoCheckActivity autoCheckActivity = (AutoCheckActivity) mActivity;
+                    autoCheckActivity.addFragment(SymptomListFragment.newInstance(mClickBodyKv));
+                }
             }
         });
     }

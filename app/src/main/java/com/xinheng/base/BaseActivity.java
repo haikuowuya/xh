@@ -27,10 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xinheng.DepartmentNavActivity;
+import com.xinheng.LoginActivity;
 import com.xinheng.MainActivity;
 import com.xinheng.OnlineActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
+import com.xinheng.SettingsActivity;
 import com.xinheng.UserCenterActivity;
 import com.xinheng.XHApplication;
 import com.xinheng.adapter.PopupListAdapter;
@@ -318,7 +320,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                             break;
 
                         case 3:
-                            mActivity.showCroutonToast("系统设置");
+                            if (!(mActivity instanceof SettingsActivity))
+                            {
+                                SettingsActivity.actionSettings(mActivity);
+                            }
                             break;
                     }
                 }
@@ -403,6 +408,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
+            }
+            else if (mActivity instanceof LoginActivity)
+            {
+                XHApplication.getInstance().exitClient();
+                return  true;
             }
         }
         return super.onKeyDown(keyCode, event);

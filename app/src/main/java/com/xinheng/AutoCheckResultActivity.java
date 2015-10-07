@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.base.BaseFragment;
 import com.xinheng.fragment.AutoCheckFragment;
 import com.xinheng.fragment.AutoCheckFragment2;
 
@@ -15,13 +14,13 @@ import com.xinheng.fragment.AutoCheckFragment2;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 13:48
- * 说明：症状自测
+ * 说明：症状自测结果
  */
-public class AutoCheckActivity extends BaseActivity
+public class AutoCheckResultActivity extends BaseActivity
 {
     public static void actionAutoCheck(BaseActivity activity)
     {
-        Intent intent = new Intent(activity, AutoCheckActivity.class);
+        Intent intent = new Intent(activity, AutoCheckResultActivity.class);
         activity.startActivity(intent);
     }
 
@@ -34,10 +33,7 @@ public class AutoCheckActivity extends BaseActivity
 
     }
 
-    public void addFragment(BaseFragment baseFragment)
-    {
-        getSupportFragmentManager().beginTransaction().add(R.id.frame_content_container, baseFragment).addToBackStack(null).commit();
-    }
+
 
     private PagerAdapter genPagerAdapter()
     {

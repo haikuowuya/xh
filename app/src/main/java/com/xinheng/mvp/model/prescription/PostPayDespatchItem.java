@@ -10,9 +10,11 @@ public class PostPayDespatchItem extends BaseEmptyItem
 
     public static final String PAY_ONLINE_TEXT = "在线支付";
     public static final String PAY_OFFLINE_TEXT = "货到付款";
+    public static final String PAY_ACCOUNT_TEXT = "余额扣款";
     public static final String DESPATCH_NORMA_TEXT = "普通快递";
     public static final String DESPATCH_SELF_TEXT = "门店自提";
 
+    public static final String PAY_ACCOUNT = "2";
     public static final String PAY_ONLINE = "1";
     public static final String PAY_OFFLINE = "0";
     public static final String DESPATCH_NORMAL = "1";

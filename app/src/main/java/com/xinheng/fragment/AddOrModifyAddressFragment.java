@@ -202,31 +202,31 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
         String city = mTvCity.getText().toString();
         if (TextUtils.isEmpty(city))
         {
-            mActivity.showCroutonToast("地区不可以为空");
+            mActivity.showToast("地区不可以为空");
             return;
         }
         String address = mEtAddress.getText().toString();
         if (TextUtils.isEmpty(address))
         {
-            mActivity.showCroutonToast("详细地址不可以为空");
+            mActivity.showToast("详细地址不可以为空");
             return;
         }
         String name = mEtName.getText().toString();
         if (TextUtils.isEmpty(name))
         {
-            mActivity.showCroutonToast("收货人姓名不可以为空");
+            mActivity.showToast("收货人姓名不可以为空");
             return;
         }
         String phone = mEtPhone.getText().toString();
         if (TextUtils.isEmpty(phone))
         {
-            mActivity.showCroutonToast("收货人手机号码不可以为空");
+            mActivity.showToast("收货人手机号码不可以为空");
             return;
         }
         String zipCode = mEtZipCode.getText().toString();
         if (TextUtils.isEmpty(zipCode))
         {
-            mActivity.showCroutonToast("邮政编码不可以为空");
+            mActivity.showToast("邮政编码不可以为空");
             return;
         }
         mPostAddressItem.isDefault = mCbDefault.isChecked() ? "1" : "0";
@@ -267,7 +267,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
     {
         if (null != resultItem)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
                 EventBus.getDefault().post(new OnAddOrModifyOrDelAddressEvent());

@@ -3,11 +3,11 @@
 <ScrollView
     android:id="@+id/sv_scrollview"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:scrollbars="none"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:scrollbars="none">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -31,8 +31,8 @@
                 android:gravity="center"
                 android:padding="4dp"
                 android:text="*"
-                android:visibility="invisible"
                 android:textColor="#FFFF0000"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -100,12 +100,13 @@
                 android:gravity="center_vertical"
                 android:text="未选择文件"
                 android:textColor="#FF999999"/>
+
             <ImageView
-                android:layout_width="44dp"
                 android:id="@+id/iv_image"
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
                 android:padding="4dp"
-                tools:src="@mipmap/ic_photo"
-                android:layout_height="match_parent"/>
+                tools:src="@mipmap/ic_photo"/>
         </LinearLayout>
 
         <TextView
@@ -225,7 +226,6 @@
             android:layout_height="44dp"
             android:background="@color/color_white_color">
 
-
             <TextView
 
                 android:layout_width="wrap_content"
@@ -238,44 +238,45 @@
 
             <EditText
                 android:id="@+id/et_quantity"
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
                 android:layout_marginRight="10dp"
+                android:inputType="phone"
+                android:digits="0123456789"
                 android:layout_marginTop="4dp"
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
-                android:paddingLeft="8dp"
+                android:hint="服用剂数"
+                android:padding="8dp"
                 android:singleLine="true"
-                android:textColorHint="#FF999999"
-                android:hint="请输入服用剂数"
-               />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/color_white_color">
+                android:textColorHint="#FF999999"/>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="每份价格"
-                android:textColor="#FF222222"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/color_white_color">
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                tools:text="￥0.48元"
-                android:textColor="#FFFFA800"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:text="每份价格"
+                    android:textColor="#FF222222"/>
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:textColor="#FFFFA800"
+                    tools:text="￥0.48元"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -301,50 +302,55 @@
                 android:textColor="#FF999999"
                 android:textSize="13sp"/>
         </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_white_color"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btn_edit"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_register_code_selector"
-            android:gravity="center"
-            android:text="编辑"
-            android:textColor="@color/color_white_color"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/btn_add_medical"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="right"
-            android:layout_marginBottom="4dp"
 
-            android:background="@drawable/btn_register_code_selector"
-            android:gravity="center"
-            android:text="添加药品"
-            android:textColor="@color/color_white_color"/>
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:visibility="gone"
-            android:background="#FF999999"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_white_color"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginBottom="4dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_register_code_selector"
+                android:gravity="center"
+                android:text="编辑"
+                android:textColor="@color/color_white_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btn_add_medical"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="right"
+                android:layout_marginBottom="4dp"
+
+                android:background="@drawable/btn_register_code_selector"
+                android:gravity="center"
+                android:text="添加药品"
+                android:textColor="@color/color_white_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#FF999999"
+                android:visibility="gone"/>
+        </LinearLayout>
         <!--处方中添加的药品-->
         <LinearLayout
             android:id="@+id/linear_drug_container"
@@ -353,7 +359,7 @@
             android:background="@color/color_white_color"
             android:orientation="vertical">
 
-           <!-- <include layout="@layout/layout_prescription_drug_item_title"/>-->
+            <!-- <include layout="@layout/layout_prescription_drug_item_title"/>-->
 
         </LinearLayout>
 
@@ -361,6 +367,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="#FF999999"/>
+
         <LinearLayout
 
             android:layout_width="match_parent"

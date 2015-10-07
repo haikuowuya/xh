@@ -178,6 +178,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mLinearDrugContainer = (LinearLayout) view.findViewById(R.id.linear_drug_container);
         mLinearDrugContainer.setVisibility(View.GONE);
         mBtnEdit.setVisibility(View.GONE);
+        setTextPrice(0.00);
     }
 
     //===============================EVENT BUS========================
@@ -299,7 +300,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                         mPrice = mPrice + cost;
                         tvEditCount.setText(count + "");
                         tvDrugCount.setText(count + "");
-
                         setTextPrice(mPrice);
                     }
                 });
@@ -358,7 +358,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 
     private void setTextPrice(double price)
     {
-        mTvPrice.setText(new java.text.DecimalFormat("#0.00").format(price) + "元");
+        mTvPrice.setText("￥"+new java.text.DecimalFormat("#0.00").format(price) + "元");
     }
 
     //===============================EVENT BUS========================
