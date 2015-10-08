@@ -76,6 +76,10 @@ public class APIURL
      * 修改收货地址
      */
     public static final String MODIFY_ADDRESS_URL = BASE_API_URL + "/interface/patient/recieveaddress/edit";
+    /**
+     * 修改常用就诊人
+     */
+    public static final String MODIFY_PATIENT_URL = BASE_API_URL + "/interface/patient/userlist/edit";
     /***
      * 获取地址列表URL
      */
@@ -130,6 +134,10 @@ public class APIURL
      * 删除收货地址
      */
     public static final String DELETE_ADDRESS_URL = BASE_API_URL + "/interface/patient/recieveaddress/delete";
+    /***
+     * 删除常用就诊人地址
+     */
+    public static final String DELETE_PATIENT_URL = BASE_API_URL + "/interface/patient/userlist/del";
     /***
      * 我的病历列表URL
      */

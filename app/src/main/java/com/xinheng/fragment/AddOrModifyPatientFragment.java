@@ -20,9 +20,10 @@ import com.xinheng.eventbus.OnAddPatientItemEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.patient.PostAddPatientItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
-import com.xinheng.mvp.presenter.AddPatientPresenter;
-import com.xinheng.mvp.presenter.impl.AddPatientPresenterImpl;
+import com.xinheng.mvp.presenter.AddOrModifyPatientPresenter;
+import com.xinheng.mvp.presenter.impl.AddOrModifyPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.PatternUtils;
 
 import de.greenrobot.event.EventBus;
 
@@ -32,13 +33,20 @@ import de.greenrobot.event.EventBus;
  * 时间： 17:48
  * 说明：  添加就诊人页面
  */
-public class AddPatientFragment extends BaseFragment implements DataView
+public class AddOrModifyPatientFragment extends BaseFragment implements DataView
 {
-    public static AddPatientFragment newInstance()
+    public static final String ARG_EXTRA_ITEM = "item";
+
+    public static AddOrModifyPatientFragment newInstance(UserPatientItem userPatientItem)
     {
-        AddPatientFragment fragment = new AddPatientFragment();
+        AddOrModifyPatientFragment fragment = new AddOrModifyPatientFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ARG_EXTRA_ITEM, userPatientItem);
+        fragment.setArguments(bundle);
         return fragment;
     }
+
+    private UserPatientItem mUserPatientItem;
 
     /**
      * 就诊人姓名
@@ -74,13 +82,13 @@ public class AddPatientFragment extends BaseFragment implements DataView
      * 提交填写的内容
      */
     private Button mBtnAdd;
-    private PostAddPatientItem mPostAddPatientItem   = null;
+    private PostAddPatientItem mPostAddPatientItem = null;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_add_patient, null);
+        View view = inflater.inflate(R.layout.fragment_add_or_modify_patient, null);
         initView(view);
         mIsInit = true;
         return view;
@@ -90,6 +98,27 @@ public class AddPatientFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        if (null != getArguments())
+        {
+            mUserPatientItem = getArguments().getSerializable(ARG_EXTRA_ITEM) == null ? null : (UserPatientItem) getArguments().getSerializable(ARG_EXTRA_ITEM);
+        }
+
+        if (null != mUserPatientItem)
+        {
+            mEtName.setText(mUserPatientItem.name);
+            mEtCard.setText(mUserPatientItem.idcard);
+            if ("1".equals(mUserPatientItem.sex))
+            {
+                mRgGender.check(R.id.rb_man);
+            }
+            else
+            {
+                mRgGender.check(R.id.rb_woman);
+            }
+            mEtPhone.setText(mUserPatientItem.mobile);
+            mSwitch.setChecked("1".equals(mUserPatientItem.isDefault));
+            mBtnAdd.setText("修 改");
+        }
         setListener();
     }
 
@@ -134,23 +163,33 @@ public class AddPatientFragment extends BaseFragment implements DataView
         String card = mEtCard.getText().toString();
         if (TextUtils.isEmpty(name))
         {
-            mActivity.showCroutonToast("姓名不可以为空");
+            mActivity.showToast("姓名不可以为空");
             return;
         }
         if (TextUtils.isEmpty(card))
         {
-            mActivity.showCroutonToast("身份证号不可以为空");
+            mActivity.showToast("身份证号不可以为空");
             return;
         }
         String date = mTvDate.getText().toString();
         if (TextUtils.isEmpty(date))
         {
-            mActivity.showCroutonToast("出生日期不可以为空");
+            mActivity.showToast("出生日期不可以为空");
             return;
         }
         if (TextUtils.isEmpty(phone))
         {
-            mActivity.showCroutonToast("手机号码不可以为空");
+            mActivity.showToast("手机号码不可以为空");
+            return;
+        }
+        if (phone.length() != 11)
+        {
+            mActivity.showToast("手机号码应该为11位");
+            return;
+        }
+        if (!PatternUtils.isPhoneNumber(phone))
+        {
+            mActivity.showToast("手机号码格式不正确");
             return;
         }
         String genderText = UserPatientItem.DEFAULT_MAN;
@@ -164,8 +203,7 @@ public class AddPatientFragment extends BaseFragment implements DataView
             isDefault = UserPatientItem.NOT_DEFAULT;
         }
         String info = "name = " + name + " card = " + card + " gender = " + genderText
-
-                + " date = " + date + " phone = " + phone + " isdefault = " + isDefault;
+                + " date = " + date + " phone = " + phone + " isDefault = " + isDefault;
         System.out.println("info = " + info);
 
         mPostAddPatientItem = new PostAddPatientItem();
@@ -176,7 +214,11 @@ public class AddPatientFragment extends BaseFragment implements DataView
         mPostAddPatientItem.sex = genderText;
         mPostAddPatientItem.DEFAULT = isDefault;
         mPostAddPatientItem.isDefault = isDefault;
-        AddPatientPresenter addPatientPresenter = new AddPatientPresenterImpl(mActivity,this);
+        if (null != mUserPatientItem)
+        {
+            mPostAddPatientItem.id = mUserPatientItem.id;
+        }
+        AddOrModifyPatientPresenter addPatientPresenter = new AddOrModifyPatientPresenterImpl(mActivity, this);
         addPatientPresenter.doAddUserPatient(mPostAddPatientItem);
     }
 
@@ -213,24 +255,24 @@ public class AddPatientFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         if (null != resultItem)
         {
             mActivity.showCroutonToast(resultItem.message);
-           if(resultItem.success())
-           {
-              if(null != mPostAddPatientItem)
-              {
-                  EventBus.getDefault().post(new OnAddPatientItemEvent(mPostAddPatientItem));
-              }
-               mActivity.finish();
-           }
+            if (resultItem.success())
+            {
+                if (null != mPostAddPatientItem)
+                {
+                    EventBus.getDefault().post(new OnAddPatientItemEvent(mPostAddPatientItem));
+                }
+                mActivity.finish();
+            }
         }
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }

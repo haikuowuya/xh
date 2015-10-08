@@ -393,10 +393,10 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 
     private void setTextPrice(double price)
     {
-        int quantity = 1;
+        long quantity = 1;
         if (!TextUtils.isEmpty(mEtQuantity.getText()) && TextUtils.isDigitsOnly(mEtQuantity.getText()))
         {
-            quantity = Integer.parseInt(mEtQuantity.getText().toString());
+            quantity = Long.parseLong(mEtQuantity.getText().toString());
         }
         double countPrice = quantity * price;
         mTvPrice.setText("￥" + new java.text.DecimalFormat("#0.00").format(countPrice) + "元");

@@ -238,7 +238,7 @@
 
             <EditText
                 android:id="@+id/et_quantity"
-                android:layout_width="100dp"
+                android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
                 android:layout_marginRight="10dp"
@@ -275,6 +275,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
                     android:padding="10dp"
+                    android:singleLine="true"
                     android:textColor="#FFFFA800"
                     tools:text="￥0.48元"/>
             </LinearLayout>

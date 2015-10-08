@@ -79,8 +79,8 @@ public class PayDespatchFragment extends BaseFragment
         mBtnPayOffLine = (Button) view.findViewById(R.id.btn_pay_offline);
         mBtnPayAccount = (Button) view.findViewById(R.id.btn_pay_account);
         mBtnPayOnLine = (Button) view.findViewById(R.id.btn_pay_online);
-        mBtnPayOnLine.setActivated(true);
-        mBtnPayOnLine.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
+        mBtnPayAccount.setActivated(true);
+        mBtnPayAccount.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
         mBtnDespatchNormal.setActivated(true);
         mBtnDespatchNormal.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pay_despatch_select, 0, 0, 0);
     }

@@ -17,6 +17,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.Constants;
 import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.util.NetWorkUtils;
 import com.xinheng.util.RSAUtil;
 
 import org.apache.http.protocol.HTTP;
@@ -224,13 +225,21 @@ public class RequestUtils
     public static void getDataFromUrlByPostWithLoginInfo(final BaseActivity activity, String url, final String postBody, final LoginSuccessItem successItem, final DataView dataView, final String requestTag, final boolean showProgressDialog)
     {
         System.out.println("请求的URL = " + url);
-        Request request = new Builder().baseActivity(activity).dataView(dataView).url(url).requestTag(requestTag).loginSuccessItem(successItem).postBody(postBody).showProgressDialog(showProgressDialog).build();
-        if (null != request)
+        if(NetWorkUtils.isNetworkAvailable(activity))
         {
-            VolleyUtils.addRequest(activity, request);
-        } else
+            Request request = new Builder().baseActivity(activity).dataView(dataView).url(url).requestTag(requestTag).loginSuccessItem(successItem).postBody(postBody).showProgressDialog(showProgressDialog).build();
+            if (null != request)
+            {
+                VolleyUtils.addRequest(activity, request);
+            }
+            else
+            {
+                System.out.println("request 为 null ");
+            }
+        }
+        else
         {
-            System.out.println("activity 为 null ");
+            activity.showToast("网络不给力");
         }
     }
 
@@ -441,7 +450,7 @@ public class RequestUtils
                 };
                 if (mShowProgressDialog)
                 {
-                    mActivity.showProgressDialog();
+                        mActivity.showProgressDialog();
                 }
             }
             return request;

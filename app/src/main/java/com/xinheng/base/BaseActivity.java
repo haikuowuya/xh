@@ -168,7 +168,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 mProgressDialog.setMessage(msg);
             }
             mProgressDialog.show();
-
         }
     }
 

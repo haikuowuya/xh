@@ -238,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="6dp"
-                    android:background="@drawable/activated_first_second_visit"
+
                     android:gravity="center"
                     android:minWidth="72dp"
 
@@ -249,7 +249,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="6dp"
-                    android:background="@drawable/activated_first_second_visit"
+
                     android:gravity="center"
                     android:minWidth="72dp"
                     android:textColor="@drawable/activated_first_second_visit_text_color"/>
@@ -323,7 +323,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="暂无图片信息"
+                    android:text="未上传疾病照片"
                     android:textColor="@color/color_main_text_gray_color"
                     android:visibility="gone"/>
             </FrameLayout>

@@ -1,5 +1,7 @@
 package com.xinheng.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,8 +25,8 @@ import com.xinheng.AddressListActivity;
 import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
 import com.xinheng.UserOrderActivity;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;
 import com.xinheng.mvp.model.ResultItem;
@@ -41,6 +43,7 @@ import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.util.OrderDetailPopupWindowUtils;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -60,7 +63,6 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
     public static final String REQUEST_ADDRESS_TAG = "request_address";
     public static final String REQUEST_ORDER_INFO_TAG = "request_order_info";
     public static final String REQUEST_CONFIRM_ORDER_TAG = "request_confirm_order";
-
     public static final String ARG_ORDER_ID = "order_id";
 
     public static ConfirmOrderFragment newInstance(String orderId)
@@ -129,6 +131,11 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
      */
     private PostPayDespatchItem mPostPayDespatchItem = new PostPayDespatchItem();
 
+    /***
+     * 用于订单详情的显示，订单的总费用
+     */
+    private String mFee;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -149,7 +156,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
         mPostPayDespatchItem.id = mOrderId;
         mTvDespatchTime.setText(DateFormatUtils.format(System.currentTimeMillis() + "", true, false));
         //mTvDespatchWay.setText("在线支付" + "\n" + "普通快递");
-        mTvDespatchWay.setText(PostPayDespatchItem.PAY_ONLINE_TEXT + "\n" + PostPayDespatchItem.DESPATCH_NORMA_TEXT);
+        mTvDespatchWay.setText(PostPayDespatchItem.PAY_ACCOUNT_TEXT + "\n" + PostPayDespatchItem.DESPATCH_NORMA_TEXT);
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mLinearAddressContainer.setOnClickListener(onClickListener);
         mLinearPayDespatchContainer.setOnClickListener(onClickListener);
@@ -181,7 +188,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             {
                 payText = PostPayDespatchItem.PAY_OFFLINE_TEXT;
             }
-            else if(PostPayDespatchItem.PAY_ACCOUNT.equals(event.mPostPayDespatchItem.payType))
+            else if (PostPayDespatchItem.PAY_ACCOUNT.equals(event.mPostPayDespatchItem.payType))
             {
                 payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
             }
@@ -251,6 +258,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     ConfirmOrderItem confirmOrderItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), ConfirmOrderItem.class);
                     if (null != confirmOrderItem && null != confirmOrderItem.list && !confirmOrderItem.list.isEmpty())
                     {
+                        mFee = confirmOrderItem.fee;
                         fillLinearDrugContainer(confirmOrderItem.list);
                         String countInfo = "共" + confirmOrderItem.list.size() + "件商品，合计：￥:";
                         String tmp = " (含运费￥0.00)";
@@ -260,7 +268,6 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                         spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), countFeeInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), countFeeInfo.length(), allInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         mTvFee.setText(spannableStringBuilder);
-
                         SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + confirmOrderItem.fee) + "\n" + tmp);
                         spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + confirmOrderItem.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + confirmOrderItem.fee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
@@ -284,7 +291,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     mActivity.showToast(resultItem.message);
                     if (resultItem.success())
                     {
-                        UserOrderActivity.actionUserOrder(mActivity);
+                        UserOrderActivity.actionUserOrder(mActivity, 2);
                         mActivity.finish();
                     }
                 }
@@ -309,7 +316,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
     @Override
     public void onGetDataFailured(String msg, String requestTag)
     {
-        mActivity.showCroutonToast(msg);
+        mActivity.showToast(msg);
     }
 
     /**
@@ -375,7 +382,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
             switch (v.getId())
             {
                 case R.id.btn_ok://提交订单
-                    submitOrder();
+                    showConfirmOrderPopupWindow();
                     break;
                 case R.id.linear_address_container://点击收货地址
                     address();
@@ -385,6 +392,62 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     break;
             }
         }
+    }
+
+    private void showConfirmOrderPopupWindow()
+    {
+        View contentView = LayoutInflater.from(mActivity).inflate(R.layout.layout_order_detail, null);
+        OrderDetailPopupWindowUtils.showOrderDetail(mActivity, contentView);
+        TextView tvPayWay = (TextView) contentView.findViewById(R.id.tv_pay_way);
+        TextView tvPayMoney = (TextView) contentView.findViewById(R.id.tv_pay_money);
+        TextView tvAccountMoney = (TextView) contentView.findViewById(R.id.tv_account_money);
+        Button btnConfirmOrder = (Button) contentView.findViewById(R.id.btn_confirm_order);
+        ImageView ivCancle = (ImageView) contentView.findViewById(R.id.iv_cancle);
+        String payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
+        if (PostPayDespatchItem.PAY_OFFLINE.equals(mPostPayDespatchItem.payType))
+        {
+            payText = PostPayDespatchItem.PAY_OFFLINE_TEXT;
+        }
+        else if (PostPayDespatchItem.PAY_ACCOUNT.equals(mPostPayDespatchItem.payType))
+        {
+            payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
+        }
+        tvPayWay.setText(payText);
+        tvPayMoney.setText(mFee + "元");
+        tvAccountMoney.setText("0" + "元");
+        btnConfirmOrder.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                OrderDetailPopupWindowUtils.dismiss();
+                submitOrder();
+            }
+        });
+        ivCancle.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                new AlertDialog.Builder(mActivity).setMessage("确定要放弃付款？").setPositiveButton("确定", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                        OrderDetailPopupWindowUtils.dismiss();
+                        UserOrderActivity.actionUserOrder(mActivity, 1);
+                        mActivity.finish();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).show();
+            }
+        });
     }
 
     private void payDispatch()
@@ -397,10 +460,12 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
         AddressListActivity.actionAddressManager(mActivity, true);
     }
 
+    /***
+     * 确认付款
+     */
     private void submitOrder()
     {
         SubmitOrderPresenter submitOrderPresenter = new SubmitOrderPresenterImpl(mActivity, this, REQUEST_CONFIRM_ORDER_TAG);
         submitOrderPresenter.doSubmitOrder(mPostPayDespatchItem);
     }
-
 }

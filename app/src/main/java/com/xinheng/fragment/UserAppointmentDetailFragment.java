@@ -211,9 +211,11 @@ public class UserAppointmentDetailFragment extends BaseFragment implements DataV
                 if (null != userAppointmentDetailItem)
                 {
                     showDoctorInfo(userAppointmentDetailItem);
+                    mTvDoctMsg.setVisibility(View.GONE);
                     showSelectSchedule(userAppointmentDetailItem.schedule);
                     showPatientInfo(userAppointmentDetailItem.patient);
                     showPatientRecord(userAppointmentDetailItem.authrecord);
+
                     if (userAppointmentDetailItem.imgs != null && !userAppointmentDetailItem.imgs.isEmpty())
                     {
                         mTvGridViewStatus.setVisibility(View.GONE);

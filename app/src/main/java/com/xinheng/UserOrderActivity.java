@@ -20,9 +20,19 @@ import java.util.LinkedList;
  */
 public class UserOrderActivity extends TabViewPagerActivity
 {
+    public static final String EXTRA_POSITION = "position";
+
     public static void actionUserOrder(BaseActivity activity)
     {
+        actionUserOrder(activity, 0);
+    }
+
+    private int mPosition = 0;
+
+    public static void actionUserOrder(BaseActivity activity, int position)
+    {
         Intent intent = new Intent(activity, UserOrderActivity.class);
+        intent.putExtra(EXTRA_POSITION, position);
         activity.startActivity(intent);
     }
 
@@ -30,11 +40,14 @@ public class UserOrderActivity extends TabViewPagerActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
         getTabViewPagerIndicator().setViewPagerAdapter(genPagerAdapter());
+        getTabViewPagerIndicator().getViewPager().setCurrentItem(mPosition);
     }
 
     /**
      * 根据{@link com.xinheng.R.array.array_order}生成订单适配器
+     *
      * @return
      */
     private PagerAdapter genPagerAdapter()

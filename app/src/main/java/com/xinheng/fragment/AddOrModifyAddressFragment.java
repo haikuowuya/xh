@@ -109,7 +109,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
         mAddressItem = getArguments().getSerializable(ARG_ADDRESS_ITEM) == null ? null : (AddressItem) getArguments().getSerializable(ARG_ADDRESS_ITEM);
         if (null != mAddressItem)
         {
-            mIvDeleteAddress.setVisibility(View.VISIBLE);
+            mIvDeleteAddress.setVisibility(View.GONE);
             mTvCity.setText(mAddressItem.city);
             mEtAddress.setText(mAddressItem.address);
             mEtAddress.setSelection(mAddressItem.address.length());
@@ -154,7 +154,7 @@ public class AddOrModifyAddressFragment extends BaseFragment implements DataView
         mBtnSubmit = (Button) view.findViewById(R.id.btn_submit);
         mCbDefault = (CheckBox) view.findViewById(R.id.cb_default);
         mIvDeleteAddress = (ImageView) view.findViewById(R.id.iv_delete_address);
-        mIvDeleteAddress.setVisibility(View.INVISIBLE);
+        mIvDeleteAddress.setVisibility(View.GONE);
     }
 
     private void setListener()

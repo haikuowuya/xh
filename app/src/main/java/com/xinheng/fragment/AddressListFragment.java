@@ -2,7 +2,9 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,9 +19,10 @@ import com.xinheng.eventbus.OnAddOrModifyOrDelAddressEvent;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.address.AddressItem;
-import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.AddressPresenter;
+import com.xinheng.mvp.presenter.DeleteAddressPresenter;
 import com.xinheng.mvp.presenter.impl.AddressPresenterImpl;
+import com.xinheng.mvp.presenter.impl.DeleteAddressPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
@@ -43,8 +46,27 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class AddressListFragment extends BaseFragment implements DataView
 {
-    private static final String DATA = UserPatientItem.DEBUG_SUCCESS;
     public static final String ARG_FROM_CONFIRM_ORDER = "from_confirm_order";
+    public static final String REQUEST_GET_ADDRESS_LIST_TAG = "get_address_list";
+    public static final String REQUEST_DELETE_ADDRESS_TAG = "delete_address";
+
+    /***
+     * 修改更新
+     */
+    private final int CONTEXTMENU_UPDATE = 2;
+    /**
+     * 删除
+     */
+    private final int CONTEXTMENU_DELETE = 3;
+    /***
+     * 取消
+     */
+    private final int CONTEXTMENU_CANCEL = 4;
+
+    /***
+     * 当前长按操作的position
+     */
+    private int mOptPosition = 0;
 
     public static AddressListFragment newInstance(boolean fromConfirmOrder)
     {
@@ -82,8 +104,9 @@ public class AddressListFragment extends BaseFragment implements DataView
         mListView = (SwipeListView) view.findViewById(R.id.lv_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_list_container);
         mBtnAddAddress = (Button) view.findViewById(R.id.btn_add_address);
-        mListView.setSwipeMode(SwipeListView.SWIPE_MODE_LEFT);
-        mListView.setOffsetLeft(DensityUtils.getScreenWidthInPx(mActivity)-DensityUtils.dpToPx(mActivity,100.f));
+//        mListView.setSwipeMode(SwipeListView.SWIPE_MODE_LEFT);
+        mListView.setSwipeMode(SwipeListView.SWIPE_MODE_NONE);
+        mListView.setOffsetLeft(DensityUtils.getScreenWidthInPx(mActivity) - DensityUtils.dpToPx(mActivity, 100.f));
         mListView.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
     }
 
@@ -93,22 +116,20 @@ public class AddressListFragment extends BaseFragment implements DataView
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         mFromConfirmOrder = getArguments().getBoolean(ARG_FROM_CONFIRM_ORDER);
-        mPtrClassicFrameLayout.setPtrHandler(
-                new PtrDefaultHandler()
-                {
-                    @Override
-                    public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
-                    {
-                        return false;
-                    }
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
+        {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+            {
+                return false;
+            }
 
-                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-                    {
-                        doRefresh();
-                    }
-                });
-        mBtnAddAddress.setOnClickListener(
-                new View.OnClickListener()
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+            {
+                doRefresh();
+            }
+        });
+        mBtnAddAddress.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
@@ -151,7 +172,7 @@ public class AddressListFragment extends BaseFragment implements DataView
     @Override
     protected void doGetData()
     {
-        AddressPresenter addressPresenter = new AddressPresenterImpl(mActivity, this);
+        AddressPresenter addressPresenter = new AddressPresenterImpl(mActivity, this, REQUEST_GET_ADDRESS_LIST_TAG);
         addressPresenter.doGetAddressList();
     }
 
@@ -164,39 +185,58 @@ public class AddressListFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                Type type = new TypeToken<List<AddressItem>>()
+                if (REQUEST_GET_ADDRESS_LIST_TAG.equals(requestTag))
                 {
-                }.getType();
-                List<AddressItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-                if (null != items)
-                {
-                    mAddressItems.clear();
-                    mAddressItems.addAll(items);
-                    if (null == mAddressListAdapter)
+                    Type type = new TypeToken<List<AddressItem>>()
                     {
-                        mAddressListAdapter = new AddressListAdapter(mActivity, mAddressItems);
-                        mListView.setAdapter(mAddressListAdapter);
-                    } else
+                    }.getType();
+                    List<AddressItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                    if (null != items)
                     {
-                        mAddressListAdapter.notifyDataSetChanged();
-                    }
-                    mListView.setOnItemClickListener(
-                            new AdapterView.OnItemClickListener()
+                        mAddressItems.clear();
+                        mAddressItems.addAll(items);
+                        if (null == mAddressListAdapter)
+                        {
+                            mAddressListAdapter = new AddressListAdapter(mActivity, mAddressItems);
+                            mListView.setAdapter(mAddressListAdapter);
+                        }
+                        else
+                        {
+                            mAddressListAdapter.notifyDataSetChanged();
+                        }
+                        mListView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener()
+                        {
+                            public void onCreateContextMenu(ContextMenu conMenu, View view, ContextMenu.ContextMenuInfo info)
                             {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                                conMenu.setHeaderTitle("功能选择");
+                                conMenu.add(0, CONTEXTMENU_UPDATE, 0, "修改");
+                                conMenu.add(0, CONTEXTMENU_DELETE, 0, "删除");
+                                conMenu.add(0, CONTEXTMENU_CANCEL, 0, "取消");
+                            }
+                        });
+                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                        {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                            {
+                                AddressItem addressItem = mAddressItems.get(position);
+                                if (!mFromConfirmOrder)
                                 {
-                                    AddressItem addressItem = mAddressItems.get(position);
-                                    if (!mFromConfirmOrder)
-                                    {
-                                        AddOrModifyAddressActivity.actionAddAddress(mActivity, addressItem);
-                                    } else
-                                    {
-                                        EventBus.getDefault().post(new OnSelectAddressEvent(addressItem));
-                                        mActivity.finish();
-                                    }
+                                    AddOrModifyAddressActivity.actionAddAddress(mActivity, addressItem);
                                 }
-                            });
+                                else
+                                {
+                                    EventBus.getDefault().post(new OnSelectAddressEvent(addressItem));
+                                    mActivity.finish();
+                                }
+                            }
+                        });
+                    }
+                }
+                else if (REQUEST_DELETE_ADDRESS_TAG.equals(requestTag))
+                {
+                    mAddressItems.remove(mOptPosition);
+                    mAddressListAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -206,6 +246,24 @@ public class AddressListFragment extends BaseFragment implements DataView
     public void onGetDataFailured(String msg, String requestTag)
     {
 
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        mOptPosition = info.position;
+        switch (item.getItemId())
+        {
+            case CONTEXTMENU_UPDATE:
+                AddOrModifyAddressActivity.actionAddAddress(mActivity, mAddressItems.get(mOptPosition));
+                return true;
+            case CONTEXTMENU_DELETE:
+                DeleteAddressPresenter deleteAddressPresenter = new DeleteAddressPresenterImpl(mActivity, this, REQUEST_DELETE_ADDRESS_TAG);
+                deleteAddressPresenter.doDeleteAddress(mAddressItems.get(mOptPosition).id);
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
     protected void refreshComplete()

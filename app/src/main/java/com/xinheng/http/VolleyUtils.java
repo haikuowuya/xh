@@ -34,7 +34,9 @@ public class VolleyUtils
     public static void addRequest(BaseActivity baseActivity, Request<?> request)
     {
         request.setRetryPolicy(new DefaultRetryPolicy(15 * 1000, 1, 1.0f));
-        addRequest(baseActivity, request, baseActivity.getActivityTitle());
+            addRequest(baseActivity, request, baseActivity.getActivityTitle());
+
+
 
     }
 

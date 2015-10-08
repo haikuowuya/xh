@@ -186,6 +186,7 @@
                         android:inputType="phone"
                         android:background="@null"
                         android:padding="10dp"
+                        android:maxLength="11"
                         android:gravity="right|center_vertical"
                         android:hint="请输入手机号码"
                         android:textColor="#FF333333"

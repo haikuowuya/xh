@@ -2,7 +2,9 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -10,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.AddPatientActivity;
+import com.xinheng.AddOrModifyPatientActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.user.UserPatientListAdapter;
 import com.xinheng.base.BaseFragment;
@@ -18,7 +20,9 @@ import com.xinheng.eventbus.OnAddPatientItemEvent;
 import com.xinheng.eventbus.OnSelectPatientEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserPatientItem;
+import com.xinheng.mvp.presenter.DeletePatientPresenter;
 import com.xinheng.mvp.presenter.UserPatientPresenter;
+import com.xinheng.mvp.presenter.impl.DeletePatientPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserPatientPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
@@ -42,8 +46,26 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 public class UserPatientListFragment extends BaseFragment implements DataView
 {
     public static final String ARG_FROM_SELECT_PATIENT = "from_select_patient";
-    private static final String DATA = UserPatientItem.DEBUG_SUCCESS;
+    public static final String REQUEST_GET_PATIENT_LIST_TAG = "get_patient_list";
+    public static final String REQUEST_DELETE_PATIENT_TAG = "delete_patient";
 
+    /***
+     * 修改更新
+     */
+    private final int CONTEXTMENU_UPDATE = 2;
+    /**
+     * 删除
+     */
+    private final int CONTEXTMENU_DELETE = 3;
+    /***
+     * 取消
+     */
+    private final int CONTEXTMENU_CANCEL = 4;
+
+    /***
+     * 当前长按操作的position
+     */
+    private int mOptPosition = 0;
 
     public static UserPatientListFragment newInstance(boolean fromSelectPatient)
     {
@@ -53,13 +75,13 @@ public class UserPatientListFragment extends BaseFragment implements DataView
         fragment.setArguments(bundle);
         return fragment;
     }
+
     private boolean mFromSelectPatient = false;
     private LinkedList<UserPatientItem> mUserPatientItems = new LinkedList<>();
     private UserPatientListAdapter mUserPatientListAdapter;
     private ListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
     /**
-     *
      * 添加就诊人
      */
     private ImageView mIvAddPatient;
@@ -73,6 +95,7 @@ public class UserPatientListFragment extends BaseFragment implements DataView
         mIsInit = true;
         return view;
     }
+
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -86,7 +109,6 @@ public class UserPatientListFragment extends BaseFragment implements DataView
         super.onActivityCreated(savedInstanceState);
         mFromSelectPatient = getArguments().getBoolean(ARG_FROM_SELECT_PATIENT);
         EventBus.getDefault().register(this);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -99,15 +121,16 @@ public class UserPatientListFragment extends BaseFragment implements DataView
             @Override
             public void onClick(View v)
             {
-                AddPatientActivity.actionAddPatient(mActivity);
+                AddOrModifyPatientActivity.actionAddPatient(mActivity, null);
             }
         });
     }
+
     //===============================EVENT BUS========================
     @Subscribe
     public void onEventMainThread(OnAddPatientItemEvent event)
     {
-        if(null != event && null != event.mUserPatientItem)
+        if (null != event && null != event.mUserPatientItem)
         {
             doGetData();
             //重新去请求一次服务器吧，下面的方式会出现年龄为null
@@ -143,67 +166,107 @@ public class UserPatientListFragment extends BaseFragment implements DataView
     {
         doGetData();
     }
+
     @Override
     protected void doGetData()
     {
-        UserPatientPresenter userPatientPresenter = new UserPatientPresenterImpl(mActivity, this);
+        UserPatientPresenter userPatientPresenter = new UserPatientPresenterImpl(mActivity, this, REQUEST_GET_PATIENT_LIST_TAG);
         userPatientPresenter.doGetUserPatient();
         mUserPatientItems.clear();
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
-        if(null != resultItem)
+        if (null != resultItem)
         {
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                Type type = new TypeToken<List<UserPatientItem>>()
+                if (REQUEST_GET_PATIENT_LIST_TAG.equals(requestTag))
                 {
-                }.getType();
-                List<UserPatientItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-                if (null != items)
+                    Type type = new TypeToken<List<UserPatientItem>>()
+                    {
+                    }.getType();
+                    List<UserPatientItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                    if (null != items)
+                    {
+                        mUserPatientItems.addAll(items);
+                        if (null == mUserPatientListAdapter)
+                        {
+                            mUserPatientListAdapter = new UserPatientListAdapter(mActivity, mUserPatientItems);
+                            mListView.setAdapter(mUserPatientListAdapter);
+                        }
+                        else
+                        {
+                            mUserPatientListAdapter.notifyDataSetChanged();
+                        }
+                        mListView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener()
+                        {
+                            public void onCreateContextMenu(ContextMenu conMenu, View view, ContextMenu.ContextMenuInfo info)
+                            {
+                                conMenu.setHeaderTitle("功能选择");
+                                conMenu.add(0, CONTEXTMENU_UPDATE, 0, "修改");
+                                conMenu.add(0, CONTEXTMENU_DELETE, 0, "删除");
+                                conMenu.add(0, CONTEXTMENU_CANCEL, 0, "取消");
+                            }
+                        });
+                        mListView.setOnItemClickListener(new OnItemClickListenerImpl());
+                    }
+                }
+
+                else if (REQUEST_DELETE_PATIENT_TAG.equals(requestTag))
                 {
-                    mUserPatientItems.addAll(items);
-                    if (null == mUserPatientListAdapter)
-                    {
-                        mUserPatientListAdapter = new UserPatientListAdapter(mActivity, mUserPatientItems);
-                        mListView.setAdapter(mUserPatientListAdapter);
-                    }
-                    else
-                    {
-                        mUserPatientListAdapter.notifyDataSetChanged();
-                    }
-                    mListView.setOnItemClickListener(new OnItemClickListenerImpl());
+                    mUserPatientItems.remove(mOptPosition);
+                    mUserPatientListAdapter.notifyDataSetChanged();
                 }
             }
         }
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        mOptPosition = info.position;
+        switch (item.getItemId())
+        {
+            case CONTEXTMENU_UPDATE:
+                AddOrModifyPatientActivity.actionAddPatient(mActivity, mUserPatientItems.get(mOptPosition));
+                return true;
+            case CONTEXTMENU_DELETE:
+                DeletePatientPresenter deletePatientPresenter = new DeletePatientPresenterImpl(mActivity, this, REQUEST_DELETE_PATIENT_TAG);
+                deletePatientPresenter.doDeletePatient(mUserPatientItems.get(mOptPosition).id);
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
 
     private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
     {
-
-        @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
             UserPatientItem patientItem = (UserPatientItem) parent.getAdapter().getItem(position);
-            if(mFromSelectPatient)
+            if (mFromSelectPatient)
             {
                 EventBus.getDefault().post(new OnSelectPatientEvent(patientItem));
                 mActivity.finish();
             }
+            else
+            {
+                AddOrModifyPatientActivity.actionAddPatient(mActivity, patientItem);
+            }
         }
     }
 
-    protected  void refreshComplete()
+    protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();
     }
