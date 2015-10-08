@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddReportActivity;
 import com.xinheng.R;
+import com.xinheng.UserReportDetailActivity;
 import com.xinheng.adapter.user.UserReportListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
@@ -88,8 +90,6 @@ public class UserReportListFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mListView.addHeaderView(mListHeaderImageView);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
         {
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -144,9 +144,10 @@ public class UserReportListFragment extends BaseFragment implements DataView
                     mUserReportItems.addAll(items);
                     if (null == mUserReportListAdapter)
                     {
+                        mListView.addHeaderView(mListHeaderImageView);
                         mUserReportListAdapter = new UserReportListAdapter(mActivity, mUserReportItems);
-
                         mListView.setAdapter(mUserReportListAdapter);
+                        mListView.setOnItemClickListener(new OnItemClickListenerImpl());
                     }
                     else
                     {
@@ -163,6 +164,21 @@ public class UserReportListFragment extends BaseFragment implements DataView
 
     }
 
+    private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
+    {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (!(parent.getAdapter().getItemViewType(position) == AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER))
+            {
+                UserReportItem item = (UserReportItem) parent.getAdapter().getItem(position);
+                UserReportDetailActivity.actionUserReportDetail(mActivity,item.id);
+            }
+            else
+            {
+                //点击的是headerview
+            }
+        }
+    }
     protected void refreshComplete()
     {
         mPtrClassicFrameLayout.refreshComplete();

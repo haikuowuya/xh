@@ -18,7 +18,7 @@
         cube_ptr:ptr_pull_to_fresh="false"
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
         cube_ptr:ptr_resistance="1.7">
-        <include layout="@layout/layout_listview"/>
+        <include layout="@layout/layout_swipe_listview"/>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
     <Button
         android:id="@+id/btn_add_address"

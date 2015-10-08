@@ -57,7 +57,6 @@ public class UserAppointmentListAdapter extends BaseAdapter<UserAppointmentItem>
                         else if (UserAppointmentListFragment.TYPE_1.equals(mType))
                         {
                             UserAppointmentAddDetailActivity.actionUserAppointmentAddDetail(getActivity(), userAppointmentItem.id);
-
                         }
                     }
                 });

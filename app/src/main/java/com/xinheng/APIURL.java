@@ -9,7 +9,7 @@ package com.xinheng;
 public class APIURL
 {
     public static final String BASE_API_URL = "http://139.196.24.205";
-    // public static final String BASE_API_URL = " http://192.168.2.119";
+     // public static final String BASE_API_URL = " http://192.168.2.119";
     /**
      * 用户登录URL
      */
@@ -97,6 +97,14 @@ public class APIURL
      * 我的处方详情URL
      */
     public static final String GET_USER_RECIPE_DETAIL_URL = BASE_API_URL + "/interface/patient/myprescription/getdetail";
+    /***
+     * 我的报告详情URL
+     */
+    public static final String GET_USER_REPORT_DETAIL_URL = BASE_API_URL + "/interface/patient/myreport/getdetail";
+    /***
+     *    我的检查详情URL
+     */
+    public static final String GET_USER_CHECK_DETAIL_URL = BASE_API_URL + "/interface/patient/mycheck/getdetail";
     /***
      *  智能导诊-获取症状起始问题 URL
      */

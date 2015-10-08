@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,8 @@ import com.xinheng.APIURL;
 import com.xinheng.AddDrugActivity;
 import com.xinheng.ConfirmOrderActivity;
 import com.xinheng.R;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnAddDrugItemEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.prescription.DrugItem;
@@ -153,11 +155,39 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
+        setListener();
+    }
+
+    private void setListener()
+    {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnImage.setOnClickListener(onClickListener);
         mBtnAddMedical.setOnClickListener(onClickListener);
         mBtnSavePrescription.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
+        mEtQuantity.addTextChangedListener(
+                new TextWatcher()
+                {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+                    {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count)
+                    {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s)
+                    {
+                        if (mDrugItems != null && !mDrugItems.isEmpty() && mPrice > 0.0)
+                        {
+                            setTextPrice(mPrice);
+                        }
+                    }
+                });
     }
 
     private void initView(View view)
@@ -192,14 +222,15 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 //            mActivity.showCroutonToast("event.size = " + event.mDrugItems.size());
             mBtnEdit.setVisibility(View.VISIBLE);
             fillLinearDrugContainer(event.mDrugItems);
-            mBtnEdit.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    onEdit();
-                }
-            });
+            mBtnEdit.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            onEdit();
+                        }
+                    });
         }
     }
 
@@ -262,17 +293,18 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                         img = APIURL.BASE_API_URL + img;
                     }
                     ivImageView.setTag(img);
-                    ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                    {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                        {
-                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                    ImageLoader.getInstance().loadImage(
+                            img, new AbsImageLoadingListener()
                             {
-                                ivImageView.setImageBitmap(loadedImage);
-                            }
-                        }
-                    });
+                                @Override
+                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                {
+                                    if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                                    {
+                                        ivImageView.setImageBitmap(loadedImage);
+                                    }
+                                }
+                            });
                 }
                 TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
                 final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
@@ -290,63 +322,66 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 tvUnit.setText("包装规格：" + item.specs);
                 final TextView tvEditCount = (TextView) linearLayout.findViewById(R.id.tv_edit_count);
                 final int finalI = i;
-                ivIncrease.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        int count = Integer.parseInt(tvEditCount.getText().toString());
-                        count += 1;
-                        mPrice = mPrice + cost;
-                        tvEditCount.setText(count + "");
-                        tvDrugCount.setText(count + "");
-                        setTextPrice(mPrice);
-                    }
-                });
-                ivDecrease.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        int count = Integer.parseInt(tvEditCount.getText().toString());
-                        count -= 1;
-                        if (count < 1)
+                ivIncrease.setOnClickListener(
+                        new View.OnClickListener()
                         {
-                            mActivity.showCroutonToast("数量不可以小于1");
-                            return;
-                        }
-                        mPrice = mPrice - cost;
-                        tvEditCount.setText(count + "");
-                        tvDrugCount.setText(count + "");
-                        setTextPrice(mPrice);
-                    }
-                });
-
-                tvDelete.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (view.getParent() != null)
+                            @Override
+                            public void onClick(View v)
+                            {
+                                int count = Integer.parseInt(tvEditCount.getText().toString());
+                                count += 1;
+                                mPrice = mPrice + cost;
+                                tvEditCount.setText(count + "");
+                                tvDrugCount.setText(count + "");
+                                setTextPrice(mPrice);
+                            }
+                        });
+                ivDecrease.setOnClickListener(
+                        new View.OnClickListener()
                         {
-                            int count = Integer.parseInt(tvEditCount.getText().toString());
-                            mPrice = mPrice - cost * count;
-                            mLinearDrugContainer.removeView(view);
-                            if (mLinearDrugContainer.getChildCount() == 1)//只剩下标题title
+                            @Override
+                            public void onClick(View v)
                             {
-                                mLinearDrugContainer.setVisibility(View.GONE);
+                                int count = Integer.parseInt(tvEditCount.getText().toString());
+                                count -= 1;
+                                if (count < 1)
+                                {
+                                    mActivity.showCroutonToast("数量不可以小于1");
+                                    return;
+                                }
+                                mPrice = mPrice - cost;
+                                tvEditCount.setText(count + "");
+                                tvDrugCount.setText(count + "");
+                                setTextPrice(mPrice);
                             }
-                            setTextPrice(mPrice);
-                            mDrugItems.remove(item);
+                        });
 
-                            if (mDrugItems.isEmpty())
+                tvDelete.setOnClickListener(
+                        new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
                             {
-                                onEditFinsh();
-                                mBtnEdit.setVisibility(View.GONE);
+                                if (view.getParent() != null)
+                                {
+                                    int count = Integer.parseInt(tvEditCount.getText().toString());
+                                    mPrice = mPrice - cost * count;
+                                    mLinearDrugContainer.removeView(view);
+                                    if (mLinearDrugContainer.getChildCount() == 1)//只剩下标题title
+                                    {
+                                        mLinearDrugContainer.setVisibility(View.GONE);
+                                    }
+                                    setTextPrice(mPrice);
+                                    mDrugItems.remove(item);
+
+                                    if (mDrugItems.isEmpty())
+                                    {
+                                        onEditFinsh();
+                                        mBtnEdit.setVisibility(View.GONE);
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
                 int height = DensityUtils.dpToPx(mActivity, 100.f);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 mLinearDrugContainer.addView(view, layoutParams);
@@ -358,7 +393,13 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 
     private void setTextPrice(double price)
     {
-        mTvPrice.setText("￥"+new java.text.DecimalFormat("#0.00").format(price) + "元");
+        int quantity = 1;
+        if (!TextUtils.isEmpty(mEtQuantity.getText()) && TextUtils.isDigitsOnly(mEtQuantity.getText()))
+        {
+            quantity = Integer.parseInt(mEtQuantity.getText().toString());
+        }
+        double countPrice = quantity * price;
+        mTvPrice.setText("￥" + new java.text.DecimalFormat("#0.00").format(countPrice) + "元");
     }
 
     //===============================EVENT BUS========================
@@ -423,8 +464,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                     if (mBtnAddMedical.getText().toString().equals(TEXT_ADD_MEDICAL))
                     {
                         AddDrugActivity.actionAddDrug(mActivity);
-                    }
-                    else
+                    } else
                     {
                         onEditFinsh();
                     }
@@ -436,8 +476,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                     if (mBtnAddMedical.getText().toString().equals(TEXT_ADD_MEDICAL))
                     {
                         submit();
-                    }
-                    else
+                    } else
                     {
                         mActivity.showCroutonToast("请先点击完成按钮");
                     }

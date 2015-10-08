@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
+import com.xinheng.PhotoViewActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
@@ -56,6 +57,16 @@ public class UserMedicalImageGridAdapter extends BaseAdapter<String>
                             }
                         });
             }
+            final String finalPhoto = photo;
+            circularImageView.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            PhotoViewActivity.actionPhotoView(getActivity(), finalPhoto);
+                        }
+                    });
         }
     }
 }

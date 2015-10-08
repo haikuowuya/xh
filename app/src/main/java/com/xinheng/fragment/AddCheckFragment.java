@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
@@ -121,7 +122,6 @@ public class AddCheckFragment extends BaseFragment implements DataView
      * 检查科室中的项目
      */
     private DepartCheckItem.CheckItem mCheckItem;
-
     private boolean mIsCodeSuccess = false;
     private SMSBroadcastReceiver mSMSBroadcastReceiver = new SMSBroadcastReceiver();
 
@@ -207,6 +207,15 @@ public class AddCheckFragment extends BaseFragment implements DataView
                     mBtnCode.setText("验证码发送成功");
                     mIsCodeSuccess = true;
                     mBtnCode.setClickable(false);
+                    new Handler().postDelayed(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    mIsCodeSuccess = false;
+                                }
+                            },60*1000);
                 }
                 else
                 {

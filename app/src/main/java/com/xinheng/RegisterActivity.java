@@ -2,12 +2,15 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.mvp.model.LoginItem;
+import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.RegisterPresenter;
@@ -16,8 +19,11 @@ import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.mvp.presenter.impl.RegisterPresenterImpl;
 import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.view.DataView;
-import com.xinheng.mvp.view.impl.LoginViewImpl;
+import com.xinheng.util.Constants;
+import com.xinheng.util.GsonUtils;
+import com.xinheng.util.MD5;
 import com.xinheng.util.PatternUtils;
+import com.xinheng.util.RSAUtil;
 import com.xinheng.util.VerifyCodeUtils;
 
 /**
@@ -28,13 +34,21 @@ public class RegisterActivity extends BaseActivity implements DataView
     /***
      * 请求获取验证码的TAG
      */
-    public static final String  REQUEST_CODE_TAG="request_code";
+    public static final String REQUEST_CODE_TAG = "request_code";
     /***
      * 请求注册的TAG
      */
-    public static final String  REQUEST_REGISTER_TAG="request_register";
+    public static final String REQUEST_REGISTER_TAG = "request_register";
+    /***
+     * 注册成功后的请求登录TAG
+     */
+    public static final String REQUEST_LOGIN_TAG = "request_login";
+
+    private boolean mIsCodeSuccess = false;
+
     /**
      * 跳转到用户注册界面
+     *
      * @param activity:跳转时所在的Activity
      */
     public static void actionRegister(BaseActivity activity)
@@ -103,23 +117,52 @@ public class RegisterActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         if (null != resultItem)
         {
             showToast(resultItem.message);
 
-            if(resultItem.success())
+            if (resultItem.success())
             {
-                if(REQUEST_REGISTER_TAG.equals(requestTag))
+                if (REQUEST_REGISTER_TAG.equals(requestTag))
                 {
-                    LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
+                    LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, this, REQUEST_LOGIN_TAG);
                     loginPresenter.doLogin(mEtMobile.getText().toString(), mEtPwd.getText().toString());
-                }
-                else if(REQUEST_CODE_TAG.equals(requestTag))
+                } else if (REQUEST_LOGIN_TAG.equals(requestTag))
+                {
+                    LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
+                    //   System.out.println("loginSuccessItem = " + loginSuccessItem);
+                    if (null != loginSuccessItem)
+                    {
+                        //登录成功后将加密后的用户名密码rsa字符串保存下来，用于session过期的自动登录
+                        String pwd = new MD5().getMD5_32(mEtPwd.getText().toString());
+                        LoginItem loginItem = new LoginItem(mEtMobile.getText().toString(), pwd);
+                        final String jsonLoginItem = GsonUtils.toJson(loginItem);
+                        //加密的字符串
+                        final String encryptUsernamePwd = RSAUtil.clientEncrypt(jsonLoginItem);
+                        mPreferences.edit().putString(Constants.PREF_RSA_USERNAME_PWD, encryptUsernamePwd).commit();
+                        //登录成功后将加密后的用户名密码rsa字符串保存下来，用于session过期的自动登录
+
+                        //保存登录信息
+                        mActivity.saveLoginSuccessItem(loginSuccessItem);
+                        MainActivity.actioMain(mActivity);
+                    }
+                } else if (REQUEST_CODE_TAG.equals(requestTag))
                 {
                     VerifyCodeUtils.cancle();
                     mBtnCode.setText("获取验证码成功");
+                    mIsCodeSuccess = true;
+                    mBtnCode.setClickable(false);
+                    new Handler().postDelayed(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    mIsCodeSuccess = false;
+                                }
+                            }, 60 * 1000);
                 }
             }
 
@@ -127,7 +170,7 @@ public class RegisterActivity extends BaseActivity implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
         if (!TextUtils.isEmpty(msg))
         {
@@ -192,27 +235,37 @@ public class RegisterActivity extends BaseActivity implements DataView
     private void code()
     {
         String mobile = mEtMobile.getText().toString();
-        if (TextUtils.isEmpty(mobile))
+        if (!mIsCodeSuccess)
         {
-            showCroutonToast("手机号码不可以为空");
-            return;
+            if (TextUtils.isEmpty(mobile))
+            {
+                showCroutonToast("手机号码不可以为空");
+                return;
+            }
+            if (mobile.length() != 11)
+            {
+                showCroutonToast("手机号码应该为11位数字");
+                return;
+            }
+            if (!PatternUtils.isPhoneNumber(mobile))
+            {
+                showCroutonToast("手机号码格式不正确");
+                return;
+            }
+            doGetVerifyCode(mobile);
         }
-        if (mobile.length() != 11)
+        else
         {
-            showCroutonToast("手机号码应该为11位数字");
-            return;
+            mActivity.showToast("验证码已经发送到你手机，请稍候再试");
         }
-        if (!PatternUtils.isPhoneNumber(mobile))
-        {
-            showCroutonToast("手机号码格式不正确");
-            return;
-        }
-
-        VerifyCodeUtils.getVerifyCode(mActivity,mBtnCode,60*1000,mEtMobile.getText().toString());
-        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this,REQUEST_CODE_TAG);
-        sendCodePresenter.doSendCode(mobile);
     }
 
+    private void doGetVerifyCode(String phone)
+    {
+        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(phone);
+    }
     @Override
     public CharSequence getActivityTitle()
     {

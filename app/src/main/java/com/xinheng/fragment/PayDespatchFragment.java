@@ -22,13 +22,11 @@ import de.greenrobot.event.EventBus;
  */
 public class PayDespatchFragment extends BaseFragment
 {
-
     public static PayDespatchFragment newInstance()
     {
         PayDespatchFragment fragment = new PayDespatchFragment();
         return fragment;
     }
-
     /**
      * 在线支付
      */

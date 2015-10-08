@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.xinheng.view.swipelistview.SwipeListView
+    android:id="@+id/lv_listview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white_color"
+    android:footerDividersEnabled="false"
+    android:headerDividersEnabled="false"
+    swipe:swipeBackView="@+id/view_back"
+    swipe:swipeCloseAllItemsWhenMoveList="true"
+    swipe:swipeFrontView="@+id/view_front"
+    swipe:swipeMode="both"/>
+

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddOrModifyAddressActivity;
@@ -22,7 +21,9 @@ import com.xinheng.mvp.model.user.UserPatientItem;
 import com.xinheng.mvp.presenter.AddressPresenter;
 import com.xinheng.mvp.presenter.impl.AddressPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.view.swipelistview.SwipeListView;
 
 import java.lang.reflect.Type;
 import java.util.LinkedList;
@@ -58,7 +59,7 @@ public class AddressListFragment extends BaseFragment implements DataView
     private LinkedList<AddressItem> mAddressItems = new LinkedList<>();
     private AddressListAdapter mAddressListAdapter;
 
-    private ListView mListView;
+    private SwipeListView mListView;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
     /***
@@ -78,9 +79,12 @@ public class AddressListFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
-        mListView = (ListView) view.findViewById(R.id.lv_listview);
+        mListView = (SwipeListView) view.findViewById(R.id.lv_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_list_container);
         mBtnAddAddress = (Button) view.findViewById(R.id.btn_add_address);
+        mListView.setSwipeMode(SwipeListView.SWIPE_MODE_LEFT);
+        mListView.setOffsetLeft(DensityUtils.getScreenWidthInPx(mActivity)-DensityUtils.dpToPx(mActivity,100.f));
+        mListView.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
     }
 
     @Override
@@ -89,10 +93,15 @@ public class AddressListFragment extends BaseFragment implements DataView
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         mFromConfirmOrder = getArguments().getBoolean(ARG_FROM_CONFIRM_ORDER);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mPtrClassicFrameLayout.setPtrHandler(
                 new PtrDefaultHandler()
                 {
+                    @Override
+                    public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+                    {
+                        return false;
+                    }
+
                     public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
                     {
                         doRefresh();
@@ -177,15 +186,14 @@ public class AddressListFragment extends BaseFragment implements DataView
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                                 {
-                                        AddressItem addressItem = mAddressItems.get(position);
-                                    if(!mFromConfirmOrder)
+                                    AddressItem addressItem = mAddressItems.get(position);
+                                    if (!mFromConfirmOrder)
                                     {
                                         AddOrModifyAddressActivity.actionAddAddress(mActivity, addressItem);
-                                    }
-                                    else
+                                    } else
                                     {
                                         EventBus.getDefault().post(new OnSelectAddressEvent(addressItem));
-                                          mActivity.finish();
+                                        mActivity.finish();
                                     }
                                 }
                             });

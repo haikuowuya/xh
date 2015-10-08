@@ -15,6 +15,7 @@
 
     <string-array name="array_interface">
         <item>@string/tv_activity_user_order</item>
+        <item>session失效</item>
     </string-array>
 
     <string-array name="array_department_left">

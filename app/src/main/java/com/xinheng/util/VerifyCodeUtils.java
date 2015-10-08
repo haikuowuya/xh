@@ -16,6 +16,7 @@ public class VerifyCodeUtils
 {
     private static CountDownTimer sCountDownTimer;
 
+
     public static void getVerifyCode(final BaseActivity activity, final Button button, long millisInFuture, String mobile)
     {
         if (sCountDownTimer == null)

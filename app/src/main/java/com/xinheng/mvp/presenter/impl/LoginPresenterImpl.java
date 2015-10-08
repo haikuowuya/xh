@@ -19,15 +19,19 @@ import com.xinheng.util.RSAUtil;
 public class LoginPresenterImpl implements LoginPresenter
 {
     private BaseActivity mActivity;
-
     private DataView mDataView;
-
+    private  String mRequestTag;
     public LoginPresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
     }
-
+    public LoginPresenterImpl(BaseActivity activity, DataView dataView,String requestTag)
+    {
+        mActivity = activity;
+        mRequestTag = requestTag;
+        mDataView = dataView;
+    }
     @Override
     public void doLogin(String username, String password)
     {
@@ -38,6 +42,6 @@ public class LoginPresenterImpl implements LoginPresenter
         final String encryptString = RSAUtil.clientEncrypt(jsonLoginItem);
         System.out.println("加密后的字符串 = "+ encryptString);
         String loginUrl = APIURL.LOGIN_URL;
-        RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptString, mDataView);
+        RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptString, mDataView,mRequestTag);
     }
 }

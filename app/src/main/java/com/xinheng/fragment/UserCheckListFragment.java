@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddCheckActivity;
 import com.xinheng.R;
+import com.xinheng.UserCheckDetailActivity;
 import com.xinheng.adapter.user.UserCheckListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddCheckEvent;
@@ -92,23 +94,23 @@ public class UserCheckListFragment extends BaseFragment implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
-        mListView.addHeaderView(mListHeaderImageView);
-//        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                doRefresh();
-            }
-        });
-        mIvAddCheck.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                AddCheckActivity.actionAddCheck(mActivity, true);
-            }
-        });
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        doRefresh();
+                    }
+                });
+        mIvAddCheck.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        AddCheckActivity.actionAddCheck(mActivity, true);
+                    }
+                });
     }
 
     //添加检查成功事件
@@ -165,10 +167,11 @@ public class UserCheckListFragment extends BaseFragment implements DataView
                     mUserChecktItems.addAll(items);
                     if (null == mUserCheckListAdapter)
                     {
+                        mListView.addHeaderView(mListHeaderImageView);
                         mUserCheckListAdapter = new UserCheckListAdapter(mActivity, mUserChecktItems);
                         mListView.setAdapter(mUserCheckListAdapter);
-                    }
-                    else
+                        mListView.setOnItemClickListener(new OnItemClickListenerImpl());
+                    } else
                     {
                         mUserCheckListAdapter.notifyDataSetChanged();
                     }
@@ -181,6 +184,21 @@ public class UserCheckListFragment extends BaseFragment implements DataView
     public void onGetDataFailured(String msg, String requestTag)
     {
 
+    }
+
+    private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
+    {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (!(parent.getAdapter().getItemViewType(position) == AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER))
+            {
+                UserChecktItem item = (UserChecktItem) parent.getAdapter().getItem(position);
+                UserCheckDetailActivity.actionUserCheckDetail(mActivity, item.id);
+            } else
+            {
+                //点击的是headerview
+            }
+        }
     }
 
     protected void refreshComplete()

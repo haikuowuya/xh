@@ -1,6 +1,5 @@
 package com.xinheng.adapter.user;
 
-import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
@@ -30,7 +29,6 @@ public class CustomGridAdapter extends BaseAdapter<IconTextItem>
         {
             setImageViewResId(convertView, R.id.iv_icon, iconTextItem.iconId);
             setTextViewText(convertView, R.id.tv_text, iconTextItem.text);
-
         }
     }
 }

@@ -12,7 +12,7 @@ public class ResultItem extends  BaseEmptyItem
      */
     public static final String RESULT_SUCCESS="1";
 //    public static final String RESULT_FAILURED="-1";
-    public static  final  String RESULT_SESSION_DISABLED="-4" ;
+    public static  final  String RESULT_SESSION_EXPIRED ="-4" ;
     public String  result;
     public String  message;
     public JsonElement properties;
@@ -27,10 +27,13 @@ public class ResultItem extends  BaseEmptyItem
         return flag;
     }
 
-
-    public  boolean sessionIsDisabled()
+    /***
+     * session 是否过期
+     * @return
+     */
+    public  boolean sessionIsExpired()
     {
-        boolean flag = RESULT_SESSION_DISABLED.equals(result)  ;
+        boolean flag = RESULT_SESSION_EXPIRED.equals(result)  ;
         return flag;
 
     }

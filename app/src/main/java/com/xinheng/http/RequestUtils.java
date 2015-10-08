@@ -8,10 +8,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.xinheng.LoginActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.AutoLoginPresenter;
+import com.xinheng.mvp.presenter.impl.AutoLoginPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.Constants;
 import com.xinheng.util.DebugUtils;
@@ -33,6 +34,8 @@ import java.util.Map;
  */
 public class RequestUtils
 {
+    public static final String ERROR_SERVER = "服务器开小差了";
+
     /**
      * 请求url中的数据，默认用{@link com.android.volley.Request.Method#GET} get请求
      *
@@ -387,10 +390,10 @@ public class RequestUtils
                                     System.out.println("解密后结果数据 = 【 " + decryptResult + " 】");
                                 }
                                 resultItem = GsonUtils.jsonToClass(decryptResult, ResultItem.class);
-
-                                if(null != resultItem && resultItem.sessionIsDisabled())
+                                if (null != resultItem && resultItem.sessionIsExpired())
                                 {
-                                    LoginActivity.actionLogin(mActivity);
+                                    AutoLoginPresenter autoLoginPresenter = new AutoLoginPresenterImpl(mActivity);
+                                    autoLoginPresenter.doAutoLogin();
                                     return;
                                 }
                             }
@@ -410,8 +413,7 @@ public class RequestUtils
                         {
                             mActivity.dismissProgressDialog();
                         }
-                        String errMsg = "错误信息没有";
-
+                        String errMsg = ERROR_SERVER;
                         if (error != null && !TextUtils.isEmpty(error.getMessage()))
                         {
                             errMsg = error.getMessage();

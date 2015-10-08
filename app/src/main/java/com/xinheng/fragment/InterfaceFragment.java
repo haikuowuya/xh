@@ -31,34 +31,31 @@ public class InterfaceFragment extends PTRListFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mLoginSuccessItem =  mActivity.getLoginSuccessItem();
+        mLoginSuccessItem = mActivity.getLoginSuccessItem();
         getListView().setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_interface, android.R.layout.simple_list_item_activated_1));
         if (null != mLoginSuccessItem)
         {
-            getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                {
-                    String text = parent.getAdapter().getItem(position).toString();
-                    if (getString(R.string.tv_activity_user_order).equals(text))
+            getListView().setOnItemClickListener(
+                    new AdapterView.OnItemClickListener()
                     {
-                        int a = 0;
-                        int b = 1;
-                        int c = b/a;
-//                        PostItem postListItem = new PostItem();
-//                        postListItem.userId = mLoginSuccessItem.id;
-//                        postListItem.page = "-1";
-//                        String mingPostBody = GsonUtils.toJson(postListItem);
-//                        // System.out.println("明文POST 数据 = " +mingPostBody );
-//                        String postBody = RSAUtil.clientEncrypt(mingPostBody);
-//                        System.out.println("加密POST 数据 = " + postBody);
-//                        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, APIURL.USER_ORDER_LIST, postBody, mLoginSuccessItem, InterfaceFragment.this);
-                    }
-                }
-            });
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            String text = parent.getAdapter().getItem(position).toString();
+                            if (getString(R.string.tv_activity_user_order).equals(text))
+                            {
+                            }
+                            if (position == 1)//session失效
+                            {
+                                LoginSuccessItem loginSuccessItem = mActivity.getLoginSuccessItem();
+                                loginSuccessItem.sessionId = "session_" + System.currentTimeMillis();
+                                mActivity.saveLoginSuccessItem(loginSuccessItem);
+                            }
+                        }
+                    });
         }
     }
+
     @Override
     public String getFragmentTitle()
     {
@@ -77,7 +74,7 @@ public class InterfaceFragment extends PTRListFragment implements DataView
     }
 
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         refreshComplete();
         if (null != resultItem)
@@ -87,7 +84,7 @@ public class InterfaceFragment extends PTRListFragment implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
         refreshComplete();
     }

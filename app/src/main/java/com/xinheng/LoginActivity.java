@@ -9,15 +9,21 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.xinheng.base.BaseActivity;
+import com.xinheng.mvp.model.LoginItem;
+import com.xinheng.mvp.model.LoginSuccessItem;
+import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
-import com.xinheng.mvp.view.impl.LoginViewImpl;
-import com.xinheng.slidingmenu.SlidingMenu;
+import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
+import com.xinheng.util.GsonUtils;
+import com.xinheng.util.MD5;
+import com.xinheng.util.RSAUtil;
 
 /**
  * 用户登录界面
  */
-public class LoginActivity extends BaseActivity
+public class LoginActivity extends BaseActivity implements DataView
 {
     public static final String DEFAULT_USERNAME = "15850217017";
     public static final String DEFAULT_PWD = "111111";
@@ -26,6 +32,7 @@ public class LoginActivity extends BaseActivity
 
     /**
      * 跳转到用户登录界面
+     *
      * @param activity ：当前跳转的Activity页面
      */
     public static void actionLogin(BaseActivity activity)
@@ -111,22 +118,22 @@ public class LoginActivity extends BaseActivity
      * 初始化用户名和用户密码
      * 如果通过Intent传递过来则使用Intent传递的用户名和密码，
      * 否则如果是测试阶段 {@link LoginActivity#DEFAULT_USERNAME}、{@link LoginActivity#DEFAULT_PWD} 不为空
-     *
      */
-    private  void initUsernamePwd()
+    private void initUsernamePwd()
     {
         String userName = DEFAULT_USERNAME;
         String pwd = DEFAULT_PWD;
-        if(!TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_USERNAME))&& !TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_PWD)))
+        if (!TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_USERNAME)) && !TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_PWD)))
         {
-            userName =getIntent().getStringExtra(EXTRA_USERNAME);
-            pwd =getIntent().getStringExtra(EXTRA_PWD);
+            userName = getIntent().getStringExtra(EXTRA_USERNAME);
+            pwd = getIntent().getStringExtra(EXTRA_PWD);
         }
         mEtUsername.setText(userName);
         mEtPwd.setText(pwd);
         mEtUsername.setSelection(userName.length());
         mEtPwd.setSelection(pwd.length());
     }
+
     /***
      * 按钮的点击事件
      */
@@ -144,6 +151,41 @@ public class LoginActivity extends BaseActivity
     {
         getTitleContainer().setVisibility(View.GONE);
         ((View) getContentViewGroup().getParent()).setPadding(0, 0, 0, 0);
+    }
+
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if (null != resultItem)
+        {
+            mActivity.showToast(resultItem.message);
+            if (resultItem.success())
+            {
+                LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
+                //   System.out.println("loginSuccessItem = " + loginSuccessItem);
+                if (null != loginSuccessItem)
+                {
+                    //登录成功后将加密后的用户名密码rsa字符串保存下来，用于session过期的自动登录
+                    String pwd = new MD5().getMD5_32(mEtPwd.getText().toString());
+                    LoginItem loginItem = new LoginItem(mEtUsername.getText().toString(), pwd);
+                    final String jsonLoginItem = GsonUtils.toJson(loginItem);
+                    //加密的字符串
+                    final String encryptUsernamePwd = RSAUtil.clientEncrypt(jsonLoginItem);
+                    mPreferences.edit().putString(Constants.PREF_RSA_USERNAME_PWD, encryptUsernamePwd).commit();
+                    //登录成功后将加密后的用户名密码rsa字符串保存下来，用于session过期的自动登录
+
+                    //保存登录信息
+                    mActivity.saveLoginSuccessItem(loginSuccessItem);
+                    MainActivity.actioMain(mActivity);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+        mActivity.showToast(msg);
     }
 
     private class OnViewClickListenerImpl implements View.OnClickListener
@@ -189,7 +231,7 @@ public class LoginActivity extends BaseActivity
             {
                 showCroutonToast("密码不可以为空");
             }
-            LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, new LoginViewImpl(mActivity));
+            LoginPresenter loginPresenter = new LoginPresenterImpl(mActivity, LoginActivity.this);
             loginPresenter.doLogin(username, pwd);
         }
 

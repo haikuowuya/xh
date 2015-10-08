@@ -25,6 +25,7 @@
     <string name="tv_activity_user_counsel_detail">咨询详情</string>
     <string name="tv_activity_user_account">我的账号</string>
     <string name="tv_activity_settings">系统设置</string>
+    <string name="tv_activity_photoview">图片详情</string>
     <string name="tv_activity_user_nickname">修改昵称</string>
     <string name="tv_activity_user_account_name">修改帐号昵称</string>
     <string name="tv_activity_account_security">账户安全</string>
@@ -37,6 +38,8 @@
     <string name="tv_activity_find_medical">轻松找药</string>
     <string name="tv_activity_user_medical_detail">病历详情</string>
     <string name="tv_activity_user_recipe_detail">处方详情</string>
+    <string name="tv_activity_user_check_detail">检查详情</string>
+    <string name="tv_activity_user_report_detail">报告详情</string>
     <string name="tv_activity_user_appointment_detail">预约详情</string>
     <string name="tv_activity_user_appointment_add_detail">预约加号详情</string>
     <string name="tv_activity_get_medical">按方抓药</string>

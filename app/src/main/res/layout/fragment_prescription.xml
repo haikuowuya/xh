@@ -245,6 +245,7 @@
                 android:inputType="phone"
                 android:digits="0123456789"
                 android:layout_marginTop="4dp"
+                android:text="1"
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
