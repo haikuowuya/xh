@@ -40,6 +40,7 @@
     <string name="tv_activity_user_recipe_detail">处方详情</string>
     <string name="tv_activity_user_check_detail">检查详情</string>
     <string name="tv_activity_user_report_detail">报告详情</string>
+    <string name="tv_activity_user_order_detail">订单详情</string>
     <string name="tv_activity_user_appointment_detail">预约详情</string>
     <string name="tv_activity_user_appointment_add_detail">预约加号详情</string>
     <string name="tv_activity_get_medical">按方抓药</string>

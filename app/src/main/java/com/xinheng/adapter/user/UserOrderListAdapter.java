@@ -131,19 +131,18 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                         {
                             if (resultItem != null)
                             {
-                                getActivity().showCroutonToast(resultItem.message);
+                                getActivity().showToast(resultItem.message);
                                 if (resultItem.success())
                                 {
                                     EventBus.getDefault().post(new OnDeleteUserOrderEvent(item));
                                 }
-
                             }
                         }
 
                         @Override
                         public void onGetDataFailured(String msg, String requestTag)
                         {
-                            getActivity().showCroutonToast(msg);
+                            getActivity().showToast(msg);
                         }
                     };
                     DeleteUserOrderPresenter deleteUserOrderPresenter = new DeleteUserOrderPresenterImpl(getActivity(), dataView);

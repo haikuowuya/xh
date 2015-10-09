@@ -106,6 +106,10 @@ public class APIURL
      */
     public static final String GET_USER_REPORT_DETAIL_URL = BASE_API_URL + "/interface/patient/myreport/getdetail";
     /***
+     * 我的订单详情URL
+     */
+    public static final String GET_USER_ORDER_DETAIL_URL = BASE_API_URL + "/interface/patient/myorder/getdetail";
+    /***
      *    我的检查详情URL
      */
     public static final String GET_USER_CHECK_DETAIL_URL = BASE_API_URL + "/interface/patient/mycheck/getdetail";
@@ -162,6 +166,10 @@ public class APIURL
      * 按方抓药，提交审核后提交订单
      */
     public static final String SAVE_ORDER_URL = BASE_API_URL + "/interface/patient/mall/saveconfirm";
+    /***
+     * 支付订单-修改订单状态
+     */
+    public static final String PAY_ORDER_URL = BASE_API_URL + "/interface/patient/mall/changeorder";
     /***
      * 科室医生-医生详情-添加关注接口URL
      */

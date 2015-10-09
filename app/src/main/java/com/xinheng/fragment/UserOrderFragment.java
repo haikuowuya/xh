@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.xinheng.R;
+import com.xinheng.UserOrderDetailActivity;
 import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnDeleteUserOrderEvent;
@@ -120,7 +122,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
             {
-                return  mListView.getFirstVisiblePosition() ==0;
+                return mListView.getFirstVisiblePosition() == 0;
             }
 
             public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
@@ -233,7 +235,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                 //  List<UserOrderItem>   userOrderItems = GsonUtils.jsonToResultItemToList( DATA, type);
                 if (null != userOrderItems && !userOrderItems.isEmpty())
                 {
-                  //  System.out.println("userOrderItems.size = " + userOrderItems.size());
+                    //  System.out.println("userOrderItems.size = " + userOrderItems.size());
                     mUserOrderItems.addAll(userOrderItems);
                     if (null == mUserOrderListAdapter)
                     {
@@ -277,6 +279,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                         mListView.setEmptyView(mActivity.findViewById(android.R.id.empty));
                     }
                 }
+                mListView.setOnItemClickListener(new OnItemClickListenerImpl());
             }
         }
     }
@@ -289,6 +292,19 @@ public class UserOrderFragment extends BaseFragment implements DataView
         if (mCurrentPage < 1)
         {
             mCurrentPage = 0;
+        }
+    }
+
+    private class OnItemClickListenerImpl implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
+            {
+                UserOrderItem userOrderItem = (UserOrderItem) parent.getAdapter().getItem(position);
+                UserOrderDetailActivity.actionUserOrderDetail(mActivity, userOrderItem.orderId);
+            }
         }
     }
 

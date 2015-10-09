@@ -133,7 +133,7 @@
 
         <Button
 
-            android:id="@+id/btn_confirm_order"
+            android:id="@+id/btn_pay_order"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginBottom="20dp"

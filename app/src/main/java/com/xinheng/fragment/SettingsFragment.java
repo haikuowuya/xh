@@ -1,6 +1,5 @@
 package com.xinheng.fragment;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -8,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.xinheng.LoginActivity;
@@ -25,7 +26,6 @@ import com.xinheng.util.Constants;
  */
 public class SettingsFragment extends BaseFragment implements DataView
 {
-    private Bitmap mBitmap;
 
     public static SettingsFragment newInstance()
     {
@@ -42,6 +42,13 @@ public class SettingsFragment extends BaseFragment implements DataView
      */
     private LinearLayout mLinearAccountLogoutContainer;
 
+    /***
+     * 自动登录
+     */
+    private LinearLayout mLinearAutoLoginContainer;
+
+    private CheckBox mCbAutoLogin;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -53,8 +60,11 @@ public class SettingsFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
+        mLinearAutoLoginContainer = (LinearLayout) view.findViewById(R.id.linear_auto_login_container);
+        mCbAutoLogin = (CheckBox) view.findViewById(R.id.cb_auto_login);
         mLinearAccountLogoutContainer = (LinearLayout) view.findViewById(R.id.linear_account_logout_container);
         mLinearCacheContainer = (LinearLayout) view.findViewById(R.id.linear_cache_container);
+        mCbAutoLogin.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_AUTO_LOGIN,true));
     }
 
     @Override
@@ -69,6 +79,16 @@ public class SettingsFragment extends BaseFragment implements DataView
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mLinearAccountLogoutContainer.setOnClickListener(onClickListener);
         mLinearCacheContainer.setOnClickListener(onClickListener);
+        mLinearAutoLoginContainer.setOnClickListener(onClickListener);
+        mCbAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,isChecked).commit();
+
+            }
+        });
     }
 
     @Override
@@ -104,8 +124,18 @@ public class SettingsFragment extends BaseFragment implements DataView
                 case R.id.linear_account_logout_container://
                     logout();
                     break;
+                case R.id.linear_auto_login_container://
+                    autoLogin();
+                    break;
             }
         }
+    }
+
+    private void autoLogin()
+    {
+        boolean isAutoLogin = mCbAutoLogin.isChecked();
+        mCbAutoLogin.setChecked(!isAutoLogin);
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,mCbAutoLogin.isChecked()).commit();
     }
 
     /***
@@ -131,7 +161,7 @@ public class SettingsFragment extends BaseFragment implements DataView
                 mActivity.dismissProgressDialog();
                 mActivity.showToast("清除成功");
             }
-        }, 2000L);
+        }, 1200L);
     }
 
 }

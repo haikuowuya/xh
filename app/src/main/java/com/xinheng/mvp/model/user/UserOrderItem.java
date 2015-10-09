@@ -18,25 +18,25 @@ public class UserOrderItem extends BaseEmptyItem
 
     public static final String ORDER_STATUS_ALL = "-1";
     /**
-     * 未付款
+     * 未提交审核
      */
     public static final String ORDER_STATUS_0 = "0";
     /**
-     * 已付款
+     * 审核中
      */
     public static final String ORDER_STATUS_1 = "1";
     /**
-     * 已关闭
+     * 审核不通过
      */
     public static final String ORDER_STATUS_2 = "2";
 
     /**
-     * 已发药
+     * 未付款
      */
     public static final String ORDER_STATUS_3 = "3";
 
     /**
-     * 申请退款
+     * 已经付款
      */
     public static final String ORDER_STATUS_4 = "4";
 

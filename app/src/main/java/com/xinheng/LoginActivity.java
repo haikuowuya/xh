@@ -140,7 +140,7 @@ public class LoginActivity extends BaseActivity implements DataView
     protected void onResume()
     {
         super.onResume();
-        if(mActivity.getLoginSuccessItem() !=null &&!TextUtils.isEmpty(mActivity.getPreferences().getString(Constants.PREF_RSA_USERNAME_PWD, null)))
+        if(mActivity.getPreferences().getBoolean(Constants.PREF_IS_AUTO_LOGIN,false) && mActivity.getLoginSuccessItem() !=null &&!TextUtils.isEmpty(mActivity.getPreferences().getString(Constants.PREF_RSA_USERNAME_PWD, null)))
         {
             AutoLoginPresenter autoLoginPresenter = new AutoLoginPresenterImpl(mActivity);
             autoLoginPresenter.doAutoLogin();

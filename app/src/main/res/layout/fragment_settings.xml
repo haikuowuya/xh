@@ -26,8 +26,6 @@
             android:background="@drawable/shape_user_account_info_background"
             android:orientation="vertical"
             android:padding="0.5dp">
-
-
             <LinearLayout
                 android:id="@+id/linear_cache_container"
                 android:layout_width="match_parent"
@@ -58,6 +56,39 @@
                     android:layout_gravity="center"
                     android:padding="14dp"
                     android:src="@mipmap/ic_find_medical_arrow"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_auto_login_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="自动登录"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:text=""/>
+
+                <CheckBox
+                    android:id="@+id/cb_auto_login"
+                    android:layout_width="@dimen/dimen_list_single_item_height"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10dp"/>
             </LinearLayout>
 
             <LinearLayout

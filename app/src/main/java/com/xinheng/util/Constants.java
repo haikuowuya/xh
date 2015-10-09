@@ -51,5 +51,6 @@ public class Constants
      */
     public static final String USER_ID = "userId";
     public static final String PREF_LOGIN = "login";
+    public static final String PREF_IS_AUTO_LOGIN = "is_auto_login";
     public static  final String PREF_RSA_USERNAME_PWD="rsa_username_pwd" ;
 }

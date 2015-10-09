@@ -2,10 +2,6 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +12,13 @@ import android.widget.TextView;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.user.UserRecipeDetailItem;
+import com.xinheng.mvp.model.user.UserReportDetailItem;
 import com.xinheng.mvp.presenter.UserReportDetailPresenter;
 import com.xinheng.mvp.presenter.impl.UserReportDetailPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.view.CustomGridView;
 
 /**
  * 作者： raiyi-suzhou
@@ -50,43 +47,31 @@ public class UserReportDetailFragment extends BaseFragment implements DataView
     private ScrollView mScrollView;
 
     /**
-     * 患者姓名
+     * 报告名称
      */
-    private TextView mTvPatientName;
+    private TextView mTvReportName;
     /***
-     * 开具处方日期
+     *  日期
      */
-    private TextView mTvRecipeTime;
+    private TextView mTvReportTime;
     /***
-     * 科室信息
+     * 类型
      */
-    private TextView mTvDepartName;
+    private TextView mTvReportType;
     /***
-     * 主治医师
+     * 医院
      */
-    private TextView mTvDoctorName;
+    private TextView mTvHospitalName;
 
-    /***
-     * 处方信息
-     */
-    private LinearLayout mLinearRecipeContainer;
+    private TextView mTvReportImgStatus;
 
-    /***
-     *
-     */
-    private LinearLayout mLinearMoneyContainer;
-    /***
-     * 支付钱
-     */
-    private TextView mTvMoney;
-    /***
-     * 支付
-     */
-    private TextView mTvPay;
-    /**
-     * 剂数
-     */
-    private TextView mTvQuantity;
+    private CustomGridView mCustomGridView;
+
+    private LinearLayout mLinearReportPatientDoctorContainer;
+    private  TextView mTvReportPatient;
+    private  TextView mTvReportPerson;
+    private  TextView mTvReportDate;
+    private TextView mTvReportDoctor;
 
     @Nullable
     @Override
@@ -99,17 +84,18 @@ public class UserReportDetailFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
-        mTvRecipeTime = (TextView) view.findViewById(R.id.tv_recipe_time);
-        mTvPatientName = (TextView) view.findViewById(R.id.tv_patient_name);
-        mTvDepartName = (TextView) view.findViewById(R.id.tv_dept_name);
-        mTvDoctorName = (TextView) view.findViewById(R.id.tv_doctor_name);
-        mTvMoney = (TextView) view.findViewById(R.id.tv_money);
-        mTvPay = (TextView) view.findViewById(R.id.tv_pay);
-        mTvQuantity = (TextView) view.findViewById(R.id.tv_quantity);
+        mTvReportTime = (TextView) view.findViewById(R.id.tv_report_time);
+        mTvReportName = (TextView) view.findViewById(R.id.tv_report_name);
+        mTvReportType = (TextView) view.findViewById(R.id.tv_report_type);
+        mTvHospitalName = (TextView) view.findViewById(R.id.tv_hospital_name);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
-        mLinearRecipeContainer = (LinearLayout) view.findViewById(R.id.linear_recipe_container);
-        mLinearMoneyContainer = (LinearLayout) view.findViewById(R.id.linear_money_container);
-        mLinearMoneyContainer.setVisibility(View.GONE);
+        mCustomGridView = (CustomGridView) view.findViewById(R.id.custom_gridview);
+        mTvReportImgStatus = (TextView) view.findViewById(R.id.tv_report_img_status);
+        mTvReportDate = (TextView) view.findViewById(R.id.tv_report_date);
+        mTvReportDoctor = (TextView) view.findViewById(R.id.tv_report_doctor);
+        mTvReportPatient = (TextView) view.findViewById(R.id.tv_report_patient);
+        mTvReportPerson = (TextView) view.findViewById(R.id.tv_report_person);
+        mLinearReportPatientDoctorContainer = (LinearLayout) view.findViewById(R.id.linear_report_patient_doctor_container);
     }
 
     @Override
@@ -124,13 +110,12 @@ public class UserReportDetailFragment extends BaseFragment implements DataView
     private void setListener()
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
-        mTvPay.setOnClickListener(onClickListener);
     }
 
     @Override
     protected void doGetData()
     {
-        UserReportDetailPresenter userReportDetailPresenter = new UserReportDetailPresenterImpl(mActivity,this);
+        UserReportDetailPresenter userReportDetailPresenter = new UserReportDetailPresenterImpl(mActivity, this);
         userReportDetailPresenter.doGetUserReportDetail(mUserReportId);
         mScrollView.setVisibility(View.GONE);
     }
@@ -149,54 +134,43 @@ public class UserReportDetailFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                UserRecipeDetailItem userRecipeDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserRecipeDetailItem.class);
-                if (null != userRecipeDetailItem)
+
+                UserReportDetailItem userReportDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserReportDetailItem.class);
+                if (null != userReportDetailItem)
                 {
-                    showUserRecipeInfo(userRecipeDetailItem);
+                    showUserReportInfo(userReportDetailItem);
                 }
             }
         }
     }
 
-    private void showUserRecipeInfo(UserRecipeDetailItem userRecipeDetailItem)
+    private void showUserReportInfo(UserReportDetailItem userReportDetailItem)
     {
-        if (null != userRecipeDetailItem)
+        if (null != userReportDetailItem)
         {
             mScrollView.setVisibility(View.VISIBLE);
-            mTvPatientName.setText("就诊人：" + userRecipeDetailItem.patient);
-            mTvRecipeTime.setText("开具日期：" + DateFormatUtils.format(userRecipeDetailItem.prescTime, true, false));
-            mTvDepartName.setText(" 科  别 ：" + userRecipeDetailItem.department);
-            mTvDoctorName.setText("主治医师：" + userRecipeDetailItem.doctor);
-            if (null != userRecipeDetailItem.prescription && null != userRecipeDetailItem.prescription.list && !userRecipeDetailItem.prescription.list.isEmpty())
+            mTvReportName.setText("名称：" + userReportDetailItem.name);
+            mTvReportTime.setText("日期：" + DateFormatUtils.format(userReportDetailItem.checkTime, true, false));
+            String type = "用户上传";
+            if (UserReportDetailItem.TYPE_0.equals(userReportDetailItem.type))
             {
-                mLinearMoneyContainer.setVisibility(View.VISIBLE);
-                mTvQuantity.setText(userRecipeDetailItem.prescription.quantity + "剂");
-                for (int i = 0; i < userRecipeDetailItem.prescription.list.size(); i++)
-                {
-                    View childItem = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_recipe_detail_recipe_item, null);
-                    TextView tvName = (TextView) childItem.findViewById(R.id.tv_name);
-                    TextView tvNum = (TextView) childItem.findViewById(R.id.tv_num);
-                    TextView tvUnit = (TextView) childItem.findViewById(R.id.tv_unit);
-                    tvName.getPaint().setFakeBoldText(false);
-                    tvNum.getPaint().setFakeBoldText(false);
-                    tvUnit.getPaint().setFakeBoldText(false);
-                    UserRecipeDetailItem.ListItem listItem = userRecipeDetailItem.prescription.list.get(i);
-                    tvName.setText(listItem.name + "");
-                    tvNum.setText(listItem.num + "");
-                    tvUnit.setText(listItem.unit + "");
-                    mLinearRecipeContainer.addView(childItem);
-                }
-                String money = "0.0";
-                if (!TextUtils.isEmpty(userRecipeDetailItem.prescription.cost))
-                {
-                    money = userRecipeDetailItem.prescription.cost;
-                }
-                String HJ = "合计：";
-                SpannableStringBuilder spannableText = new SpannableStringBuilder(HJ + "￥" + money + "元");
-                spannableText.setSpan(new ForegroundColorSpan(0xFFFF5906), HJ.length(), spannableText.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                mTvMoney.setText(spannableText);
+                type = "医院同步";
+                mLinearReportPatientDoctorContainer.setVisibility(View.VISIBLE);
+                mTvReportPerson.setText("送检员：" + userReportDetailItem.checkPersonName);
+                mTvReportPatient.setText("患者姓名：" + userReportDetailItem.patient);
+                mTvReportDoctor.setText("送检医生："+ userReportDetailItem.doctor);
+                mTvReportDate.setText("送检日期：" + DateFormatUtils.format(userReportDetailItem.reportDate,true,false));
             }
-            mScrollView.fullScroll(View.FOCUS_DOWN);
+            mTvReportType.setText("类型：" + type);
+            mTvHospitalName.setText("医院：" + userReportDetailItem.institution);
+            if(userReportDetailItem.reportimgs != null && !userReportDetailItem.reportimgs.isEmpty())
+            {
+                mTvReportImgStatus.setVisibility(View.GONE);
+            }
+            else
+            {
+                mTvReportImgStatus.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -212,9 +186,6 @@ public class UserReportDetailFragment extends BaseFragment implements DataView
         {
             switch (v.getId())
             {
-                case R.id.tv_pay://立即支付
-                    pay();
-                    break;
             }
         }
 

@@ -216,6 +216,8 @@
                   android:label="@string/tv_activity_user_report_detail"/>
         <activity android:name=".UserCheckDetailActivity"
                   android:label="@string/tv_activity_user_check_detail"/>
+        <activity android:name=".UserOrderDetailActivity"
+                  android:label="@string/tv_activity_user_order_detail"/>
     </application>
 
 </manifest>

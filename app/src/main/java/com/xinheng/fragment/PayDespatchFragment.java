@@ -2,6 +2,7 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,30 @@ public class PayDespatchFragment extends BaseFragment
     public void onPause()
     {
         super.onPause();
+        if(TextUtils.isEmpty(mPostPayDespatchItem.payType) ||TextUtils.isEmpty(mPostPayDespatchItem.despatchType))
+        {
+            if(mBtnDespatchNormal.isActivated())
+            {
+                mPostPayDespatchItem.despatchType = PostPayDespatchItem.DESPATCH_NORMAL;
+            }
+            else
+            {
+                mPostPayDespatchItem.despatchType = PostPayDespatchItem.DESPATCH_SELF;
+            }
+
+            if(mBtnPayAccount.isActivated())
+            {
+                mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_ACCOUNT;
+            }
+            else if(mBtnPayOffLine.isActivated())
+            {
+                mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_OFFLINE;
+            }
+            else
+            {
+                mPostPayDespatchItem.payType = PostPayDespatchItem.PAY_ONLINE;
+            }
+        }
         EventBus.getDefault().post(new OnSelectPayDespatchEvent(mPostPayDespatchItem));
     }
 
