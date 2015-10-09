@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.xinheng.APIURL;
 import com.xinheng.LoginActivity;
+import com.xinheng.MainActivity;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.LoginSuccessItem;
@@ -38,10 +39,12 @@ public class AutoLoginPresenterImpl implements AutoLoginPresenter
         if (TextUtils.isEmpty(encryptUsernamePwd))
         {
             mActivity.showToast("自动登录失败，请重新点击登录按钮登录");
-            LoginActivity.actionLogin(mActivity);
+            if(!(mActivity instanceof  LoginActivity))
+            {
+                LoginActivity.actionLogin(mActivity);
+            }
             return;
         }
-
         String loginUrl = APIURL.LOGIN_URL;
         DataView dataView = new DataView()
         {
@@ -53,8 +56,16 @@ public class AutoLoginPresenterImpl implements AutoLoginPresenter
                     LoginSuccessItem loginSuccessItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), LoginSuccessItem.class);
                     if (null != loginSuccessItem)
                     {
-                        mActivity.showToast("自动登录成功");
+
                         mActivity.saveLoginSuccessItem(loginSuccessItem);
+                        if(mActivity instanceof  LoginActivity)
+                        {      mActivity.showToast("自动登录成功");
+                            MainActivity.actioMain(mActivity);
+                        }
+                        else
+                        {
+                            mActivity.showToast("session过期，自动登录成功");
+                        }
                     }
                 }
             }
@@ -63,7 +74,10 @@ public class AutoLoginPresenterImpl implements AutoLoginPresenter
             public void onGetDataFailured(String msg, String requestTag)
             {
                 mActivity.showToast("自动登录失败，请重新点击登录按钮登录");
-                LoginActivity.actionLogin(mActivity);
+                if(!(mActivity instanceof  LoginActivity))
+                {
+                    LoginActivity.actionLogin(mActivity);
+                }
             }
         };
         RequestUtils.getDataFromUrlByPost(mActivity, loginUrl, encryptUsernamePwd, dataView);

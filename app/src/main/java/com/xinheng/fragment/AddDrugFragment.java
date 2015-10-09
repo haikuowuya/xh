@@ -35,7 +35,7 @@ import de.greenrobot.event.EventBus;
  * 时间： 17:48
  * 说明：  按方抓药-添加药品Fragment页面
  */
-public class AddDrugFragment extends BaseFragment   implements DataView
+public class AddDrugFragment extends BaseFragment  implements DataView
 {
     public static AddDrugFragment newInstance()
     {
@@ -75,8 +75,6 @@ public class AddDrugFragment extends BaseFragment   implements DataView
         mListView = (ListView) view.findViewById(R.id.lv_listview);
     }
 
-
-
     @Override
     public void onPause()
     {
@@ -97,7 +95,7 @@ public class AddDrugFragment extends BaseFragment   implements DataView
     {
         if(resultItem != null)
         {
-            mActivity.showCroutonToast(resultItem.message);
+            mActivity.showToast(resultItem.message);
             if(resultItem.success())
             {
                 Type type = new TypeToken<List<DrugItem>>()

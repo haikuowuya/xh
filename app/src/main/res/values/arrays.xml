@@ -40,32 +40,25 @@
         <item>ICU</item>
 
     </string-array>
-    
-    
+
+
     <string-array name="array_order">
         <item>全部~-1</item>
-        <item>未付款~0</item>
-        <item>已付款~1</item>
-        <item>已关闭~2</item>
-        <item>已发药~3</item>
+        <item>未提交审核~0</item>
+        <item>审核中~1</item>
+        <item>审核不通过~2</item>
+        <item>未付款~3</item>
+        <item>已付款~4</item>
+        <item>申请退款~5</item>
+        <item>退款成功~6</item>
+        <item>退款失败~7</item>
+        <item>已发药~8</item>
+        <item>待评价~9</item>
+        <item>交易完成~10</item>
+        <item>已关闭~11</item>
+
 
     </string-array>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <array name="array_photo_choose">
@@ -74,20 +67,10 @@
     </array>
 
 
-
-
-
-
-
-
-
-
-
-
     <string-array name="array_user_grid_nav">
-    <item>ic_user_counsel~我的咨询</item>
-    <item>ic_user_subscribe~我的预约</item>
-    <item>ic_user_remind~我的提醒</item>
+        <item>ic_user_counsel~我的咨询</item>
+        <item>ic_user_subscribe~我的预约</item>
+        <item>ic_user_remind~我的提醒</item>
     </string-array>
     <string-array name="array_user_list_nav">
         <item>ic_user_doctor~我的医生</item>

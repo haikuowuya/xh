@@ -51,6 +51,18 @@
             android:visibility="visible"
             tools:visibility="visible"/>
 
+        <TextView
+            android:id="@+id/tv_right_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="#FFFFFFFF"
+            android:textSize="16sp"
+            tools:text="标题"/>
+
     </RelativeLayout>
 
     <ImageView

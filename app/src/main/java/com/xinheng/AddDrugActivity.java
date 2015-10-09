@@ -2,6 +2,8 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.AddDrugFragment;
@@ -24,12 +26,31 @@ public class AddDrugActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-          setContentView(R.layout.activity_activity_common);
+        setContentView(R.layout.activity_activity_common);
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, AddDrugFragment.newInstance()).commit();
-
+          configTitle();
     }
 
+    private void configTitle()
+    {
+        TextView tvRightTitle = getRightTitleView();
+        if (null != tvRightTitle)
+        {
+            tvRightTitle.setVisibility(View.VISIBLE);
+            setIvRightVisibility(View.GONE);
+            tvRightTitle.setText("完成");
+            tvRightTitle.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            mActivity.finish();
+                        }
+                    });
+        }
 
+    }
 
     @Override
     public CharSequence getActivityTitle()

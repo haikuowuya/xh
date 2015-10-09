@@ -208,6 +208,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mLinearDrugContainer = (LinearLayout) view.findViewById(R.id.linear_drug_container);
         mLinearDrugContainer.setVisibility(View.GONE);
         mBtnEdit.setVisibility(View.GONE);
+        mBtnSubmit.setVisibility(View.GONE);
         setTextPrice(0.00);
     }
 
@@ -218,6 +219,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         if (null != mLinearDrugContainer && null != event && event.mDrugItems != null && !event.mDrugItems.isEmpty())
         {
             mLinearDrugContainer.removeAllViews();
+            mBtnSubmit.setVisibility(View.VISIBLE);
             mDrugItems = event.mDrugItems;
 //            mActivity.showCroutonToast("event.size = " + event.mDrugItems.size());
             mBtnEdit.setVisibility(View.VISIBLE);
@@ -238,6 +240,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         mBtnAddMedical.setText(TEXT_FINISHED);
         mBtnEdit.setVisibility(View.GONE);
+        mBtnSubmit.setVisibility(View.GONE);
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
             View view = mLinearDrugContainer.getChildAt(i);
@@ -253,6 +256,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     {
         mBtnAddMedical.setText(TEXT_ADD_MEDICAL);
         mBtnEdit.setVisibility(View.VISIBLE);
+        mBtnSubmit.setVisibility(View.VISIBLE);
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
             View view = mLinearDrugContainer.getChildAt(i);

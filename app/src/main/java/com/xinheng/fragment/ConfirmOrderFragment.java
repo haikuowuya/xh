@@ -291,7 +291,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     mActivity.showToast(resultItem.message);
                     if (resultItem.success())
                     {
-                        UserOrderActivity.actionUserOrder(mActivity, 2);
+                        UserOrderActivity.actionUserOrder(mActivity, 5);
                         mActivity.finish();
                     }
                 }
@@ -435,7 +435,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     {
                         dialog.dismiss();
                         OrderDetailPopupWindowUtils.dismiss();
-                        UserOrderActivity.actionUserOrder(mActivity, 1);
+                        UserOrderActivity.actionUserOrder(mActivity, 4);
                         mActivity.finish();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener()

@@ -10,6 +10,7 @@ import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.prescription.PostSavePrescriptionItem;
 import com.xinheng.mvp.presenter.SavePrescriptionPresenter;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 import com.xinheng.util.DebugUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
@@ -98,6 +99,8 @@ public class SavePrescriptionPresenterImpl implements SavePrescriptionPresenter
         postMap.put("result", item.result);
         postMap.put("quantity", item.quantity);
         postMap.put("drugQuantitys", GsonUtils.toJson(item.drugQuantity));
+        //添加一个hid, 目前写死在 Constants.HID常量字段中， 要加密
+        postMap.put("hid", RSAUtil.clientEncrypt(Constants.HID)) ;
         mActivity.showProgressDialog();
         OkHttpUtils.customXHAsyncExecuteWithFile(userMedicalUrl, mActivity.getLoginSuccessItem(), postMap, item.file, callback);
     }

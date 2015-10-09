@@ -12,7 +12,9 @@ import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.LoginItem;
 import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.AutoLoginPresenter;
 import com.xinheng.mvp.presenter.LoginPresenter;
+import com.xinheng.mvp.presenter.impl.AutoLoginPresenterImpl;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.Constants;
@@ -132,6 +134,17 @@ public class LoginActivity extends BaseActivity implements DataView
         mEtPwd.setText(pwd);
         mEtUsername.setSelection(userName.length());
         mEtPwd.setSelection(pwd.length());
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if(mActivity.getLoginSuccessItem() !=null &&!TextUtils.isEmpty(mActivity.getPreferences().getString(Constants.PREF_RSA_USERNAME_PWD, null)))
+        {
+            AutoLoginPresenter autoLoginPresenter = new AutoLoginPresenterImpl(mActivity);
+            autoLoginPresenter.doAutoLogin();
+        }
     }
 
     /***

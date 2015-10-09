@@ -15,6 +15,7 @@ import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.Constants;
 
 /**
  * 作者： raiyi-suzhou
@@ -112,6 +113,7 @@ public class SettingsFragment extends BaseFragment implements DataView
      */
     private void logout()
     {
+        mActivity.getPreferences().edit().remove(Constants.PREF_RSA_USERNAME_PWD).commit();
         LoginActivity.actionLogin(mActivity);
     }
 
