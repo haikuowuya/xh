@@ -89,6 +89,10 @@ public class UserOrderItem extends BaseEmptyItem
      */
     public String fee;
     /**
+     * 配送价格
+     */
+    public String  despatchFee   ;
+    /**
      * 订单中药品信息
      */
     public List<OrderMedicalItem> orderList;

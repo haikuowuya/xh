@@ -16,9 +16,11 @@ import com.xinheng.fragment.AddDrugFragment;
  */
 public class AddDrugActivity extends BaseActivity
 {
-    public static void actionAddDrug(BaseActivity activity)
+    private  static  final  String EXTRA_DRUG_ITEMS_JSON="drug_items_json";
+    public static void actionAddDrug(BaseActivity activity,String drugItemsJson)
     {
         Intent intent = new Intent(activity, AddDrugActivity.class);
+        intent.putExtra(EXTRA_DRUG_ITEMS_JSON, drugItemsJson);
         activity.startActivity(intent);
     }
 
@@ -27,7 +29,9 @@ public class AddDrugActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_common);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, AddDrugFragment.newInstance()).commit();
+        String drugItemsJson = getIntent().getStringExtra(EXTRA_DRUG_ITEMS_JSON);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, AddDrugFragment.newInstance(drugItemsJson)).commit();
           configTitle();
     }
 

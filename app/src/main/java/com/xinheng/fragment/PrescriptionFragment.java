@@ -6,9 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,29 +163,6 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mBtnAddMedical.setOnClickListener(onClickListener);
         mBtnSavePrescription.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
-        mEtQuantity.addTextChangedListener(
-                new TextWatcher()
-                {
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after)
-                    {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count)
-                    {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s)
-                    {
-                        if (mDrugItems != null && !mDrugItems.isEmpty() && mPrice > 0.0)
-                        {
-                            setTextPrice(mPrice);
-                        }
-                    }
-                });
     }
 
     private void initView(View view)
@@ -216,23 +191,31 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     @Subscribe
     public void onEventMainThread(OnAddDrugItemEvent event)
     {
-        if (null != mLinearDrugContainer && null != event && event.mDrugItems != null && !event.mDrugItems.isEmpty())
+        if (null != mLinearDrugContainer && null != event && event.mDrugItems != null )
         {
             mLinearDrugContainer.removeAllViews();
-            mBtnSubmit.setVisibility(View.VISIBLE);
+            if( !event.mDrugItems.isEmpty())
+            {
+                mBtnSubmit.setVisibility(View.VISIBLE);
+                mBtnEdit.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mBtnSubmit.setVisibility(View.GONE);
+                mBtnEdit.setVisibility(View.GONE);
+            }
             mDrugItems = event.mDrugItems;
 //            mActivity.showCroutonToast("event.size = " + event.mDrugItems.size());
-            mBtnEdit.setVisibility(View.VISIBLE);
+
             fillLinearDrugContainer(event.mDrugItems);
-            mBtnEdit.setOnClickListener(
-                    new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            onEdit();
-                        }
-                    });
+            mBtnEdit.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    onEdit();
+                }
+            });
         }
     }
 
@@ -243,7 +226,10 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mBtnSubmit.setVisibility(View.GONE);
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
-            View view = mLinearDrugContainer.getChildAt(i);
+            ViewGroup view = (ViewGroup) mLinearDrugContainer.getChildAt(i);
+            int height = DensityUtils.dpToPx(mActivity,100.f);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
+            view.getChildAt(0).setLayoutParams(params);
             if (view.findViewById(R.id.relative_normal) != null)
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.GONE);
@@ -259,7 +245,11 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         mBtnSubmit.setVisibility(View.VISIBLE);
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
-            View view = mLinearDrugContainer.getChildAt(i);
+
+            ViewGroup view = (ViewGroup) mLinearDrugContainer.getChildAt(i);
+            int height = DensityUtils.dpToPx(mActivity,96.f);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
+            view.getChildAt(0).setLayoutParams(params);
             if (view.findViewById(R.id.relative_normal) != null)
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.VISIBLE);
@@ -398,10 +388,10 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     private void setTextPrice(double price)
     {
         long quantity = 1;
-        if (!TextUtils.isEmpty(mEtQuantity.getText()) && TextUtils.isDigitsOnly(mEtQuantity.getText()))
-        {
-            quantity = Long.parseLong(mEtQuantity.getText().toString());
-        }
+//        if (!TextUtils.isEmpty(mEtQuantity.getText()) && TextUtils.isDigitsOnly(mEtQuantity.getText()))
+//        {
+//            quantity = Long.parseLong(mEtQuantity.getText().toString());
+//        }
         double countPrice = quantity * price;
         mTvPrice.setText("￥" + new java.text.DecimalFormat("#0.00").format(countPrice) + "元");
     }
@@ -452,7 +442,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     @Override
     public void onGetDataFailured(String msg, String requestTag)
     {
-        mActivity.showCroutonToast(msg);
+        mActivity.showToast(msg);
     }
 
     private class OnClickListenerImpl implements View.OnClickListener
@@ -467,7 +457,12 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 case R.id.btn_add_medical://添加药品
                     if (mBtnAddMedical.getText().toString().equals(TEXT_ADD_MEDICAL))
                     {
-                        AddDrugActivity.actionAddDrug(mActivity);
+                        String itemsJson = null;
+                        if(null != mDrugItems)
+                        {
+                            itemsJson= GsonUtils.toJson(mDrugItems);
+                        }
+                        AddDrugActivity.actionAddDrug(mActivity,itemsJson);
                     } else
                     {
                         onEditFinsh();
@@ -535,9 +530,9 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         String quantity = mEtQuantity.getText().toString();
         if (TextUtils.isEmpty(quantity))
         {
-//            mActivity.showCroutonToast("请输入服用剂数");
-//            return;
-            quantity = "1";
+            mActivity.showCroutonToast("请输入服用剂数");
+            return;
+//            quantity = "1";
         }
         //userid字段此处可以不赋值，后面会获取登录信息的userid
         PostSavePrescriptionItem item = new PostSavePrescriptionItem();

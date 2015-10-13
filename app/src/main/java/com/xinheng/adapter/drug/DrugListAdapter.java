@@ -1,5 +1,7 @@
 package com.xinheng.adapter.drug;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,10 +11,10 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.prescription.DrugItem;
 
 import java.util.LinkedList;
@@ -29,6 +31,16 @@ public class DrugListAdapter extends BaseAdapter<DrugItem>
     {
         super(activity, R.layout.list_drug_item, data);
     }
+    public DrugListAdapter(BaseActivity activity, List<DrugItem> data,List<DrugItem> selectedItems)
+    {
+        super(activity, R.layout.list_drug_item, data);
+        if(null != selectedItems && !selectedItems.isEmpty())
+        {
+            mSelectedItems.clear();
+             mSelectedItems.addAll(selectedItems);
+        }
+    }
+
 
     public LinkedList<DrugItem> getSelectedItems()
     {
@@ -86,6 +98,77 @@ public class DrugListAdapter extends BaseAdapter<DrugItem>
                 }
                 else
                 {
+                    if(mSelectedItems != null && !mSelectedItems.isEmpty())
+                    {
+                        String name = "";
+                        for (DrugItem item : mSelectedItems)
+                        {
+                            name += item.name;
+                        }
+                        if (name.contains(BAI_SHAO) )
+                        {
+                            if (drugItem.name.equals(XUAN_SHEN) || drugItem.name.equals(XI_XIN))
+                            {
+                                getActivity().showToast(BAI_SHAO+ " 与 "+drugItem.name+" 存在配伍禁忌，禁止搭配服用！");
+                                return;
+                            }
+                        }
+
+                        if (name.contains(XUAN_SHEN)  || drugItem.name.equals(XI_XIN))
+                        {
+                            if (drugItem.name.equals(BAI_SHAO))
+                            {
+                                getActivity().showToast(name + " 与 "+drugItem.name+" 存在配伍禁忌，禁止搭配服用！");
+                                return;
+                            }
+                        }
+
+
+
+                        if (name.contains(GAN_CAO) )
+                        {
+                            if (drugItem.name.equals(HAI_ZAO) )
+                            {
+                                getActivity().showToast(GAN_CAO +" 与 "+drugItem.name+" 存在配伍禁忌，禁止搭配服用！");
+                                return;
+                            }
+                        }
+                        if (name.contains(HAI_ZAO) )
+                        {
+                            if (drugItem.name.equals(GAN_CAO))
+                            {
+                                getActivity().showToast(HAI_ZAO + " 与 " + drugItem.name + " 存在配伍禁忌，禁止搭配服用！");
+                                return;
+                            }
+                        }
+
+
+                    }
+
+                    if(drugItem.name.equals(SHU_DA_HUANG))
+                    {
+                        new AlertDialog.Builder(getActivity()).setTitle("妊娠禁忌提示").setMessage("熟大黄为孕妇禁忌药品，是否要继续加入您的处方？").setPositiveButton("确定", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                tvAdd.setText("取消");
+                                mSelectedItems.add(drugItem);
+                                tvAdd.setBackgroundResource(R.drawable.btn_cancle_click_gray_selector);
+                                dialog.dismiss();
+
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                                            dialog.dismiss();
+                            }
+                        }).show();
+                        return;
+                    }
+
                     tvAdd.setText("取消");
                     mSelectedItems.add(drugItem);
                     tvAdd.setBackgroundResource(R.drawable.btn_cancle_click_gray_selector);
@@ -93,4 +176,16 @@ public class DrugListAdapter extends BaseAdapter<DrugItem>
             }
         });
     }
+
+
+
+
+    public static final String GAN_CAO="甘草";
+    public static final String BAI_SHAO="白芍";
+    public static final String HAI_ZAO="海藻";
+    public static final String XUAN_SHEN="玄参";
+    public static final String XI_XIN="细辛";
+    public static final String CHAO="炒";
+    public static final String SHU_DA_HUANG="熟大黄";
+
 }

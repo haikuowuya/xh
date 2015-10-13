@@ -60,7 +60,6 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class OnlineFragment extends BaseFragment implements DataView
 {
-
     /**
      * 顶部的滚动广告位置
      */
@@ -85,6 +84,11 @@ public class OnlineFragment extends BaseFragment implements DataView
     private TabViewPagerIndicator mTabViewPagerIndicator;
 
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
+
+    /**
+     * 是否显示进度对话框 ，第一次没有缓存数据时显示，
+     */
+    private  boolean mShowProgressDialog = true;
 
     public static OnlineFragment newInstance()
     {
@@ -264,6 +268,7 @@ public class OnlineFragment extends BaseFragment implements DataView
         if (!TextUtils.isEmpty(cacheJson))
         {
             HomeOnLineItem homeOnLineItem = GsonUtils.jsonToClass(cacheJson, HomeOnLineItem.class);
+            mShowProgressDialog = homeOnLineItem ==null;
             if (null != homeOnLineItem)
             {
                 fillHomeOnLineItemDataToView(homeOnLineItem);
@@ -281,7 +286,7 @@ public class OnlineFragment extends BaseFragment implements DataView
     @Override
     protected void doGetData()
     {
-        OnLinePresenter onLinePresenter = new OnLinePresenterImpl(mActivity, this);
+        OnLinePresenter onLinePresenter = new OnLinePresenterImpl(mActivity, this,mShowProgressDialog);
         onLinePresenter.doGetOnLine();
     }
 

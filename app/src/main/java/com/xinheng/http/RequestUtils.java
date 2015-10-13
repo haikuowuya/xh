@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public class RequestUtils
 {
-    public static final String ERROR_SERVER = "服务器开小差了";
+    public static final String ERROR_SERVER = "连接超时";
 
     /**
      * 请求url中的数据，默认用{@link com.android.volley.Request.Method#GET} get请求

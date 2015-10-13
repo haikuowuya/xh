@@ -50,6 +50,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.OrderDetailPopupWindowUtils;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -386,7 +387,24 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
             mFee = orderDetailItem.fee;
             fillLinearDrugContainer(orderDetailItem.orderList);
             String countInfo = "共" + orderDetailItem.orderList.size() + "件商品，合计：￥:";
-            String tmp = " (含运费￥0.00)";
+            double  despatchFee = 0.00;
+            try
+            {
+                if(!TextUtils.isEmpty(orderDetailItem.despatchFee))
+                {
+                    despatchFee =   (Double.parseDouble(orderDetailItem.despatchFee));
+                }
+                if(mPostPayDespatchItem.despatchType .equals( PostPayDespatchItem.DESPATCH_NORMAL))
+                {
+                    mFee = (new DecimalFormat("#.00").format((Double.parseDouble(mFee)) + despatchFee)) + "";
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            String tmp = " (含运费￥"+despatchFee+")";
+
             String countFeeInfo = countInfo + orderDetailItem.fee;
             String allInfo = countFeeInfo + tmp;
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);

@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnDeleteUserOrderEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserOrderItem;
@@ -28,6 +28,7 @@ import com.xinheng.mvp.presenter.impl.DeleteUserOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DensityUtils;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -56,9 +57,23 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
             if (null != item.orderList && !item.orderList.isEmpty())
             {
                 String countInfo = "共" + item.orderList.size() + "件商品,合计：￥:";
-                String countFeeInfo = countInfo + item.fee + "(含运费￥0.00)";
+                String despatchFee = "0.00";
+                if (!TextUtils.isEmpty(item.despatchFee))
+                {
+                    despatchFee = item.despatchFee;
+                }
+                String mFee = item.fee;
+                try
+                {
+                    mFee = (new DecimalFormat("#.00").format((Double.parseDouble(mFee) + Double.parseDouble(despatchFee)))) + "";
+                }
+                catch (Exception e)
+                {
+
+                }
+                String countFeeInfo = countInfo + mFee + "(含运费￥" + despatchFee + ")";
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(countFeeInfo);
-                spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), (countInfo + item.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), (countInfo + mFee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                 setTextViewText(convertView, R.id.tv_order_fee_info, spannableStringBuilder);
                 for (UserOrderItem.OrderMedicalItem medicalItem : item.orderList)
                 {

@@ -6,13 +6,19 @@ import android.view.View;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.MainFragment;
+import com.xinheng.util.Constants;
 
 public class MainActivity extends BaseActivity
 {
     public static void actioMain(BaseActivity activity)
     {
         Intent intent = new Intent(activity, MainActivity.class);
+        if(activity.getPreferences().getBoolean(Constants.PREF_IS_ONLINE,true))
+        {
+            intent = new Intent(activity, OnlineActivity.class);
+        }
         activity.startActivity(intent);
+        activity.finish();
     }
 
     private MainFragment mMainFragment;

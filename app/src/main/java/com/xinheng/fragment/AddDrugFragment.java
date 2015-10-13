@@ -2,7 +2,9 @@ package com.xinheng.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,11 @@ import com.xinheng.mvp.model.prescription.DrugItem;
 import com.xinheng.mvp.presenter.DrugSearchPresenter;
 import com.xinheng.mvp.presenter.impl.DrugSearchPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.ACache;
 import com.xinheng.util.Constants;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
-import java.util.LinkedList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -37,9 +39,13 @@ import de.greenrobot.event.EventBus;
  */
 public class AddDrugFragment extends BaseFragment  implements DataView
 {
-    public static AddDrugFragment newInstance()
+    public static final String  ARG_DRUG_ITEMS_JSON="drug_items_json";
+    public static AddDrugFragment newInstance(String itemsJson )
     {
         AddDrugFragment fragment = new AddDrugFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_DRUG_ITEMS_JSON, itemsJson);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -56,16 +62,73 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     private ListView mListView;
     private Button mBtnSearch;
     private EditText mEtSearch;
-    private List<DrugItem> mDrugItems =new LinkedList<>();
+    private List<DrugItem> mDrugItems = null;
+    private List<DrugItem> mSelectedItems = null;
     private DrugListAdapter mDrugListAdapter;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        setListener();
+        String itemsJson =  getArguments().getString(ARG_DRUG_ITEMS_JSON);
+        if(!TextUtils.isEmpty(itemsJson))
+        {
+            Type type = new TypeToken<List<DrugItem>>(){}.getType();
+            mSelectedItems = GsonUtils.jsonToList(itemsJson, type);
+        }
+        String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
+        if (!TextUtils.isEmpty(cacheJson))
+        {
+            Type type = new TypeToken<List<DrugItem>>(){}.getType();
+            mDrugItems = GsonUtils.jsonToList(cacheJson, type);
+            System.out.println("mDrugItems = " + mDrugItems.size());
+            showListContentData();
+        }
+        search("");
+    }
+
+    private void setListener()
+    {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnSearch.setOnClickListener(onClickListener);
-        search("");
+        mEtSearch.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                 if(TextUtils.isEmpty(mEtSearch.getText()))
+                 {
+                     String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
+                     if (!TextUtils.isEmpty(cacheJson))
+                     {
+                         Type type = new TypeToken<List<DrugItem>>(){}.getType();
+                         mDrugItems = GsonUtils.jsonToList(cacheJson, type);
+                         System.out.println("mdrugItemssss = " + mDrugItems.size());
+                        if(null != mDrugItems && !mDrugItems.isEmpty())
+                        {
+                            showListContentData();
+                        }
+                         else
+                        {
+                            search("");
+                        }
+                     }
+                 }
+            }
+        });
     }
 
     private void initView(View view)
@@ -102,23 +165,30 @@ public class AddDrugFragment extends BaseFragment  implements DataView
                 {
                 }.getType();
                 List<DrugItem> drugItems = GsonUtils.jsonToList(resultItem.properties.getAsJsonObject().get("list").getAsJsonArray().toString(),type);
-                if (null != drugItems)
-                {
-                    mDrugItems.clear();
-                    mDrugItems.addAll(drugItems);
-                    if (null == mDrugListAdapter)
-                    {
-                        mDrugListAdapter = new DrugListAdapter(mActivity, mDrugItems);
-                        mListView.setAdapter(mDrugListAdapter);
-                    }
-                    else
-                    {
-                        mDrugListAdapter.notifyDataSetChanged();
-                    }
-                }
+                mDrugItems.clear();
+                mDrugItems.addAll(drugItems);
+                showListContentData( );
             }
+        }
+    }
 
-
+    private void showListContentData(  )
+    {
+        if (null != mDrugItems)
+        {
+            if (null == mDrugListAdapter)
+            {
+                mDrugListAdapter = new DrugListAdapter(mActivity, mDrugItems,mSelectedItems);
+                mListView.setAdapter(mDrugListAdapter);
+            }
+            else
+            {
+                mDrugListAdapter.notifyDataSetChanged();
+            }
+            if(!mDrugItems.isEmpty() && TextUtils.isEmpty(mEtSearch.getText()))
+            {
+                ACache.get(mActivity).put(mActivity.getActivityTitle().toString(), GsonUtils.toJson(mDrugItems));
+            }
         }
     }
 

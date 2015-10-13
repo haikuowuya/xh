@@ -26,7 +26,6 @@ import com.xinheng.util.Constants;
  */
 public class SettingsFragment extends BaseFragment implements DataView
 {
-
     public static SettingsFragment newInstance()
     {
         SettingsFragment fragment = new SettingsFragment();
@@ -46,8 +45,15 @@ public class SettingsFragment extends BaseFragment implements DataView
      * 自动登录
      */
     private LinearLayout mLinearAutoLoginContainer;
-
+    private LinearLayout mLinearOnLineContainer;
+    /***
+     * 自动登录复选框
+     */
     private CheckBox mCbAutoLogin;
+    /**
+     * 在线售药界面
+     */
+    private CheckBox mCbOnLine;
 
     @Nullable
     @Override
@@ -61,10 +67,13 @@ public class SettingsFragment extends BaseFragment implements DataView
     private void initView(View view)
     {
         mLinearAutoLoginContainer = (LinearLayout) view.findViewById(R.id.linear_auto_login_container);
+        mCbOnLine = (CheckBox) view.findViewById(R.id.cb_online);
         mCbAutoLogin = (CheckBox) view.findViewById(R.id.cb_auto_login);
         mLinearAccountLogoutContainer = (LinearLayout) view.findViewById(R.id.linear_account_logout_container);
+        mLinearOnLineContainer = (LinearLayout) view.findViewById(R.id.linear_online_container);
         mLinearCacheContainer = (LinearLayout) view.findViewById(R.id.linear_cache_container);
-        mCbAutoLogin.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_AUTO_LOGIN,true));
+        mCbAutoLogin.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_AUTO_LOGIN, true));
+        mCbOnLine.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_ONLINE, true));
     }
 
     @Override
@@ -78,6 +87,7 @@ public class SettingsFragment extends BaseFragment implements DataView
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mLinearAccountLogoutContainer.setOnClickListener(onClickListener);
+        mLinearOnLineContainer.setOnClickListener(onClickListener);
         mLinearCacheContainer.setOnClickListener(onClickListener);
         mLinearAutoLoginContainer.setOnClickListener(onClickListener);
         mCbAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
@@ -85,11 +95,20 @@ public class SettingsFragment extends BaseFragment implements DataView
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
-                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,isChecked).commit();
+                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN, isChecked).commit();
 
             }
         });
+        mCbOnLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_ONLINE,isChecked).commit();
+            }
+        });
     }
+
 
     @Override
     public String getFragmentTitle()
@@ -127,8 +146,18 @@ public class SettingsFragment extends BaseFragment implements DataView
                 case R.id.linear_auto_login_container://
                     autoLogin();
                     break;
+                case R.id.linear_online_container://
+                    onLine();
+                    break;
             }
         }
+    }
+
+    private void onLine()
+    {
+        boolean isAutoLogin = mCbOnLine.isChecked();
+        mCbOnLine.setChecked(!isAutoLogin);
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,mCbOnLine.isChecked()).commit();
     }
 
     private void autoLogin()

@@ -17,11 +17,21 @@ public class OnLinePresenterImpl implements OnLinePresenter
     private BaseActivity mActivity;
     private DataView mDataView;
 
+    private boolean mShowProgressDialog;
+
     public OnLinePresenterImpl(BaseActivity activity, DataView dataView)
     {
         mActivity = activity;
         mDataView = dataView;
     }
+
+    public OnLinePresenterImpl(BaseActivity activity, DataView dataView,boolean showProgressDialog)
+    {
+        mActivity = activity;
+        mDataView = dataView;
+        mShowProgressDialog = showProgressDialog;
+    }
+
 
     @Override
     public void doGetOnLine()
@@ -32,6 +42,6 @@ public class OnLinePresenterImpl implements OnLinePresenter
         System.out.println("mingPostBody = " + mingPostBody);
         String encryptPostBody = RSAUtil.clientEncrypt(mingPostBody);
         System.out.println("加密字符串 = " + encryptPostBody);
-        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, onLineUrl, encryptPostBody,mActivity.getLoginSuccessItem(),  mDataView);
+        RequestUtils.getDataFromUrlByPostWithLoginInfo(mActivity, onLineUrl, encryptPostBody,mActivity.getLoginSuccessItem(),  mDataView,null,mShowProgressDialog);
     }
 }

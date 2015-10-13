@@ -32,8 +32,7 @@
                 android:padding="4dp"
                 android:text="*"
                 android:textColor="#FFFF0000"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -238,19 +237,19 @@
 
             <EditText
                 android:id="@+id/et_quantity"
-                android:layout_width="48dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
                 android:layout_marginRight="10dp"
                 android:inputType="phone"
                 android:digits="0123456789"
                 android:layout_marginTop="4dp"
-                android:text="1"
+
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
                 android:gravity="center_vertical"
                 android:hint="服用剂数"
-                android:padding="8dp"
+                android:paddingLeft="4dp"
                 android:singleLine="true"
                 android:textColorHint="#FF999999"/>
 

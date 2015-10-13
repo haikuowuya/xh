@@ -48,6 +48,7 @@ import com.xinheng.util.GsonUtils;
 import com.xinheng.util.OrderDetailPopupWindowUtils;
 
 import java.lang.reflect.Type;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -138,6 +139,11 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
      */
     private String mFee;
 
+    /**
+     * 配送方式
+     */
+    private TextView mTvDespatchWayDesc;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -216,6 +222,7 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
         mTvFee = (TextView) view.findViewById(R.id.tv_fee);
         mTvDespatchTime = (TextView) view.findViewById(R.id.tv_despatch_time);
         mTvDespatchWay = (TextView) view.findViewById(R.id.tv_despatch_way);
+        mTvDespatchWayDesc = (TextView) view.findViewById(R.id.tv_despatch_way_desc);
         mTvAddress = (TextView) view.findViewById(R.id.tv_address);
         mTvName = (TextView) view.findViewById(R.id.tv_name);
         mTvPhone = (TextView) view.findViewById(R.id.tv_phone);
@@ -260,19 +267,37 @@ public class ConfirmOrderFragment extends BaseFragment implements DataView
                     ConfirmOrderItem confirmOrderItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), ConfirmOrderItem.class);
                     if (null != confirmOrderItem && null != confirmOrderItem.list && !confirmOrderItem.list.isEmpty())
                     {
+                        String despatchText = PostPayDespatchItem.DESPATCH_NORMA_TEXT;
+                        if (PostPayDespatchItem.DESPATCH_SELF.equals(mPostPayDespatchItem.despatchType)  )
+                        {
+                            despatchText = PostPayDespatchItem.DESPATCH_SELF_TEXT;
+                        }
+                        mTvDespatchWayDesc.setText( despatchText);
                         mFee = confirmOrderItem.fee;
                         fillLinearDrugContainer(confirmOrderItem.list);
                         String countInfo = "共" + confirmOrderItem.list.size() + "件商品，合计：￥:";
-                        String tmp = " (含运费￥0.00)";
-                        String countFeeInfo = countInfo + confirmOrderItem.fee;
+                        double  despatchFee =10.0;
+                        try
+                        {
+                            if(mPostPayDespatchItem.despatchType .equals( PostPayDespatchItem.DESPATCH_NORMAL))
+                            {
+                                mFee = (new DecimalFormat("#.00").format(((Double.parseDouble(mFee)) + despatchFee))) + "";
+                            }
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                        String tmp = " (含运费￥"+despatchFee+")";
+                        String countFeeInfo = countInfo + mFee;
                         String allInfo = countFeeInfo + tmp;
                         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);
                         spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), countFeeInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), countFeeInfo.length(), allInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         mTvFee.setText(spannableStringBuilder);
-                        SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + confirmOrderItem.fee) + "\n" + tmp);
-                        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + confirmOrderItem.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + confirmOrderItem.fee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + mFee) + "\n" + tmp);
+                        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + mFee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + mFee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         mTvConfirmFee.setText(spannableStringBuilder1);
                     }
                 }
