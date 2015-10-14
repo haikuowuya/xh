@@ -122,9 +122,6 @@ public class DrugListAdapter extends BaseAdapter<DrugItem>
                                 return;
                             }
                         }
-
-
-
                         if (name.contains(GAN_CAO) )
                         {
                             if (drugItem.name.equals(HAI_ZAO) )

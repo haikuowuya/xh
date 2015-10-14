@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -145,9 +145,13 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
     private LinearLayout mLinearSubmitOrderContainer;
     private ScrollView mScrollView;
 
-    @Nullable
+
+    private OrderDetailItem mOrderDetailItem;
+
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater,   ViewGroup container,   Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_user_order_detail, null); //TODO 布局文件
         initView(view);
@@ -177,7 +181,7 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    public void onActivityCreated(  Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
         mUserOrderId = getArguments().getString(ARG_ID);
@@ -270,10 +274,10 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
                 if (REQUEST_GET_ORDER_DETAIL_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
-                    OrderDetailItem orderDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), OrderDetailItem.class);
-                    if (null != orderDetailItem)
+                    mOrderDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), OrderDetailItem.class);
+                    if (null != mOrderDetailItem)
                     {
-                        showOrderDetail(orderDetailItem);
+                        showOrderDetail(mOrderDetailItem);
                     }
                 }
                 else if (REQUEST_ADDRESS_TAG.equals(requestTag))
@@ -502,9 +506,17 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
                     submitOrder();
                     break;
                 case R.id.linear_address_container://点击收货地址
+                      if(null != mOrderDetailItem &&(UserOrderItem.ORDER_STATUS_4.equals(mOrderDetailItem.orderStatus)))
+                      {
+                          return;
+                      }
                     address();
                     break;
                 case R.id.linear_pay_despatch_container://点击支付配送
+                    if(null != mOrderDetailItem &&(UserOrderItem.ORDER_STATUS_4.equals(mOrderDetailItem.orderStatus)))
+                    {
+                        return;
+                    }
                     payDispatch();
                     break;
             }

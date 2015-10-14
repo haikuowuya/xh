@@ -27,6 +27,7 @@ import com.xinheng.util.Constants;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -62,7 +63,7 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     private ListView mListView;
     private Button mBtnSearch;
     private EditText mEtSearch;
-    private List<DrugItem> mDrugItems = null;
+    private List<DrugItem> mDrugItems = new LinkedList<>();
     private List<DrugItem> mSelectedItems = null;
     private DrugListAdapter mDrugListAdapter;
 

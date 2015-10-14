@@ -38,8 +38,11 @@ public class PhotoUtils
     /***
      * 上传头像
      */
-    public static void showSelectDialog(final BaseActivity activity)
+
+    private static String sFinalCameraImagePath = null;
+    public static void  showSelectDialog(final BaseActivity activity)
     {
+        sFinalCameraImagePath = null;
         View view = LayoutInflater.from(activity).inflate(R.layout.layout_dialog_modify_photo, null);
         LinearLayout linearCameraContainer = (LinearLayout) view.findViewById(R.id.linear_camera_container);
         LinearLayout linearGalleryContainer = (LinearLayout) view.findViewById(R.id.linear_gallery_container);
@@ -52,7 +55,7 @@ public class PhotoUtils
                 {
                     public void onClick(View v)
                     {
-                        PhotoUtils.selectPicFromCamera(activity);
+                       PhotoUtils.selectPicFromCamera(activity);
                         alertDialog.dismiss();
                     }
                 });
@@ -66,6 +69,7 @@ public class PhotoUtils
                         alertDialog.dismiss();
                     }
                 });
+
     }
     /**
      * 从相册中选择图片
@@ -102,6 +106,7 @@ public class PhotoUtils
             {
                 imageFile.delete();
             }
+            imageFilePath = imageFile.getPath();
             Uri photoUri = Uri.fromFile(imageFile);                                    //获取文件的Uri
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);            //跳转到相机Activity
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);    //告诉相机拍摄完毕输出图片到指定的Uri
@@ -110,8 +115,12 @@ public class PhotoUtils
         {
             e.printStackTrace();
         }
+        sFinalCameraImagePath = imageFilePath;
         return imageFilePath;
     }
 
-
+    public  static  String getFinalCameraImagePath()
+    {
+        return sFinalCameraImagePath;
+    }
 }

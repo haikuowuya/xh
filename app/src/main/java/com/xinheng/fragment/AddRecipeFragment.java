@@ -241,19 +241,32 @@ public class AddRecipeFragment extends BaseFragment implements DataView
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        String imageFilePath = null;
         if (resultCode == Activity.RESULT_OK)
         {
             if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
             {
                 if (null != data && data.getData() != null)
                 {
-                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
+                      imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                     if (null != imageFilePath)
                     {
                         imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
                         mImageFilePaths.addFirst(imageFilePath);
                         mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
                     }
+                }
+            }
+            else if(requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                imageFilePath =  PhotoUtils.getFinalCameraImagePath();
+
+                if (null != imageFilePath)
+                {
+                    imageFilePath =   BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                    imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                    mImageFilePaths.addFirst(imageFilePath);
+                    mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
                 }
             }
         }

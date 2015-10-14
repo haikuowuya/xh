@@ -121,14 +121,24 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
             /***
              * 评价按钮点击事件
              */
-            setViewOnClick(convertView, R.id.tv_evaluation, new View.OnClickListener()
+            setViewOnClick(
+                    convertView, R.id.tv_evaluation, new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            getActivity().showCroutonToast("评价");
+                        }
+                    });
+
+            if(UserOrderItem.ORDER_STATUS_4.equals(item.orderStatus ))
             {
-                @Override
-                public void onClick(View v)
-                {
-                    getActivity().showCroutonToast("评价");
-                }
-            });
+                setViewVisibility(convertView, R.id.tv_del_order, View.GONE);
+            }
+            else
+            {
+                setViewVisibility(convertView, R.id.tv_del_order, View.VISIBLE);
+            }
             /***
              * 删除订单按钮点击事件
              */

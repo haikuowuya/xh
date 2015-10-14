@@ -32,6 +32,7 @@ import com.xinheng.mvp.model.prescription.PostSavePrescriptionItem;
 import com.xinheng.mvp.presenter.SavePrescriptionPresenter;
 import com.xinheng.mvp.presenter.impl.SavePrescriptionPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.BitmapUtils;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.PhotoUtils;
@@ -191,15 +192,14 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     @Subscribe
     public void onEventMainThread(OnAddDrugItemEvent event)
     {
-        if (null != mLinearDrugContainer && null != event && event.mDrugItems != null )
+        if (null != mLinearDrugContainer && null != event && event.mDrugItems != null)
         {
             mLinearDrugContainer.removeAllViews();
-            if( !event.mDrugItems.isEmpty())
+            if (!event.mDrugItems.isEmpty())
             {
                 mBtnSubmit.setVisibility(View.VISIBLE);
                 mBtnEdit.setVisibility(View.VISIBLE);
-            }
-            else
+            } else
             {
                 mBtnSubmit.setVisibility(View.GONE);
                 mBtnEdit.setVisibility(View.GONE);
@@ -208,14 +208,15 @@ public class PrescriptionFragment extends BaseFragment implements DataView
 //            mActivity.showCroutonToast("event.size = " + event.mDrugItems.size());
 
             fillLinearDrugContainer(event.mDrugItems);
-            mBtnEdit.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    onEdit();
-                }
-            });
+            mBtnEdit.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            onEdit();
+                        }
+                    });
         }
     }
 
@@ -227,9 +228,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
             ViewGroup view = (ViewGroup) mLinearDrugContainer.getChildAt(i);
-            int height = DensityUtils.dpToPx(mActivity,100.f);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
-            view.getChildAt(0).setLayoutParams(params);
+
             if (view.findViewById(R.id.relative_normal) != null)
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.GONE);
@@ -247,9 +246,7 @@ public class PrescriptionFragment extends BaseFragment implements DataView
         {
 
             ViewGroup view = (ViewGroup) mLinearDrugContainer.getChildAt(i);
-            int height = DensityUtils.dpToPx(mActivity,96.f);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,height);
-            view.getChildAt(0).setLayoutParams(params);
+
             if (view.findViewById(R.id.relative_normal) != null)
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.VISIBLE);
@@ -458,11 +455,11 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                     if (mBtnAddMedical.getText().toString().equals(TEXT_ADD_MEDICAL))
                     {
                         String itemsJson = null;
-                        if(null != mDrugItems)
+                        if (null != mDrugItems)
                         {
-                            itemsJson= GsonUtils.toJson(mDrugItems);
+                            itemsJson = GsonUtils.toJson(mDrugItems);
                         }
-                        AddDrugActivity.actionAddDrug(mActivity,itemsJson);
+                        AddDrugActivity.actionAddDrug(mActivity, itemsJson);
                     } else
                     {
                         onEditFinsh();
@@ -567,14 +564,19 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                     mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
             }
+            else if(requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                mImageFilePath =  PhotoUtils.getFinalCameraImagePath();
+            }
 
             if (!TextUtils.isEmpty(mImageFilePath))
             {
                 mTvFileStatus.setVisibility(View.GONE);
+        mImageFilePath =   BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);
                 mIvImage.setImageBitmap(BitmapFactory.decodeFile(mImageFilePath));
             }
         }
-        // System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
-        // mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
+        System.out.println("fragment requestCode = " + requestCode + " resultCode = " + resultCode + " imageFilePath = " + mImageFilePath + " data = " + data);
+        //  mActivity.showCroutonToast("图片路径 = " + mImageFilePath);
     }
 }

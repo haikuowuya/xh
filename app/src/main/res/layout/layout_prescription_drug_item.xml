@@ -16,14 +16,15 @@
         android:background="#FFEBEBEB"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingRight="10dp">
+      >
 
         <ImageView
             android:id="@+id/iv_image"
             android:layout_width="72dp"
             android:layout_height="73dp"
             android:gravity="center_vertical"
-            android:padding="10dp"
+
+
             android:singleLine="true"
             android:background="#FFFFFF"
             android:layout_marginLeft="10dp"
@@ -165,8 +166,6 @@
                     android:id="@+id/tv_edit_delete"
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:background="#FFFF5907"
                     android:gravity="center"
                     android:text="删除"

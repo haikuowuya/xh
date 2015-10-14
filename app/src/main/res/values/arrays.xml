@@ -46,15 +46,9 @@
         <item>全部~-1</item>
         <item>未提交审核~0</item>
         <item>审核中~1</item>
-        <item>审核不通过~2</item>
         <item>未付款~3</item>
         <item>已付款~4</item>
-        <item>申请退款~5</item>
-        <item>退款成功~6</item>
-        <item>退款失败~7</item>
         <item>已发药~8</item>
-        <item>待评价~9</item>
-        <item>交易完成~10</item>
         <item>已关闭~11</item>
 
 
