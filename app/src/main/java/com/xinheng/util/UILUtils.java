@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 
 /**
- * Created by Administrator on 2015/10/6 0006.
+ * 使用Universal ImageLoader框架异步获取显示图片，定制的ImageLoader以满足在同一个sesssion回话中
  */
 public class UILUtils
 {
