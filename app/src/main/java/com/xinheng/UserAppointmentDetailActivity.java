@@ -13,7 +13,7 @@ import com.xinheng.fragment.UserAppointmentDetailFragment;
  * 时间： 13:48
  * 说明：我的预约详情
  */
-public class UserAppointmentDetailActivity extends BaseActivity
+public class UserAppointmentDetailActivity extends UserBaseActivity
 {
 
     public static void actionUserAppointmentDetail(BaseActivity activity, String appointmentId)

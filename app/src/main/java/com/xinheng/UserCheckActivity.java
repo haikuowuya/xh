@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.UserCheckListFragment;
-import com.xinheng.fragment.UserRecipeListFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -13,7 +12,7 @@ import com.xinheng.fragment.UserRecipeListFragment;
  * 时间： 13:48
  * 说明：我的检查列表
  */
-public class UserCheckActivity extends BaseActivity
+public class UserCheckActivity extends UserBaseActivity
 {
     public static void actionUserCheck(BaseActivity activity)
     {

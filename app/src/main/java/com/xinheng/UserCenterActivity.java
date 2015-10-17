@@ -38,7 +38,7 @@ import de.greenrobot.event.Subscribe;
  * 时间： 11:27
  * 说明：个人中心
  */
-public class UserCenterActivity extends BaseActivity implements DataView
+public class UserCenterActivity extends UserBaseActivity implements DataView
 {
     public static final String REQUEST_GET_USER_ACCOUNT_DETAIL_TAG = "get_user_account_detail";
     private LinearLayout mLinearListContainer;

@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserAccountNameFragment;
  * 时间： 13:48
  * 说明：修改帐号昵称界面
  */
-public class UserAccountNameActivity extends BaseActivity
+public class UserAccountNameActivity extends UserBaseActivity
 {
     public static void actionUserAccountName(BaseActivity activity)
     {

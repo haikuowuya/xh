@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserCounselListFragment;
  * 时间： 13:48
  * 说明：我的咨询
  */
-public class UserCounselActivity extends BaseActivity
+public class UserCounselActivity extends UserBaseActivity
 {
     public static void actionUserCounsel(BaseActivity activity)
     {

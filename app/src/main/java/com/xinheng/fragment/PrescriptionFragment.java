@@ -240,8 +240,11 @@ public class PrescriptionFragment extends BaseFragment implements DataView
     private void onEditFinsh()
     {
         mBtnAddMedical.setText(TEXT_ADD_MEDICAL);
-        mBtnEdit.setVisibility(View.VISIBLE);
-        mBtnSubmit.setVisibility(View.VISIBLE);
+        if (!mDrugItems.isEmpty())
+        {
+            mBtnEdit.setVisibility(View.VISIBLE);
+            mBtnSubmit.setVisibility(View.VISIBLE);
+        }
         for (int i = 0; i < mLinearDrugContainer.getChildCount(); i++)
         {
 
@@ -360,15 +363,13 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                                     mLinearDrugContainer.removeView(view);
                                     if (mLinearDrugContainer.getChildCount() == 1)//只剩下标题title
                                     {
-                                        mLinearDrugContainer.setVisibility(View.GONE);
+                                        //   mLinearDrugContainer.setVisibility(View.GONE);
                                     }
                                     setTextPrice(mPrice);
                                     mDrugItems.remove(item);
-
                                     if (mDrugItems.isEmpty())
                                     {
                                         onEditFinsh();
-                                        mBtnEdit.setVisibility(View.GONE);
                                     }
                                 }
                             }
@@ -563,16 +564,15 @@ public class PrescriptionFragment extends BaseFragment implements DataView
                 {
                     mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
-            }
-            else if(requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            } else if (requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
             {
-                mImageFilePath =  PhotoUtils.getFinalCameraImagePath();
+                mImageFilePath = PhotoUtils.getFinalCameraImagePath();
             }
 
             if (!TextUtils.isEmpty(mImageFilePath))
             {
                 mTvFileStatus.setVisibility(View.GONE);
-        mImageFilePath =   BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);
+                mImageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);
                 mIvImage.setImageBitmap(BitmapFactory.decodeFile(mImageFilePath));
             }
         }

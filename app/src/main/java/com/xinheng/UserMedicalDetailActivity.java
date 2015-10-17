@@ -13,7 +13,7 @@ import com.xinheng.fragment.UserMedicalDetailFragment;
  * 时间： 13:48
  * 说明：我的病历详情页面
  */
-public class UserMedicalDetailActivity extends BaseActivity
+public class UserMedicalDetailActivity extends UserBaseActivity
 {
     public static final String  EXTRA_ID="id";
     public static void actionUserMedicalDetail(BaseActivity activity,String medicalId)

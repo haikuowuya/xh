@@ -13,7 +13,7 @@ import com.xinheng.mvp.model.user.UserCounselItem;
  * 时间： 13:48
  * 说明：我的咨询详情
  */
-public class UserCounselDetailActivity extends BaseActivity
+public class UserCounselDetailActivity extends UserBaseActivity
 {
     public static void actionUserCounselDetail(BaseActivity activity,UserCounselItem item)
     {

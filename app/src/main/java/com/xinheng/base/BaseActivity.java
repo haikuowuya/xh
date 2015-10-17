@@ -33,6 +33,7 @@ import com.xinheng.OnlineActivity;
 import com.xinheng.R;
 import com.xinheng.RegisterActivity;
 import com.xinheng.SettingsActivity;
+import com.xinheng.UserBaseActivity;
 import com.xinheng.UserCenterActivity;
 import com.xinheng.XHApplication;
 import com.xinheng.adapter.PopupListAdapter;
@@ -279,7 +280,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (null == mPopupWindow)
         {
             View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_listview, null);
-            ListView listview = (ListView) view.findViewById(R.id.lv_listview);
+            final ListView listview = (ListView) view.findViewById(R.id.lv_listview);
 
             listview.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
             String[] strings = getResources().getStringArray(R.array.array_menu_menu);
@@ -300,14 +301,25 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                 }
             }
             listview.setAdapter(new PopupListAdapter(mActivity, iconTextItems));
-            listview.setItemChecked(0, true);
+
             int width = DensityUtils.dpToPx(mActivity, 160.f);
             int height = AbsListView.LayoutParams.WRAP_CONTENT;
             mPopupWindow = new PopupWindow(view, width, height);
             mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xFF2FAD68));
             mPopupWindow.setOutsideTouchable(true);// 设置点击窗口外边窗口消失
             mPopupWindow.setFocusable(true);// 设置此参数获得焦点，否则无法点击
-
+            listview.setItemChecked(0, true);
+            if (mActivity instanceof DepartmentNavActivity)
+            {
+                listview.setItemChecked(1, true);
+            } else if (mActivity instanceof UserBaseActivity)
+            {
+                listview.setItemChecked(2, true);
+            }
+            else if(mActivity instanceof  SettingsActivity)
+            {
+                listview.setItemChecked(3, true);
+            }
             listview.setOnItemClickListener(
                     new AdapterView.OnItemClickListener()
                     {
@@ -315,6 +327,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
                             mPopupWindow.dismiss();
+                            listview.setItemChecked(position, true);
                             switch (position)
                             {
                                 case 0:
@@ -323,7 +336,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                                         MainActivity.actioMain(mActivity);
                                     }
                                     break;
-
                                 case 1:
                                     if (!(mActivity instanceof DepartmentNavActivity))
                                     {
@@ -331,7 +343,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                                     }
                                     break;
                                 case 2:
-                                    if (!(mActivity instanceof UserCenterActivity))
+                                    if (!(mActivity instanceof UserBaseActivity))
                                     {
                                         UserCenterActivity.actionUserCenter(mActivity);
                                     }

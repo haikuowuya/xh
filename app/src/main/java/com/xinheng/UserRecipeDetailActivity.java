@@ -13,7 +13,7 @@ import com.xinheng.fragment.UserRecipeDetailFragment;
  * 时间： 13:48
  * 说明：我的处方详情页面
  */
-public class UserRecipeDetailActivity extends BaseActivity
+public class UserRecipeDetailActivity extends UserBaseActivity
 {
     public static final String  EXTRA_ID="id";
     public static void actionUserRecipeDetail(BaseActivity activity,String recipeId)

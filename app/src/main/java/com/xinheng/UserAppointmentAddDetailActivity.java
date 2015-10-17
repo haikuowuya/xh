@@ -13,9 +13,8 @@ import com.xinheng.fragment.UserAppointmentAddDetailFragment;
  * 时间： 13:48
  * 说明：我的预约加号详情
  */
-public class UserAppointmentAddDetailActivity extends BaseActivity
+public class UserAppointmentAddDetailActivity extends UserBaseActivity
 {
-
     public static void actionUserAppointmentAddDetail(BaseActivity activity, String appointmentId)
     {
         Intent intent = new Intent(activity, UserAppointmentAddDetailActivity.class);

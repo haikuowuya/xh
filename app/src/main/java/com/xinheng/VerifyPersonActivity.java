@@ -14,7 +14,7 @@ import com.xinheng.mvp.view.DataView;
 /**
  * 验证就诊人界面
  */
-public class VerifyPersonActivity extends BaseActivity implements DataView
+public class VerifyPersonActivity extends UserBaseActivity implements DataView
 {
     public static final String  TEST_NAME= "123456";
 

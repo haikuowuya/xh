@@ -241,14 +241,14 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="4dp"
                 android:layout_marginRight="10dp"
-                android:inputType="phone"
-                android:digits="0123456789"
                 android:layout_marginTop="4dp"
-
                 android:layout_toLeftOf="@+id/iv_search"
                 android:background="@drawable/shape_edittext_background"
+
+                android:digits="0123456789"
                 android:gravity="center_vertical"
                 android:hint="服用剂数"
+                android:inputType="phone"
                 android:paddingLeft="4dp"
                 android:singleLine="true"
                 android:textColorHint="#FF999999"/>
@@ -370,10 +370,8 @@
             android:background="#FF999999"/>
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="@color/color_white_color"
             android:orientation="vertical">
 
@@ -383,7 +381,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginRight="60dp"
-
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -397,7 +394,6 @@
                     android:text="保存药方"
                     android:textColor="@color/color_white_color"
                     android:visibility="gone"/>
-
                 <Button
                     android:id="@+id/btn_submit"
                     android:layout_width="wrap_content"
@@ -407,8 +403,6 @@
                     android:background="@drawable/user_subscribe_evaluation_selector"
                     android:text="提交审核"
                     android:textColor="@color/color_white_color"/>
-
-
             </LinearLayout>
         </LinearLayout>
 

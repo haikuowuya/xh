@@ -17,7 +17,7 @@ import com.xinheng.util.VerifyCodeUtils;
 /**
  * 绑定手机验证界面
  */
-public class BindPhoneVerifyActivity extends BaseActivity implements DataView
+public class BindPhoneVerifyActivity extends UserBaseActivity implements DataView
 {
     public static final String  TEST_CODE = "1234";
     private static  final String EXTRA_MOBILE="mobile";

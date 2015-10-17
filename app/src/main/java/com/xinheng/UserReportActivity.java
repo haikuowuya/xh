@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserReportListFragment;
  * 时间： 13:48
  * 说明：我的报告列表
  */
-public class UserReportActivity extends BaseActivity
+public class UserReportActivity extends UserBaseActivity
 {
     public static void actionUserReport(BaseActivity activity)
     {

@@ -12,7 +12,7 @@ import com.xinheng.fragment.ModifyPwdFragment;
  * 时间： 13:48
  * 说明：修改密码
  */
-public class ModifyPwdActivity extends BaseActivity
+public class ModifyPwdActivity extends UserBaseActivity
 {
     public static void actionModifyPwd(BaseActivity activity)
     {

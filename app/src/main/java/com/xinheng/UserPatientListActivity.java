@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserPatientListFragment;
  * 时间： 13:48
  * 说明:常用就诊人列表
  */
-public class UserPatientListActivity extends BaseActivity
+public class UserPatientListActivity extends UserBaseActivity
 {
     public static final String EXTRA_FROM_SELECT_PATIENT = "from_select_patient";
     public static void actionPatient(BaseActivity activity)

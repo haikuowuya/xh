@@ -1,5 +1,8 @@
 package com.xinheng.adapter.address;
 
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.xinheng.R;
@@ -24,7 +27,18 @@ public class AddressListAdapter extends BaseAdapter<AddressItem>
     {
          setTextViewText(convertView, R.id.tv_name, addressItem.name);
         String address = addressItem.city+ addressItem.address;
-        setTextViewText(convertView, R.id.tv_address, address);
+        String   defaultHint ="[默认]";
+        if("1".equals(addressItem.isDefault))
+        {
+            address = defaultHint+address;
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(address);
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFF2608),0,defaultHint.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            setTextViewText(convertView, R.id.tv_address, spannableStringBuilder);
+        }
+        else
+        {
+            setTextViewText(convertView, R.id.tv_address, address);
+        }
         setTextViewText(convertView, R.id.tv_phone,addressItem.mobile);
     }
 }

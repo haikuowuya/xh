@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserAccountFragment;
  * 时间： 13:48
  * 说明：我的账户界面
  */
-public class UserAccountActivity extends BaseActivity
+public class UserAccountActivity extends UserBaseActivity
 {
     public static void actionUserAccount(BaseActivity activity)
     {

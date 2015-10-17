@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -25,7 +24,6 @@ import com.xinheng.APIURL;
 import com.xinheng.AddressListActivity;
 import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
-import com.xinheng.UserOrderActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnSelectAddressEvent;
@@ -300,7 +298,7 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_PAY_ORDER_TAG.equals(requestTag))
                 {
-                    UserOrderActivity.actionUserOrder(mActivity, 5);
+                  //  UserOrderActivity.actionUserOrder(mActivity, 5);
                     mActivity.finish();
                 }
             }
@@ -354,7 +352,7 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
                     {
                         dialog.dismiss();
                         OrderDetailPopupWindowUtils.dismiss();
-                        UserOrderActivity.actionUserOrder(mActivity, 4);
+//                        UserOrderActivity.actionUserOrder(mActivity, 4);
                         mActivity.finish();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener()

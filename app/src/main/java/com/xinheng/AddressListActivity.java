@@ -12,7 +12,7 @@ import com.xinheng.fragment.AddressListFragment;
  * 时间： 13:48
  * 说明:收货地址管理列表
  */
-public class AddressListActivity extends BaseActivity
+public class AddressListActivity extends UserBaseActivity
 {
     public static final String EXTRA_FROM_CONFIRM_ORDER = "from_confirm_order";
 

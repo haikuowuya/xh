@@ -13,7 +13,7 @@ import com.xinheng.base.BaseActivity;
  * 时间： 13:48
  * 说明：我的提醒
  */
-public class UserRemindActivity extends BaseActivity
+public class UserRemindActivity extends UserBaseActivity
 {
     private ListView mListView;
     

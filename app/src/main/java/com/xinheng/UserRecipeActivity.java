@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserRecipeListFragment;
  * 时间： 13:48
  * 说明：我的处方列表
  */
-public class UserRecipeActivity extends BaseActivity
+public class UserRecipeActivity extends UserBaseActivity
 {
     public static void actionUserRecipe(BaseActivity activity)
     {

@@ -12,7 +12,7 @@ import com.xinheng.fragment.AccountSecurityFragment;
  * 时间： 13:48
  * 说明：账户安全
  */
-public class AccountSecurityActivity extends BaseActivity
+public class AccountSecurityActivity extends UserBaseActivity
 {
     public static void actionAccountSecurity(BaseActivity activity)
     {

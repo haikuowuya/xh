@@ -13,7 +13,7 @@ import com.xinheng.fragment.UserOrderDetailFragment;
  * 时间： 13:48
  * 说明：我的订单详情页面
  */
-public class UserOrderDetailActivity extends BaseActivity
+public class UserOrderDetailActivity extends UserBaseActivity
 {
     public static final String  EXTRA_ID="id";
     public static void actionUserOrderDetail(BaseActivity activity,String reportId)

@@ -17,7 +17,7 @@ import com.xinheng.view.TabViewPagerIndicator;
  * 时间： 18:02
  * 说明：
  */
-public class TabViewPagerActivity extends BaseActivity
+public class TabViewPagerActivity extends UserBaseActivity
 {
     private TabViewPagerIndicator mTabViewPagerIndicator;
 

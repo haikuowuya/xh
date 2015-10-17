@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserMedicalRecordListFragment;
  * 时间： 13:48
  * 说明：我的病历
  */
-public class UserMedicalActivity extends BaseActivity
+public class UserMedicalActivity extends UserBaseActivity
 {
     public static void actionUsermedical(BaseActivity activity)
     {

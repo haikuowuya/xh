@@ -12,7 +12,7 @@ import com.xinheng.fragment.UserDoctorListFragment;
  * 时间： 13:48
  * 说明：我的医生
  */
-public class UserDoctorActivity extends BaseActivity {
+public class UserDoctorActivity extends UserBaseActivity {
     public static void actionUserDoctor(BaseActivity activity) {
         Intent intent = new Intent(activity, UserDoctorActivity.class);
         activity.startActivity(intent);

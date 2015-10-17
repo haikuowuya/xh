@@ -13,7 +13,7 @@ import com.xinheng.fragment.UserCheckDetailFragment;
  * 时间： 13:48
  * 说明：我的检查详情页面
  */
-public class UserCheckDetailActivity extends BaseActivity
+public class UserCheckDetailActivity extends UserBaseActivity
 {
     public static final String  EXTRA_ID="id";
     public static void actionUserCheckDetail(BaseActivity activity,String chedkId)

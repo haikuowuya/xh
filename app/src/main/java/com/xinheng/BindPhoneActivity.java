@@ -12,7 +12,7 @@ import com.xinheng.fragment.BindPhoneFragment;
  * 时间： 13:48
  * 说明：绑定手机号码
  */
-public class BindPhoneActivity extends BaseActivity
+public class BindPhoneActivity extends UserBaseActivity
 {
     public static void actionBindPhone(BaseActivity activity)
     {
