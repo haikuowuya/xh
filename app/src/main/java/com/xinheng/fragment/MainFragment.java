@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.google.gson.reflect.TypeToken;
 import com.xinheng.AddCheckActivity;
 import com.xinheng.AutoCheckActivity;
 import com.xinheng.DepartmentNavActivity;
@@ -21,9 +22,15 @@ import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.AdItem;
 import com.xinheng.mvp.model.HomeGridItem;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.HomeAdPresenter;
+import com.xinheng.mvp.presenter.impl.HomeAdPresenterImpl;
+import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.GsonUtils;
 import com.xinheng.view.CustomGridView;
 import com.xinheng.view.InfiniteViewPagerIndicatorView;
 
+import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +40,7 @@ import java.util.List;
  * 时间： 17:38
  * 说明： 首页内容
  */
-public class MainFragment extends BaseFragment
+public class MainFragment extends BaseFragment implements DataView
 {
     private InfiniteViewPagerIndicatorView mInfiniteViewPagerIndicatorView;
     private ScrollView mScrollView;
@@ -56,6 +63,7 @@ public class MainFragment extends BaseFragment
 
     private void initView(View view)
     {
+        mIsInit = true;
         mInfiniteViewPagerIndicatorView = (InfiniteViewPagerIndicatorView) view.findViewById(R.id.infinite_viewpager);
         mInfiniteViewPagerIndicatorView.requestDisallowInterceptTouchEvent(true);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
@@ -120,6 +128,13 @@ public class MainFragment extends BaseFragment
         return false;
     }
 
+    @Override
+    protected void doGetData()
+    {
+        HomeAdPresenter homeAdPresenter = new HomeAdPresenterImpl(mActivity, this);
+      //  homeAdPresenter.doGetHomeAd();
+    }
+
     private PagerAdapter genAdapter()
     {
         List<AdItem> data = new LinkedList<>();
@@ -135,5 +150,28 @@ public class MainFragment extends BaseFragment
     public String getFragmentTitle()
     {
         return getString(R.string.tv_fragment_main);
+    }
+
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if (null != resultItem)
+        {
+            mActivity.showToast(resultItem.message);
+            Type type = new TypeToken<List<AdItem>>()
+            {
+            }.getType();
+            List<AdItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+            if (null != items)
+            {
+
+            }
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+
     }
 }

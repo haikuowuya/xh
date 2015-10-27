@@ -240,25 +240,26 @@ public class AppointmentFragment extends BaseFragment implements DataView
                     img = APIURL.BASE_API_URL + img;
                 }
                 ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                    {
+                        if (null != loadedImage)
                         {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage)
-                                {
-                                    mCivImage.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
+                            mCivImage.setImageBitmap(loadedImage);
+                        }
+                    }
+                });
             }
-        } if (null != mDoctorDetailItem && null != mDoctorDetailItem.schedule)
-    {
-        mDoctorScheduleItems = mDoctorDetailItem.schedule;
-        mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
-        mTvDoctorName.setText(mDoctorDetailItem.doctName);
-        mTvTechnicalPost.setText(mDoctorDetailItem.technicalPost);
+        }
+        if (null != mDoctorDetailItem && null != mDoctorDetailItem.schedule)
+        {
+            mDoctorScheduleItems = mDoctorDetailItem.schedule;
+            mTvDepart.setText(mDoctorDetailItem.department + " / " + mDoctorDetailItem.technicalPost);
+            mTvDoctorName.setText(mDoctorDetailItem.doctName);
+            mTvTechnicalPost.setText(mDoctorDetailItem.technicalPost);
 
-    }
+        }
         if (null != mDoctorScheduleItems && !mDoctorScheduleItems.isEmpty() && mPosition < mDoctorScheduleItems.size())
         {
             DoctorScheduleItem doctorScheduleItem = mDoctorScheduleItems.get(mPosition);
@@ -330,17 +331,17 @@ public class AppointmentFragment extends BaseFragment implements DataView
         mTvSecondVisit.setOnClickListener(onClickListener);
         mBtnSubmit.setOnClickListener(onClickListener);
         mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
+                if (TextUtils.isEmpty(str))
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        String str = parent.getAdapter().getItem(position) == null ? null : parent.getAdapter().getItem(position).toString();
-                        if (TextUtils.isEmpty(str))
-                        {
-                            PhotoUtils.showSelectDialog(mActivity);
-                        }
-                    }
-                });
+                    PhotoUtils.showSelectDialog(mActivity);
+                }
+            }
+        });
 
     }
 
@@ -439,16 +440,16 @@ public class AppointmentFragment extends BaseFragment implements DataView
                 mBmrIds.add(i, RSAUtil.clientEncrypt(patientRecordItem.bmrId));
                 final int finalI = i;
                 ivImage.setOnClickListener(new View.OnClickListener()
-                        {
-                            public void onClick(View v)
-                            {
-                                ivImage.setActivated(!ivImage.isActivated());
-                                System.out.println("finalI = " + finalI);
-                                mAuths.remove(finalI);
-                                mAuths.add(finalI, ivImage.isActivated() ? "1" : "0");
+                {
+                    public void onClick(View v)
+                    {
+                        ivImage.setActivated(!ivImage.isActivated());
+                        System.out.println("finalI = " + finalI);
+                        mAuths.remove(finalI);
+                        mAuths.add(finalI, ivImage.isActivated() ? "1" : "0");
 
-                            }
-                        });
+                    }
+                });
                 mLinearPatientRecordContainer.addView(view);
 
             }
@@ -567,30 +568,30 @@ public class AppointmentFragment extends BaseFragment implements DataView
         View footerView = LayoutInflater.from(mActivity).inflate(R.layout.layout_cancle, null);
         TextView tvCancle = (TextView) footerView.findViewById(R.id.tv_cancle);
         tvCancle.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        alertDialog.dismiss();
-                    }
-                });
+        {
+            @Override
+            public void onClick(View v)
+            {
+                alertDialog.dismiss();
+            }
+        });
         alertDialog.getListView().addFooterView(footerView);
         alertDialog.getListView().setDivider(new ColorDrawable(0xFF999999));
         alertDialog.getListView().setDividerHeight(DensityUtils.dpToPx(mActivity, 0.5f));
         alertDialog.getListView().setFooterDividersEnabled(false);
         alertDialog.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
                 {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-                    {
-                        if (parent.getAdapter().getItemViewType(position) != AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER)
-                        {
-                            alertDialog.dismiss();
-                            mPosition = position;
-                            showSelectSchedule(mDoctorScheduleItems.get(position));
-                        }
-                    }
-                });
+                    alertDialog.dismiss();
+                    mPosition = position;
+                    showSelectSchedule(mDoctorScheduleItems.get(position));
+                }
+            }
+        });
         alertDialog.show();
     }
 
@@ -599,18 +600,23 @@ public class AppointmentFragment extends BaseFragment implements DataView
     {
         if (resultCode == Activity.RESULT_OK)
         {
+            String imageFilePath = null;
             if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
             {
                 if (null != data && data.getData() != null)
                 {
-                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                    if (null != imageFilePath)
-                    {
-                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
-                        mImageFilePaths.addFirst(imageFilePath);
-                        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
-                    }
+                    imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
+            }
+            else if (requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                imageFilePath = PhotoUtils.getFinalCameraImagePath();
+            }
+            if (null != imageFilePath)
+            {
+                imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                mImageFilePaths.addFirst(imageFilePath);
+                mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
             }
         }
     }

@@ -84,6 +84,11 @@ public class APIURL
      * 获取地址列表URL
      */
     public static final String GET_ADDRESS_LIST_URL = BASE_API_URL + "/interface/patient/recieveaddress/getlist";
+
+    /***
+     * 获取首页顶部广告列表URL
+     */
+    public static final String GET_HOME_AD_LIST_URL = BASE_API_URL + "/interface/patient/data/information/getindex";
     /***
      * 我的咨询列表URL
      */

@@ -73,12 +73,12 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
         if (null != resultItem)
         {
             mActivity.showToast(resultItem.message);
-            Type type = new TypeToken<List<UserDoctorItem>>()
-            {
-            }.getType();
-            List<UserDoctorItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-            if (null != items)
-            {
+                Type type = new TypeToken<List<UserDoctorItem>>()
+                {
+                }.getType();
+                List<UserDoctorItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                if (null != items)
+                {
                 mUserDoctorItems.addAll(items);
                 if (null == mUserDoctorListAdapter)
                 {

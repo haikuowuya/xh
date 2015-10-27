@@ -512,18 +512,23 @@ public class OnLineCounselFragment extends BaseFragment implements DataView
     {
         if (resultCode == Activity.RESULT_OK)
         {
+            String imageFilePath = null;
             if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
             {
                 if (null != data && data.getData() != null)
                 {
-                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                    if (null != imageFilePath)
-                    {
-                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
-                        mImageFilePaths.addFirst(imageFilePath);
-                        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
-                    }
+                     imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
+            }
+            else if(requestCode ==PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                imageFilePath = PhotoUtils.getFinalCameraImagePath();
+            }
+            if (null != imageFilePath)
+            {
+                imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                mImageFilePaths.addFirst(imageFilePath);
+                mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
             }
         }
     }

@@ -427,32 +427,38 @@ public class AddMedicalRecordFragment extends BaseFragment implements DataView
     {
         if (resultCode == Activity.RESULT_OK)
         {
+            String imageFilePath = null;
             if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
             {
                 if (null != data && data.getData() != null)
                 {
-                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                    if (null != imageFilePath)
-                    {
-                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
-                        //   mActivity.showToast(" mFlag = " + mFlag);
-                        if (mFlag == 0)
-                        {
-                            mImageFilePaths0.addFirst(imageFilePath);
-                        }
-                        else if (mFlag == 1)
-                        {
-                            mImageFilePaths1.addFirst(imageFilePath);
-                        }
-                        else if (mFlag == 2)
-                        {
-                            mImageFilePaths2.addFirst(imageFilePath);
-                        }
-                        mCustomGridView0.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths0));
-                        mCustomGridView1.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths1));
-                        mCustomGridView2.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths2));
-                    }
+                    imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
+            }
+            else if (requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                imageFilePath = PhotoUtils.getFinalCameraImagePath();
+            }
+
+            if (null != imageFilePath)
+            {
+                imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                //   mActivity.showToast(" mFlag = " + mFlag);
+                if (mFlag == 0)
+                {
+                    mImageFilePaths0.addFirst(imageFilePath);
+                }
+                else if (mFlag == 1)
+                {
+                    mImageFilePaths1.addFirst(imageFilePath);
+                }
+                else if (mFlag == 2)
+                {
+                    mImageFilePaths2.addFirst(imageFilePath);
+                }
+                mCustomGridView0.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths0));
+                mCustomGridView1.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths1));
+                mCustomGridView2.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths2));
             }
         }
     }

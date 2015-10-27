@@ -201,8 +201,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     {
         // 生成广播处理
         // 实例化过滤器并设置要过滤的广播
-        IntentFilter intentFilter = new IntentFilter(
-                "android.provider.Telephony.SMS_RECEIVED");
+        IntentFilter intentFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
         intentFilter.setPriority(800);
         // 注册广播
         mActivity.registerReceiver(mSMSBroadcastReceiver, intentFilter);
@@ -264,8 +263,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         mBtnSubmit.setOnClickListener(onClickListener);
         mBtnCode.setOnClickListener(onClickListener);
         mTvSelectPatient.setOnClickListener(onClickListener);
-        mCustomGridView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener()
+        mCustomGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
                 {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -311,11 +309,13 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
                         UserPatientItem patientItem = items.get(0);
                         fillPatient(patientItem);
                     }
-                } else if (REQUEST_CODE_TAG.equals(requestTag))
+                }
+                else if (REQUEST_CODE_TAG.equals(requestTag))
                 {
                     mBtnCode.setClickable(false);
                     mBtnCode.setText("验证码发送成功");
-                } else if (REQUEST_SUBMIT_TAG.equals(requestTag))
+                }
+                else if (REQUEST_SUBMIT_TAG.equals(requestTag))
                 {
                     UserAppointmentActivity.actionUserAppointment(mActivity);
                     mActivity.finish();
@@ -513,19 +513,27 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
     {
         if (resultCode == Activity.RESULT_OK)
         {
+            String imageFilePath = null;
             if (requestCode == PhotoUtils.REQUEST_FROM_PHOTO)
             {
                 if (null != data && data.getData() != null)
                 {
-                    String imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
-                    if (null != imageFilePath)
-                    {
-                        imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
-                        mImageFilePaths.addFirst(imageFilePath);
-                        mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
-                    }
+                    imageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
+
                 }
             }
+            else if (requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                imageFilePath = PhotoUtils.getFinalCameraImagePath();
+            }
+
+            if (null != imageFilePath)
+            {
+                imageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, imageFilePath);
+                mImageFilePaths.addFirst(imageFilePath);
+                mCustomGridView.setAdapter(new ImageGridAdapter(mActivity, mImageFilePaths));
+            }
+
         }
     }
 
@@ -535,8 +543,7 @@ public class AppointmentAddFragment extends BaseFragment implements DataView
         public void onReceive(Context context, Intent intent)
         {
             // 判断是系统短信；
-            if (intent.getAction().equals(
-                    "android.provider.Telephony.SMS_RECEIVED"))
+            if (intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED"))
             {
                 // 不再往下传播；
                 this.abortBroadcast();

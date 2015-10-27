@@ -27,6 +27,10 @@
             cv:civ_borderWidth="1dp"
             android:src="@mipmap/ic_photo"
             cv:civ_border="true"
+
+
+
+            android:background="@color/color_title_background_color"
             cv:civ_shadowColor="@color/color_main_text_color"
             tools:src="@mipmap/ic_photo"/>
 

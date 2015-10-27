@@ -277,6 +277,10 @@ public class UserAccountFragment extends BaseFragment implements DataView
                     mImageFilePath = StorageUtils.getFilePathFromUri(mActivity, data.getData());
                 }
             }
+            else if(requestCode == PhotoUtils.REQUEST_FROM_CAMERA)
+            {
+                mImageFilePath = PhotoUtils.getFinalCameraImagePath();
+            }
             if (null != mImageFilePath)
             {
                 mImageFilePath = BitmapUtils.getCompressBitmapFilePath(mActivity, mImageFilePath);

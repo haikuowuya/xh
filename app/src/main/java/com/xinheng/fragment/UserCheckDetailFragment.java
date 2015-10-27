@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.model.user.UserRecipeDetailItem;
+import com.xinheng.mvp.model.user.UserCheckDetailItem;
 import com.xinheng.mvp.presenter.UserCheckDetailPresenter;
 import com.xinheng.mvp.presenter.impl.UserCheckDetailPresenterImpl;
 import com.xinheng.mvp.view.DataView;
@@ -27,7 +27,7 @@ import com.xinheng.util.GsonUtils;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：我的报告详情
+ * 说明：我的检查详情
  */
 public class UserCheckDetailFragment extends BaseFragment implements DataView
 {
@@ -83,10 +83,16 @@ public class UserCheckDetailFragment extends BaseFragment implements DataView
      * 支付
      */
     private TextView mTvPay;
-    /**
-     * 剂数
+
+    /***
+     * 用户上传时的审核状态
      */
-    private TextView mTvQuantity;
+    private TextView mTvCheckStatus;
+    /***
+     * 检查类型
+     */
+    private TextView mTvCheckType;
+
 
     @Nullable
     @Override
@@ -105,7 +111,9 @@ public class UserCheckDetailFragment extends BaseFragment implements DataView
         mTvDoctorName = (TextView) view.findViewById(R.id.tv_doctor_name);
         mTvMoney = (TextView) view.findViewById(R.id.tv_money);
         mTvPay = (TextView) view.findViewById(R.id.tv_pay);
-        mTvQuantity = (TextView) view.findViewById(R.id.tv_quantity);
+        mTvCheckType = (TextView) view.findViewById(R.id.tv_check_type);
+        mTvCheckStatus = (TextView) view.findViewById(R.id.tv_check_status);
+
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mLinearRecipeContainer = (LinearLayout) view.findViewById(R.id.linear_recipe_container);
         mLinearMoneyContainer = (LinearLayout) view.findViewById(R.id.linear_money_container);
@@ -149,47 +157,76 @@ public class UserCheckDetailFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                UserRecipeDetailItem userRecipeDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserRecipeDetailItem.class);
-                if (null != userRecipeDetailItem)
+                UserCheckDetailItem userCheckDetailItem  = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), UserCheckDetailItem.class);
+                if (null != userCheckDetailItem)
                 {
-                    showUserRecipeInfo(userRecipeDetailItem);
+                    showUserCheckDetailInfo(userCheckDetailItem);
                 }
             }
         }
     }
 
-    private void showUserRecipeInfo(UserRecipeDetailItem userRecipeDetailItem)
+    private void showUserCheckDetailInfo( UserCheckDetailItem userCheckDetailItem )
     {
-        if (null != userRecipeDetailItem)
+        if (null != userCheckDetailItem)
         {
             mScrollView.setVisibility(View.VISIBLE);
-            mTvPatientName.setText("就诊人：" + userRecipeDetailItem.patient);
-            mTvRecipeTime.setText("开具日期：" + DateFormatUtils.format(userRecipeDetailItem.prescTime, true, false));
-            mTvDepartName.setText(" 科  别 ：" + userRecipeDetailItem.department);
-            mTvDoctorName.setText("主治医师：" + userRecipeDetailItem.doctor);
-            if (null != userRecipeDetailItem.prescription && null != userRecipeDetailItem.prescription.list && !userRecipeDetailItem.prescription.list.isEmpty())
+            String type = "医院同步";
+            if("1".equals(userCheckDetailItem.type))
             {
-                mLinearMoneyContainer.setVisibility(View.VISIBLE);
-                mTvQuantity.setText(userRecipeDetailItem.prescription.quantity + "剂");
-                for (int i = 0; i < userRecipeDetailItem.prescription.list.size(); i++)
+                type =" 用户上传";
+            }
+            String status ="审核中";
+            if(!TextUtils.isEmpty(userCheckDetailItem.consentState))
+            {
+                if ("1".equals(userCheckDetailItem.consentState))
                 {
-                    View childItem = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_recipe_detail_recipe_item, null);
+                    status = "审核通过";
+                }
+                else if ("2".equals(userCheckDetailItem.consentState))
+                {
+                    status = "审核不通过";
+                }
+            }
+            else
+            {
+                if("0".equals(userCheckDetailItem.payState))
+                {
+                    status ="未缴费";
+                }
+                else if("1".equals(userCheckDetailItem.payState))
+                {
+                    status ="已缴费";
+                }
+            }
+            mTvPatientName.setText("患者姓名：" + userCheckDetailItem.patient);
+            mTvRecipeTime.setText("检查时间：" + DateFormatUtils.format(userCheckDetailItem.checkTime, true, false));
+            mTvDepartName.setText(" 科  别 ：" + userCheckDetailItem.department);
+            mTvCheckType.setText(" 类  型 ：" + type);
+            mTvCheckStatus.setText(" 状  态 ：" + status);
+            mTvDoctorName.setText("检查医师：" + userCheckDetailItem.doctor);
+
+            if (null != userCheckDetailItem.list && !userCheckDetailItem.list.isEmpty())
+            {
+              //  mLinearMoneyContainer.setVisibility(View.VISIBLE);
+                for (int i = 0; i < userCheckDetailItem.list.size(); i++)
+                {
+                    View childItem = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_check_detail_check_item, null);
                     TextView tvName = (TextView) childItem.findViewById(R.id.tv_name);
-                    TextView tvNum = (TextView) childItem.findViewById(R.id.tv_num);
+
                     TextView tvUnit = (TextView) childItem.findViewById(R.id.tv_unit);
                     tvName.getPaint().setFakeBoldText(false);
-                    tvNum.getPaint().setFakeBoldText(false);
                     tvUnit.getPaint().setFakeBoldText(false);
-                    UserRecipeDetailItem.ListItem listItem = userRecipeDetailItem.prescription.list.get(i);
+                    UserCheckDetailItem.ListItem listItem = userCheckDetailItem.list.get(i);
                     tvName.setText(listItem.name + "");
-                    tvNum.setText(listItem.num + "");
-                    tvUnit.setText(listItem.unit + "");
+
+                    tvUnit.setText(listItem.cost + "");
                     mLinearRecipeContainer.addView(childItem);
                 }
                 String money = "0.0";
-                if (!TextUtils.isEmpty(userRecipeDetailItem.prescription.cost))
+                if (!TextUtils.isEmpty(userCheckDetailItem.fee))
                 {
-                    money = userRecipeDetailItem.prescription.cost;
+                    money =userCheckDetailItem.fee;
                 }
                 String HJ = "合计：";
                 SpannableStringBuilder spannableText = new SpannableStringBuilder(HJ + "￥" + money + "元");

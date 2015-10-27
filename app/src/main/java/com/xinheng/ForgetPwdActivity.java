@@ -52,6 +52,7 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_pwd);//TODO
+        setIvRightVisibility(View.GONE);
         initView();
         setListener();
         //进入Activity时生成验证码
