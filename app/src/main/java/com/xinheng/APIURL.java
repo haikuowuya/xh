@@ -58,6 +58,14 @@ public class APIURL
      * 获取医生详情URL
      */
     public static final String GET_DOCTOR_DETAIL_URL = BASE_API_URL + "/interface/patient/appointment/getdoctordetail";
+    /***
+     * 手机号码 身份验证URL
+     */
+    public static final String AUTH_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/authmobile";
+    /***
+     * 修改密码URL
+     */
+    public static final String MODIFY_PWD_URL = BASE_API_URL + "/interface/patient/user/updatepassword";
     /**
      * 获取常用就诊人列表URL
      */

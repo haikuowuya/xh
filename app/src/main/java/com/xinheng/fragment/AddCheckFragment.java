@@ -122,6 +122,9 @@ public class AddCheckFragment extends BaseFragment implements DataView
      * 检查科室中的项目
      */
     private DepartCheckItem.CheckItem mCheckItem;
+    /***
+     * 是否发送验证码成功
+     */
     private boolean mIsCodeSuccess = false;
     private SMSBroadcastReceiver mSMSBroadcastReceiver = new SMSBroadcastReceiver();
 

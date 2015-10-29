@@ -1,6 +1,7 @@
 package com.xinheng.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,12 @@ import android.widget.TextView;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.AuthPhonePresenter;
+import com.xinheng.mvp.presenter.SendCodePresenter;
+import com.xinheng.mvp.presenter.impl.AuthPhonePresenterImpl;
+import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
+import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.PatternUtils;
 import com.xinheng.util.VerifyCodeUtils;
 
@@ -22,9 +29,26 @@ import com.xinheng.util.VerifyCodeUtils;
  * 时间： 17:48
  * 说明：  绑定手机号码
  */
-public class BindPhoneFragment extends BaseFragment
+public class BindPhoneFragment extends BaseFragment      implements DataView
 {
 
+    /***
+     * 获取验证码请求
+     */
+    public static final String REQUEST_CODE_TAG = "request_code";
+
+    /***
+     * 验证旧的手机号码
+     */
+    public static final String REQUEST_AUTH_OLD_PHONT = "request_auth_old_phone";
+    /***
+     * 验证新的的手机号码
+     */
+    public static final String REQUEST_AUTH_NEW_PHONT = "request_auth_new_phone";
+    /***
+     *修改密码
+     */
+    public static final String REQUEST_MODIFY_PWD = "request_modify_pwd";
     public static BindPhoneFragment newInstance()
     {
         BindPhoneFragment fragment = new BindPhoneFragment();
@@ -92,6 +116,11 @@ public class BindPhoneFragment extends BaseFragment
      */
     private TextView mTvFinish;
 
+    /***
+     * 是否发送验证码成功
+     */
+    private boolean mIsCodeSuccess = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -142,6 +171,69 @@ public class BindPhoneFragment extends BaseFragment
         return getString(R.string.tv_fragment_user_account);
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if (null != resultItem)
+        {
+            mActivity.showToast(resultItem.message);
+            if (resultItem.success())
+            {
+                if (REQUEST_CODE_TAG.equals(requestTag))
+                {
+                    VerifyCodeUtils.cancle();
+                    mBtnCode.setText("验证码发送成功");
+                    mIsCodeSuccess = true;
+                    mBtnCode.setClickable(false);
+                    new Handler().postDelayed(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    mIsCodeSuccess = false;
+                                }
+                            }, 60 * 1000);
+                } else if (REQUEST_AUTH_OLD_PHONT.equals(requestTag))
+                {
+                    mIsCodeSuccess = false;
+                    mCurrentOPT = 2;
+                    mLinear1.setVisibility(View.GONE);
+                    mLinear2.setVisibility(View.VISIBLE);
+                    mTv1.setTextColor(0xFF999999);
+                    mTv2.setTextColor(0xFF333333);
+                    mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
+                    mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
+                    mActivity.hideSoftKeyBorard(mEtCode);
+                }
+                else if(REQUEST_AUTH_NEW_PHONT.equals(requestTag))
+                {
+                    mCurrentOPT = 3;
+                    mIsCodeSuccess = false;
+                    mLinear1.setVisibility(View.GONE);
+                    mLinear2.setVisibility(View.GONE);
+                    mLinear3.setVisibility(View.VISIBLE);
+                    mBtnNext.setText("完成");
+                    mTv1.setTextColor(0xFF999999);
+                    mTv2.setTextColor(0xFF999999);
+                    mTv3.setTextColor(0xFF333333);
+                    mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
+                    mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_disable, 0, 0);
+                    mTv3.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_3_enable, 0, 0);
+                    mActivity.hideSoftKeyBorard(mEtCode);
+                    mTvFinish.setText("恭喜你，已修改绑定新的手机号码："+mEtNewPhone.getText().toString());
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+
+    }
+
     private class OnClickListenerImpl implements View.OnClickListener
     {
         public void onClick(View v)
@@ -149,27 +241,56 @@ public class BindPhoneFragment extends BaseFragment
             switch (v.getId())
             {
                 case R.id.btn_code://获取验证码  ,之前绑定的手机号码
-                    VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, mActivity.getLoginSuccessItem().mobile);
-                    break;
 
+                    String phone = mActivity.getLoginSuccessItem().mobile;
+                    if (!mIsCodeSuccess)
+                    {
+                        if (TextUtils.isEmpty(phone))
+                        {
+                            mActivity.showToast("手机号码不可以为空");
+                            return;
+                        }
+                        if (phone.length() != 11)
+                        {
+                            mActivity.showToast("手机号码长度应该为11位");
+                            return;
+                        }
+                        if (!PatternUtils.isPhoneNumber(phone))
+                        {
+                            mActivity.showToast("手机号码格式不正确");
+                            return;
+                        }
+                        doGetVerifyCode(phone);
+                    } else
+                    {
+                        mActivity.showToast("验证码已经发送到你手机，请稍候再试");
+                    }
+                    break;
                 case R.id.btn_new_phone_code://获取新手机号码验证码
                     String newPhone = mEtNewPhone.getText().toString();
-                    if (TextUtils.isEmpty(newPhone))
+                    if (!mIsCodeSuccess)
                     {
-                        mActivity.showCroutonToast("新手机号码不可以为空");
-                        return;
+                        if (TextUtils.isEmpty(newPhone))
+                        {
+                            mActivity.showCroutonToast("新手机号码不可以为空");
+                            return;
+                        }
+                        if (newPhone.length() != 11)
+                        {
+                            mActivity.showCroutonToast("新手机号码长度应该为11位");
+                            return;
+                        }
+                        if (!PatternUtils.isPhoneNumber(newPhone))
+                        {
+                            mActivity.showCroutonToast("新手机号码格式不正确");
+                            return;
+                        }
+                        doGetVerifyCode(newPhone);
                     }
-                    if(newPhone.length() != 11)
+                    else
                     {
-                        mActivity.showCroutonToast("新手机号码长度应该为11位");
-                        return;
+                        mActivity.showToast("验证码已经发送到你手机，请稍候再试");
                     }
-                    if(!PatternUtils.isPhoneNumber(newPhone))
-                    {
-                        mActivity.showCroutonToast("新手机号码格式不正确");
-                        return;
-                    }
-                    VerifyCodeUtils.getVerifyCode(mActivity, mBtnNewPhoneCode, 60 * 1000, newPhone);
                     break;
                 case R.id.btn_next://下一步
                     if (mCurrentOPT == 1)         //第一步
@@ -188,6 +309,15 @@ public class BindPhoneFragment extends BaseFragment
         }
 
     }
+    /***
+     * 获取手机验证码
+     */
+    private void doGetVerifyCode(String phone)
+    {
+        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(phone);
+    }
 
     /***
      * 校验之前绑定的手机号码的验证码
@@ -200,17 +330,10 @@ public class BindPhoneFragment extends BaseFragment
             mActivity.showCroutonToast("验证码不可以为空");
             return;
         }
-        if ("1234".equals(code))
-        {
-            mCurrentOPT = 2;
-            mLinear1.setVisibility(View.GONE);
-            mLinear2.setVisibility(View.VISIBLE);
-            mTv1.setTextColor(0xFF999999);
-            mTv2.setTextColor(0xFF333333);
-            mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
-            mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
-            mActivity.hideSoftKeyBorard(mEtCode);
-        }
+        AuthPhonePresenter authPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_OLD_PHONT);
+        authPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
+
+
     }
 
     /***
@@ -224,22 +347,10 @@ public class BindPhoneFragment extends BaseFragment
             mActivity.showCroutonToast("验证码不可以为空");
             return;
         }
-        if ("1234".equals(code))
-        {
-            mCurrentOPT = 3;
-            mLinear1.setVisibility(View.GONE);
-            mLinear2.setVisibility(View.GONE);
-            mLinear3.setVisibility(View.VISIBLE);
-            mBtnNext.setText("完成");
-            mTv1.setTextColor(0xFF999999);
-            mTv2.setTextColor(0xFF999999);
-            mTv3.setTextColor(0xFF333333);
-            mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
-            mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_disable, 0, 0);
-            mTv3.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_3_enable, 0, 0);
-            mActivity.hideSoftKeyBorard(mEtCode);
-            mTvFinish.setText("恭喜你，已修改绑定新的手机号码："+mEtNewPhone.getText().toString());
-        }
+
+        AuthPhonePresenter authPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_NEW_PHONT);
+        authPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
+
     }
 
 

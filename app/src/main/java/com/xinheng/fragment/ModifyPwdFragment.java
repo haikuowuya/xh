@@ -1,6 +1,7 @@
 package com.xinheng.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,9 +12,18 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.xinheng.LoginActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
-import com.xinheng.util.Constants;
+import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.AuthPhonePresenter;
+import com.xinheng.mvp.presenter.ModifyPwdPresenter;
+import com.xinheng.mvp.presenter.SendCodePresenter;
+import com.xinheng.mvp.presenter.impl.AuthPhonePresenterImpl;
+import com.xinheng.mvp.presenter.impl.ModifyPwdPresenterImpl;
+import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
+import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.PatternUtils;
 import com.xinheng.util.VerifyCodeUtils;
 
 /**
@@ -22,7 +32,7 @@ import com.xinheng.util.VerifyCodeUtils;
  * 时间： 17:48
  * 说明：  修改密码界面
  */
-public class ModifyPwdFragment extends BaseFragment
+public class ModifyPwdFragment extends BaseFragment implements DataView
 {
     public static final String MODIFY = "修改";
     public static final String HAS_BIND_PHONE_TEXT = "已绑定手机号码：";
@@ -33,6 +43,19 @@ public class ModifyPwdFragment extends BaseFragment
         return fragment;
     }
 
+    /***
+     * 获取验证码请求
+     */
+    public static final String REQUEST_CODE_TAG = "request_code";
+
+    /***
+     * 验证手机号码
+     */
+    public static final String REQUEST_AUTH_PHONT = "request_auth_phone";
+    /***
+     *修改密码
+     */
+    public static final String REQUEST_MODIFY_PWD = "request_modify_pwd";
     /***
      * 第一步
      */
@@ -72,6 +95,11 @@ public class ModifyPwdFragment extends BaseFragment
      * 已经绑定手机号码的提示
      */
     private TextView mTvBindPhoneHint;
+
+    /***
+     * 是否发送验证码成功
+     */
+    private boolean mIsCodeSuccess = false;
 
     @Nullable
     @Override
@@ -120,27 +148,95 @@ public class ModifyPwdFragment extends BaseFragment
         return getString(R.string.tv_fragment_user_account);
     }
 
+    @Override
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    {
+        if (null != resultItem)
+        {
+            mActivity.showToast(resultItem.message);
+            if (resultItem.success())
+            {
+                if (REQUEST_CODE_TAG.equals(requestTag))
+                {
+                    VerifyCodeUtils.cancle();
+                    mBtnCode.setText("验证码发送成功");
+                    mIsCodeSuccess = true;
+                    mBtnCode.setClickable(false);
+                    new Handler().postDelayed(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    mIsCodeSuccess = false;
+                                }
+                            }, 60 * 1000);
+                } else if (REQUEST_AUTH_PHONT.equals(requestTag))
+                {
+                    mBtnNext.setText(MODIFY);
+                    mLinear1.setVisibility(View.GONE);
+                    mLinear2.setVisibility(View.VISIBLE);
+                    mTv1.setTextColor(0xFF999999);
+                    mTv2.setTextColor(0xFF333333);
+                    mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
+                    mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
+                    mActivity.hideSoftKeyBorard(mEtCode);
+                }
+                else if(REQUEST_MODIFY_PWD.equals(requestTag))
+                {
+                    LoginActivity.actionLogin(mActivity);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onGetDataFailured(String msg, String requestTag)
+    {
+
+    }
+
     private class OnClickListenerImpl implements View.OnClickListener
     {
         public void onClick(View v)
         {
             switch (v.getId())
             {
-                case R.id.btn_code://
-                    getVerifyCode( mActivity.getLoginSuccessItem().mobile);
+                case R.id.btn_code://获取验证码
+                    String phone = mActivity.getLoginSuccessItem().mobile;
+                    if (!mIsCodeSuccess)
+                    {
+                        if (TextUtils.isEmpty(phone))
+                        {
+                            mActivity.showToast("手机号码不可以为空");
+                            return;
+                        }
+                        if (phone.length() != 11)
+                        {
+                            mActivity.showToast("手机号码长度应该为11位");
+                            return;
+                        }
+                        if (!PatternUtils.isPhoneNumber(phone))
+                        {
+                            mActivity.showToast("手机号码格式不正确");
+                            return;
+                        }
+                        doGetVerifyCode(phone);
+                    } else
+                    {
+                        mActivity.showToast("验证码已经发送到你手机，请稍候再试");
+                    }
                     break;
                 case R.id.btn_next://下一步
                     if (MODIFY.equals(mBtnNext.getText().toString()))
                     {
                         modifyPwd();
-                    }
-                    else
+                    } else
                     {
                         next();
                     }
             }
         }
-
     }
 
     private void modifyPwd()
@@ -158,33 +254,30 @@ public class ModifyPwdFragment extends BaseFragment
             return;
         }
         mActivity.hideSoftKeyBorard(mEtPwd2);
+        ModifyPwdPresenter modifyPwdPresenter = new ModifyPwdPresenterImpl(mActivity, this, REQUEST_MODIFY_PWD);
+        modifyPwdPresenter.doModifyPwd(mActivity.getLoginSuccessItem().mobile, mEtPwd1.getText().toString());
     }
 
     private void next()
     {
-        if (Constants.ALL_OK_CODE.equals(mEtCode.getText().toString()))
+        String code = mEtCode.getText().toString();
+        if (TextUtils.isEmpty(code))
         {
-            mBtnNext.setText(MODIFY);
-            mLinear1.setVisibility(View.GONE);
-            mLinear2.setVisibility(View.VISIBLE);
-            mTv1.setTextColor(0xFF999999);
-            mTv2.setTextColor(0xFF333333);
-            mTv1.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_1_disable, 0, 0);
-            mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
-            mActivity.hideSoftKeyBorard(mEtCode);
+            mActivity.showToast("验证码不可以为空");
+            return;
         }
-        else
-        {
-            mActivity.showCroutonToast("验证码不正确");
-        }
+        AuthPhonePresenter modifyPwdAuthPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_PHONT);
+        modifyPwdAuthPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
+
     }
 
     /***
      * 获取手机验证码
      */
-    private void getVerifyCode(String phone )
+    private void doGetVerifyCode(String phone)
     {
         VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
-        mActivity.showCroutonToast("此时请求服务器获取验证码");
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(phone);
     }
 }
