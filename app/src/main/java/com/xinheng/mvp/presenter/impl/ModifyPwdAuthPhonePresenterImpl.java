@@ -4,7 +4,7 @@ import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
 import com.xinheng.mvp.model.PostItem;
-import com.xinheng.mvp.presenter.AuthPhonePresenter;
+import com.xinheng.mvp.presenter.ModifyPwdAuthPhonePresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.RSAUtil;
@@ -15,15 +15,14 @@ import com.xinheng.util.RSAUtil;
  * 时间： 16:34
  * 说明：修改密码 验证手机号码 接口的实现类
  */
-public class AuthPhonePresenterImpl implements AuthPhonePresenter
+public class ModifyPwdAuthPhonePresenterImpl implements ModifyPwdAuthPhonePresenter
 {
     private BaseActivity mActivity;
     private DataView mDataView;
     private String mRequestTag;
 
-    public AuthPhonePresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
+    public ModifyPwdAuthPhonePresenterImpl(BaseActivity activity, DataView dataView, String requestTag)
     {
-
         mActivity = activity;
         mDataView = dataView;
         mRequestTag = requestTag;
@@ -32,7 +31,7 @@ public class AuthPhonePresenterImpl implements AuthPhonePresenter
     @Override
     public  void  doAuthPhone(String phone,String code)
     {
-        String departDoctorUrl = APIURL.AUTH_PHONE_WITH_CODE_URL;
+        String departDoctorUrl = APIURL.MODIFY_PWD_AUTH_PHONE_WITH_CODE_URL;
         PostPhoneCodeItem item = new PostPhoneCodeItem();
         item.mobile = phone;
         item.checkcode = code;

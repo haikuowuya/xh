@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.ForgetPwdPresenter;
+import com.xinheng.mvp.presenter.impl.ForgetPwdPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 
 /**
@@ -16,10 +18,11 @@ import com.xinheng.mvp.view.DataView;
  */
 public class ResetPwdActivity extends BaseActivity implements DataView
 {
-
-    public static void actionResetPwd(BaseActivity activity)
+    private static  final String EXTRA_MOBILE="mobile";
+    public static void actionResetPwd(BaseActivity activity ,String mobile)
     {
         Intent intent = new Intent(activity, ResetPwdActivity.class);
+        intent.putExtra(EXTRA_MOBILE, mobile);
         activity.startActivity(intent);
     }
 
@@ -50,6 +53,8 @@ public class ResetPwdActivity extends BaseActivity implements DataView
         setContentView(R.layout.activity_reset_pwd);//TODO
         initView();
         setListener();
+        setIvRightVisibility(View.GONE);
+        mMobile = getIntent().getExtras().getString(EXTRA_MOBILE);
     }
 
     private void setListener()
@@ -70,7 +75,11 @@ public class ResetPwdActivity extends BaseActivity implements DataView
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
+            if(resultItem.success())
+            {
+                LoginActivity.actionLogin(mActivity);
+            }
         }
     }
 
@@ -114,7 +123,8 @@ public class ResetPwdActivity extends BaseActivity implements DataView
             showCroutonToast("两次输入的密码不一致");
             return;
         }
-        showCroutonToast("此时请求服务器去重置密码");
+        ForgetPwdPresenter forgetPwdPresenter = new ForgetPwdPresenterImpl(mActivity, this);
+        forgetPwdPresenter.doResetPwd(mMobile, pwd1);
     }
 
     @Override

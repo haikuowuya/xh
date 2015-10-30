@@ -59,13 +59,39 @@ public class APIURL
      */
     public static final String GET_DOCTOR_DETAIL_URL = BASE_API_URL + "/interface/patient/appointment/getdoctordetail";
     /***
-     * 手机号码 身份验证URL
+     *  修改密码  身份验证 URL
      */
-    public static final String AUTH_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/authmobile";
+    public static final String MODIFY_PWD_AUTH_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/editpassword";
+
+    /***
+     * 忘记密码-第一步,验证帐号
+     */
+    public static final String FORGET_PWD_AUTH_ACCOUNT=BASE_API_URL + "/public/patient/user/resetpasswordfirst";
+    /***
+     * 忘记密码-第二步,验证手机号码
+     */
+    public static final String FORGET_PWD_AUTH_PHONE=BASE_API_URL + "/public/patient/user/resetpasswordsecond";
+    /***
+     * 忘记密码-第三步,验证常用就诊人
+     */
+    public static final String FORGET_PWD_AUTH_PATIENT=BASE_API_URL + "/public/patient/user/resetpasswordthird";
+    /***
+     *  忘记密码-第四步,重置密码
+     */
+    public static final String FORGET_PWD_RESET_PWD=BASE_API_URL + "/public/patient/user/resetpasswordfourth";
     /***
      * 修改密码URL
      */
-    public static final String MODIFY_PWD_URL = BASE_API_URL + "/interface/patient/user/updatepassword";
+    public static final String MODIFY_PWD_URL = BASE_API_URL + "/interface/patient/user/editpasswordsecond";
+    /***
+     * 绑定手机号身份验证（第一步）URL
+     */
+    public static final String BIND_PHONE_AUTH_OLD_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/modifymobilefirst";
+    /**
+     * 绑定手机号身份验证（第二步） URL
+     */
+    public static final String BIND_PHONE_AUTH_NEW_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/modifymobilesecond";
+
     /**
      * 获取常用就诊人列表URL
      */

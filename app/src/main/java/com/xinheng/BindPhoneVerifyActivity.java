@@ -2,6 +2,7 @@ package com.xinheng;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,10 @@ import android.widget.TextView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.ForgetPwdPresenter;
+import com.xinheng.mvp.presenter.SendCodePresenter;
+import com.xinheng.mvp.presenter.impl.ForgetPwdPresenterImpl;
+import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.PatternUtils;
 import com.xinheng.util.VerifyCodeUtils;
@@ -19,7 +24,15 @@ import com.xinheng.util.VerifyCodeUtils;
  */
 public class BindPhoneVerifyActivity extends UserBaseActivity implements DataView
 {
-    public static final String  TEST_CODE = "1234";
+
+    /***
+     * 获取验证码请求
+     */
+    public static final String REQUEST_CODE_TAG = "request_code";
+    /***
+     * 第二步验证手机号码
+     */
+    public static final String REQUEST_AUTH_PHONE_TAG="request_auth_phone";
     private static  final String EXTRA_MOBILE="mobile";
     public static void actionBindPhoneVerify(BaseActivity activity, String mobile )
     {
@@ -52,12 +65,19 @@ public class BindPhoneVerifyActivity extends UserBaseActivity implements DataVie
     private String mMobile;
 
 
+    /***
+     * 是否发送验证码成功
+     */
+    private boolean mIsCodeSuccess = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bind_phone_verify);//TODO
         initView();
+        setIvRightVisibility(View.GONE);
         setListener();
         mMobile = getIntent().getExtras().getString(EXTRA_MOBILE);
         String tmpMobile =  mMobile.substring(0, 3)+"****"+mMobile.substring(7);
@@ -84,7 +104,30 @@ public class BindPhoneVerifyActivity extends UserBaseActivity implements DataVie
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
+            if (resultItem.success())
+            {
+                if (REQUEST_CODE_TAG.equals(requestTag))
+                {
+                    VerifyCodeUtils.cancle();
+                    mBtnCode.setText("验证码发送成功");
+                    mIsCodeSuccess = true;
+                    mBtnCode.setClickable(false);
+                    new Handler().postDelayed(
+                            new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    mIsCodeSuccess = false;
+                                }
+                            }, 60 * 1000);
+                }
+                else if(REQUEST_AUTH_PHONE_TAG.equals(requestTag))
+                {
+                    VerifyPersonActivity.actionVerifyPerson(mActivity,mMobile);
+                }
+            }
         }
     }
 
@@ -107,7 +150,29 @@ public class BindPhoneVerifyActivity extends UserBaseActivity implements DataVie
                     next();
                     break;
                 case R.id.btn_code://获取手机验证码
-                   getVerifyCode();
+                    String phone = mMobile;
+                    if (!mIsCodeSuccess)
+                    {
+                        if (TextUtils.isEmpty(phone))
+                        {
+                            mActivity.showToast("手机号码不可以为空");
+                            return;
+                        }
+                        if (phone.length() != 11)
+                        {
+                            mActivity.showToast("手机号码长度应该为11位");
+                            return;
+                        }
+                        if (!PatternUtils.isPhoneNumber(phone))
+                        {
+                            mActivity.showToast("手机号码格式不正确");
+                            return;
+                        }
+                        doGetVerifyCode(phone);
+                    } else
+                    {
+                        mActivity.showToast("验证码已经发送到你手机，请稍候再试");
+                    }
                     break;
             }
         }
@@ -116,11 +181,13 @@ public class BindPhoneVerifyActivity extends UserBaseActivity implements DataVie
     /***
      * 获取手机验证码
      */
-    private void getVerifyCode()
+    private void doGetVerifyCode(String phone)
     {
-        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode,60*1000, mMobile);
-        showCroutonToast("此时请求服务器获取验证码");
+        VerifyCodeUtils.getVerifyCode(mActivity, mBtnCode, 60 * 1000, phone);
+        SendCodePresenter sendCodePresenter = new SendCodePresenterImpl(mActivity, this, REQUEST_CODE_TAG);
+        sendCodePresenter.doSendCode(phone);
     }
+
 
     /**
      * 下一步按钮的点击执行事件
@@ -148,12 +215,9 @@ public class BindPhoneVerifyActivity extends UserBaseActivity implements DataVie
             showCroutonToast("验证码不可以为空");
             return;
         }
-        if (!code.equalsIgnoreCase(TEST_CODE)) //验证码不区分大小写
-        {
-            showCroutonToast("验证码不正确，请重新输入,1234可以通过验证");
-            return;
-        }
-        VerifyPersonActivity.actionVerifyPerson(mActivity);
+        ForgetPwdPresenter forgetPwdPresenter = new ForgetPwdPresenterImpl(mActivity, this, REQUEST_AUTH_PHONE_TAG);
+        forgetPwdPresenter.doAuthPhone(mMobile, code);;
+
     }
 
     @Override

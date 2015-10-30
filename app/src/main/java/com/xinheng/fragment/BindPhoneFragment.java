@@ -14,14 +14,18 @@ import android.widget.TextView;
 
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnBindPhoneModifyEvent;
+import com.xinheng.mvp.model.LoginSuccessItem;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.presenter.AuthPhonePresenter;
+import com.xinheng.mvp.presenter.BindPhoneAuthPhonePresenter;
 import com.xinheng.mvp.presenter.SendCodePresenter;
-import com.xinheng.mvp.presenter.impl.AuthPhonePresenterImpl;
+import com.xinheng.mvp.presenter.impl.BindPhoneAuthPhonePresenterImpl;
 import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.PatternUtils;
 import com.xinheng.util.VerifyCodeUtils;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * 作者： raiyi-suzhou
@@ -40,11 +44,11 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
     /***
      * 验证旧的手机号码
      */
-    public static final String REQUEST_AUTH_OLD_PHONT = "request_auth_old_phone";
+    public static final String REQUEST_AUTH_OLD_PHONE = "request_auth_old_phone";
     /***
      * 验证新的的手机号码
      */
-    public static final String REQUEST_AUTH_NEW_PHONT = "request_auth_new_phone";
+    public static final String REQUEST_AUTH_NEW_PHONE = "request_auth_new_phone";
     /***
      *修改密码
      */
@@ -194,7 +198,7 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
                                     mIsCodeSuccess = false;
                                 }
                             }, 60 * 1000);
-                } else if (REQUEST_AUTH_OLD_PHONT.equals(requestTag))
+                } else if (REQUEST_AUTH_OLD_PHONE.equals(requestTag))
                 {
                     mIsCodeSuccess = false;
                     mCurrentOPT = 2;
@@ -206,7 +210,7 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
                     mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_enable, 0, 0);
                     mActivity.hideSoftKeyBorard(mEtCode);
                 }
-                else if(REQUEST_AUTH_NEW_PHONT.equals(requestTag))
+                else if(REQUEST_AUTH_NEW_PHONE.equals(requestTag))
                 {
                     mCurrentOPT = 3;
                     mIsCodeSuccess = false;
@@ -221,9 +225,12 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
                     mTv2.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_2_disable, 0, 0);
                     mTv3.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_verify_3_enable, 0, 0);
                     mActivity.hideSoftKeyBorard(mEtCode);
-                    mTvFinish.setText("恭喜你，已修改绑定新的手机号码："+mEtNewPhone.getText().toString());
+                    mTvFinish.setText("恭喜你，已修改绑定新的手机号码：" + mEtNewPhone.getText().toString());
+                    EventBus.getDefault().post(new OnBindPhoneModifyEvent(mEtNewPhone.getText().toString()));
+                    LoginSuccessItem loginSuccessItem = mActivity.getLoginSuccessItem();
+                    loginSuccessItem.mobile = mEtNewPhone.getText().toString();
+                    mActivity.saveLoginSuccessItem(loginSuccessItem);
                 }
-
             }
         }
     }
@@ -241,7 +248,6 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
             switch (v.getId())
             {
                 case R.id.btn_code://获取验证码  ,之前绑定的手机号码
-
                     String phone = mActivity.getLoginSuccessItem().mobile;
                     if (!mIsCodeSuccess)
                     {
@@ -330,10 +336,9 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
             mActivity.showCroutonToast("验证码不可以为空");
             return;
         }
-        AuthPhonePresenter authPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_OLD_PHONT);
-        authPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
 
-
+        BindPhoneAuthPhonePresenter bindPhoneAuthPhonePresenter  = new BindPhoneAuthPhonePresenterImpl(mActivity,this, REQUEST_AUTH_OLD_PHONE);
+        bindPhoneAuthPhonePresenter.doAuthOldPhone(mActivity.getLoginSuccessItem().mobile, code);
     }
 
     /***
@@ -347,9 +352,8 @@ public class BindPhoneFragment extends BaseFragment      implements DataView
             mActivity.showCroutonToast("验证码不可以为空");
             return;
         }
-
-        AuthPhonePresenter authPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_NEW_PHONT);
-        authPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
+        BindPhoneAuthPhonePresenter bindPhoneAuthPhonePresenter  = new BindPhoneAuthPhonePresenterImpl(mActivity,this, REQUEST_AUTH_NEW_PHONE);
+        bindPhoneAuthPhonePresenter.doAuthNewPhone(mActivity.getLoginSuccessItem().mobile,mEtNewPhone.getText().toString(), code);
 
     }
 

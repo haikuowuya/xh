@@ -17,6 +17,7 @@ import com.xinheng.mvp.presenter.LoginPresenter;
 import com.xinheng.mvp.presenter.impl.AutoLoginPresenterImpl;
 import com.xinheng.mvp.presenter.impl.LoginPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.AndroidUtils;
 import com.xinheng.util.Constants;
 import com.xinheng.util.GsonUtils;
 import com.xinheng.util.MD5;
@@ -28,6 +29,7 @@ import com.xinheng.util.RSAUtil;
 public class LoginActivity extends BaseActivity implements DataView
 {
     public static final String DEFAULT_USERNAME = "15850217017";
+    public static final String DEFAULT_USERNAME_ME = "18625273625";
     public static final String DEFAULT_PWD = "111111";
     public static final String EXTRA_USERNAME = "username";
     public static final String EXTRA_PWD = "pwd";
@@ -124,6 +126,10 @@ public class LoginActivity extends BaseActivity implements DataView
     private void initUsernamePwd()
     {
         String userName = DEFAULT_USERNAME;
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
+        {
+            userName = DEFAULT_USERNAME_ME;
+        }
         String pwd = DEFAULT_PWD;
         if (!TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_USERNAME)) && !TextUtils.isEmpty(getIntent().getStringExtra(EXTRA_PWD)))
         {

@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.ForgetPwdPresenter;
+import com.xinheng.mvp.presenter.impl.ForgetPwdPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.CodeUtils;
 import com.xinheng.util.DensityUtils;
@@ -79,7 +81,11 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
+            if(resultItem.success())
+            {
+                BindPhoneVerifyActivity.actionBindPhoneVerify(mActivity,mEtMobile.getText().toString());
+            }
         }
     }
 
@@ -150,7 +156,8 @@ public class ForgetPwdActivity extends BaseActivity implements DataView
             showCroutonToast("验证码不正确，请重新输入");
             return;
         }
-        BindPhoneVerifyActivity.actionBindPhoneVerify(mActivity,mobile);
+        ForgetPwdPresenter forgetPwdPresenter = new ForgetPwdPresenterImpl(mActivity,this);
+        forgetPwdPresenter.doAuthAccount(mobile);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.xinheng.mvp.model.PostItem;
 import com.xinheng.mvp.presenter.ModifyPwdPresenter;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
+import com.xinheng.util.MD5;
 import com.xinheng.util.RSAUtil;
 
 /**
@@ -35,7 +36,8 @@ public class ModifyPwdPresenterImpl implements ModifyPwdPresenter
         String departDoctorUrl = APIURL.MODIFY_PWD_URL;
         PostPModifyPwdItem item = new PostPModifyPwdItem();
         item.mobile = phone;
-        item.password = pwd;
+        item.newpassword =  new MD5().getMD5_32(pwd);
+
         String mingPostBody = GsonUtils.toJson(item);
         System.out.println("mingPostBody = " + mingPostBody);
         String postBody = RSAUtil.clientEncrypt(mingPostBody);
@@ -45,7 +47,7 @@ public class ModifyPwdPresenterImpl implements ModifyPwdPresenter
     public static  class PostPModifyPwdItem extends PostItem
     {
         public String mobile;//手机号码
-        public String password;//新密码
+        public String newpassword;//新密码 经过md5 加密
 
     }
 }

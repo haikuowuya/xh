@@ -3,6 +3,7 @@ package com.xinheng.fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import com.xinheng.BindPhoneActivity;
 import com.xinheng.ModifyPwdActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
+import com.xinheng.eventbus.OnBindPhoneModifyEvent;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * 作者： raiyi-suzhou
@@ -63,10 +68,31 @@ public class AccountSecurityFragment extends BaseFragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         setListener();
         String mobile = mActivity.getLoginSuccessItem().mobile;
         String tmpMobile =  mobile.substring(0, 3)+"****"+mobile.substring(7);
         mTvPhone.setText(tmpMobile);
+    }
+
+    @Subscribe
+    public void onEventMainThread(OnBindPhoneModifyEvent event)
+    {
+        if (null != event && !TextUtils.isEmpty(event.mNewBindPhone))
+        {
+            String mobile = event.mNewBindPhone;
+            if(mobile.length() > 7)
+            {
+                String tmpMobile =mobile.substring(0, 3) + "****" + mobile.substring(7);
+                mTvPhone.setText(tmpMobile);
+            }
+        }
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void setListener()

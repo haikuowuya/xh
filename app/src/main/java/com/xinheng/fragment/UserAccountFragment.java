@@ -110,27 +110,31 @@ public class UserAccountFragment extends BaseFragment implements DataView
         if (null != mActivity.getLoginSuccessItem())
         {
             String photo = mActivity.getLoginSuccessItem().photo;
-            if (photo.startsWith(StorageUtils.getCacheDir(mActivity).getAbsolutePath()))
+
+               if (!TextUtils.isEmpty(photo))
             {
-                mIvPhoto.setImageBitmap(BitmapFactory.decodeFile(photo));
-            }
-            else  if (!TextUtils.isEmpty(photo))
-            {
-                if (!photo.startsWith(APIURL.BASE_API_URL))
+                if (photo.startsWith(StorageUtils.getCacheDir(mActivity).getAbsolutePath()))
                 {
-                    photo = APIURL.BASE_API_URL + photo;
+                    mIvPhoto.setImageBitmap(BitmapFactory.decodeFile(photo));
                 }
-                ImageLoader.getInstance().loadImage(photo, new AbsImageLoadingListener()
+               else if (!photo.startsWith(APIURL.BASE_API_URL))
                 {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
                     {
-                        if (null != loadedImage)
-                        {
-                            mIvPhoto.setImageBitmap(loadedImage);
-                        }
+                        photo = APIURL.BASE_API_URL + photo;
                     }
-                });
+                    ImageLoader.getInstance().loadImage(
+                            photo, new AbsImageLoadingListener()
+                            {
+                                @Override
+                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                {
+                                    if (null != loadedImage)
+                                    {
+                                        mIvPhoto.setImageBitmap(loadedImage);
+                                    }
+                                }
+                            });
+                }
             }
 
             if (null != mActivity.getLoginSuccessItem().account)

@@ -16,10 +16,10 @@ import com.xinheng.LoginActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.presenter.AuthPhonePresenter;
+import com.xinheng.mvp.presenter.ModifyPwdAuthPhonePresenter;
 import com.xinheng.mvp.presenter.ModifyPwdPresenter;
 import com.xinheng.mvp.presenter.SendCodePresenter;
-import com.xinheng.mvp.presenter.impl.AuthPhonePresenterImpl;
+import com.xinheng.mvp.presenter.impl.ModifyPwdAuthPhonePresenterImpl;
 import com.xinheng.mvp.presenter.impl.ModifyPwdPresenterImpl;
 import com.xinheng.mvp.presenter.impl.SendCodePresenterImpl;
 import com.xinheng.mvp.view.DataView;
@@ -51,7 +51,7 @@ public class ModifyPwdFragment extends BaseFragment implements DataView
     /***
      * 验证手机号码
      */
-    public static final String REQUEST_AUTH_PHONT = "request_auth_phone";
+    public static final String REQUEST_AUTH_PHONE = "request_auth_phone";
     /***
      *修改密码
      */
@@ -171,7 +171,7 @@ public class ModifyPwdFragment extends BaseFragment implements DataView
                                     mIsCodeSuccess = false;
                                 }
                             }, 60 * 1000);
-                } else if (REQUEST_AUTH_PHONT.equals(requestTag))
+                } else if (REQUEST_AUTH_PHONE.equals(requestTag))
                 {
                     mBtnNext.setText(MODIFY);
                     mLinear1.setVisibility(View.GONE);
@@ -266,7 +266,7 @@ public class ModifyPwdFragment extends BaseFragment implements DataView
             mActivity.showToast("验证码不可以为空");
             return;
         }
-        AuthPhonePresenter modifyPwdAuthPhonePresenter = new AuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_PHONT);
+        ModifyPwdAuthPhonePresenter modifyPwdAuthPhonePresenter = new ModifyPwdAuthPhonePresenterImpl(mActivity, this, REQUEST_AUTH_PHONE);
         modifyPwdAuthPhonePresenter.doAuthPhone(mActivity.getLoginSuccessItem().mobile, code);
 
     }

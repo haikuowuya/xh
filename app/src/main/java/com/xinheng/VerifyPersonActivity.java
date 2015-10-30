@@ -9,18 +9,22 @@ import android.widget.EditText;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.ForgetPwdPresenter;
+import com.xinheng.mvp.presenter.impl.ForgetPwdPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 
 /**
- * 验证就诊人界面
+ * 验证常用就诊人界面
  */
 public class VerifyPersonActivity extends UserBaseActivity implements DataView
 {
-    public static final String  TEST_NAME= "123456";
 
-    public static void actionVerifyPerson(BaseActivity activity)
+    private static  final String EXTRA_MOBILE="mobile";
+
+    public static void actionVerifyPerson(BaseActivity activity,String mobile )
     {
         Intent intent = new Intent(activity, VerifyPersonActivity.class);
+        intent.putExtra(EXTRA_MOBILE, mobile);
         activity.startActivity(intent);
     }
 
@@ -46,7 +50,9 @@ public class VerifyPersonActivity extends UserBaseActivity implements DataView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_person);//TODO
         initView();
+        setIvRightVisibility(View.GONE);
         setListener();
+        mMobile = getIntent().getExtras().getString(EXTRA_MOBILE);
     }
 
     private void setListener()
@@ -66,7 +72,11 @@ public class VerifyPersonActivity extends UserBaseActivity implements DataView
     {
         if (null != resultItem)
         {
-            showCroutonToast(resultItem.message);
+            showToast(resultItem.message);
+            if(resultItem.success())
+            {
+                ResetPwdActivity.actionResetPwd(mActivity,mMobile);
+            }
         }
     }
 
@@ -104,19 +114,15 @@ public class VerifyPersonActivity extends UserBaseActivity implements DataView
             showCroutonToast("常用就诊人姓名不可以为空");
             return;
         }
-        if (!name.equalsIgnoreCase(TEST_NAME))
-        {
-            showCroutonToast("常用就诊人姓名不正确，123456可以通过验证");
-            return;
-        }
-        showCroutonToast("此时请求服务器去验证常用就诊人姓名是否存在");
-        ResetPwdActivity.actionResetPwd(mActivity);
+        ForgetPwdPresenter forgetPwdPresenter = new ForgetPwdPresenterImpl(mActivity, this);
+        forgetPwdPresenter.doAuthPatient(mMobile, name);
+
     }
 
     @Override
     public CharSequence getActivityTitle()
     {
-        return getString(R.string.tv_activity_bind_phone_verify);
+        return getString(R.string.tv_activity_verify_person);
     }
 
 }

@@ -59,8 +59,11 @@ public class UserNicknameFragment extends BaseFragment implements DataView
         if (null != mActivity.getLoginSuccessItem() && null != mActivity.getLoginSuccessItem().account)
         {
             mOldNickname = mActivity.getLoginSuccessItem().account.nickname;
-            mEtName.setText(mOldNickname);
-            mEtName.setSelection(mOldNickname.length());
+            if(!TextUtils.isEmpty(mOldNickname))
+            {
+                mEtName.setText(mOldNickname);
+                mEtName.setSelection(mOldNickname.length());
+            }
         }
         setListener();
     }
