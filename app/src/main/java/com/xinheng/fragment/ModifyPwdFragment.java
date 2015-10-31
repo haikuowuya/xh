@@ -184,7 +184,7 @@ public class ModifyPwdFragment extends BaseFragment implements DataView
                 }
                 else if(REQUEST_MODIFY_PWD.equals(requestTag))
                 {
-                    LoginActivity.actionLogin(mActivity);
+                    LoginActivity.actionLogin(mActivity,mActivity.getLoginSuccessItem().mobile, mEtPwd1.getText().toString());
                 }
             }
         }
