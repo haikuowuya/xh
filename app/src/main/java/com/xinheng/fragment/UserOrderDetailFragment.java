@@ -407,15 +407,16 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
             }
             String tmp = " (含运费￥"+despatchFee+")";
 
-            String countFeeInfo = countInfo + orderDetailItem.fee;
+            String countFeeInfo = countInfo + mFee;
             String allInfo = countFeeInfo + tmp;
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);
             spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), countFeeInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), countFeeInfo.length(), allInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             mTvFee.setText(spannableStringBuilder);
-            SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + orderDetailItem.fee) + "\n" + tmp);
-            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + orderDetailItem.fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + orderDetailItem.fee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+            SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + mFee) + "\n" + tmp);
+            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + mFee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + mFee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             mTvConfirmFee.setText(spannableStringBuilder1);
 
             if (UserOrderItem.ORDER_STATUS_3.equals(orderDetailItem.orderStatus))

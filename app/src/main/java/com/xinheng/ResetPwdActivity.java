@@ -78,7 +78,7 @@ public class ResetPwdActivity extends BaseActivity implements DataView
             showToast(resultItem.message);
             if(resultItem.success())
             {
-                LoginActivity.actionLogin(mActivity);
+                LoginActivity.actionLogin(mActivity,mActivity.getLoginSuccessItem().mobile, mEtPwd1.getText().toString());
             }
         }
     }
@@ -116,6 +116,11 @@ public class ResetPwdActivity extends BaseActivity implements DataView
         if (TextUtils.isEmpty(pwd1))
         {
             showCroutonToast("新密码不可以为空");
+            return;
+        }
+        if(pwd1.length() < 6||pwd1.length() >32)
+        {
+            showToast("密码长度为6-32位");
             return;
         }
         if (!pwd1.equals(pwd2))

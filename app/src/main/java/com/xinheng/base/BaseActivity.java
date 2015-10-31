@@ -258,6 +258,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
                     @Override
                     public void onClick(View v)
                     {
+                        hideSoftKeyBorard();
                         onBackPressed();
                     }
                 });

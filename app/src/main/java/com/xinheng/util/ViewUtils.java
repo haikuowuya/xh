@@ -122,6 +122,8 @@ public class ViewUtils
 
     public static int getActionBarHeightInDp(Context context)
     {
+
+
         int actionBarHeight = 0;
         TypedValue tv = new TypedValue();
         final DisplayMetrics dm = context.getResources().getDisplayMetrics();
