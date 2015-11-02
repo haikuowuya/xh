@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_auto_check_man_1"/>
+
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="90dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_centerHorizontal="true"
+            android:layout_height="80dp"/>
+
+        <ImageView
+            android:id="@+id/iv_header_bottom"
+            android:layout_width="90dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_below="@+id/iv_header"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:layout_height="25dp"/>
+
+        <ImageView
+
+            android:id="@+id/iv_header_neck"
+            android:layout_width="110dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_below="@+id/iv_header_bottom"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:layout_height="80dp"/>
+        <ImageView
+            android:id="@+id/iv_header_abdomen"
+            android:layout_width="110dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_below="@+id/iv_header_neck"
+            android:scaleType="fitXY"
+            android:layout_centerHorizontal="true"
+            android:layout_height="85dp"/>
+
+        <ImageView
+            android:id="@+id/iv_switch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/list_linear_item_selector"
+            android:src="@mipmap/ic_auto_switch"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
