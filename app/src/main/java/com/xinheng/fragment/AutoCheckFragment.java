@@ -282,7 +282,6 @@ public class AutoCheckFragment extends BaseFragment implements DataView
 
     private class OnPhotoTapListenerImpl implements PhotoViewAttacher.OnPhotoTapListener, PhotoViewAttacher.OnViewTapListener
     {
-
         public void onPhotoTap(View view, float x, float y)
         {
             float xPercentage = x * 100f;
@@ -294,11 +293,15 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                 if (mSwitchSex.isChecked())       //男
                 {
                     clickManToBodyKv(xPercentage, yPercentage);
+//                    System.out.println("man x = " + xPercentage + " y = " + yPercentage);
+                    return;
                 } else     //女
                 {
                     clickWomanToBodyKv(xPercentage, yPercentage);
+//                    System.out.println("woman x = " + xPercentage + " y = " + yPercentage);
+                    return;
                 }
-                mActivity.showToast("onPhotoTap  x =" + xPercentage + " y = " + yPercentage);
+            //    mActivity.showToast("onPhotoTap  x =" + xPercentage + " y = " + yPercentage);
             }
 
         }
@@ -372,6 +375,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             mActivity.showToast("手臂");
             return;
         }
+        return;
     }
 
     private void clickManToBodyKv(float xPercentage, float yPercentage)
@@ -433,6 +437,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             mActivity.showToast("手臂");
             return;
         }
+        return;
     }
 
 }
