@@ -85,5 +85,17 @@
         <item>ic_menu_user~个人中心</item>
         <item>ic_menu_settings~系统设置</item>
     </array>
+    <array name="array_body_kvs">
+        <item>头部~HEAD</item>
+        <item>颈部~NECK</item>
+        <item>手臂~arm</item>
+        <item>腹部~Abdomen</item>
+        <item>生殖器~Genitals</item>
+        <item>背部~Back</item>
+        <item>排泄部~Discharge</item>
+        <item>胸部~CHEST</item>
+        <item>下肢~legs</item>
+        <item>其他~other</item>
+    </array>
 
 </resources>

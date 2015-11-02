@@ -48,14 +48,16 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_gravity="center"
+
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/iv_image"
-            android:padding="10dp"
+                   android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:scaleType="fitCenter"
             android:src="@mipmap/ic_auto_check_man_1"/>
         <include layout="@layout/layout_listview"/>
         <ImageView

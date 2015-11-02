@@ -94,6 +94,7 @@ public class SymptomListFragment extends PTRListFragment implements DataView
             int height = DensityUtils.dpToPx(mActivity, 44.f);
             AbsListView.LayoutParams layoutparams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
             mTvHeaderTextView.setLayoutParams(layoutparams);
+
         }
     }
 
@@ -125,7 +126,6 @@ public class SymptomListFragment extends PTRListFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-
                 Type type = new TypeToken<List<BodyKV.SymptomItem>>()
                 {
                 }.getType();
