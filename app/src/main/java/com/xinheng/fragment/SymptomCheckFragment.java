@@ -160,16 +160,15 @@ public class SymptomCheckFragment extends BaseFragment implements DataView
                 }
                 else if (REQUEST_SYMPTOM_CHECK_NO_TAG.equals(requestTag))
                 {
-
                     BodyKV.SymptomNextQuestion symptomNextQuestion = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), BodyKV.SymptomNextQuestion.class);
                     if (null != symptomNextQuestion && null != symptomNextQuestion.nextquestion)
                     {
-                        mtvQuestion.setText(symptomNextQuestion.nextquestion.content);
+                        mSymptomQuestion = symptomNextQuestion.nextquestion;
+                        mtvQuestion.setText(mSymptomQuestion.content);
                     }
                 }
                 else if (REQUEST_SYMPTOM_CHECK_YES_TAG.equals(requestTag))
                 {
-
                     BodyKV.SymptomResult symptomResult = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), BodyKV.SymptomResult.class);
                     if (null != symptomResult && null != symptomResult.exit)
                     {
