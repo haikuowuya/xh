@@ -127,6 +127,14 @@ public class APIURL
      * 我的咨询列表URL
      */
     public static final String GET_USER_COUNSEL_LIST_URL = BASE_API_URL + "/interface/patient/myconsultation/getlist";
+    /***
+     * 获取购物车列表
+     */
+    public static final String GET_SHOPPING_CART_LIST_URL = BASE_API_URL + "/interface/patient/shoppingcart/getlist";
+    /**
+     * 添加商品到购物车
+     */
+    public static final String ADD_TO_SHOPPING_CART_URL = BASE_API_URL + "/interface/patient/shoppingcart/add";
     /**
      * 我的咨询详情URL
      */
@@ -152,6 +160,10 @@ public class APIURL
      *    我的检查详情URL
      */
     public static final String GET_USER_CHECK_DETAIL_URL = BASE_API_URL + "/interface/patient/mycheck/getdetail";
+    /***
+     * 获取药品详情URL
+     */
+    public static final String GET_DRUG_DETAIL_URL = BASE_API_URL + "/interface/patient/mall/drugdetail";
     /***
      *  智能导诊-获取症状起始问题 URL
      */

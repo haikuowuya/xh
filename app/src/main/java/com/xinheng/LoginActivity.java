@@ -126,7 +126,7 @@ public class LoginActivity extends BaseActivity implements DataView
     private void initUsernamePwd()
     {
         String userName = DEFAULT_USERNAME;
-        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)) &&mPreferences.getBoolean(Constants.PREF_IS_ME,true))
         {
             userName = DEFAULT_USERNAME_ME;
         }

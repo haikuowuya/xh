@@ -53,5 +53,7 @@ public class Constants
     public static final String PREF_LOGIN = "login";
     public static final String PREF_IS_AUTO_LOGIN = "is_auto_login";
     public static final String PREF_IS_ONLINE = "is_online";
+    public static final String PREF_IS_ME = "is_me";
+    public static final String PREF_IS_SLIDING_MENU = "is_sliding_menu";
     public static  final String PREF_RSA_USERNAME_PWD="rsa_username_pwd" ;
 }

@@ -3,18 +3,22 @@ package com.xinheng.fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
-import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.DensityUtils;
+import com.xinheng.view.HackyViewPager;
+
+import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
 
@@ -24,22 +28,26 @@ import uk.co.senab.photoview.PhotoView;
  * 时间： 17:48
  * 说明：  图片详情查看Fragment页面
  */
-public class PhotoViewFragment extends BaseFragment implements DataView
+public class PhotoViewFragment extends BaseFragment
 {
-    public static final String ARG_IMAGE_URL = "image_url";
 
-    public static PhotoViewFragment newInstance(String imageUrl)
+    public static final String ARG_LIST_IMAGE_URL = "list_image_url";
+    public static final String ARG_POSITION="position";
+
+    public static PhotoViewFragment newInstance(ArrayList<String> imageUrls,int position)
     {
         PhotoViewFragment fragment = new PhotoViewFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_IMAGE_URL, imageUrl);
+        bundle.putStringArrayList(ARG_LIST_IMAGE_URL, imageUrls);
+        bundle.putInt(ARG_POSITION,position);
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    private String mImageUrl;
+    private ArrayList<String> mImageUrls;
 
-    private PhotoView mPhotoView;
+    private HackyViewPager mViewPager;
+    private TextView mTvText;
 
     @Nullable
     @Override
@@ -52,41 +60,27 @@ public class PhotoViewFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
-        mPhotoView = (PhotoView) view.findViewById(R.id.pv_photoview);
+        mViewPager = (HackyViewPager) view.findViewById(R.id.vp_viewpager);
+        int paddingLRTB = DensityUtils.dpToPx(mActivity, 30.f);
+        mViewPager.setPadding(0,paddingLRTB,0,paddingLRTB );
+        mTvText = (TextView) view.findViewById(R.id.tv_text);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        mImageUrl = getArguments().getString(ARG_IMAGE_URL);
-
-        if (!TextUtils.isEmpty(mImageUrl))
+        mImageUrls = getArguments().getStringArrayList(ARG_LIST_IMAGE_URL);
+        int position = getArguments().getInt(ARG_POSITION);
+        if (null != mImageUrls && !mImageUrls.isEmpty())
         {
-            if (!mImageUrl.startsWith(APIURL.BASE_API_URL))
-            {
-                mImageUrl = APIURL.BASE_API_URL + mImageUrl;
-            }
-
-            ImageLoader.getInstance().loadImage(
-                    mImageUrl, new AbsImageLoadingListener()
-                    {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                        {
-                            mPhotoView.setImageBitmap(loadedImage);
-                        }
-                    });
-
-            setListener();
+            mTvText.setText((1+position)+"/"+mImageUrls.size());
+            mViewPager.setAdapter(new ImagePagerAdapter(mImageUrls));
+            mViewPager.setCurrentItem(position);
         }
-        ;
     }
 
-    private void setListener()
-    {
-        OnClickListenerImpl onClickListener = new OnClickListenerImpl();
-    }
+
 
     @Override
     public String getFragmentTitle()
@@ -94,29 +88,61 @@ public class PhotoViewFragment extends BaseFragment implements DataView
         return getString(R.string.tv_fragment_user_account);
     }
 
-    @Override
-    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+    private class ImagePagerAdapter extends PagerAdapter
     {
-        if (null != resultItem)
-        {
 
+        private ArrayList<String> imageUrls;
+
+        public ImagePagerAdapter(ArrayList<String> imageUrls)
+        {
+            this.imageUrls = imageUrls;
         }
-    }
 
-    @Override
-    public void onGetDataFailured(String msg, String requestTag)
-    {
-
-    }
-
-    private class OnClickListenerImpl implements View.OnClickListener
-    {
-        public void onClick(View v)
+        @Override
+        public int getCount()
         {
-            switch (v.getId())
-            {
+            return null == imageUrls ? 0 : imageUrls.size();
+        }
 
+        @Override
+        public boolean isViewFromObject(View view, Object object)
+        {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object)
+        {
+             container.removeView((View) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position)
+        {
+            final PhotoView photoView = new PhotoView(container.getContext());
+            String imageUrl = imageUrls.get(position);
+            if (!imageUrl.startsWith(APIURL.BASE_API_URL))
+            {
+                imageUrl = APIURL.BASE_API_URL + imageUrl;
             }
+            photoView.setTag(imageUrl);
+            ImageLoader.getInstance().loadImage(
+                    imageUrl, new AbsImageLoadingListener()
+                    {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                        {
+                            if (imageUri.equals(photoView.getTag()))
+                            {
+                                photoView.setImageBitmap(loadedImage);
+                            }
+                        }
+                    });
+                photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            container.addView(photoView,layoutParams);
+            return photoView;
+
         }
     }
 

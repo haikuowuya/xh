@@ -6,9 +6,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.google.gson.reflect.TypeToken;
+import com.xinheng.DrugDetailActivity;
 import com.xinheng.R;
 import com.xinheng.adapter.online.OnlineBottomGridAdapter;
 import com.xinheng.base.BaseAdapter;
@@ -63,6 +65,16 @@ public class OnlineGridItemFragment extends BaseFragment
             List<HomeOnLineItem.Item> adItems = GsonUtils.jsonToList(adJsonArrayString, type);
             mCustomGridView.setNumColumns(adItems.size() / 2);
             mCustomGridView.setAdapter(genGridAdapter(adItems));
+            mCustomGridView.setOnItemClickListener(
+                    new AdapterView.OnItemClickListener()
+                    {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                        {
+                            HomeOnLineItem.Item item = (HomeOnLineItem.Item) parent.getAdapter().getItem(position);
+                            DrugDetailActivity.actionDrugDetail(mActivity,item.drugId);
+                        }
+                    });
         }
     }
 

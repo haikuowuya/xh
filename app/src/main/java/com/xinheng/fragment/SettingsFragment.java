@@ -16,6 +16,7 @@ import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.util.AndroidUtils;
 import com.xinheng.util.Constants;
 
 /**
@@ -42,18 +43,34 @@ public class SettingsFragment extends BaseFragment implements DataView
     private LinearLayout mLinearAccountLogoutContainer;
 
     /***
-     * 自动登录
+     * 自动登录container
      */
     private LinearLayout mLinearAutoLoginContainer;
+    /**
+     * 在线售药 container
+     */
     private LinearLayout mLinearOnLineContainer;
+    /**
+     * 自己手机帐号登录container
+     */
+    private LinearLayout mLinearMeContainer;
+    private LinearLayout mLinearSlidingMenuContainer;
     /***
      * 自动登录复选框
      */
     private CheckBox mCbAutoLogin;
+    /***
+     * 自己手机帐号登录复选框
+     */
+    private CheckBox mCbMe;
     /**
      * 在线售药界面
      */
     private CheckBox mCbOnLine;
+    /**
+     * 侧滑开关
+     */
+    private CheckBox mCbSlidingMenu;
 
     @Nullable
     @Override
@@ -69,11 +86,27 @@ public class SettingsFragment extends BaseFragment implements DataView
         mLinearAutoLoginContainer = (LinearLayout) view.findViewById(R.id.linear_auto_login_container);
         mCbOnLine = (CheckBox) view.findViewById(R.id.cb_online);
         mCbAutoLogin = (CheckBox) view.findViewById(R.id.cb_auto_login);
+        mCbMe = (CheckBox) view.findViewById(R.id.cb_me);
+        mCbSlidingMenu = (CheckBox) view.findViewById(R.id.cb_slidingmenu);
+        mLinearMeContainer = (LinearLayout) view.findViewById(R.id.linear_me_container);
+        mLinearSlidingMenuContainer = (LinearLayout) view.findViewById(R.id.linear_slidingmenu_container);
         mLinearAccountLogoutContainer = (LinearLayout) view.findViewById(R.id.linear_account_logout_container);
         mLinearOnLineContainer = (LinearLayout) view.findViewById(R.id.linear_online_container);
         mLinearCacheContainer = (LinearLayout) view.findViewById(R.id.linear_cache_container);
         mCbAutoLogin.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_AUTO_LOGIN, true));
         mCbOnLine.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_ONLINE, true));
+        mCbMe.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_ME, true));
+        mCbSlidingMenu.setChecked(mActivity.getPreferences().getBoolean(Constants.PREF_IS_SLIDING_MENU, true));
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
+        {
+            mLinearMeContainer.setVisibility(View.VISIBLE);
+            mLinearSlidingMenuContainer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mLinearSlidingMenuContainer.setVisibility(View.GONE);
+            mLinearMeContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -88,27 +121,48 @@ public class SettingsFragment extends BaseFragment implements DataView
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mLinearAccountLogoutContainer.setOnClickListener(onClickListener);
         mLinearOnLineContainer.setOnClickListener(onClickListener);
+        mLinearMeContainer.setOnClickListener(onClickListener);
         mLinearCacheContainer.setOnClickListener(onClickListener);
         mLinearAutoLoginContainer.setOnClickListener(onClickListener);
-        mCbAutoLogin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN, isChecked).commit();
+        mCbAutoLogin.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN, isChecked).commit();
 
-            }
-        });
-        mCbOnLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_ONLINE,isChecked).commit();
-            }
-        });
+                    }
+                });
+        mCbOnLine.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_ONLINE, isChecked).commit();
+                    }
+                });
+        mCbMe.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_ME, isChecked).commit();
+                    }
+                });
+
+        mCbSlidingMenu.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_SLIDING_MENU, isChecked).commit();
+                    }
+                });
     }
-
 
     @Override
     public String getFragmentTitle()
@@ -149,6 +203,12 @@ public class SettingsFragment extends BaseFragment implements DataView
                 case R.id.linear_online_container://
                     onLine();
                     break;
+                case R.id.linear_me_container:
+                    me();
+                    break;
+                case R.id.linear_slidingmenu_container:
+                    slidingMenu();
+                    break;
             }
         }
     }
@@ -157,16 +217,28 @@ public class SettingsFragment extends BaseFragment implements DataView
     {
         boolean isAutoLogin = mCbOnLine.isChecked();
         mCbOnLine.setChecked(!isAutoLogin);
-        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,mCbOnLine.isChecked()).commit();
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN, mCbOnLine.isChecked()).commit();
     }
 
     private void autoLogin()
     {
         boolean isAutoLogin = mCbAutoLogin.isChecked();
         mCbAutoLogin.setChecked(!isAutoLogin);
-        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN,mCbAutoLogin.isChecked()).commit();
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_AUTO_LOGIN, mCbAutoLogin.isChecked()).commit();
+    }
+    private void me()
+    {
+        boolean isMe = mCbMe.isChecked();
+        mCbMe.setChecked(!isMe);
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_ME, mCbMe.isChecked()).commit();
     }
 
+    private void slidingMenu()
+    {
+        boolean isSldingMenu = mCbSlidingMenu.isChecked();
+        mCbSlidingMenu.setChecked(!isSldingMenu);
+        mActivity.getPreferences().edit().putBoolean(Constants.PREF_IS_SLIDING_MENU, mCbSlidingMenu.isChecked()).commit();
+    }
     /***
      * 退出账户
      */
@@ -182,15 +254,16 @@ public class SettingsFragment extends BaseFragment implements DataView
     private void cache()
     {
         mActivity.showProgressDialog("正在清除缓存文件");
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                mActivity.dismissProgressDialog();
-                mActivity.showToast("清除成功");
-            }
-        }, 1200L);
+        new Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        mActivity.dismissProgressDialog();
+                        mActivity.showToast("清除成功");
+                    }
+                }, 1200L);
     }
 
 }

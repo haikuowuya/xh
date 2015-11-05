@@ -216,6 +216,10 @@
                   android:label="@string/tv_activity_user_check_detail"/>
         <activity android:name=".UserOrderDetailActivity"
                   android:label="@string/tv_activity_user_order_detail"/>
+        <activity android:name=".DrugDetailActivity"
+                  android:label="@string/tv_activity_drug_detail"/>
+        <activity android:name=".ShoppingCartActivity"
+                  android:label="@string/tv_activity_shopping_cart"/>
     </application>
 
 </manifest>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_white_color">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@mipmap/ic_launcher"/>
+
+            <TextView
+                android:id="@+id/tv_hospital_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                tools:text="广东电子黄页客户端"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:text="交易成功"
+                android:visibility="gone"
+                android:textColor="#FFFFA800"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:id="@+id/linear_drug_container"
+            >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_order_fee_info"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:text="共3件商品，合计￥100（含运费10.00）"
+                android:textColor="@color/color_main_text_gray_color"
+                tools:text="共3件商品，合计￥100（含运费10.00）"/>
+
+            <View
+
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFE4E4E4"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_margin="4dp"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_del_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/shape_edittext_background"
+                    android:gravity="center_vertical|right"
+                    android:padding="8dp"
+                    android:text="删除订单"
+                    android:textColor="@color/color_main_text_gray_color"
+                    tools:text="删除订单"/>
+
+                <TextView
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:id="@+id/tv_evaluation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/btn_register_code_selector"
+                    android:gravity="center_vertical|right"
+                    android:padding="6dp"
+                    android:text="&#160;&#160;&#160;&#160;评价&#160;&#160;&#160;&#160;"
+                    android:textColor="@color/color_white_color"
+                    tools:text="&#160;&#160;&#160;&#160;评价&#160;&#160;&#160;&#160;"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -18,9 +18,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
+import com.xinheng.DrugDetailActivity;
 import com.xinheng.FindMedicalActivity;
 import com.xinheng.PrescriptionActivity;
 import com.xinheng.R;
+import com.xinheng.ShoppingCartActivity;
 import com.xinheng.UserOrderActivity;
 import com.xinheng.adapter.main.AdPagerAdapter;
 import com.xinheng.adapter.online.OnlineCenterGridAdapter;
@@ -121,9 +123,14 @@ public class OnlineFragment extends BaseFragment implements DataView
 
     private void fillTopContainer(List<AdItem> adItems)
     {
+        double defaultWidth = 710;//默认宽度710,高度320
+        double defaultHeight = 320;//默认宽度710,高度320
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mInfiniteViewPagerIndicatorView.getLayoutParams();
+        double factorWidth = DensityUtils.getScreenWidthInPx(mActivity)/defaultWidth;
         layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_home_ad_height);
+        int height =         (int) (defaultHeight*factorWidth);
+        System.out.println(" factorWidth = "+factorWidth +" height = "+height);
+        layoutParams.height =   height;
         mInfiniteViewPagerIndicatorView.setLayoutParams(layoutParams);
         mInfiniteViewPagerIndicatorView.setViewPagerAdapter(genAdapter(adItems));
         mInfiniteViewPagerIndicatorView.stopAutoCycle();
@@ -172,6 +179,7 @@ public class OnlineFragment extends BaseFragment implements DataView
                                                 }
                                             }
                                         });
+                                imageView0.setOnClickListener(new OnViewClickListenerImpl(adItem));
 
                             } else if (ii == 1)
                             {
@@ -187,6 +195,7 @@ public class OnlineFragment extends BaseFragment implements DataView
                                                 }
                                             }
                                         });
+                                imageView1.setOnClickListener(new OnViewClickListenerImpl(adItem));
 
                             } else if (ii == 2)
                             {
@@ -202,6 +211,7 @@ public class OnlineFragment extends BaseFragment implements DataView
                                                 }
                                             }
                                         });
+                                imageView2.setOnClickListener(new OnViewClickListenerImpl(adItem));
                             }
                         }
                     }
@@ -211,7 +221,22 @@ public class OnlineFragment extends BaseFragment implements DataView
                 mLinearCenterContainer.addView(view, layoutParams);
             }
         }
+    }
 
+    private class OnViewClickListenerImpl implements  View.OnClickListener
+    {
+        private HomeOnLineItem.Item mItem    ;
+
+        public OnViewClickListenerImpl(HomeOnLineItem.Item item)
+        {
+            mItem = item;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            DrugDetailActivity.actionDrugDetail(mActivity, mItem.drugId);
+        }
     }
 
     private void fillBottomContainer(List<OnLineBottomItem> bottomItems)
@@ -221,6 +246,7 @@ public class OnlineFragment extends BaseFragment implements DataView
             mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
             OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), bottomItems);
             mTabViewPagerIndicator.setViewPagerAdapter(pagerAdapter);
+            mTabViewPagerIndicator.getViewPager().setOffscreenPageLimit(2);
         }
     }
 
@@ -241,6 +267,10 @@ public class OnlineFragment extends BaseFragment implements DataView
                         if (position == 1)    //轻松找药
                         {
                             FindMedicalActivity.actionFindMedical(mActivity);
+                        }
+                        if(position ==2)
+                        {
+                            ShoppingCartActivity.actionShoppingCart(mActivity);
                         }
                         if (position == 3)//我的订单
                         {

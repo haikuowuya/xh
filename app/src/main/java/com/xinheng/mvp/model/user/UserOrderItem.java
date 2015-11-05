@@ -102,7 +102,6 @@ public class UserOrderItem extends BaseEmptyItem
      */
     public static class OrderMedicalItem extends BaseEmptyItem
     {
-
         /**
          * 药品id
          */

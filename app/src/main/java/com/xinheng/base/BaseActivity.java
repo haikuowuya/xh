@@ -374,7 +374,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
 
-        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)))
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)) && mPreferences.getBoolean(Constants.PREF_IS_SLIDING_MENU,true))
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         } else

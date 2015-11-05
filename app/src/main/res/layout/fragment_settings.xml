@@ -8,8 +8,7 @@
     android:background="@color/color_content_background_color"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:scrollbars="none"
-    >
+    android:scrollbars="none">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -117,6 +116,70 @@
 
                 <CheckBox
                     android:id="@+id/cb_online"
+                    android:layout_width="@dimen/dimen_list_single_item_height"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_me_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="自己帐号"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:text=""/>
+
+                <CheckBox
+                    android:id="@+id/cb_me"
+                    android:layout_width="@dimen/dimen_list_single_item_height"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="10dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_slidingmenu_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_list_single_item_height"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/list_linear_white_item_selector"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="侧滑开关"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:padding="10dp"
+                    android:text=""/>
+
+                <CheckBox
+                    android:id="@+id/cb_slidingmenu"
                     android:layout_width="@dimen/dimen_list_single_item_height"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"

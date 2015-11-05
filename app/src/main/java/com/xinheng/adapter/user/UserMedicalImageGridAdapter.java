@@ -14,6 +14,7 @@ import com.xinheng.base.ViewHolder;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.view.CircularImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,9 +22,11 @@ import java.util.List;
  */
 public class UserMedicalImageGridAdapter extends BaseAdapter<String>
 {
+    private ArrayList<String > imageUrls = new ArrayList<>();
     public UserMedicalImageGridAdapter(BaseActivity activity, List<String> data)
     {
         super(activity, R.layout.grid_subscribe_image_item, data);
+        imageUrls.addAll(data);
     }
 
     @Override
@@ -57,14 +60,14 @@ public class UserMedicalImageGridAdapter extends BaseAdapter<String>
                             }
                         });
             }
-            final String finalPhoto = photo;
+
             circularImageView.setOnClickListener(
                     new View.OnClickListener()
                     {
                         @Override
                         public void onClick(View v)
                         {
-                            PhotoViewActivity.actionPhotoView(getActivity(), finalPhoto);
+                            PhotoViewActivity.actionPhotoView(getActivity(), imageUrls,getPosition());
                         }
                     });
         }

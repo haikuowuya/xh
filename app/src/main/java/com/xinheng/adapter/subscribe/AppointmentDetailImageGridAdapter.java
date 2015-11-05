@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
+import com.xinheng.PhotoViewActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
@@ -13,16 +14,19 @@ import com.xinheng.base.ViewHolder;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.view.CircularImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/25 0025.
+ * 预约详情图片适配器
  */
 public class AppointmentDetailImageGridAdapter extends BaseAdapter<String>
 {
+    private ArrayList<String > imageUrls = new ArrayList<>();
     public AppointmentDetailImageGridAdapter(BaseActivity activity, List<String> data)
     {
         super(activity, R.layout.grid_subscribe_image_item, data);
+        imageUrls.addAll(data)        ;
     }
 
     @Override
@@ -55,7 +59,17 @@ public class AppointmentDetailImageGridAdapter extends BaseAdapter<String>
                                 }
                             }
                         });
+
             }
+            circularImageView.setOnClickListener(
+                    new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            PhotoViewActivity.actionPhotoView(getActivity(), imageUrls,getPosition());
+                        }
+                    });
         }
     }
 }
