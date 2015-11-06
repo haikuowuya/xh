@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,10 +39,11 @@ import de.greenrobot.event.EventBus;
  * 时间： 17:48
  * 说明：  按方抓药-添加药品Fragment页面
  */
-public class AddDrugFragment extends BaseFragment  implements DataView
+public class AddDrugFragment extends BaseFragment implements DataView
 {
-    public static final String  ARG_DRUG_ITEMS_JSON="drug_items_json";
-    public static AddDrugFragment newInstance(String itemsJson )
+    public static final String ARG_DRUG_ITEMS_JSON = "drug_items_json";
+
+    public static AddDrugFragment newInstance(String itemsJson)
     {
         AddDrugFragment fragment = new AddDrugFragment();
         Bundle bundle = new Bundle();
@@ -72,16 +74,20 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     {
         super.onActivityCreated(savedInstanceState);
         setListener();
-        String itemsJson =  getArguments().getString(ARG_DRUG_ITEMS_JSON);
-        if(!TextUtils.isEmpty(itemsJson))
+        String itemsJson = getArguments().getString(ARG_DRUG_ITEMS_JSON);
+        if (!TextUtils.isEmpty(itemsJson))
         {
-            Type type = new TypeToken<List<DrugItem>>(){}.getType();
+            Type type = new TypeToken<List<DrugItem>>()
+            {
+            }.getType();
             mSelectedItems = GsonUtils.jsonToList(itemsJson, type);
         }
         String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
         if (!TextUtils.isEmpty(cacheJson))
         {
-            Type type = new TypeToken<List<DrugItem>>(){}.getType();
+            Type type = new TypeToken<List<DrugItem>>()
+            {
+            }.getType();
             mDrugItems = GsonUtils.jsonToList(cacheJson, type);
             System.out.println("mDrugItems = " + mDrugItems.size());
             showListContentData();
@@ -93,43 +99,45 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mBtnSearch.setOnClickListener(onClickListener);
-        mEtSearch.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+        mEtSearch.addTextChangedListener(
+                new TextWatcher()
+                {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+                    {
 
-            }
+                    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count)
+                    {
 
-            }
+                    }
 
-            @Override
-            public void afterTextChanged(Editable s)
-            {
-                 if(TextUtils.isEmpty(mEtSearch.getText()))
-                 {
-                     String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
-                     if (!TextUtils.isEmpty(cacheJson))
-                     {
-                         Type type = new TypeToken<List<DrugItem>>(){}.getType();
-                         mDrugItems = GsonUtils.jsonToList(cacheJson, type);
-                         System.out.println("mdrugItemssss = " + mDrugItems.size());
-                        if(null != mDrugItems && !mDrugItems.isEmpty())
+                    @Override
+                    public void afterTextChanged(Editable s)
+                    {
+                        if (TextUtils.isEmpty(mEtSearch.getText()))
                         {
-                            showListContentData();
+                            String cacheJson = ACache.get(mActivity).getAsString(mActivity.getActivityTitle().toString());
+                            if (!TextUtils.isEmpty(cacheJson))
+                            {
+                                Type type = new TypeToken<List<DrugItem>>()
+                                {
+                                }.getType();
+                                mDrugItems = GsonUtils.jsonToList(cacheJson, type);
+                                System.out.println("mdrugItemssss = " + mDrugItems.size());
+                                if (null != mDrugItems && !mDrugItems.isEmpty())
+                                {
+                                    showListContentData();
+                                } else
+                                {
+                                    search("");
+                                }
+                            }
                         }
-                         else
-                        {
-                            search("");
-                        }
-                     }
-                 }
-            }
-        });
+                    }
+                });
     }
 
     private void initView(View view)
@@ -143,7 +151,7 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     public void onPause()
     {
         super.onPause();
-        if(null != mDrugListAdapter)
+        if (null != mDrugListAdapter)
         {
             EventBus.getDefault().post(new OnAddDrugItemEvent(mDrugListAdapter.getSelectedItems()));
         }
@@ -154,39 +162,48 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     {
         return "我的订单";
     }
+
     @Override
-    public void onGetDataSuccess(ResultItem resultItem,String requestTag)
+    public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
-        if(resultItem != null)
+        if (resultItem != null)
         {
             mActivity.showToast(resultItem.message);
-            if(resultItem.success())
+            if (resultItem.success())
             {
                 Type type = new TypeToken<List<DrugItem>>()
                 {
                 }.getType();
-                List<DrugItem> drugItems = GsonUtils.jsonToList(resultItem.properties.getAsJsonObject().get("list").getAsJsonArray().toString(),type);
+                List<DrugItem> drugItems = GsonUtils.jsonToList(resultItem.properties.getAsJsonObject().get("list").getAsJsonArray().toString(), type);
                 mDrugItems.clear();
                 mDrugItems.addAll(drugItems);
-                showListContentData( );
+                showListContentData();
             }
         }
     }
 
-    private void showListContentData(  )
+    private void showListContentData()
     {
         if (null != mDrugItems)
         {
             if (null == mDrugListAdapter)
             {
-                mDrugListAdapter = new DrugListAdapter(mActivity, mDrugItems,mSelectedItems);
+                mDrugListAdapter = new DrugListAdapter(mActivity, mDrugItems, mSelectedItems);
                 mListView.setAdapter(mDrugListAdapter);
-            }
-            else
+                mListView.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener()
+                        {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                            {
+                                DrugItem drugItem = (DrugItem) parent.getItemAtPosition(position);
+                            }
+                        });
+            } else
             {
                 mDrugListAdapter.notifyDataSetChanged();
             }
-            if(!mDrugItems.isEmpty() && TextUtils.isEmpty(mEtSearch.getText()))
+            if (!mDrugItems.isEmpty() && TextUtils.isEmpty(mEtSearch.getText()))
             {
                 ACache.get(mActivity).put(mActivity.getActivityTitle().toString(), GsonUtils.toJson(mDrugItems));
             }
@@ -194,7 +211,7 @@ public class AddDrugFragment extends BaseFragment  implements DataView
     }
 
     @Override
-    public void onGetDataFailured(String msg,String requestTag)
+    public void onGetDataFailured(String msg, String requestTag)
     {
 
     }
@@ -212,12 +229,12 @@ public class AddDrugFragment extends BaseFragment  implements DataView
         }
     }
 
-    private void search(String searchText )
+    private void search(String searchText)
     {
-        if(TextUtils.isEmpty( searchText))
+        if (TextUtils.isEmpty(searchText))
         {
-        //    mActivity.showCroutonToast("请输入搜索关键字");
-          //  return;
+            //    mActivity.showCroutonToast("请输入搜索关键字");
+            //  return;
         }
         mActivity.hideSoftKeyBorard(mEtSearch);
         String keyword = searchText;

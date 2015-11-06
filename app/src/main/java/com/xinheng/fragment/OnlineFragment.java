@@ -154,7 +154,7 @@ public class OnlineFragment extends BaseFragment implements DataView
                 final ImageView imageView2 = (ImageView) view.findViewById(R.id.iv_2);
                 tvName.setText(item.name);
                 if (item.items != null && !item.items.isEmpty())
-                {
+        {
                     for (int ii = 0; ii < item.items.size(); ii++)
                     {
                         HomeOnLineItem.Item adItem = item.items.get(ii);

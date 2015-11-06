@@ -50,6 +50,7 @@
     <string name="tv_activity_add_check">便捷检查</string>
     <string name="tv_activity_online_counsel">在线咨询</string>
     <string name="tv_activity_add_drug">添加药品</string>
+    <string name="tv_activity_search_drug_result">搜索结果</string>
     <string name="tv_activity_drug_detail">药品详情</string>
     <string name="tv_activity_shopping_cart">购物车</string>
     <string name="tv_activity_patient">常用就诊人</string>

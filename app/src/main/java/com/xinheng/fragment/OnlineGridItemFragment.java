@@ -10,8 +10,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.google.gson.reflect.TypeToken;
-import com.xinheng.DrugDetailActivity;
 import com.xinheng.R;
+import com.xinheng.SearchDrugResultActivity;
 import com.xinheng.adapter.online.OnlineBottomGridAdapter;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.BaseFragment;
@@ -72,7 +72,7 @@ public class OnlineGridItemFragment extends BaseFragment
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                         {
                             HomeOnLineItem.Item item = (HomeOnLineItem.Item) parent.getAdapter().getItem(position);
-                            DrugDetailActivity.actionDrugDetail(mActivity,item.drugId);
+                            SearchDrugResultActivity.actionSearchDrugResult(mActivity, item.title);
                         }
                     });
         }

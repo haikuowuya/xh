@@ -220,6 +220,8 @@
                   android:label="@string/tv_activity_drug_detail"/>
         <activity android:name=".ShoppingCartActivity"
                   android:label="@string/tv_activity_shopping_cart"/>
+        <activity android:name=".SearchDrugResultActivity"
+                  android:label="@string/tv_activity_search_drug_result"/>
     </application>
 
 </manifest>
