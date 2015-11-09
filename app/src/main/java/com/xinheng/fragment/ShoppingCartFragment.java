@@ -56,8 +56,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private View mLinearScrollViewContainer;
 
-    private double mPrice = 0;
-
     /***
      * 用于复选框状态发生变化时计算的价格
      */
@@ -106,15 +104,15 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void setListener()
     {
-        mCbAll.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener()
-                {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                    {
-                        onAllCheckedChanged(isChecked);
-                    }
-                });
+        mCbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                onAllCheckedChanged(isChecked);
+            }
+        });
+
     }
 
     @Override
@@ -141,7 +139,8 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                 {
                     mShoppingCartItems = items;
                     fillLinearShoppingContainer(items);
-                } else
+                }
+                else
                 {
                     mActivity.showToast("购物车为空");
                 }
@@ -174,50 +173,58 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void onAllCheckedChanged(boolean isChecked)
     {
-        mCbAll.setChecked(isChecked);
-        double price = 0;
-        for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
+        if (null != mShoppingCartItems && null != mShoppingCartItems.get(0) && null != mShoppingCartItems.get(0).list)
         {
-            ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
-            if (view.findViewById(R.id.cb_cb) != null)
+            if (isChecked ||mCheckedCount == 0 || mCheckedCount == mShoppingCartItems.get(0).list.size())
             {
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.cb_cb);
-                checkBox.setChecked(isChecked);
-            }
-            if (isChecked)
-            {
-                if (view.findViewById(R.id.relative_normal) != null)
+                mCbAll.setChecked(isChecked);
+                if (mLinearShoppingContainer.findViewById(R.id.cb_hospital_all) != null)
                 {
-                    TextView tvDrugPrice = (TextView) view.findViewById(R.id.tv_drug_price);
-                    final TextView tvEditCount = (TextView) view.findViewById(R.id.tv_edit_count);
-                    if (null != tvDrugPrice && null != tvEditCount)
+                    CheckBox checkBoxHospital = (CheckBox) mLinearShoppingContainer.findViewById(R.id.cb_hospital_all);
+                    checkBoxHospital.setChecked(isChecked);
+                }
+                double price = 0;
+                for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
+                {
+                    ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
+                    if (view.findViewById(R.id.cb_cb) != null)
                     {
-                        String itemPrice = tvDrugPrice.getText().toString();
-                        if (itemPrice.contains("￥"))
+                        CheckBox checkBox = (CheckBox) view.findViewById(R.id.cb_cb);
+                        checkBox.setChecked(isChecked);
+                    }
+                    if (isChecked)
+                    {
+                        if (view.findViewById(R.id.relative_normal) != null)
                         {
-                            itemPrice = itemPrice.replaceAll("￥", "");
+                            TextView tvDrugPrice = (TextView) view.findViewById(R.id.tv_drug_price);
+                            final TextView tvEditCount = (TextView) view.findViewById(R.id.tv_edit_count);
+                            if (null != tvDrugPrice && null != tvEditCount)
+                            {
+                                String itemPrice = tvDrugPrice.getText().toString();
+                                if (itemPrice.contains("￥"))
+                                {
+                                    itemPrice = itemPrice.replaceAll("￥", "");
+                                }
+                                price += Double.parseDouble(itemPrice) * Double.parseDouble(tvEditCount.getText().toString());
+                            }
                         }
-                        price += Double.parseDouble(itemPrice) * Double.parseDouble(tvEditCount.getText().toString());
                     }
                 }
+                if (isChecked)
+                {
+                    setTextPrice(price);
+                    if (null != mShoppingCartItems && null != mShoppingCartItems.get(0) && null != mShoppingCartItems.get(0).list)
+                    {
+                        mCheckedCount = mShoppingCartItems.get(0).list.size();
+                    }
+                }
+
             }
-        }
-        if (isChecked)
-        {
-            setTextPrice(price);
-            if (null != mShoppingCartItems && null != mShoppingCartItems.get(0) && null != mShoppingCartItems.get(0).list)
-            {
-                mCheckedCount = mShoppingCartItems.get(0).list.size();
-            }
-        } else
-        {
-            mCheckedCount = 0;
         }
     }
 
     private void onEditFinsh()
     {
-
         for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
         {
             ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
@@ -247,33 +254,39 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                 TextView tvHospital = (TextView) viewHospital.findViewById(R.id.tv_hospital_name);
                 final TextView tvEdit = (TextView) viewHospital.findViewById(R.id.tv_edit);
                 final CheckBox cbHospitalAll = (CheckBox) viewHospital.findViewById(R.id.cb_hospital_all);
-                cbHospitalAll.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener()
+                cbHospitalAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        onAllCheckedChanged(isChecked);
+                    }
+                });
+                tvEdit.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (item.list != null && !item.list.isEmpty())
                         {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                            if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
                             {
-                                onAllCheckedChanged(isChecked);
+                                tvEdit.setText(TEXT_EDIT);
+                                onEditFinsh();
                             }
-                        });
-                tvEdit.setOnClickListener(
-                        new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
+                            else
                             {
-                                if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
-                                {
-                                    tvEdit.setText(TEXT_EDIT);
-                                    onEditFinsh();
-                                } else
-                                {
-                                    tvEdit.setText(TEXT_FINISHED);
-                                    onEdit();
-                                }
+                                tvEdit.setText(TEXT_FINISHED);
+                                onEdit();
+                            }
+                        }
+                        else
+                        {
+                            mActivity.showToast("购物车列表为空，无法进行编辑");
+                        }
 
-                            }
-                        });
+                    }
+                });
                 tvHospital.setText(item.hospital);
                 mLinearShoppingContainer.addView(viewHospital);
                 if (item.list != null && !item.list.isEmpty())
@@ -298,18 +311,17 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                 img = APIURL.BASE_API_URL + img;
                             }
                             ivImageView.setTag(img);
-                            ImageLoader.getInstance().loadImage(
-                                    img, new AbsImageLoadingListener()
+                            ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+                            {
+                                @Override
+                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                {
+                                    if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
                                     {
-                                        @Override
-                                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                                        {
-                                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
-                                            {
-                                                ivImageView.setImageBitmap(loadedImage);
-                                            }
-                                        }
-                                    });
+                                        ivImageView.setImageBitmap(loadedImage);
+                                    }
+                                }
+                            });
                         }
                         TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
                         final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
@@ -319,7 +331,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         String info = "包装规格：" + listItem.specs + "    产地：" + listItem.place + "\n生产厂家：" + listItem.producer;
                         tvDrugInfo.setText(info);
                         final double cost = Double.parseDouble(listItem.price);
-                        mPrice += cost;
                         ImageView ivIncrease = (ImageView) linearLayout.findViewById(R.id.iv_edit_increase);
                         ImageView ivDecrease = (ImageView) linearLayout.findViewById(R.id.iv_edit_decrease);
                         TextView tvDelete = (TextView) linearLayout.findViewById(R.id.tv_edit_delete);
@@ -328,87 +339,96 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         final TextView tvEditCount = (TextView) linearLayout.findViewById(R.id.tv_edit_count);
                         tvEditCount.setText("1");
                         final int finalI = i;
+                        cbcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+                        {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                            {
+                                double tmpPrice = Double.parseDouble(listItem.price) * Double.parseDouble(tvEditCount.getText().toString());
+                                if (isChecked)
+                                {
+                                    mCheckedCount += 1;
+                                    mJSPrice += tmpPrice;
+                                }
+                                else
+                                {
+                                    mCheckedCount -= 1;
+                                    mJSPrice -= tmpPrice;
+                                }
+                                if (mJSPrice < 0)
+                                {
+                                    mJSPrice = 0;
+                                }
+                                if (mCheckedCount < 0)
+                                {
+                                    mCheckedCount = 0;
+                                }
+                                mCbAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
+                                cbHospitalAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
+                                setTextPrice(mJSPrice);
+                            }
+                        });
+                        ivIncrease.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                int count = Integer.parseInt(tvEditCount.getText().toString());
+                                count += 1;
+                                if (cbcb.isChecked())
+                                {
+                                    mJSPrice += cost;
+                                }
+                                tvEditCount.setText(count + "");
+                                tvDrugCount.setText("x" + count + "");
+                                setTextPrice(mJSPrice);
+                            }
+                        });
+                        ivDecrease.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                int count = Integer.parseInt(tvEditCount.getText().toString());
+                                count -= 1;
+                                if (count < 1)
+                                {
+                                    mActivity.showCroutonToast("数量不可以小于1");
+                                    return;
+                                }
+                                if (cbcb.isChecked())
+                                {
+                                    mJSPrice -= cost;
+                                }
+                                tvEditCount.setText(count + "");
+                                tvDrugCount.setText("x" + count + "");
+                                setTextPrice(mJSPrice);
+                            }
+                        });
 
-                        cbcb.setOnCheckedChangeListener(
-                                new CompoundButton.OnCheckedChangeListener()
+                        tvDelete.setOnClickListener(new View.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                if (view.getParent() != null)
                                 {
-                                    @Override
-                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                                    int count = Integer.parseInt(tvEditCount.getText().toString());
+                                    if (cbcb.isChecked())
                                     {
-                                        double tmpPrice = Double.parseDouble(listItem.price) * Double.parseDouble(tvEditCount.getText().toString());
-                                        if (isChecked)
-                                        {
-                                            mCheckedCount += 1;
-                                            mJSPrice += tmpPrice;
-                                        } else
-                                        {
-                                            mCheckedCount -= 1;
-                                            mJSPrice -= tmpPrice;
-                                        }
-                                        if (mJSPrice < 0)
-                                        {
-                                            mJSPrice = 0;
-                                        }
-                                        if (mCheckedCount < 0)
-                                        {
-                                            mCheckedCount = 0;
-                                        }
-                                        mCbAll.setChecked(mCheckedCount == item.list.size());
-                                        cbHospitalAll.setChecked(mCheckedCount == item.list.size());
-                                        setTextPrice(mJSPrice);
-                                    }
-                                });
-                        ivIncrease.setOnClickListener(
-                                new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        int count = Integer.parseInt(tvEditCount.getText().toString());
-                                        count += 1;
-                                        mPrice = mPrice + cost;
-                                        tvEditCount.setText(count + "");
-                                        tvDrugCount.setText("x" + count + "");
-                                        setTextPrice(mPrice);
-                                    }
-                                });
-                        ivDecrease.setOnClickListener(
-                                new View.OnClickListener()
-                                {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        int count = Integer.parseInt(tvEditCount.getText().toString());
-                                        count -= 1;
-                                        if (count < 1)
-                                        {
-                                            mActivity.showCroutonToast("数量不可以小于1");
-                                            return;
-                                        }
+                                        mJSPrice = mJSPrice - cost * count;
                                         mCheckedCount -= 1;
-                                        mPrice = mPrice - cost;
-                                        tvEditCount.setText(count + "");
-                                        tvDrugCount.setText("x" + count + "");
-                                        setTextPrice(mPrice);
                                     }
-                                });
-
-                        tvDelete.setOnClickListener(
-                                new View.OnClickListener()
+                                    mLinearShoppingContainer.removeView(view);
+                                    setTextPrice(mJSPrice);
+                                    mShoppingCartItems.get(finalI).list.remove(listItem);
+                                }
+                                if (mShoppingCartItems.get(finalI).list.isEmpty())
                                 {
-                                    @Override
-                                    public void onClick(View v)
-                                    {
-                                        if (view.getParent() != null)
-                                        {
-                                            int count = Integer.parseInt(tvEditCount.getText().toString());
-                                            mPrice = mPrice - cost * count;
-                                            mLinearShoppingContainer.removeView(view);
-                                            setTextPrice(mPrice);
-                                            mShoppingCartItems.get(finalI).list.remove(item);
-                                        }
-                                    }
-                                });
+                                    tvEdit.setText(TEXT_EDIT);
+                                }
+                            }
+                        });
                         int height = DensityUtils.dpToPx(mActivity, 100.f);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                         mLinearShoppingContainer.addView(view, layoutParams);
@@ -421,13 +441,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void setTextPrice(double price)
     {
-        long quantity = 1;
-//        if (!TextUtils.isEmpty(mEtQuantity.getText()) && TextUtils.isDigitsOnly(mEtQuantity.getText()))
-//        {
-//            quantity = Long.parseLong(mEtQuantity.getText().toString());
-//        }
-        double countPrice = quantity * price;
-        //  mTvPrice.setText("￥" + new java.text.DecimalFormat("#0.00").format(countPrice) + "元");
 
         String HJ = "合计：";
         String hj_fee = HJ + "￥" + price + "  ";

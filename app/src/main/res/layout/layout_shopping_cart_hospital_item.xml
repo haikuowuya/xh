@@ -5,28 +5,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="44dp"
-    android:layout_marginLeft="10dp"
+android:minHeight="44dp"
     android:layout_marginRight="10dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <CheckBox
         android:id="@+id/cb_hospital_all"
+        style="@style/Custom.CheckBox.Style"
         android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_height="match_parent"/>
-    <ImageView
-        android:layout_width="44dp"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_marginLeft="10dp"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="27dp"
+        android:layout_height="18dp"
+
+        android:src="@mipmap/ic_shopping_cart_hospital_logo"/>
+
     <TextView
         android:id="@+id/tv_hospital_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:drawablePadding="4dp"
+        android:drawableRight="@mipmap/ic_shopping_cart_right_arrow"
         android:gravity="center_vertical"
         tools:text="广东电子黄页客户端"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/tv_edit"

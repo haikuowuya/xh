@@ -45,6 +45,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/Custom.CheckBox.Style"
             android:text="全选"/>
 
         <TextView

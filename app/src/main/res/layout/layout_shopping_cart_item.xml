@@ -19,7 +19,11 @@
 
         <CheckBox
             android:id="@+id/cb_cb"
-            android:layout_width="wrap_content"
+            style="@style/Custom.CheckBox.Style"
+            android:layout_width="48dp"
+           android:paddingLeft="10dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:layout_height="match_parent"
             android:gravity="center"/>
 
@@ -30,6 +34,7 @@
             android:layout_marginLeft="10dp"
             android:background="#FFFFFF"
             android:gravity="center_vertical"
+            android:src="@mipmap/ic_shopping_cart_default_image"
             tools:src="@mipmap/ic_photo"
             tools:text="2015-05-20"/>
 

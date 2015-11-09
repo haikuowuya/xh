@@ -94,4 +94,9 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
+    <style name="Custom.CheckBox.Style" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checked_btn_selector</item>
+        <item name="android:padding">8dp</item>
+
+    </style>
 </resources>
