@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
-import com.xinheng.fragment.ShoppingCartListFragment;
+import com.xinheng.fragment.ShoppingCartFragment;
 
 /**
  * 作者： raiyi-suzhou
@@ -27,7 +27,7 @@ public class ShoppingCartActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_common);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartListFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartFragment.newInstance()).commit();
     }
     @Override
     public CharSequence getActivityTitle()

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    android:id="@+id/linear_scrollview_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_content_background_color"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <ScrollView
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none">
+
+        <!--购物车中的药品-->
+        <LinearLayout
+            android:id="@+id/linear_shopping_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_white_color"
+            android:orientation="vertical">
+
+            <!-- <include layout="@layout/layout_prescription_drug_item_title"/>-->
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#FFFFFFFF"
+        android:gravity="center_vertical">
+
+        <CheckBox
+            android:id="@+id/cb_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="全选"/>
+
+        <TextView
+            android:id="@+id/tv_shopping_cart_info"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_list_single_item_height"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:maxLines="2"
+            android:text="共3件商品，合计￥100（含运费10.00）"
+            android:textColor="@color/color_main_text_gray_color"
+            tools:text="共3件商品，合计￥100（含运费10.00）"/>
+
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#FFFF5807"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="结算（0）"
+            android:textColor="@color/color_white_color"/>
+    </LinearLayout>
+
+</LinearLayout>
+

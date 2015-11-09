@@ -340,7 +340,6 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="right"
                 android:layout_marginBottom="4dp"
-
                 android:background="@drawable/btn_register_code_selector"
                 android:gravity="center"
                 android:text="添加药品"

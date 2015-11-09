@@ -82,7 +82,6 @@ public class ShoppingCartListFragment extends PTRListFragment implements DataVie
                 {
                 }.getType();
                 List<ShoppingCartItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-
                 if (null != items)
                 {
                     mShoppingCartItems.clear();

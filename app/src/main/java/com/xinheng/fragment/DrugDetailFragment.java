@@ -3,6 +3,7 @@ package com.xinheng.fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -177,19 +178,22 @@ public class DrugDetailFragment extends BaseFragment implements DataView
             mTvDrugUnit.setText("药品单位：" + drugDetailItem.unit);
             mTvDrugNature.setText("药品特性：" + drugDetailItem.name);
             String imageUrl = drugDetailItem.img;
-            if (!imageUrl.startsWith(APIURL.BASE_API_URL))
+            if(!TextUtils.isEmpty(imageUrl))
             {
-                imageUrl = APIURL.BASE_API_URL + imageUrl;
-            }
-            ImageLoader.getInstance().loadImage(
-                    imageUrl, new AbsImageLoadingListener()
-                    {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                if (!imageUrl.startsWith(APIURL.BASE_API_URL))
+                {
+                    imageUrl = APIURL.BASE_API_URL + imageUrl;
+                }
+                ImageLoader.getInstance().loadImage(
+                        imageUrl, new AbsImageLoadingListener()
                         {
-                            mImageView.setImageBitmap(loadedImage);
-                        }
-                    });
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                mImageView.setImageBitmap(loadedImage);
+                            }
+                        });
+            }
         }
     }
 
