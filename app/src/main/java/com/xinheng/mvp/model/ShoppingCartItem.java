@@ -21,5 +21,16 @@ public class ShoppingCartItem extends BaseEmptyItem
         public String producer;// 药品厂商
         public String drugImg;
         public String place;
+
+        @Override
+        public boolean equals(Object o)
+        {
+            if (o instanceof ListItem)
+            {
+                ListItem listItem = (ListItem) o;
+                return listItem.drugId.equals(drugId);
+            }
+            return super.equals(o);
+        }
     }
 }

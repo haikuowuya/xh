@@ -222,6 +222,8 @@
                   android:label="@string/tv_activity_shopping_cart"/>
         <activity android:name=".SearchDrugResultActivity"
                   android:label="@string/tv_activity_search_drug_result"/>
+        <activity android:name=".ShoppingCartConfirmOrderActivity"
+                  android:label="@string/tv_activity_confirm_order"/>
     </application>
 
 </manifest>

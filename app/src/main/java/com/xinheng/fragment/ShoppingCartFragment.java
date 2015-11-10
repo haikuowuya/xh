@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
+import com.xinheng.ShoppingCartConfirmOrderActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.ResultItem;
@@ -32,6 +33,7 @@ import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ import java.util.List;
  */
 public class ShoppingCartFragment extends BaseFragment implements DataView
 {
+    public static final String REQUEST_GET_SHOPPING_CART_LIST_TAG = "get_shopping_cart_list";
+    public static final String REQUEST_SAVE_SHOPPING_CART_TAG = "save_shopping_cart";
 
     public static final String TEXT_FINISHED = "完成";
     public static final String TEXT_EDIT = "编辑";
@@ -66,8 +70,8 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
     private TextView mTvShoppingCartInfo;
     private CheckBox mCbAll;
     private List<ShoppingCartItem> mShoppingCartItems;
-
     private TextView mTvBalance;
+    private List<ShoppingCartItem.ListItem> mCheckedListItem = new LinkedList<>();
 
     @Nullable
     @Override
@@ -104,23 +108,45 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void setListener()
     {
-        mCbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                onAllCheckedChanged(isChecked);
-            }
-        });
+        mCbAll.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener()
+                {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                    {
+                        onAllCheckedChanged(isChecked);
+                    }
+                });
+        mTvBalance.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        if (mCheckedCount == 0 || mCheckedListItem.isEmpty())
+                        {
+                            mActivity.showToast("你还没有选择商品");
+                            return;
+                        }
+                        ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, GsonUtils.toJson(mCheckedListItem),mJSPrice+"");
+                    }
+                });
 
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this, REQUEST_GET_SHOPPING_CART_LIST_TAG);
+        shoppingCartPresenter.doGetShoppingCartList();
+        mLinearScrollViewContainer.setVisibility(View.GONE);
     }
 
     @Override
     protected void doGetData()
     {
-        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this);
-        shoppingCartPresenter.doGetShoppingCartList();
-        mLinearScrollViewContainer.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -131,20 +157,24 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
             mActivity.showToast(resultItem.message);
             if (resultItem.success())
             {
-                Type type = new TypeToken<List<ShoppingCartItem>>()
+                if (REQUEST_GET_SHOPPING_CART_LIST_TAG.equals(requestTag))
                 {
-                }.getType();
-                List<ShoppingCartItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
-                if (null != items && !items.isEmpty())
+                    Type type = new TypeToken<List<ShoppingCartItem>>()
+                    {
+                    }.getType();
+                    List<ShoppingCartItem> items = GsonUtils.jsonToResultItemToList(GsonUtils.toJson(resultItem), type);
+                    if (null != items && !items.isEmpty())
+                    {
+                        mShoppingCartItems = items;
+                        fillLinearShoppingContainer(items);
+                    } else
+                    {
+                        mActivity.showToast("购物车为空");
+                    }
+                } else if (REQUEST_SAVE_SHOPPING_CART_TAG.equals(requestTag))
                 {
-                    mShoppingCartItems = items;
-                    fillLinearShoppingContainer(items);
+                    onEditFinsh();
                 }
-                else
-                {
-                    mActivity.showToast("购物车为空");
-                }
-
             }
         }
 
@@ -175,7 +205,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
     {
         if (null != mShoppingCartItems && null != mShoppingCartItems.get(0) && null != mShoppingCartItems.get(0).list)
         {
-            if (isChecked ||mCheckedCount == 0 || mCheckedCount == mShoppingCartItems.get(0).list.size())
+            if (isChecked || mCheckedCount == 0 || mCheckedCount == mShoppingCartItems.get(0).list.size())
             {
                 mCbAll.setChecked(isChecked);
                 if (mLinearShoppingContainer.findViewById(R.id.cb_hospital_all) != null)
@@ -225,6 +255,10 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void onEditFinsh()
     {
+        if (null != mLinearShoppingContainer.findViewById(R.id.tv_edit))
+        {
+            ((TextView) mLinearShoppingContainer.findViewById(R.id.tv_edit)).setText(TEXT_EDIT);
+        }
         for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
         {
             ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
@@ -254,39 +288,38 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                 TextView tvHospital = (TextView) viewHospital.findViewById(R.id.tv_hospital_name);
                 final TextView tvEdit = (TextView) viewHospital.findViewById(R.id.tv_edit);
                 final CheckBox cbHospitalAll = (CheckBox) viewHospital.findViewById(R.id.cb_hospital_all);
-                cbHospitalAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-                {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                    {
-                        onAllCheckedChanged(isChecked);
-                    }
-                });
-                tvEdit.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (item.list != null && !item.list.isEmpty())
+                cbHospitalAll.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener()
                         {
-                            if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
                             {
-                                tvEdit.setText(TEXT_EDIT);
-                                onEditFinsh();
+                                onAllCheckedChanged(isChecked);
                             }
-                            else
-                            {
-                                tvEdit.setText(TEXT_FINISHED);
-                                onEdit();
-                            }
-                        }
-                        else
+                        });
+                tvEdit.setOnClickListener(
+                        new View.OnClickListener()
                         {
-                            mActivity.showToast("购物车列表为空，无法进行编辑");
-                        }
+                            @Override
+                            public void onClick(View v)
+                            {
+                                if (item.list != null && !item.list.isEmpty())
+                                {
+                                    if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
+                                    {
+                                        doSave();
+                                    } else
+                                    {
+                                        tvEdit.setText(TEXT_FINISHED);
+                                        onEdit();
+                                    }
+                                } else
+                                {
+                                    mActivity.showToast("购物车列表为空，无法进行编辑");
+                                }
 
-                    }
-                });
+                            }
+                        });
                 tvHospital.setText(item.hospital);
                 mLinearShoppingContainer.addView(viewHospital);
                 if (item.list != null && !item.list.isEmpty())
@@ -311,17 +344,18 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                 img = APIURL.BASE_API_URL + img;
                             }
                             ivImageView.setTag(img);
-                            ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                            {
-                                @Override
-                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                                {
-                                    if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                            ImageLoader.getInstance().loadImage(
+                                    img, new AbsImageLoadingListener()
                                     {
-                                        ivImageView.setImageBitmap(loadedImage);
-                                    }
-                                }
-                            });
+                                        @Override
+                                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                        {
+                                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                                            {
+                                                ivImageView.setImageBitmap(loadedImage);
+                                            }
+                                        }
+                                    });
                         }
                         TextView tvDrugPrice = (TextView) relativeLayout.findViewById(R.id.tv_drug_price);
                         final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
@@ -339,96 +373,103 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         final TextView tvEditCount = (TextView) linearLayout.findViewById(R.id.tv_edit_count);
                         tvEditCount.setText("1");
                         final int finalI = i;
-                        cbcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-                        {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-                            {
-                                double tmpPrice = Double.parseDouble(listItem.price) * Double.parseDouble(tvEditCount.getText().toString());
-                                if (isChecked)
+                        cbcb.setOnCheckedChangeListener(
+                                new CompoundButton.OnCheckedChangeListener()
                                 {
-                                    mCheckedCount += 1;
-                                    mJSPrice += tmpPrice;
-                                }
-                                else
-                                {
-                                    mCheckedCount -= 1;
-                                    mJSPrice -= tmpPrice;
-                                }
-                                if (mJSPrice < 0)
-                                {
-                                    mJSPrice = 0;
-                                }
-                                if (mCheckedCount < 0)
-                                {
-                                    mCheckedCount = 0;
-                                }
-                                mCbAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
-                                cbHospitalAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
-                                setTextPrice(mJSPrice);
-                            }
-                        });
-                        ivIncrease.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                int count = Integer.parseInt(tvEditCount.getText().toString());
-                                count += 1;
-                                if (cbcb.isChecked())
-                                {
-                                    mJSPrice += cost;
-                                }
-                                tvEditCount.setText(count + "");
-                                tvDrugCount.setText("x" + count + "");
-                                setTextPrice(mJSPrice);
-                            }
-                        });
-                        ivDecrease.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                int count = Integer.parseInt(tvEditCount.getText().toString());
-                                count -= 1;
-                                if (count < 1)
-                                {
-                                    mActivity.showCroutonToast("数量不可以小于1");
-                                    return;
-                                }
-                                if (cbcb.isChecked())
-                                {
-                                    mJSPrice -= cost;
-                                }
-                                tvEditCount.setText(count + "");
-                                tvDrugCount.setText("x" + count + "");
-                                setTextPrice(mJSPrice);
-                            }
-                        });
-
-                        tvDelete.setOnClickListener(new View.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(View v)
-                            {
-                                if (view.getParent() != null)
-                                {
-                                    int count = Integer.parseInt(tvEditCount.getText().toString());
-                                    if (cbcb.isChecked())
+                                    @Override
+                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
                                     {
-                                        mJSPrice = mJSPrice - cost * count;
-                                        mCheckedCount -= 1;
+                                        double tmpPrice = Double.parseDouble(listItem.price) * Double.parseDouble(tvEditCount.getText().toString());
+                                        if (isChecked)
+                                        {
+                                            mCheckedCount += 1;
+                                            mJSPrice += tmpPrice;
+                                            mCheckedListItem.add(listItem);
+                                        } else
+                                        {
+                                            mCheckedCount -= 1;
+                                            mJSPrice -= tmpPrice;
+                                            mCheckedListItem.remove(listItem);
+                                        }
+                                        if (mJSPrice < 0)
+                                        {
+                                            mJSPrice = 0;
+                                        }
+                                        if (mCheckedCount < 0)
+                                        {
+                                            mCheckedCount = 0;
+                                        }
+                                        mCbAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
+                                        cbHospitalAll.setChecked(mCheckedCount == mShoppingCartItems.get(finalI).list.size());
+                                        setTextPrice(mJSPrice);
                                     }
-                                    mLinearShoppingContainer.removeView(view);
-                                    setTextPrice(mJSPrice);
-                                    mShoppingCartItems.get(finalI).list.remove(listItem);
-                                }
-                                if (mShoppingCartItems.get(finalI).list.isEmpty())
+                                });
+                        ivIncrease.setOnClickListener(
+                                new View.OnClickListener()
                                 {
-                                    tvEdit.setText(TEXT_EDIT);
-                                }
-                            }
-                        });
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        int count = Integer.parseInt(tvEditCount.getText().toString());
+                                        count += 1;
+                                        if (cbcb.isChecked())
+                                        {
+                                            mJSPrice += cost;
+                                        }
+                                        tvEditCount.setText(count + "");
+                                        tvDrugCount.setText("x" + count + "");
+                                        setTextPrice(mJSPrice);
+                                    }
+                                });
+                        ivDecrease.setOnClickListener(
+                                new View.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        int count = Integer.parseInt(tvEditCount.getText().toString());
+                                        count -= 1;
+                                        if (count < 1)
+                                        {
+                                            mActivity.showCroutonToast("数量不可以小于1");
+                                            return;
+                                        }
+                                        if (cbcb.isChecked())
+                                        {
+                                            mJSPrice -= cost;
+                                        }
+                                        tvEditCount.setText(count + "");
+                                        tvDrugCount.setText("x" + count + "");
+                                        setTextPrice(mJSPrice);
+                                    }
+                                });
+
+                        tvDelete.setOnClickListener(
+                                new View.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(View v)
+                                    {
+                                        if (view.getParent() != null)
+                                        {
+                                            int count = Integer.parseInt(tvEditCount.getText().toString());
+                                            if (cbcb.isChecked())
+                                            {
+                                                mJSPrice = mJSPrice - cost * count;
+                                                mCheckedCount -= 1;
+                                                mCheckedListItem.remove(listItem);
+                                            }
+
+                                            mLinearShoppingContainer.removeView(view);
+                                            setTextPrice(mJSPrice);
+                                            mShoppingCartItems.get(finalI).list.remove(listItem);
+                                        }
+                                        if (mShoppingCartItems.get(finalI).list.isEmpty())
+                                        {
+                                            tvEdit.setText(TEXT_EDIT);
+                                        }
+                                    }
+                                });
                         int height = DensityUtils.dpToPx(mActivity, 100.f);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                         mLinearShoppingContainer.addView(view, layoutParams);
@@ -437,6 +478,31 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
             }
         }
+    }
+
+    private void doSave()
+    {
+        List<String> drugIds = new LinkedList<>();
+        List<String> counts = new LinkedList<>();
+        if (null != mShoppingCartItems && null != mShoppingCartItems.get(0) && null != mShoppingCartItems.get(0).list)
+        {
+            for (ShoppingCartItem.ListItem listItem : mShoppingCartItems.get(0).list)
+            {
+                drugIds.add(listItem.drugId);
+            }
+            for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
+            {
+                ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
+                if (view.findViewById(R.id.relative_normal) != null)
+                {
+                    final TextView tvEditCount = (TextView) view.findViewById(R.id.tv_edit_count);
+                    counts.add(tvEditCount.getText().toString());
+                }
+            }
+        }
+        System.out.println("drugids = " + drugIds + " counts = " + counts);
+        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this, REQUEST_SAVE_SHOPPING_CART_TAG);
+        shoppingCartPresenter.doEditSaveShoppingCart(drugIds, counts);
     }
 
     private void setTextPrice(double price)
@@ -450,7 +516,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
         spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), hj_fee.length(), spannableStringBuilder.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         mTvShoppingCartInfo.setText(spannableStringBuilder);
         mTvBalance.setText("结算（" + mCheckedCount + "）");
-
     }
 
 }

@@ -9,7 +9,7 @@ package com.xinheng;
 public class APIURL
 {
     public static final String BASE_API_URL = "http://139.196.24.205";
-     // public static final String BASE_API_URL = " http://192.168.2.119";
+  // public static final String BASE_API_URL = " http://192.168.2.119";
     /**
      * 用户登录URL
      */
@@ -59,26 +59,26 @@ public class APIURL
      */
     public static final String GET_DOCTOR_DETAIL_URL = BASE_API_URL + "/interface/patient/appointment/getdoctordetail";
     /***
-     *  修改密码  身份验证 URL
+     * 修改密码  身份验证 URL
      */
     public static final String MODIFY_PWD_AUTH_PHONE_WITH_CODE_URL = BASE_API_URL + "/interface/patient/user/editpassword";
 
     /***
      * 忘记密码-第一步,验证帐号
      */
-    public static final String FORGET_PWD_AUTH_ACCOUNT=BASE_API_URL + "/public/patient/user/resetpasswordfirst";
+    public static final String FORGET_PWD_AUTH_ACCOUNT = BASE_API_URL + "/public/patient/user/resetpasswordfirst";
     /***
      * 忘记密码-第二步,验证手机号码
      */
-    public static final String FORGET_PWD_AUTH_PHONE=BASE_API_URL + "/public/patient/user/resetpasswordsecond";
+    public static final String FORGET_PWD_AUTH_PHONE = BASE_API_URL + "/public/patient/user/resetpasswordsecond";
     /***
      * 忘记密码-第三步,验证常用就诊人
      */
-    public static final String FORGET_PWD_AUTH_PATIENT=BASE_API_URL + "/public/patient/user/resetpasswordthird";
+    public static final String FORGET_PWD_AUTH_PATIENT = BASE_API_URL + "/public/patient/user/resetpasswordthird";
     /***
-     *  忘记密码-第四步,重置密码
+     * 忘记密码-第四步,重置密码
      */
-    public static final String FORGET_PWD_RESET_PWD=BASE_API_URL + "/public/patient/user/resetpasswordfourth";
+    public static final String FORGET_PWD_RESET_PWD = BASE_API_URL + "/public/patient/user/resetpasswordfourth";
     /***
      * 修改密码URL
      */
@@ -135,6 +135,10 @@ public class APIURL
      * 添加商品到购物车
      */
     public static final String ADD_TO_SHOPPING_CART_URL = BASE_API_URL + "/interface/patient/shoppingcart/add";
+    /****
+     * 修改保存购物车
+     */
+    public static final String EDIT_SAVE_SHOPPING_CART_URL = BASE_API_URL + "/interface/patient/shoppingcart/save";
     /**
      * 我的咨询详情URL
      */
@@ -157,7 +161,7 @@ public class APIURL
      */
     public static final String GET_USER_ORDER_DETAIL_URL = BASE_API_URL + "/interface/patient/myorder/getdetail";
     /***
-     *    我的检查详情URL
+     * 我的检查详情URL
      */
     public static final String GET_USER_CHECK_DETAIL_URL = BASE_API_URL + "/interface/patient/mycheck/getdetail";
     /***
@@ -165,7 +169,7 @@ public class APIURL
      */
     public static final String GET_DRUG_DETAIL_URL = BASE_API_URL + "/interface/patient/mall/drugdetail";
     /***
-     *  智能导诊-获取症状起始问题 URL
+     * 智能导诊-获取症状起始问题 URL
      */
     public static final String GET_SYMPTOM_CHECK_FIRST_URL = BASE_API_URL + "/interface/patient/selfcheck/getfirst";
     /***
@@ -217,6 +221,10 @@ public class APIURL
      * 按方抓药，提交审核后提交订单
      */
     public static final String SAVE_ORDER_URL = BASE_API_URL + "/interface/patient/mall/saveconfirm";
+    /****
+     * 提交购物车
+     */
+    public static final String SUBMIT_SHOPPING_CART_URL = BASE_API_URL + "/interface/patient/shoppingcart/saveconfirm";
     /***
      * 支付订单-修改订单状态
      */

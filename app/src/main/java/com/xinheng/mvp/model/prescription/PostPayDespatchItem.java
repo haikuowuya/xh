@@ -24,5 +24,6 @@ public class PostPayDespatchItem extends BaseEmptyItem
     public String aid;//收货地址id
     public String payType = PAY_ONLINE;//支付方式
     public String despatchType = DESPATCH_NORMAL;//配送方式
+    public String userId;
 
 }
