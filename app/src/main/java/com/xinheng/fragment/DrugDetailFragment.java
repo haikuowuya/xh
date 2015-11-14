@@ -18,15 +18,17 @@ import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.DrugDetailItem;
 import com.xinheng.mvp.model.ResultItem;
+import com.xinheng.mvp.presenter.BuyPresenter;
 import com.xinheng.mvp.presenter.DrugDetailPresenter;
 import com.xinheng.mvp.presenter.ShoppingCartPresenter;
+import com.xinheng.mvp.presenter.impl.BuyPresenterImpl;
 import com.xinheng.mvp.presenter.impl.DrugDetailPresenterImpl;
 import com.xinheng.mvp.presenter.impl.ShoppingCartPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
 
 /**
- * 作者： raiyi-suzhou
+ * 作者： hkwy
  * 日期： 2015/8/18 0018
  * 时间： 17:48
  * 说明：药品详情
@@ -34,6 +36,7 @@ import com.xinheng.util.GsonUtils;
 public class DrugDetailFragment extends BaseFragment implements DataView
 {
     public static final String REQUEST_GET_DRUG_DETAIL_TAG = "request_get_drug_detail";
+    public static final String REQUEST_BUY_TAG = "request_buy";
     public static final String REQUEST_ADD_TO_SHOPPING_CART_TAG = "request_add_to_shopping_cart";
     public static final String ARG_DRUG_ID = "drug_id";
 
@@ -83,8 +86,14 @@ public class DrugDetailFragment extends BaseFragment implements DataView
 
     private TextView mTvDrugNature;
 
+    /***
+     * 加入购物车
+     */
     private TextView mTvShoppingCart;
-
+    /**
+     * 立即购买
+     */
+    private TextView mTvShoppingBuy;
 
     @Nullable
     @Override
@@ -108,6 +117,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
         mTvDrugNo = (TextView) view.findViewById(R.id.tv_drug_no);
         mImageView = (ImageView) view.findViewById(R.id.iv_image);
         mTvShoppingCart = (TextView) view.findViewById(R.id.tv_shopping_cart);
+        mTvShoppingBuy = (TextView) view.findViewById(R.id.tv_shopping_buy);
     }
 
     @Override
@@ -123,6 +133,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
     {
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mTvShoppingCart.setOnClickListener(onClickListener);
+        mTvShoppingBuy.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -155,7 +166,12 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                     {
                         showDrugDetailItem(drugDetailItem);
                     }
-                } else if (REQUEST_ADD_TO_SHOPPING_CART_TAG.equals(requestTag))
+                }
+                else if (REQUEST_ADD_TO_SHOPPING_CART_TAG.equals(requestTag))
+                {
+
+                }
+                else if (REQUEST_BUY_TAG.equals(requestTag))
                 {
 
                 }
@@ -178,21 +194,20 @@ public class DrugDetailFragment extends BaseFragment implements DataView
             mTvDrugUnit.setText("药品单位：" + drugDetailItem.unit);
             mTvDrugNature.setText("药品特性：" + drugDetailItem.name);
             String imageUrl = drugDetailItem.img;
-            if(!TextUtils.isEmpty(imageUrl))
+            if (!TextUtils.isEmpty(imageUrl))
             {
                 if (!imageUrl.startsWith(APIURL.BASE_API_URL))
                 {
                     imageUrl = APIURL.BASE_API_URL + imageUrl;
                 }
-                ImageLoader.getInstance().loadImage(
-                        imageUrl, new AbsImageLoadingListener()
-                        {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                mImageView.setImageBitmap(loadedImage);
-                            }
-                        });
+                ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
+                {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                    {
+                        mImageView.setImageBitmap(loadedImage);
+                    }
+                });
             }
         }
     }
@@ -214,6 +229,13 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                     ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, DrugDetailFragment.this, REQUEST_ADD_TO_SHOPPING_CART_TAG);
                     shoppingCartPresenter.doAddToShoppingCart(mDrugId, "1");
                     break;
+                case R.id.tv_shopping_buy://立即购买
+                    mActivity.showToast("立即购买");
+                    BuyPresenter buyPresenter = new BuyPresenterImpl(mActivity, DrugDetailFragment.this, REQUEST_BUY_TAG);
+                    buyPresenter.doBuy();
+
+                    break;
+
             }
         }
     }

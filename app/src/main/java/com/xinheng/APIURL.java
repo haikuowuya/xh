@@ -233,6 +233,11 @@ public class APIURL
      * 科室医生-医生详情-添加关注接口URL
      */
     public static final String ADD_ATTENTION_URL = BASE_API_URL + "/interface/patient/appointment/attention";
+    /***
+     * 科室医生-医生详情-取消关注接口URL
+     */
+    public static final String CANCEL_ATTENTION_URL = BASE_API_URL + "/interface/patient/appointment/cancleattention";
+
     /**
      * 我的报告列表URL
      */

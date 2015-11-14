@@ -303,8 +303,8 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                             @Override
                             public void onClick(View v)
                             {
-                                if (item.list != null && !item.list.isEmpty())
-                                {
+//                                if (item.list != null && !item.list.isEmpty())
+//                                {
                                     if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
                                     {
                                         doSave();
@@ -313,10 +313,10 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                         tvEdit.setText(TEXT_FINISHED);
                                         onEdit();
                                     }
-                                } else
-                                {
-                                    mActivity.showToast("购物车列表为空，无法进行编辑");
-                                }
+//                                } else
+//                                {
+//                                    mActivity.showToast("购物车列表为空，无法进行编辑");
+//                                }
 
                             }
                         });
@@ -466,7 +466,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                         }
                                         if (mShoppingCartItems.get(finalI).list.isEmpty())
                                         {
-                                            tvEdit.setText(TEXT_EDIT);
+                                           // tvEdit.setText(TEXT_EDIT);
                                         }
                                     }
                                 });
