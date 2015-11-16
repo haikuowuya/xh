@@ -339,7 +339,7 @@ public class DepartmentDoctorDetailFragment extends BaseFragment implements Data
         else if (!ATTENTION.equals(mTvAttention.getText().toString()))
         {
             AttentionPresenter addAttentionPresenter = new AddAttentionPresenterImpl(mActivity, this, REQUEST_CANCEL_ATTENTION_TAG);
-            addAttentionPresenter.doCancelAttention(mDepartDoctorItem.doctId);
+            addAttentionPresenter.doCancelAttention(mDoctorDetailItem.attentionId);
         }
 
     }
