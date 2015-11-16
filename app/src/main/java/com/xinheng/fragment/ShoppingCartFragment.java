@@ -24,6 +24,7 @@ import com.xinheng.R;
 import com.xinheng.ShoppingCartConfirmOrderActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.eventbus.OnShoppingCartSumbitEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.ShoppingCartItem;
 import com.xinheng.mvp.presenter.ShoppingCartPresenter;
@@ -35,6 +36,9 @@ import com.xinheng.util.GsonUtils;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 
 /**
  * 作者： raiyi-suzhou
@@ -96,8 +100,28 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        EventBus.getDefault().register(this);
         setTextPrice(0);
         setListener();
+    }
+
+    @Subscribe
+    public void onEventMainThread(OnShoppingCartSumbitEvent event)
+    {
+        if (null != event)
+        {
+            mActivity.showToast("购物车现已提交成功");
+            mLinearScrollViewContainer.setVisibility(View.GONE);
+            mActivity.finish();
+        }
+    }
+
+    //===============================EVENT BUS========================
+    @Override
+    public void onDestroy()
+    {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -108,8 +132,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
 
     private void setListener()
     {
-        mCbAll.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener()
+        mCbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                 {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -117,36 +140,27 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         onAllCheckedChanged(isChecked);
                     }
                 });
-        mTvBalance.setOnClickListener(
-                new View.OnClickListener()
+        mTvBalance.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (mCheckedCount == 0 || mCheckedListItem.isEmpty())
                 {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        if (mCheckedCount == 0 || mCheckedListItem.isEmpty())
-                        {
-                            mActivity.showToast("你还没有选择商品");
-                            return;
-                        }
-                        ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, GsonUtils.toJson(mCheckedListItem),mJSPrice+"");
-                    }
-                });
-
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this, REQUEST_GET_SHOPPING_CART_LIST_TAG);
-        shoppingCartPresenter.doGetShoppingCartList();
-        mLinearScrollViewContainer.setVisibility(View.GONE);
+                    mActivity.showToast("你还没有选择商品");
+                    return;
+                }
+                ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, GsonUtils.toJson(mCheckedListItem), mJSPrice + "", mShoppingCartItems.get(0).hid);
+            }
+        });
     }
 
     @Override
     protected void doGetData()
     {
-
+        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this, REQUEST_GET_SHOPPING_CART_LIST_TAG);
+        shoppingCartPresenter.doGetShoppingCartList();
+        mLinearScrollViewContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -167,17 +181,23 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                     {
                         mShoppingCartItems = items;
                         fillLinearShoppingContainer(items);
-                    } else
+                    }
+                    else
                     {
                         mActivity.showToast("购物车为空");
                     }
-                } else if (REQUEST_SAVE_SHOPPING_CART_TAG.equals(requestTag))
+                }
+                else if (REQUEST_SAVE_SHOPPING_CART_TAG.equals(requestTag))
                 {
                     onEditFinsh();
+                    if (mShoppingCartItems != null && mShoppingCartItems.get(0).list != null && mShoppingCartItems.get(0).list.isEmpty())
+                    {
+                        mLinearScrollViewContainer.setVisibility(View.GONE);
+                        mActivity.showToast("购物车现已清空");
+                    }
                 }
             }
         }
-
     }
 
     @Override
@@ -192,7 +212,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
         for (int i = 0; i < mLinearShoppingContainer.getChildCount(); i++)
         {
             ViewGroup view = (ViewGroup) mLinearShoppingContainer.getChildAt(i);
-
             if (view.findViewById(R.id.relative_normal) != null)
             {
                 view.findViewById(R.id.relative_normal).setVisibility(View.GONE);
@@ -281,6 +300,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
         {
             mLinearScrollViewContainer.setVisibility(View.VISIBLE);
             mLinearShoppingContainer.setVisibility(View.VISIBLE);
+            mLinearShoppingContainer.removeAllViews();
             for (int i = 0; i < items.size(); i++)
             {
                 final ShoppingCartItem item = items.get(i);
@@ -288,8 +308,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                 TextView tvHospital = (TextView) viewHospital.findViewById(R.id.tv_hospital_name);
                 final TextView tvEdit = (TextView) viewHospital.findViewById(R.id.tv_edit);
                 final CheckBox cbHospitalAll = (CheckBox) viewHospital.findViewById(R.id.cb_hospital_all);
-                cbHospitalAll.setOnCheckedChangeListener(
-                        new CompoundButton.OnCheckedChangeListener()
+                cbHospitalAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                         {
                             @Override
                             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -297,22 +316,22 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                 onAllCheckedChanged(isChecked);
                             }
                         });
-                tvEdit.setOnClickListener(
-                        new View.OnClickListener()
+                tvEdit.setOnClickListener(new View.OnClickListener()
                         {
                             @Override
                             public void onClick(View v)
                             {
 //                                if (item.list != null && !item.list.isEmpty())
 //                                {
-                                    if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
-                                    {
-                                        doSave();
-                                    } else
-                                    {
-                                        tvEdit.setText(TEXT_FINISHED);
-                                        onEdit();
-                                    }
+                                if (TEXT_FINISHED.equals(tvEdit.getText().toString()))
+                                {
+                                    doSave();
+                                }
+                                else
+                                {
+                                    tvEdit.setText(TEXT_FINISHED);
+                                    onEdit();
+                                }
 //                                } else
 //                                {
 //                                    mActivity.showToast("购物车列表为空，无法进行编辑");
@@ -344,8 +363,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                 img = APIURL.BASE_API_URL + img;
                             }
                             ivImageView.setTag(img);
-                            ImageLoader.getInstance().loadImage(
-                                    img, new AbsImageLoadingListener()
+                            ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
                                     {
                                         @Override
                                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
@@ -373,8 +391,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         final TextView tvEditCount = (TextView) linearLayout.findViewById(R.id.tv_edit_count);
                         tvEditCount.setText("1");
                         final int finalI = i;
-                        cbcb.setOnCheckedChangeListener(
-                                new CompoundButton.OnCheckedChangeListener()
+                        cbcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
                                 {
                                     @Override
                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
@@ -385,7 +402,8 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                             mCheckedCount += 1;
                                             mJSPrice += tmpPrice;
                                             mCheckedListItem.add(listItem);
-                                        } else
+                                        }
+                                        else
                                         {
                                             mCheckedCount -= 1;
                                             mJSPrice -= tmpPrice;
@@ -404,8 +422,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                         setTextPrice(mJSPrice);
                                     }
                                 });
-                        ivIncrease.setOnClickListener(
-                                new View.OnClickListener()
+                        ivIncrease.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(View v)
@@ -421,8 +438,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                         setTextPrice(mJSPrice);
                                     }
                                 });
-                        ivDecrease.setOnClickListener(
-                                new View.OnClickListener()
+                        ivDecrease.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(View v)
@@ -444,8 +460,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                     }
                                 });
 
-                        tvDelete.setOnClickListener(
-                                new View.OnClickListener()
+                        tvDelete.setOnClickListener(new View.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(View v)
@@ -466,7 +481,7 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                                         }
                                         if (mShoppingCartItems.get(finalI).list.isEmpty())
                                         {
-                                           // tvEdit.setText(TEXT_EDIT);
+                                            // tvEdit.setText(TEXT_EDIT);
                                         }
                                     }
                                 });
@@ -475,7 +490,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
                         mLinearShoppingContainer.addView(view, layoutParams);
                     }
                 }
-
             }
         }
     }

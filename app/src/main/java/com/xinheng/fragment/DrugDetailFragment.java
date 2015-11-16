@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -50,6 +51,8 @@ public class DrugDetailFragment extends BaseFragment implements DataView
     }
 
     private String mDrugId;
+
+    private LinearLayout mLinearScrollViewContainer;
 
     private ScrollView mScrollView;
     /***
@@ -106,6 +109,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
+        mLinearScrollViewContainer = (LinearLayout) view.findViewById(R.id.linear_scrollview_container);
         mScrollView = (ScrollView) view.findViewById(R.id.sv_scrollview);
         mTvDrugName = (TextView) view.findViewById(R.id.tv_drug_name);
         mTvDrugProducer = (TextView) view.findViewById(R.id.tv_drug_producer);
@@ -141,7 +145,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
     {
         DrugDetailPresenter drugDetailPresenter = new DrugDetailPresenterImpl(mActivity, this, REQUEST_GET_DRUG_DETAIL_TAG);
         drugDetailPresenter.doGetDrugDetail(mDrugId);
-        mScrollView.setVisibility(View.GONE);
+        mLinearScrollViewContainer.setVisibility(View.GONE);
         mTvShoppingCart.setVisibility(View.GONE);
     }
 
@@ -181,7 +185,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
 
     private void showDrugDetailItem(DrugDetailItem drugDetailItem)
     {
-        mScrollView.setVisibility(View.VISIBLE);
+        mLinearScrollViewContainer.setVisibility(View.VISIBLE);
         if (null != drugDetailItem)
         {
             mTvShoppingCart.setVisibility(View.VISIBLE);

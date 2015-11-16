@@ -21,6 +21,7 @@ public class ShoppingCartItem extends BaseEmptyItem
         public String producer;// 药品厂商
         public String drugImg;
         public String place;
+        public  String shoppingId;// 购物车id
 
         @Override
         public boolean equals(Object o)

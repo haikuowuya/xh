@@ -17,11 +17,15 @@ public class ShoppingCartConfirmOrderActivity extends BaseActivity
 {
     public static final String EXTRA_DRUG_JSON="drug_json";
     public static final String EXTRA_FEE="fee";
-    public static void actionShoppingCartConfirmOrder(BaseActivity activity,String drugJson ,String fee)
+    public static final String EXTRA_HID="hid";
+
+    public static void actionShoppingCartConfirmOrder(BaseActivity activity,String drugJson ,String fee,String hid)
     {
         Intent intent = new Intent(activity, ShoppingCartConfirmOrderActivity.class);
         intent.putExtra(EXTRA_DRUG_JSON, drugJson);
         intent.putExtra(EXTRA_FEE, fee);
+        intent.putExtra(EXTRA_HID,hid);
+
         activity.startActivity(intent);
     }
 
@@ -32,10 +36,12 @@ public class ShoppingCartConfirmOrderActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         String drugJson  = getIntent().getStringExtra(EXTRA_DRUG_JSON);
         String fee = getIntent().getStringExtra(EXTRA_FEE);
+        String hid = getIntent().getStringExtra(EXTRA_HID);
+
         if (!TextUtils.isEmpty(drugJson))
         {
             setContentView(R.layout.activity_activity_common);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartConfirmOrderFragment.newInstance(drugJson,fee)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartConfirmOrderFragment.newInstance(drugJson,fee,hid)).commit();
         }
         else
         {

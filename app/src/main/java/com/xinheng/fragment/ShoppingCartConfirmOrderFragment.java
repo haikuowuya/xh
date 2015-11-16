@@ -29,6 +29,7 @@ import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;
+import com.xinheng.eventbus.OnShoppingCartSumbitEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.ShoppingCartItem;
 import com.xinheng.mvp.model.address.AddressItem;
@@ -36,11 +37,9 @@ import com.xinheng.mvp.model.prescription.PostPayDespatchItem;
 import com.xinheng.mvp.presenter.AddressPresenter;
 import com.xinheng.mvp.presenter.PayOrderPresenter;
 import com.xinheng.mvp.presenter.ShoppingCartPresenter;
-import com.xinheng.mvp.presenter.SubmitOrderPresenter;
 import com.xinheng.mvp.presenter.impl.AddressPresenterImpl;
 import com.xinheng.mvp.presenter.impl.PayOrderPresenterImpl;
 import com.xinheng.mvp.presenter.impl.ShoppingCartPresenterImpl;
-import com.xinheng.mvp.presenter.impl.SubmitOrderPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.DateFormatUtils;
 import com.xinheng.util.DensityUtils;
@@ -71,19 +70,22 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
     public static final String REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG = "request_confirm_order";
     public static final String REQUEST_PAY_ORDER_TAG = "request_pay_order";
     public static final String ARG_DRUG_JSON = "drug_json";
-    public static final String ARG_FEE= "fee";
+    public static final String ARG_FEE = "fee";
+    public static final String ARG_HID = "hid";
 
-    public static ShoppingCartConfirmOrderFragment newInstance(String drugJson,String fee)
+    public static ShoppingCartConfirmOrderFragment newInstance(String drugJson, String fee, String hid)
     {
         ShoppingCartConfirmOrderFragment fragment = new ShoppingCartConfirmOrderFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_DRUG_JSON, drugJson);
         bundle.putString(ARG_FEE, fee);
+        bundle.putString(ARG_HID, hid);
+
         fragment.setArguments(bundle);
         return fragment;
     }
-    private List<ShoppingCartItem.ListItem> mCheckedListItem = new LinkedList<>();
 
+    private List<ShoppingCartItem.ListItem> mCheckedListItem = new LinkedList<>();
 
     /**
      * 费用说明展示
@@ -149,6 +151,8 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
 
     private String mOrderId;
 
+    private String mHid;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -171,18 +175,21 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
         mLinearAddressContainer.setOnClickListener(onClickListener);
         mLinearPayDespatchContainer.setOnClickListener(onClickListener);
         mBtnOk.setOnClickListener(onClickListener);
-        Type type = new TypeToken<List<ShoppingCartItem.ListItem>>(){}.getType();
-        mCheckedListItem = GsonUtils.jsonToList(getArguments().getString(ARG_DRUG_JSON),type);
+        Type type = new TypeToken<List<ShoppingCartItem.ListItem>>()
+        {
+        }.getType();
+        mCheckedListItem = GsonUtils.jsonToList(getArguments().getString(ARG_DRUG_JSON), type);
         mFee = getArguments().getString(ARG_FEE);
-        if(mCheckedListItem != null)
+        mHid = getArguments().getString(ARG_HID);
+
+        if (mCheckedListItem != null)
         {
             fillLinearDrugContainer(mCheckedListItem);
-
             String countInfo = "共" + mCheckedListItem.size() + "件商品，合计：￥:";
-            double  despatchFee =0.0;
+            double despatchFee = 0.0;
             try
             {
-                if(mPostPayDespatchItem.despatchType .equals( PostPayDespatchItem.DESPATCH_NORMAL))
+                if (mPostPayDespatchItem.despatchType.equals(PostPayDespatchItem.DESPATCH_NORMAL))
                 {
                     mFee = (new DecimalFormat("#0.00").format(((Double.parseDouble(mFee)) + despatchFee))) + "";
                 }
@@ -191,7 +198,7 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
             {
 
             }
-            String tmp = " (含运费￥"+despatchFee+")";
+            String tmp = " (含运费￥" + despatchFee + ")";
             String countFeeInfo = countInfo + mFee;
             String allInfo = countFeeInfo + tmp;
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);
@@ -203,11 +210,11 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
             spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + mFee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             mTvConfirmFee.setText(spannableStringBuilder1);
             String despatchText = PostPayDespatchItem.DESPATCH_NORMA_TEXT;
-            if (PostPayDespatchItem.DESPATCH_SELF.equals(mPostPayDespatchItem.despatchType)  )
+            if (PostPayDespatchItem.DESPATCH_SELF.equals(mPostPayDespatchItem.despatchType))
             {
                 despatchText = PostPayDespatchItem.DESPATCH_SELF_TEXT;
             }
-            mTvDespatchWayDesc.setText( despatchText);
+            mTvDespatchWayDesc.setText(despatchText);
         }
     }
 
@@ -299,7 +306,7 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
         {
             if (resultItem.success())
             {
-                 if (REQUEST_ADDRESS_TAG.equals(requestTag))
+                if (REQUEST_ADDRESS_TAG.equals(requestTag))
                 {
                     Type type = new TypeToken<List<AddressItem>>()
                     {
@@ -312,19 +319,22 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                     }
                 }
                 else if (REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG.equals(requestTag))
-                 {
-                     mActivity.showToast(resultItem.message);
-                     mBtnOk.setEnabled(false);
-                     try
-                     {
-                    JSONObject jsonObject = new JSONObject(resultItem.properties.getAsJsonObject().toString());
-                         JSONArray jsonArray = jsonObject.optJSONArray("orderIds") ;
-                         if(null != jsonArray && jsonArray.length() > 0)
-                         {
+                {
+                    mActivity.showToast(resultItem.message);
+                    mBtnOk.setEnabled(false);
+                    EventBus.getDefault().post(new OnShoppingCartSumbitEvent());
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(resultItem.properties.getAsJsonObject().toString());
+                        JSONArray jsonArray = jsonObject.optJSONArray("orderIds");
+                        if (null != jsonArray && jsonArray.length() > 0)
+                        {
                             mOrderId = jsonArray.optString(0);
-                         }
-                     } catch (Exception e)
-                     {}
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
 
                     showConfirmOrderPopupWindow();
                 }
@@ -376,7 +386,6 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                 LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linear_edit_container);
                 relativeLayout.setVisibility(View.VISIBLE);
                 linearLayout.setVisibility(View.GONE);
-
                 String img = item.drugImg;
                 if (!TextUtils.isEmpty(img))
                 {
@@ -503,9 +512,24 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
      */
     private void submitOrder()
     {
-        SubmitOrderPresenter submitOrderPresenter = new SubmitOrderPresenterImpl(mActivity, this, REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG);
-        submitOrderPresenter.doSubmitOrder(mPostPayDespatchItem);
-        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity,this, REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG);
+        List<PostPayDespatchItem.ListItem> listItems = new LinkedList<>();
+        PostPayDespatchItem.ListItem listItem = new PostPayDespatchItem.ListItem();
+        List<String> shoppingIds = new LinkedList<>();
+        List<String> counts = new LinkedList<>();
+        List<String> drugIds = new LinkedList<>();
+        for (ShoppingCartItem.ListItem tmpItem : mCheckedListItem)
+        {
+            counts.add(tmpItem.count);
+            drugIds.add(tmpItem.drugId);
+            shoppingIds.add(tmpItem.shoppingId);
+        }
+        listItem.hid = mHid;
+        listItem.shoppingIds = shoppingIds;
+        listItem.drugIds = drugIds;
+        listItem.counts = counts;
+        listItems.add(listItem);
+        mPostPayDespatchItem.list = listItems;
+        ShoppingCartPresenter shoppingCartPresenter = new ShoppingCartPresenterImpl(mActivity, this, REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG);
         shoppingCartPresenter.subimtShoppingCart(mPostPayDespatchItem);
     }
 

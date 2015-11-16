@@ -2,6 +2,8 @@ package com.xinheng.mvp.model.prescription;
 
 import com.xinheng.mvp.model.BaseEmptyItem;
 
+import java.util.List;
+
 /**
  * Created by Steven on 2015/9/22 0022.
  */
@@ -19,11 +21,20 @@ public class PostPayDespatchItem extends BaseEmptyItem
     public static final String PAY_OFFLINE = "0";
     public static final String DESPATCH_NORMAL = "1";
     public static final String DESPATCH_SELF = "0";
-
     public String id;//订单id
     public String aid;//收货地址id
     public String payType = PAY_ONLINE;//支付方式
     public String despatchType = DESPATCH_NORMAL;//配送方式
     public String userId;
+
+
+    public List<ListItem> list;
+    public static class ListItem
+    {
+        public String hid;  //医疗机构id
+        public List<String> shoppingIds;  //购物车id
+        public List<String> drugIds;//药品id
+        public List<String> counts;//药品数量
+    }
 
 }
