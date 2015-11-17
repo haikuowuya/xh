@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.xinheng.base.BaseActivity;
 import com.xinheng.fragment.PhotoViewFragment;
+import com.xinheng.util.ViewUtils;
 
 import java.util.ArrayList;
 
@@ -18,28 +19,27 @@ public class PhotoViewActivity extends BaseActivity
 {
 
     public static final String EXTRA_LIST_IMAGE_URL = "list_image_url";
-    public static final String  EXTRA_POSITION ="position";
+    public static final String EXTRA_POSITION = "position";
 
-
-
-    public static void actionPhotoView(BaseActivity activity, ArrayList<String> imageUrls,int position )
+    public static void actionPhotoView(BaseActivity activity, ArrayList<String> imageUrls, int position)
     {
         Intent intent = new Intent(activity, PhotoViewActivity.class);
-        intent.putStringArrayListExtra(EXTRA_LIST_IMAGE_URL,imageUrls)  ;
+        intent.putStringArrayListExtra(EXTRA_LIST_IMAGE_URL, imageUrls);
         intent.putExtra(EXTRA_POSITION, position);
         activity.startActivity(intent);
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_common);
-
-        ArrayList<String > imageUrls = getIntent().getStringArrayListExtra(EXTRA_LIST_IMAGE_URL);
-        int position = getIntent().getIntExtra(EXTRA_POSITION,0);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, PhotoViewFragment.newInstance(imageUrls,position)).commit();
+       // setContentView(R.layout.activity_activity_common);
+        ArrayList<String> imageUrls = getIntent().getStringArrayListExtra(EXTRA_LIST_IMAGE_URL);
+        int position = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, PhotoViewFragment.newInstance(imageUrls, position)).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, PhotoViewFragment.newInstance(imageUrls, position)).commit();
+        hideTitleContainer();
+        ViewUtils.alphaStatusBarAndNavBar(mActivity, 0xFF000000, 0xFF000000);
     }
 
     @Override

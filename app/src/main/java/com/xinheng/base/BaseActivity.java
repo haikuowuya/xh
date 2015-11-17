@@ -88,11 +88,18 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     private FrameLayout mFrameContainer;
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
+    /***
+     * 中间的标题
+     */
     private TextView mTvCenterTitle;
     /**
      * 左上角的返回按钮
      */
     private ImageView mIvBack;
+    /***
+     * 左上角的返回按钮右边的标题
+     */
+    private TextView mTvLeftTitle;
     /**
      * 右上角的图片功能按钮
      */
@@ -184,6 +191,14 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         if (mProgressDialog.isShowing())
         {
             mProgressDialog.dismiss();
+        }
+    }
+
+    public void hideTitleContainer()
+    {
+        if (mLinearTitleContainer != null)
+        {
+            mLinearTitleContainer.setVisibility(View.GONE);
         }
     }
 
@@ -316,8 +331,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             } else if (mActivity instanceof UserBaseActivity)
             {
                 listview.setItemChecked(2, true);
-            }
-            else if(mActivity instanceof  SettingsActivity)
+            } else if (mActivity instanceof SettingsActivity)
             {
                 listview.setItemChecked(3, true);
             }
@@ -374,7 +388,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         mSlidingMenu = new SlidingMenu(mActivity);
         mSlidingMenu.setMode(SlidingMenu.RIGHT);
 
-        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)) && mPreferences.getBoolean(Constants.PREF_IS_SLIDING_MENU,true))
+        if (Constants.IMEI.equals(AndroidUtils.getIMEI(mActivity)) && mPreferences.getBoolean(Constants.PREF_IS_SLIDING_MENU, true))
         {
             mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         } else
@@ -424,16 +438,19 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     {
         if (keyCode == KeyEvent.KEYCODE_MENU)
         {
-            mSlidingMenu.toggle(true);
+            if (null != mSlidingMenu)
+            {
+                mSlidingMenu.toggle(true);
+            }
             return true;
         }
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            if (mSlidingMenu.isMenuShowing())
+            if (null != mSlidingMenu && mSlidingMenu.isMenuShowing())
             {
                 mSlidingMenu.showContent(true);
                 return true;
-            } else if (mActivity instanceof MainActivity || mActivity instanceof  OnlineActivity)
+            } else if (mActivity instanceof MainActivity || mActivity instanceof OnlineActivity)
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;
