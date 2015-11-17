@@ -433,7 +433,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
             {
                 mSlidingMenu.showContent(true);
                 return true;
-            } else if (mActivity instanceof MainActivity)
+            } else if (mActivity instanceof MainActivity || mActivity instanceof  OnlineActivity)
             {
                 XHApplication.getInstance().showExitDialog(mActivity);
                 return true;

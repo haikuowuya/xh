@@ -15,18 +15,21 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
+import com.xinheng.ShoppingCartConfirmOrderActivity;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.DrugDetailItem;
 import com.xinheng.mvp.model.ResultItem;
-import com.xinheng.mvp.presenter.BuyPresenter;
+import com.xinheng.mvp.model.ShoppingCartItem;
 import com.xinheng.mvp.presenter.DrugDetailPresenter;
 import com.xinheng.mvp.presenter.ShoppingCartPresenter;
-import com.xinheng.mvp.presenter.impl.BuyPresenterImpl;
 import com.xinheng.mvp.presenter.impl.DrugDetailPresenterImpl;
 import com.xinheng.mvp.presenter.impl.ShoppingCartPresenterImpl;
 import com.xinheng.mvp.view.DataView;
 import com.xinheng.util.GsonUtils;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 作者： hkwy
@@ -98,6 +101,8 @@ public class DrugDetailFragment extends BaseFragment implements DataView
      */
     private TextView mTvShoppingBuy;
 
+    private DrugDetailItem mDrugDetailItem;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -168,14 +173,13 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                     DrugDetailItem drugDetailItem = GsonUtils.jsonToClass(resultItem.properties.getAsJsonObject().toString(), DrugDetailItem.class);
                     if (null != drugDetailItem)
                     {
+                        mDrugDetailItem = drugDetailItem;
                         showDrugDetailItem(drugDetailItem);
                     }
-                }
-                else if (REQUEST_ADD_TO_SHOPPING_CART_TAG.equals(requestTag))
+                } else if (REQUEST_ADD_TO_SHOPPING_CART_TAG.equals(requestTag))
                 {
 
-                }
-                else if (REQUEST_BUY_TAG.equals(requestTag))
+                } else if (REQUEST_BUY_TAG.equals(requestTag))
                 {
 
                 }
@@ -204,14 +208,15 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                 {
                     imageUrl = APIURL.BASE_API_URL + imageUrl;
                 }
-                ImageLoader.getInstance().loadImage(imageUrl, new AbsImageLoadingListener()
-                {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                    {
-                        mImageView.setImageBitmap(loadedImage);
-                    }
-                });
+                ImageLoader.getInstance().loadImage(
+                        imageUrl, new AbsImageLoadingListener()
+                        {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                            {
+                                mImageView.setImageBitmap(loadedImage);
+                            }
+                        });
             }
         }
     }
@@ -234,10 +239,26 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                     shoppingCartPresenter.doAddToShoppingCart(mDrugId, "1");
                     break;
                 case R.id.tv_shopping_buy://立即购买
-                    mActivity.showToast("立即购买");
-                    BuyPresenter buyPresenter = new BuyPresenterImpl(mActivity, DrugDetailFragment.this, REQUEST_BUY_TAG);
-                    buyPresenter.doBuy();
+//                    mActivity.showToast("立即购买");
+//                    BuyPresenter buyPresenter = new BuyPresenterImpl(mActivity, DrugDetailFragment.this, REQUEST_BUY_TAG);
+//                    buyPresenter.doBuy();
 
+                    String hid = mDrugDetailItem.hid;
+                    String fee = mDrugDetailItem.price;
+                    List<ShoppingCartItem.ListItem> listItemList = new LinkedList<>();
+                    ShoppingCartItem.ListItem listItem = new ShoppingCartItem.ListItem();
+                    listItem.price = mDrugDetailItem.price;
+                    listItem.drugId = mDrugDetailItem.id;
+                    listItem.count = "1";
+                    listItem.name = mDrugDetailItem.name;
+                    listItem.specs = mDrugDetailItem.specs;
+                    listItem.drugImg = mDrugDetailItem.img;
+                    listItem.place = mDrugDetailItem.place;
+                    listItem.producer = mDrugDetailItem.producer;
+                    listItem.shoppingId="";
+                    listItemList.add(listItem);
+                    String drugJson = GsonUtils.toJson(listItemList);
+                    ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, drugJson, fee, hid);
                     break;
 
             }

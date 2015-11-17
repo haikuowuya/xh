@@ -84,11 +84,11 @@
                 android:background="#FFE4E4E4"/>
 
             <LinearLayout
+                android:id="@+id/linear_del_order_container"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_list_single_item_height"
                 android:layout_margin="4dp"
                 android:gravity="right|center_vertical"
-
                 android:orientation="horizontal">
 
                 <TextView

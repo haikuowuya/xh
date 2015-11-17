@@ -25,7 +25,6 @@ public class ShoppingCartConfirmOrderActivity extends BaseActivity
         intent.putExtra(EXTRA_DRUG_JSON, drugJson);
         intent.putExtra(EXTRA_FEE, fee);
         intent.putExtra(EXTRA_HID,hid);
-
         activity.startActivity(intent);
     }
 

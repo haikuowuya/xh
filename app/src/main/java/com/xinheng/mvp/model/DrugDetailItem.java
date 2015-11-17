@@ -6,6 +6,7 @@ package com.xinheng.mvp.model;
 public class DrugDetailItem extends  BaseEmptyItem
 {
 
+    public String    hid;//医院id
     public String    id;//药品id
     public String   drugCode;//药品编码
     public String   img;//图片

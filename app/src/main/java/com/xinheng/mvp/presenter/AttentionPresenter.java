@@ -6,5 +6,5 @@ package com.xinheng.mvp.presenter;
 public interface AttentionPresenter
 {
     public  void  doAddAttention(String doctId);
-    public void doCancelAttention(String id);
+    public void doCancelAttention(String doctId);
 }

@@ -133,11 +133,13 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
 
             if(UserOrderItem.ORDER_STATUS_4.equals(item.orderStatus ))
             {
-                setViewVisibility(convertView, R.id.tv_del_order, View.GONE);
+//                setViewVisibility(convertView, R.id.tv_del_order, View.GONE);
+                setViewVisibility(convertView, R.id.linear_del_order_container, View.GONE);
             }
             else
             {
-                setViewVisibility(convertView, R.id.tv_del_order, View.VISIBLE);
+//                setViewVisibility(convertView, R.id.tv_del_order, View.VISIBLE);
+                setViewVisibility(convertView, R.id.linear_del_order_container, View.VISIBLE);
             }
             /***
              * 删除订单按钮点击事件

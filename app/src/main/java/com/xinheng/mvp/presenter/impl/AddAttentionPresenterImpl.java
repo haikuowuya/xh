@@ -3,7 +3,6 @@ package com.xinheng.mvp.presenter.impl;
 import com.xinheng.APIURL;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.http.RequestUtils;
-import com.xinheng.mvp.model.PostItem;
 import com.xinheng.mvp.model.doctor.BasePostDoctorItem;
 import com.xinheng.mvp.presenter.AttentionPresenter;
 import com.xinheng.mvp.view.DataView;
@@ -41,11 +40,11 @@ public class AddAttentionPresenterImpl implements AttentionPresenter
     }
 
     @Override
-    public void doCancelAttention(String id)
+    public void doCancelAttention(String doctId)
     {
         String attentionUrl = APIURL.CANCEL_ATTENTION_URL;
-        PostItem item = new PostItem();
-        item.id = id;
+        BasePostDoctorItem item = new BasePostDoctorItem();
+        item.doctId = doctId;
         item.userId = mActivity.getLoginSuccessItem().id;
         String mingPostBody = GsonUtils.toJson(item);
         System.out.println("mingPostBody = " + mingPostBody);
