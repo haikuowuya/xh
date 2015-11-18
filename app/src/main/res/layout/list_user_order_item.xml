@@ -46,18 +46,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|right"
                 android:text="交易成功"
-                android:textColor="#FFFFA800"/>
+                android:textColor="#FFFFA800"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linear_drug_container"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:id="@+id/linear_drug_container"
             >
         </LinearLayout>
 
@@ -104,8 +105,6 @@
                     tools:text="删除订单"/>
 
                 <TextView
-                    android:visibility="gone"
-                    tools:visibility="visible"
                     android:id="@+id/tv_evaluation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -115,7 +114,9 @@
                     android:padding="6dp"
                     android:text="&#160;&#160;&#160;&#160;评价&#160;&#160;&#160;&#160;"
                     android:textColor="@color/color_white_color"
-                    tools:text="&#160;&#160;&#160;&#160;评价&#160;&#160;&#160;&#160;"/>
+                    android:visibility="gone"
+                    tools:text="&#160;&#160;&#160;&#160;评价&#160;&#160;&#160;&#160;"
+                    tools:visibility="visible"/>
             </LinearLayout>
         </LinearLayout>
 

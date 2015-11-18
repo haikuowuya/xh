@@ -26,6 +26,7 @@ import com.xinheng.PayDespatchActivity;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.common.AbsImageLoadingListener;
+import com.xinheng.eventbus.OnOrderStatusChangedEvent;
 import com.xinheng.eventbus.OnSelectAddressEvent;
 import com.xinheng.eventbus.OnSelectPayDespatchEvent;
 import com.xinheng.mvp.model.ResultItem;
@@ -300,6 +301,7 @@ public class UserOrderDetailFragment extends BaseFragment implements DataView
                 {
                   //  UserOrderActivity.actionUserOrder(mActivity, 5);
                     mActivity.finish();
+                    EventBus.getDefault().post(new OnOrderStatusChangedEvent());
                 }
             }
             else

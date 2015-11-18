@@ -246,7 +246,7 @@ public class OnlineFragment extends BaseFragment implements DataView
             mTabViewPagerIndicator.getIndicator().setVisibility(View.GONE);
             OnlineViewPagerAdapter pagerAdapter = new OnlineViewPagerAdapter(getChildFragmentManager(), bottomItems);
             mTabViewPagerIndicator.setViewPagerAdapter(pagerAdapter);
-            mTabViewPagerIndicator.getViewPager().setOffscreenPageLimit(2);
+            mTabViewPagerIndicator.getViewPager().setOffscreenPageLimit(1);
         }
     }
 

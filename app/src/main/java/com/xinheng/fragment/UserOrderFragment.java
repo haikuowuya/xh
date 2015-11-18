@@ -20,6 +20,7 @@ import com.xinheng.UserOrderDetailActivity;
 import com.xinheng.adapter.user.UserOrderListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnDeleteUserOrderEvent;
+import com.xinheng.eventbus.OnOrderStatusChangedEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserOrderItem;
 import com.xinheng.mvp.presenter.UserOrderPresenter;
@@ -117,20 +118,21 @@ public class UserOrderFragment extends BaseFragment implements DataView
         setListener();
         mOrderStatus = getArguments().getString(ARG_ORDER_STATUS, mOrderStatus);
         mPtrClassicFrameLayout.disableWhenHorizontalMove(true);
-        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler()
-        {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
-            {
-                return mListView.getFirstVisiblePosition() == 0;
-            }
+        mPtrClassicFrameLayout.setPtrHandler(
+                new PtrDefaultHandler()
+                {
+                    @Override
+                    public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+                    {
+                        return mListView.getFirstVisiblePosition() == 0;
+                    }
 
-            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
-            {
-                mCurrentPage = 0;
-                doRefresh();
-            }
-        });
+                    public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
+                    {
+                        mCurrentPage = 0;
+                        doRefresh();
+                    }
+                });
 //        mListView.setAdapter(ArrayAdapter.createFromResource(mActivity, R.array.array_menu, android.R.layout.simple_list_item_activated_1));
         mListView.setSelector(new ColorDrawable(0x00000000));
         mListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
@@ -140,13 +142,14 @@ public class UserOrderFragment extends BaseFragment implements DataView
 
     private void setListener()
     {
-        mIvSearch.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                doSearch();
-            }
-        });
+        mIvSearch.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        doSearch();
+                    }
+                });
     }
 
     //===============================EVENT BUS========================
@@ -159,6 +162,17 @@ public class UserOrderFragment extends BaseFragment implements DataView
             mUserOrderListAdapter.notifyDataSetChanged();
         }
     }
+
+    //订单状态发生变化事件未付款 --> 付款 (从订单详情->订单付款)
+    @Subscribe
+    public void onEventMainThread(OnOrderStatusChangedEvent event)
+    {
+        if (null != event)
+        {
+            doRefresh();
+        }
+    }
+
     //===============================EVENT BUS========================
 
     @Override
@@ -180,6 +194,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
             return;
         }
         mActivity.hideSoftKeyBorard(mEtSearch);
+        mUserOrderItems.clear();
+        mUserOrderListAdapter.notifyDataSetChanged();
         UserOrderSearchPresenter userOrderSearchPresenter = new UserOrderSearchPresenterImpl(mActivity, this);
         userOrderSearchPresenter.doGetUserOrderSearch(searchText, mOrderStatus);
     }
@@ -203,6 +219,9 @@ public class UserOrderFragment extends BaseFragment implements DataView
     protected void doRefresh()
     {
         mUserOrderItems.clear();
+        mUserOrderListAdapter = null;
+        mListView.removeHeaderView(mHeaderView);
+        mListView.removeFooterView(mFooterView);
         mListView.setOnScrollListener(new OnScrollListenerImpl());
         doGetData();
     }
@@ -250,10 +269,15 @@ public class UserOrderFragment extends BaseFragment implements DataView
                             ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("数据已经加载完毕");
                             mActivity.showToast("数据已经加载完毕");
                             mListView.setOnScrollListener(null);
+                        } else
+                        {
+                            ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("加载下一页");
+                            mFooterView.findViewById(R.id.pb_progress).setVisibility(View.INVISIBLE);
                         }
-                    }
-                    else
+                    } else
                     {
+                        ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("加载下一页");
+                        mFooterView.findViewById(R.id.pb_progress).setVisibility(View.INVISIBLE);
                         mUserOrderListAdapter.notifyDataSetChanged();
                         if (userOrderItems.size() != Constants.PRE_PAGE_SIZE)
                         {
@@ -263,8 +287,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                             mListView.setOnScrollListener(null);
                         }
                     }
-                }
-                else
+                } else
                 {
                     if (mUserOrderListAdapter != null)   //数据加载完毕
                     {
@@ -272,8 +295,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
                         ((TextView) mFooterView.findViewById(R.id.tv_progress_hint)).setText("数据已经加载完毕");
                         mActivity.showToast("数据已经加载完毕");
                         mListView.setOnScrollListener(null);
-                    }
-                    else
+                    } else
                     {
                         mListView.setAdapter(null);
                         mListView.setEmptyView(mActivity.findViewById(android.R.id.empty));
@@ -304,6 +326,12 @@ public class UserOrderFragment extends BaseFragment implements DataView
             {
                 UserOrderItem userOrderItem = (UserOrderItem) parent.getAdapter().getItem(position);
                 UserOrderDetailActivity.actionUserOrderDetail(mActivity, userOrderItem.orderId);
+            } else
+            {
+                if (view == mFooterView)
+                {
+                    doGetData();
+                }
             }
         }
     }
@@ -321,7 +349,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
             System.out.println(" firstVisibleItem = " + firstVisibleItem + " visibleItemCount = " + visibleItemCount + " totalItemCount = " + totalItemCount);
             if (firstVisibleItem + visibleItemCount == totalItemCount && !mIsLoadingData && null != mUserOrderListAdapter && mUserOrderListAdapter.getCount() >= Constants.PRE_PAGE_SIZE)
             {
-                doGetData();
+                /// doGetData();
             }
         }
     }

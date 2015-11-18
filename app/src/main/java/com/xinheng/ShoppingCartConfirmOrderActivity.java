@@ -15,41 +15,53 @@ import com.xinheng.fragment.ShoppingCartConfirmOrderFragment;
  */
 public class ShoppingCartConfirmOrderActivity extends BaseActivity
 {
-    public static final String EXTRA_DRUG_JSON="drug_json";
-    public static final String EXTRA_FEE="fee";
-    public static final String EXTRA_HID="hid";
+    public static final String EXTRA_DRUG_JSON = "drug_json";
+    public static final String EXTRA_FEE = "fee";
+    public static final String EXTRA_HID = "hid";
 
-    public static void actionShoppingCartConfirmOrder(BaseActivity activity,String drugJson ,String fee,String hid)
+    /**
+     * 是否从立即购买页面过来的
+     */
+    public static final String EXTRA_FROM_BUY_NOW = "from_buy_now";
+
+    public static void actionShoppingCartConfirmOrder(BaseActivity activity, String drugJson, String fee, String hid)
     {
         Intent intent = new Intent(activity, ShoppingCartConfirmOrderActivity.class);
         intent.putExtra(EXTRA_DRUG_JSON, drugJson);
         intent.putExtra(EXTRA_FEE, fee);
-        intent.putExtra(EXTRA_HID,hid);
+        intent.putExtra(EXTRA_HID, hid);
         activity.startActivity(intent);
     }
-
+    public static void actionShoppingCartConfirmOrder(BaseActivity activity, String drugJson, String fee, String hid,boolean fromBuyNow)
+    {
+        Intent intent = new Intent(activity, ShoppingCartConfirmOrderActivity.class);
+        intent.putExtra(EXTRA_DRUG_JSON, drugJson);
+        intent.putExtra(EXTRA_FEE, fee);
+        intent.putExtra(EXTRA_HID, hid);
+        intent.putExtra(EXTRA_FROM_BUY_NOW, fromBuyNow)    ;
+        activity.startActivity(intent);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        String drugJson  = getIntent().getStringExtra(EXTRA_DRUG_JSON);
+        String drugJson = getIntent().getStringExtra(EXTRA_DRUG_JSON);
         String fee = getIntent().getStringExtra(EXTRA_FEE);
         String hid = getIntent().getStringExtra(EXTRA_HID);
+        boolean fromBuyNow = getIntent().getBooleanExtra(EXTRA_FROM_BUY_NOW, false);
 
         if (!TextUtils.isEmpty(drugJson))
         {
             setContentView(R.layout.activity_activity_common);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartConfirmOrderFragment.newInstance(drugJson,fee,hid)).commit();
-        }
-        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_content_container, ShoppingCartConfirmOrderFragment.newInstance(drugJson, fee, hid,fromBuyNow)).commit();
+        } else
         {
             mActivity.showCroutonToast("非法操作， ");
             finish();
         }
     }
 
-  
     @Override
     public CharSequence getActivityTitle()
     {

@@ -66,8 +66,7 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                 try
                 {
                     mFee = (new DecimalFormat("#.00").format((Double.parseDouble(mFee) + Double.parseDouble(despatchFee)))) + "";
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
 
                 }
@@ -94,23 +93,24 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                             img = APIURL.BASE_API_URL + img;
                         }
                         ivImageView.setTag(img);
-                        ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                        {
-                            @Override
-                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                            {
-                                if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                        ImageLoader.getInstance().loadImage(
+                                img, new AbsImageLoadingListener()
                                 {
-                                    ivImageView.setImageBitmap(loadedImage);
-                                }
-                            }
-                        });
+                                    @Override
+                                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                    {
+                                        if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                                        {
+                                            ivImageView.setImageBitmap(loadedImage);
+                                        }
+                                    }
+                                });
                     }
 
                     final TextView tvDrugCount = (TextView) relativeLayout.findViewById(R.id.tv_drug_count);
                     tvDrugName.setText(medicalItem.drugName);
                     tvDrugPrice.setText("￥" + medicalItem.unitPrice);
-                    tvDrugCount.setText("x1");
+                    tvDrugCount.setText("x" + medicalItem.count);
                     String info = "包装规格：" + medicalItem.specs + "    产地：" + medicalItem.place + "\n生产厂家：" + medicalItem.producer;
                     tvDrugInfo.setText(info);
                     int height = DensityUtils.dpToPx(getActivity(), 100.f);
@@ -131,51 +131,54 @@ public class UserOrderListAdapter extends BaseAdapter<UserOrderItem>
                         }
                     });
 
-            if(UserOrderItem.ORDER_STATUS_4.equals(item.orderStatus ))
+            if (UserOrderItem.ORDER_STATUS_4.equals(item.orderStatus))
             {
 //                setViewVisibility(convertView, R.id.tv_del_order, View.GONE);
                 setViewVisibility(convertView, R.id.linear_del_order_container, View.GONE);
-            }
-            else
+                setViewVisibility(convertView, R.id.tv_order_status, View.VISIBLE);
+
+            } else
             {
 //                setViewVisibility(convertView, R.id.tv_del_order, View.VISIBLE);
                 setViewVisibility(convertView, R.id.linear_del_order_container, View.VISIBLE);
+                setViewVisibility(convertView, R.id.tv_order_status, View.GONE);
             }
             /***
              * 删除订单按钮点击事件
              */
-            setViewOnClick(convertView, R.id.tv_del_order, new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-//
-//          getActivity().showCroutonToast("删除订单");
-                    DataView dataView = new DataView()
+            setViewOnClick(
+                    convertView, R.id.tv_del_order, new View.OnClickListener()
                     {
                         @Override
-                        public void onGetDataSuccess(ResultItem resultItem, String requestTag)
+                        public void onClick(View v)
                         {
-                            if (resultItem != null)
+//
+//          getActivity().showCroutonToast("删除订单");
+                            DataView dataView = new DataView()
                             {
-                                getActivity().showToast(resultItem.message);
-                                if (resultItem.success())
+                                @Override
+                                public void onGetDataSuccess(ResultItem resultItem, String requestTag)
                                 {
-                                    EventBus.getDefault().post(new OnDeleteUserOrderEvent(item));
+                                    if (resultItem != null)
+                                    {
+                                        getActivity().showToast(resultItem.message);
+                                        if (resultItem.success())
+                                        {
+                                            EventBus.getDefault().post(new OnDeleteUserOrderEvent(item));
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onGetDataFailured(String msg, String requestTag)
-                        {
-                            getActivity().showToast(msg);
+                                @Override
+                                public void onGetDataFailured(String msg, String requestTag)
+                                {
+                                    getActivity().showToast(msg);
+                                }
+                            };
+                            DeleteUserOrderPresenter deleteUserOrderPresenter = new DeleteUserOrderPresenterImpl(getActivity(), dataView);
+                            deleteUserOrderPresenter.doDeleteUserOrder(item.orderId);
                         }
-                    };
-                    DeleteUserOrderPresenter deleteUserOrderPresenter = new DeleteUserOrderPresenterImpl(getActivity(), dataView);
-                    deleteUserOrderPresenter.doDeleteUserOrder(item.orderId);
-                }
-            });
+                    });
 
         }
     }

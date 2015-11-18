@@ -66,21 +66,21 @@ import de.greenrobot.event.Subscribe;
 public class ShoppingCartConfirmOrderFragment extends BaseFragment implements DataView
 {
     public static final String REQUEST_ADDRESS_TAG = "request_address";
-
     public static final String REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG = "request_confirm_order";
     public static final String REQUEST_PAY_ORDER_TAG = "request_pay_order";
     public static final String ARG_DRUG_JSON = "drug_json";
     public static final String ARG_FEE = "fee";
     public static final String ARG_HID = "hid";
+    public static final String ARG_FROM_BUY_NOW = "from_buy_now";
 
-    public static ShoppingCartConfirmOrderFragment newInstance(String drugJson, String fee, String hid)
+    public static ShoppingCartConfirmOrderFragment newInstance(String drugJson, String fee, String hid, boolean fromBuyNow)
     {
         ShoppingCartConfirmOrderFragment fragment = new ShoppingCartConfirmOrderFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_DRUG_JSON, drugJson);
         bundle.putString(ARG_FEE, fee);
         bundle.putString(ARG_HID, hid);
-
+        bundle.putBoolean(ARG_FROM_BUY_NOW, fromBuyNow);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -153,6 +153,9 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
 
     private String mHid;
 
+    private boolean mFromBuyNow;
+    public static final  double DESPATCH_FEE= 10.0;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -171,6 +174,12 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
         mTvDespatchTime.setText(DateFormatUtils.format(System.currentTimeMillis() + "", true, false));
         //mTvDespatchWay.setText("在线支付" + "\n" + "普通快递");
         mTvDespatchWay.setText(PostPayDespatchItem.PAY_ACCOUNT_TEXT + "\n" + PostPayDespatchItem.DESPATCH_NORMA_TEXT);
+        String despatchText = PostPayDespatchItem.DESPATCH_NORMA_TEXT;
+        if (PostPayDespatchItem.DESPATCH_SELF.equals(mPostPayDespatchItem.despatchType))
+        {
+            despatchText = PostPayDespatchItem.DESPATCH_SELF_TEXT;
+        }
+        mTvDespatchWayDesc.setText(despatchText);
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mLinearAddressContainer.setOnClickListener(onClickListener);
         mLinearPayDespatchContainer.setOnClickListener(onClickListener);
@@ -180,42 +189,41 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
         }.getType();
         mCheckedListItem = GsonUtils.jsonToList(getArguments().getString(ARG_DRUG_JSON), type);
         mFee = getArguments().getString(ARG_FEE);
+        mFromBuyNow = getArguments().getBoolean(ARG_FROM_BUY_NOW);
         mHid = getArguments().getString(ARG_HID);
 
         if (mCheckedListItem != null)
         {
             fillLinearDrugContainer(mCheckedListItem);
-            String countInfo = "共" + mCheckedListItem.size() + "件商品，合计：￥:";
-            double despatchFee = 0.0;
             try
             {
                 if (mPostPayDespatchItem.despatchType.equals(PostPayDespatchItem.DESPATCH_NORMAL))
                 {
-                    mFee = (new DecimalFormat("#0.00").format(((Double.parseDouble(mFee)) + despatchFee))) + "";
+                    mFee = (new DecimalFormat("#0.00").format(((Double.parseDouble(mFee)) + DESPATCH_FEE))) + "";
                 }
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
 
             }
-            String tmp = " (含运费￥" + despatchFee + ")";
-            String countFeeInfo = countInfo + mFee;
-            String allInfo = countFeeInfo + tmp;
-            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), countFeeInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), countFeeInfo.length(), allInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            mTvFee.setText(spannableStringBuilder);
-            SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + mFee) + "\n" + tmp);
-            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + mFee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + mFee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            mTvConfirmFee.setText(spannableStringBuilder1);
-            String despatchText = PostPayDespatchItem.DESPATCH_NORMA_TEXT;
-            if (PostPayDespatchItem.DESPATCH_SELF.equals(mPostPayDespatchItem.despatchType))
-            {
-                despatchText = PostPayDespatchItem.DESPATCH_SELF_TEXT;
-            }
-            mTvDespatchWayDesc.setText(despatchText);
+            showFeeInfo(mFee);
         }
+    }
+
+    private void showFeeInfo( String fee)
+    {
+        fee = new DecimalFormat("#0.00").format(((Double.parseDouble(mFee)))) + "";
+        String countInfo = "共" + mCheckedListItem.size() + "件商品，合计：￥:";
+        String tmp = " (含运费￥" + DESPATCH_FEE + ")";
+        String countFeeInfo = countInfo + fee;
+        String allInfo = countFeeInfo + tmp;
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(allInfo);
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFFFFA800), countInfo.length(), countFeeInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(0xFF999999), countFeeInfo.length(), allInfo.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        mTvFee.setText(spannableStringBuilder);
+        SpannableStringBuilder spannableStringBuilder1 = new SpannableStringBuilder(("合计：￥:" + fee) + "\n" + tmp);
+        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFFFFA800), "合计：￥:".length(), ("合计：￥:" + fee).length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        spannableStringBuilder1.setSpan(new ForegroundColorSpan(0xFF999999), ("合计：￥:" + fee).length(), spannableStringBuilder1.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        mTvConfirmFee.setText(spannableStringBuilder1);
     }
 
     //===============================EVENT BUS========================
@@ -242,8 +250,7 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
             if (PostPayDespatchItem.PAY_OFFLINE.equals(event.mPostPayDespatchItem.payType))
             {
                 payText = PostPayDespatchItem.PAY_OFFLINE_TEXT;
-            }
-            else if (PostPayDespatchItem.PAY_ACCOUNT.equals(event.mPostPayDespatchItem.payType))
+            } else if (PostPayDespatchItem.PAY_ACCOUNT.equals(event.mPostPayDespatchItem.payType))
             {
                 payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
             }
@@ -317,8 +324,7 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                         AddressItem addressItem = items.get(0);
                         fillAddressItemToView(addressItem);
                     }
-                }
-                else if (REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG.equals(requestTag))
+                } else if (REQUEST_CONFIRM_SHOPPING_CART_ORDER_TAG.equals(requestTag))
                 {
                     mActivity.showToast(resultItem.message);
                     mBtnOk.setEnabled(false);
@@ -331,14 +337,12 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                         {
                             mOrderId = jsonArray.optString(0);
                         }
-                    }
-                    catch (Exception e)
+                    } catch (Exception e)
                     {
                     }
 
                     showConfirmOrderPopupWindow();
-                }
-                else if (REQUEST_PAY_ORDER_TAG.equals(requestTag))
+                } else if (REQUEST_PAY_ORDER_TAG.equals(requestTag))
                 {
                     UserOrderActivity.actionUserOrder(mActivity, 4);
                     mActivity.finish();
@@ -394,17 +398,18 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                         img = APIURL.BASE_API_URL + img;
                     }
                     ivImageView.setTag(img);
-                    ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
-                    {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                        {
-                            if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                    ImageLoader.getInstance().loadImage(
+                            img, new AbsImageLoadingListener()
                             {
-                                ivImageView.setImageBitmap(loadedImage);
-                            }
-                        }
-                    });
+                                @Override
+                                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                                {
+                                    if (null != loadedImage && imageUri.equals(ivImageView.getTag()))
+                                    {
+                                        ivImageView.setImageBitmap(loadedImage);
+                                    }
+                                }
+                            });
                 }
                 TextView tvDrugName = (TextView) relativeLayout.findViewById(R.id.tv_drug_name);
                 TextView tvDrugInfo = (TextView) relativeLayout.findViewById(R.id.tv_drug_info);
@@ -418,6 +423,51 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                 int height = DensityUtils.dpToPx(mActivity, 100.f);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 mLinearDrugContainer.addView(view, layoutParams);
+            }
+
+            if(mFromBuyNow)
+            {
+                View linearBuyNowEditContainer = getView().findViewById(R.id.linear_buy_now_edit_container);
+                if(null != linearBuyNowEditContainer)
+                {
+                    linearBuyNowEditContainer.setVisibility(View.VISIBLE);
+                    final TextView tvEditCount = (TextView) linearBuyNowEditContainer.findViewById(R.id.tv_edit_count);
+                    linearBuyNowEditContainer.findViewById(R.id.iv_edit_decrease).setOnClickListener(
+                            new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    int count = Integer.parseInt(tvEditCount.getText().toString());
+                                    count -= 1;
+                                    if (count < 1)
+                                    {
+                                        mActivity.showCroutonToast("数量不可以小于1");
+                                        return;
+                                    }
+                                    tvEditCount.setText(count + "");
+                                   mCheckedListItem.get(0).count = count+"";
+                                    ((TextView)mLinearDrugContainer.findViewById(R.id.tv_drug_count)).setText("x"+count+"");
+                                   mFee =  Double.parseDouble(mFee)-Double.parseDouble(mCheckedListItem.get(0).price)+""  ;
+                                    showFeeInfo(mFee);
+                                }
+                            });
+                    linearBuyNowEditContainer.findViewById(R.id.iv_edit_increase).setOnClickListener(
+                            new View.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(View v)
+                                {
+                                    int count = Integer.parseInt(tvEditCount.getText().toString());
+                                    count += 1;
+                                    tvEditCount.setText(count + "");
+                                    mCheckedListItem.get(0).count = count+"";
+                                    ((TextView)mLinearDrugContainer.findViewById(R.id.tv_drug_count)).setText("x"+count+"");
+                                    mFee =  Double.parseDouble(mFee)+Double.parseDouble(mCheckedListItem.get(0).price)+""  ;
+                                    showFeeInfo(mFee);
+                                }
+                            });
+                }
             }
         }
     }
@@ -454,47 +504,50 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
         if (PostPayDespatchItem.PAY_OFFLINE.equals(mPostPayDespatchItem.payType))
         {
             payText = PostPayDespatchItem.PAY_OFFLINE_TEXT;
-        }
-        else if (PostPayDespatchItem.PAY_ACCOUNT.equals(mPostPayDespatchItem.payType))
+        } else if (PostPayDespatchItem.PAY_ACCOUNT.equals(mPostPayDespatchItem.payType))
         {
             payText = PostPayDespatchItem.PAY_ACCOUNT_TEXT;
         }
         tvPayWay.setText(payText);
         tvPayMoney.setText(mFee + "元");
         tvAccountMoney.setText("6840" + "元");
-        btnPayOrder.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                OrderDetailPopupWindowUtils.dismiss();
-                payOrder();
-            }
-        });
-        ivCancle.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                new AlertDialog.Builder(mActivity).setMessage("确定要放弃付款？").setPositiveButton("确定", new DialogInterface.OnClickListener()
+        btnPayOrder.setOnClickListener(
+                new View.OnClickListener()
                 {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
+                    public void onClick(View v)
                     {
-                        dialog.dismiss();
                         OrderDetailPopupWindowUtils.dismiss();
-                        UserOrderActivity.actionUserOrder(mActivity, 3);
-                        mActivity.finish();
+                        payOrder();
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener()
+                });
+        ivCancle.setOnClickListener(
+                new View.OnClickListener()
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
+                    public void onClick(View v)
                     {
-                        dialog.dismiss();
+                        new AlertDialog.Builder(mActivity).setMessage("确定要放弃付款？").setPositiveButton(
+                                "确定", new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
+                                        dialog.dismiss();
+                                        OrderDetailPopupWindowUtils.dismiss();
+                                        UserOrderActivity.actionUserOrder(mActivity, 3);
+                                        mActivity.finish();
+                                    }
+                                }).setNegativeButton(
+                                "取消", new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
                     }
-                }).show();
-            }
-        });
+                });
     }
 
     private void payDispatch()

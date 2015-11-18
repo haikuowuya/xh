@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinheng.APIURL;
 import com.xinheng.R;
-import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.base.BaseActivity;
 import com.xinheng.base.BaseAdapter;
 import com.xinheng.base.ViewHolder;
+import com.xinheng.common.AbsImageLoadingListener;
 import com.xinheng.mvp.model.online.HomeOnLineItem;
 
 import java.util.List;
@@ -24,17 +24,18 @@ import java.util.List;
  */
 public class OnlineBottomGridAdapter extends BaseAdapter<HomeOnLineItem.Item>
 {
+
     public OnlineBottomGridAdapter(BaseActivity activity, List<HomeOnLineItem.Item> adItems)
     {
         super(activity, R.layout.grid_online_bottom_item, adItems);
     }
+
 
     @Override
     public void bindDataToView(View convertView, HomeOnLineItem.Item item)
     {
         setTextViewText(convertView, R.id.tv_text, item.title);
         final ImageView imageView = ViewHolder.getView(convertView, R.id.iv_image);
-
         String img = item.img;
         if (!TextUtils.isEmpty(img))
         {
@@ -51,6 +52,7 @@ public class OnlineBottomGridAdapter extends BaseAdapter<HomeOnLineItem.Item>
                     if (null != loadedImage && imageUri.equals(imageView.getTag()))
                     {
                         imageView.setImageBitmap(loadedImage);
+                        notifyDataSetChanged();
                     }
                 }
             });

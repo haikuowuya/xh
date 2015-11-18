@@ -258,7 +258,7 @@ public class DrugDetailFragment extends BaseFragment implements DataView
                     listItem.shoppingId="";
                     listItemList.add(listItem);
                     String drugJson = GsonUtils.toJson(listItemList);
-                    ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, drugJson, fee, hid);
+                    ShoppingCartConfirmOrderActivity.actionShoppingCartConfirmOrder(mActivity, drugJson, fee, hid,true);
                     break;
 
             }
