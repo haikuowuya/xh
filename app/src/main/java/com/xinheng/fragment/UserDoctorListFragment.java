@@ -108,7 +108,6 @@ public class UserDoctorListFragment extends PTRListFragment implements DataView
             item.img = userDoctorItem.photo;
             item.doctId = userDoctorItem.doctId;
             item.doctName = userDoctorItem.doctName;
-
             DepartmentDoctorDetailActivity.actionDepartDoctorDetail(mActivity, item);
         }
     }
