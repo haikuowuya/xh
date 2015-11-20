@@ -15,12 +15,13 @@
         android:paddingLeft="4dp"
         android:paddingRight="4dp">
 
-        <Switch
-            android:id="@+id/switch_sex"
+        <ImageView
+            android:id="@+id/iv_sex"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
             android:checked="true"
-            android:gravity="center"
+            android:gravity="center"              android:src="@mipmap/ic_man_on"
             android:textOff=" 女  "
             android:textOn=" 男  "/>
 
@@ -31,35 +32,37 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="身体部位"
+            android:textColor="@color/color_main_text_gray_color"
             android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_main_text_gray_color"/>
+            android:textStyle="bold"/>
 
-        <Switch
-            android:id="@+id/switch_type"
+        <ImageView
+            android:id="@+id/iv_type"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:checked="true"
             android:gravity="center"
+            android:src="@mipmap/ic_pic_on"
             android:textOff="列表"
             android:textOn="图片"/>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/iv_image"
-                   android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:padding="10dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_auto_check_man_1"/>
+
         <include layout="@layout/layout_listview"/>
+
         <ImageView
             android:id="@+id/iv_switch"
             android:layout_width="48dp"

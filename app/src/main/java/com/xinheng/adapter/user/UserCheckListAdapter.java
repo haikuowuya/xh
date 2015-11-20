@@ -23,23 +23,27 @@ public class UserCheckListAdapter extends BaseAdapter<UserChecktItem>
     @Override
     public void bindDataToView(View convertView, UserChecktItem item)
     {
-         setTextViewText(convertView, R.id.tv_hospital_dept, item.name);
-         setTextViewText(convertView, R.id.tv_text, item.name);
-        if(UserChecktItem.STATUS_0.equals(item.consentState ))
+        setTextViewText(convertView, R.id.tv_hospital_dept, item.name);
+        setTextViewText(convertView, R.id.tv_text, item.name);
+        if (UserChecktItem.STATUS_0.equals(item.consentState))
         {
             setImageViewResId(convertView, R.id.iv_check_status, R.mipmap.ic_user_check_0);
-        }
-       else  if(UserChecktItem.STATUS_1.equals(item.consentState ))
+        } else if (UserChecktItem.STATUS_1.equals(item.consentState))
         {
-            setImageViewResId(convertView, R.id.iv_check_status, R.mipmap.ic_user_check_1);
-        }
-        else
+            if ("1".equals(item.payState))
+            {
+                setImageViewResId(convertView, R.id.iv_check_status, R.mipmap.ic_user_check_pay);
+            } else
+            {
+                setImageViewResId(convertView, R.id.iv_check_status, R.mipmap.ic_user_check_1);
+            }
+        } else
         {
             setImageViewResId(convertView, R.id.iv_check_status, R.mipmap.ic_user_check_2);
         }
-        String resName = "ic_user_medical_"+new Random().nextInt(5);
-        int resId = getActivity().getResources().getIdentifier(resName,"mipmap",getActivity().getPackageName());
-        if(resId > 0)
+        String resName = "ic_user_medical_" + new Random().nextInt(5);
+        int resId = getActivity().getResources().getIdentifier(resName, "mipmap", getActivity().getPackageName());
+        if (resId > 0)
         {
             setImageViewResId(convertView, R.id.iv_image, resId);
         }

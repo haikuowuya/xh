@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,11 +67,13 @@ public class AutoCheckFragment extends BaseFragment implements DataView
     /***
      * 类型选择switch(图片、列表),选中是为图片， 否则为列表
      */
-    private Switch mSwitchType;
+    // private Switch mSwitchType;
+    private ImageView mIvType;
     /***
      * 性别选择switch,选中时为男， 否则为女;
      */
-    private Switch mSwitchSex;
+//    private Switch mSwitchSex;
+    private ImageView mIvSex;
     /***
      * 图片
      */
@@ -96,6 +97,8 @@ public class AutoCheckFragment extends BaseFragment implements DataView
     private int mFrontOrBack = TYPE_FRONT;
 
     private HashMap<String, String> mDefaultBodyKVs;
+    private boolean mPicOn = true;      //默认图片
+    private boolean mSexOn = true;//默认男
 
     @Nullable
     @Override
@@ -133,17 +136,21 @@ public class AutoCheckFragment extends BaseFragment implements DataView
     private void setListener()
     {
         OnCheckedChangeListenerImpl onCheckedChangeListener = new OnCheckedChangeListenerImpl();
-        mSwitchType.setOnCheckedChangeListener(onCheckedChangeListener);
-        mSwitchSex.setOnCheckedChangeListener(onCheckedChangeListener);
+        //  mSwitchType.setOnCheckedChangeListener(onCheckedChangeListener);
+//        mSwitchSex.setOnCheckedChangeListener(onCheckedChangeListener);
         OnClickListenerImpl onClickListener = new OnClickListenerImpl();
         mIvSwitch.setOnClickListener(onClickListener);
+        mIvSex.setOnClickListener(onClickListener);
+        mIvType.setOnClickListener(onClickListener);
     }
 
     private void initView(View view)
     {
         mTvText = (TextView) view.findViewById(R.id.tv_text);
-        mSwitchSex = (Switch) view.findViewById(R.id.switch_sex);
-        mSwitchType = (Switch) view.findViewById(R.id.switch_type);
+        //mSwitchSex = (Switch) view.findViewById(R.id.switch_sex);
+        // mSwitchType = (Switch) view.findViewById(R.id.switch_type);
+        mIvType = (ImageView) view.findViewById(R.id.iv_type);
+        mIvSex = (ImageView) view.findViewById(R.id.iv_sex);
         mIvImage = (ImageView) view.findViewById(R.id.iv_image);
         mIvSwitch = (ImageView) view.findViewById(R.id.iv_switch);
         mListView = (ListView) view.findViewById(R.id.lv_listview);
@@ -209,7 +216,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             switch (v.getId())
             {
                 case R.id.iv_switch:
-                    if (mSwitchSex.isChecked())
+                    if (mSexOn)
                     {
                         BitmapDrawable bitmapDrawable = (BitmapDrawable) mActivity.getResources().getDrawable(R.mipmap.ic_auto_check_man_0);
                         Bitmap initBitmap = ((BitmapDrawable) mIvImage.getDrawable()).getBitmap();
@@ -217,15 +224,12 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                         {
                             mIvImage.setImageResource(R.mipmap.ic_auto_check_man_1);
                             mFrontOrBack = TYPE_FRONT;
-                        }
-                        else
+                        } else
                         {
                             mIvImage.setImageResource(R.mipmap.ic_auto_check_man_0);
                             mFrontOrBack = TYPE_BACK;
-
                         }
-                    }
-                    else
+                    } else
                     {
                         BitmapDrawable bitmapDrawable = (BitmapDrawable) mActivity.getResources().getDrawable(R.mipmap.ic_auto_check_woman_0);
                         Bitmap initBitmap = ((BitmapDrawable) mIvImage.getDrawable()).getBitmap();
@@ -233,14 +237,57 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                         {
                             mIvImage.setImageResource(R.mipmap.ic_auto_check_woman_1);
                             mFrontOrBack = TYPE_FRONT;
-                        }
-                        else
+                        } else
                         {
                             mIvImage.setImageResource(R.mipmap.ic_auto_check_woman_0);
                             mFrontOrBack = TYPE_BACK;
                         }
                     }
                     break;
+                case R.id.iv_type:
+                    if (mPicOn)
+                    {
+                        mPicOn = false;
+                        mIvType.setImageResource(R.mipmap.ic_pic_off);
+                        mTvText.setText("器官列表");
+                        mIvSwitch.setVisibility(View.GONE);
+                        if (mBodyKVs == null)
+                        {
+                            BodypartPresenter bodypartPresenter = new BodypartPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_LIST_TAG);
+                            bodypartPresenter.doGetBodypartList();
+                        } else
+                        {
+                            showBodyListView();
+                        }
+
+                    } else
+                    {
+                        mIvType.setImageResource(R.mipmap.ic_pic_on);
+                        mTvText.setText("身体部位");
+                        mListView.setVisibility(View.GONE);
+                        mIvSwitch.setVisibility(View.VISIBLE);
+                        mPicOn = true;
+                    }
+                    break;
+                case R.id.iv_sex:
+                    mFrontOrBack = TYPE_FRONT;
+                    mPicOn = true;
+                    mIvType.setImageResource(R.mipmap.ic_pic_on);
+                    mTvText.setText("身体部位");
+                    mListView.setVisibility(View.GONE);
+                    mIvSwitch.setVisibility(View.VISIBLE);
+                    if (mSexOn)
+                    {
+                        mIvImage.setImageResource(R.mipmap.ic_auto_check_woman_1);
+                        mIvSex.setImageResource(R.mipmap.ic_man_off);
+                        mSexOn = false;
+                    } else
+                    {
+                        mSexOn = true;
+                        mIvImage.setImageResource(R.mipmap.ic_auto_check_man_1);
+                        mIvSex.setImageResource(R.mipmap.ic_man_on);
+                    }
+
             }
         }
     }
@@ -249,7 +296,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
     {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-        {
+        {   /*
             if (buttonView == mSwitchType)
             {
                 mSwitchType.setChecked(isChecked);
@@ -258,8 +305,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     mTvText.setText("身体部位");
                     mListView.setVisibility(View.GONE);
                     mIvSwitch.setVisibility(View.VISIBLE);
-                }
-                else
+                } else
                 {
                     mTvText.setText("器官列表");
                     mIvSwitch.setVisibility(View.GONE);
@@ -267,14 +313,12 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     {
                         BodypartPresenter bodypartPresenter = new BodypartPresenterImpl(mActivity, AutoCheckFragment.this, REQUEST_BODY_PART_LIST_TAG);
                         bodypartPresenter.doGetBodypartList();
-                    }
-                    else
+                    } else
                     {
                         showBodyListView();
                     }
                 }
-            }
-            else if (buttonView == mSwitchSex)
+            } else if (buttonView == mSwitchSex)
             {
                 mSwitchType.setChecked(true);
                 mSwitchSex.setChecked(isChecked);
@@ -282,12 +326,13 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                 if (isChecked)
                 {
                     mIvImage.setImageResource(R.mipmap.ic_auto_check_man_1);
-                }
-                else
+                } else
                 {
                     mIvImage.setImageResource(R.mipmap.ic_auto_check_woman_1);
                 }
             }
+        }
+        */
         }
     }
 
@@ -298,7 +343,8 @@ public class AutoCheckFragment extends BaseFragment implements DataView
     {
         mListView.setVisibility(View.VISIBLE);
         mListView.setAdapter(new BodyPartListAdapter(mActivity, mBodyKVs));
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        mListView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener()
                 {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                     {
@@ -320,23 +366,22 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             float yPercentage = y * 100f;
             xPercentage = Math.round(xPercentage);
             yPercentage = Math.round(yPercentage);
-            if (mSwitchType.isChecked())
+            if (mPicOn)
             {
-                String bodyName ="其他";
-                if (mSwitchSex.isChecked())       //男
+                String bodyName = "其他";
+                if (mSexOn)       //男
                 {
-                      bodyName = clickManToBodyKv(xPercentage, yPercentage);
-                  //   System.out.println("man x = " + xPercentage + " y = " + yPercentage);
-                }
-                else     //女
+                    bodyName = clickManToBodyKv(xPercentage, yPercentage);
+                    //   System.out.println("man x = " + xPercentage + " y = " + yPercentage);
+                } else     //女
                 {
-                 bodyName =    clickWomanToBodyKv(xPercentage, yPercentage);
-                   // System.out.println("woman x = " + xPercentage + " y = " + yPercentage);
+                    bodyName = clickWomanToBodyKv(xPercentage, yPercentage);
+                    // System.out.println("woman x = " + xPercentage + " y = " + yPercentage);
 
                 }
                 String value = mDefaultBodyKVs.get(bodyName);
-             //   System.out.println("body name = "+ bodyName+" body value = " + value);
-                if(!TextUtils.isEmpty(value))
+                //   System.out.println("body name = "+ bodyName+" body value = " + value);
+                if (!TextUtils.isEmpty(value))
                 {
                     BodyKV bodyKV = new BodyKV();
                     bodyKV.key = value;
@@ -363,20 +408,19 @@ public class AutoCheckFragment extends BaseFragment implements DataView
         }
     }
 
-    private String  clickWomanToBodyKv(float xPercentage, float yPercentage)
+    private String clickWomanToBodyKv(float xPercentage, float yPercentage)
     {
-        String bodyName ="其他";
+        String bodyName = "其他";
         if (xPercentage > 31.f && xPercentage < 61.f)
         {
             if (yPercentage > 2.f && yPercentage < 14.f)
             {
-                bodyName ="头部";
+                bodyName = "头部";
 //                mActivity.showToast("头部");
 
-            }
-            else if (yPercentage >= 14.f && yPercentage < 21.f)
+            } else if (yPercentage >= 14.f && yPercentage < 21.f)
             {
-                bodyName ="颈部";
+                bodyName = "颈部";
 //                mActivity.showToast("颈部");
 
             }
@@ -387,46 +431,40 @@ public class AutoCheckFragment extends BaseFragment implements DataView
             {
                 if (yPercentage >= 21.f && yPercentage < 32.f)
                 {
-                    bodyName ="胸部";
+                    bodyName = "胸部";
 //                    mActivity.showToast("胸部");
 
-                }
-                else if (yPercentage >= 32.f && yPercentage < 48.f)
+                } else if (yPercentage >= 32.f && yPercentage < 48.f)
                 {
-                    bodyName="腹部";
+                    bodyName = "腹部";
 //                    mActivity.showToast("腹部");
 
-                }
-                else if (yPercentage >= 48.f && yPercentage < 54.f)
+                } else if (yPercentage >= 48.f && yPercentage < 54.f)
                 {
-                    bodyName ="生殖器";
+                    bodyName = "生殖器";
 //                    mActivity.showToast("生殖器");
 
-                }
-                else if (yPercentage >= 54.f && yPercentage < 95.f)
+                } else if (yPercentage >= 54.f && yPercentage < 95.f)
                 {
-                    bodyName ="下肢";
+                    bodyName = "下肢";
 //                    mActivity.showToast("下肢");
 
                 }
-            }
-            else
+            } else
             {
                 if (yPercentage >= 21.f && yPercentage < 48.f)
                 {
-                    bodyName ="背部";
+                    bodyName = "背部";
 //                    mActivity.showToast("背部");
 
-                }
-                else if (yPercentage >= 48.f && yPercentage < 56.f)
+                } else if (yPercentage >= 48.f && yPercentage < 56.f)
                 {
-                    bodyName="排泄部";
+                    bodyName = "排泄部";
 //                    mActivity.showToast("排泄部");
 
-                }
-                else if (yPercentage >= 56.f && yPercentage < 95.f)
+                } else if (yPercentage >= 56.f && yPercentage < 95.f)
                 {
-                    bodyName ="下肢";
+                    bodyName = "下肢";
 //                    mActivity.showToast("下肢");
 
                 }
@@ -436,7 +474,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
         boolean right = (xPercentage > 66.f && xPercentage < 98.f) && (yPercentage > 22.f && yPercentage < 56.f);
         if (left || right)
         {
-            bodyName ="手臂";
+            bodyName = "手臂";
 //            mActivity.showToast("手臂");
 
         }
@@ -453,8 +491,7 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                 bodyName = "头部";
 //                mActivity.showToast("头部");
 
-            }
-            else if (yPercentage >= 15.f && yPercentage < 21.f)
+            } else if (yPercentage >= 15.f && yPercentage < 21.f)
             {
                 bodyName = "颈部";
 //                mActivity.showToast("颈部");
@@ -470,41 +507,35 @@ public class AutoCheckFragment extends BaseFragment implements DataView
                     bodyName = "胸部";
 //                    mActivity.showToast("胸部");
 
-                }
-                else if (yPercentage >= 32.f && yPercentage < 48.f)
+                } else if (yPercentage >= 32.f && yPercentage < 48.f)
                 {
                     bodyName = "腹部";
 //                    mActivity.showToast("腹部");
 
-                }
-                else if (yPercentage >= 48.f && yPercentage < 54.f)
+                } else if (yPercentage >= 48.f && yPercentage < 54.f)
                 {
                     bodyName = "生殖器";
 //                    mActivity.showToast("生殖器");
 
-                }
-                else if (yPercentage >= 54.f && yPercentage < 95.f)
+                } else if (yPercentage >= 54.f && yPercentage < 95.f)
                 {
                     bodyName = "下肢";
 //                    mActivity.showToast("下肢");
 
                 }
-            }
-            else
+            } else
             {
                 if (yPercentage >= 21.f && yPercentage < 48.f)
                 {
                     bodyName = "背部";
 //                    mActivity.showToast("背部");
 
-                }
-                else if (yPercentage >= 48.f && yPercentage < 56.f)
+                } else if (yPercentage >= 48.f && yPercentage < 56.f)
                 {
                     bodyName = "排泄部";
 //                    mActivity.showToast("排泄部");
 
-                }
-                else if (yPercentage >= 56.f && yPercentage < 95.f)
+                } else if (yPercentage >= 56.f && yPercentage < 95.f)
                 {
                     bodyName = "下肢";
 //                    mActivity.showToast("下肢");
