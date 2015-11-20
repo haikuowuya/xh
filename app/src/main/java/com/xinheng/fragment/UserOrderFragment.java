@@ -28,6 +28,8 @@ import com.xinheng.mvp.presenter.UserOrderSearchPresenter;
 import com.xinheng.mvp.presenter.impl.UserOrderPresenterImpl;
 import com.xinheng.mvp.presenter.impl.UserOrderSearchPresenterImpl;
 import com.xinheng.mvp.view.DataView;
+import com.xinheng.ptr.PullToRefreshBase;
+import com.xinheng.ptr.PullToRefreshListView;
 import com.xinheng.util.Constants;
 import com.xinheng.util.DensityUtils;
 import com.xinheng.util.GsonUtils;
@@ -100,6 +102,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
     private View mHeaderView;
     private View mFooterView;
 
+    private PullToRefreshListView mPullToRefreshListView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -124,8 +128,10 @@ public class UserOrderFragment extends BaseFragment implements DataView
                     @Override
                     public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
                     {
-                        return mListView.getFirstVisiblePosition() == 0;
+//                        return mListView.getFirstVisiblePosition() == 0;
+                    return  false;
                     }
+
 
                     public void onRefreshBegin(PtrFrameLayout ptrFrameLayout)
                     {
@@ -203,11 +209,13 @@ public class UserOrderFragment extends BaseFragment implements DataView
     private void initView(View view)
     {
         mListView = (ListView) view.findViewById(R.id.lv_listview);
+        mPullToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.ptr_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_scrollview_container);
         mHeaderView = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_order_search, null);
         mIvSearch = (ImageView) mHeaderView.findViewById(R.id.iv_search);
         mEtSearch = (EditText) mHeaderView.findViewById(R.id.et_search);
         mFooterView = LayoutInflater.from(mActivity).inflate(R.layout.layout_listview_footer, null);
+        mPullToRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
     }
 
     @Override
@@ -223,6 +231,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
         mListView.removeHeaderView(mHeaderView);
         mListView.removeFooterView(mFooterView);
         mListView.setOnScrollListener(new OnScrollListenerImpl());
+        mPullToRefreshListView.setOnRefreshListener(new OnRefreshListenerImpl());
         doGetData();
     }
 
@@ -260,8 +269,10 @@ public class UserOrderFragment extends BaseFragment implements DataView
                     {
                         mListView.addHeaderView(mHeaderView);
                         mListView.addFooterView(mFooterView);
+                        mPullToRefreshListView.getRefreshableView().addHeaderView(mHeaderView);
                         mUserOrderListAdapter = new UserOrderListAdapter(mActivity, mUserOrderItems);
                         mListView.setAdapter(mUserOrderListAdapter);
+                        mPullToRefreshListView.setAdapter(mUserOrderListAdapter);
                         mListView.setOnScrollListener(new OnScrollListenerImpl());
                         if (mUserOrderListAdapter.getCount() < Constants.PRE_PAGE_SIZE)
                         {
@@ -351,6 +362,22 @@ public class UserOrderFragment extends BaseFragment implements DataView
             {
                 /// doGetData();
             }
+        }
+    }
+
+    private class OnRefreshListenerImpl implements PullToRefreshBase.OnRefreshListener2<ListView>
+    {
+
+        @Override
+        public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
+        {
+            doRefresh();
+        }
+
+        @Override
+        public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView)
+        {
+            doGetData();
         }
     }
 }

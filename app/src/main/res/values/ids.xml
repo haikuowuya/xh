@@ -10,4 +10,13 @@
     <item name="lv_listview" type="id"/>
 
 
+    <item name="drag_handle" type="id"/>
+    <item name="click_remove" type="id"/>
+    <item name="ptr_content" type="id"/>
+    <item name="ptr_text_opaque_bg" type="id"/>
+    <item name="ptr_text" type="id"/>
+    <item name="ptr_progress" type="id"/>
+    <item type="id" name="gridview" />
+
+
 </resources>

@@ -70,4 +70,12 @@
     <string name="tv_activity_user_order">我的订单</string>
     <string name="tv_activity_doctor_evaluation">医生评价</string>
     <string name="tv_activity_user_check">我的检查</string>
+
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">释放更新加载数据</string>
+    <string name="pull_to_refresh_refreshing_label">正在获取数据……</string>
+
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
 </resources>

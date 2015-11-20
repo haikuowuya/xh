@@ -16,5 +16,8 @@
     <dimen name="dimen_list_single_item_height">44dp</dimen>
     <dimen  name="dimen_line_width_height">0.5dp</dimen>
 
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+
 
 </resources>
