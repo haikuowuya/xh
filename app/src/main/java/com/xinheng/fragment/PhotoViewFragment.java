@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.xinheng.APIURL;
 import com.xinheng.R;
 import com.xinheng.base.BaseFragment;
@@ -86,6 +88,7 @@ public class PhotoViewFragment extends BaseFragment
         super.onActivityCreated(savedInstanceState);
         mImageUrls = getArguments().getStringArrayList(ARG_LIST_IMAGE_URL);
         int position = getArguments().getInt(ARG_POSITION);
+//        System.out.println(" photoView  position = " + position);
         if (null != mImageUrls && !mImageUrls.isEmpty())
         {
             mTvText.setText((1 + position) + "/" + mImageUrls.size());
@@ -169,14 +172,16 @@ public class PhotoViewFragment extends BaseFragment
         @Override
         public Object instantiateItem(ViewGroup container, int position)
         {
-            final PhotoView photoView = new PhotoView(container.getContext());
+//            final PhotoView photoView = new PhotoView(container.getContext());
+            View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_photo_view, null);
+            final PhotoView photoView = (PhotoView) view.findViewById(R.id.pv_photo_view);
+            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
             String imageUrl = imageUrls.get(position);
             if (!imageUrl.startsWith(APIURL.BASE_API_URL))
             {
                 imageUrl = APIURL.BASE_API_URL + imageUrl;
             }
             photoView.setTag(imageUrl);
-
             ImageLoader.getInstance().loadImage(
                     imageUrl, new AbsImageLoadingListener()
                     {
@@ -186,12 +191,20 @@ public class PhotoViewFragment extends BaseFragment
                             if (imageUri.equals(photoView.getTag()))
                             {
                                 photoView.setImageBitmap(loadedImage);
+                                progressBar.setVisibility(View.GONE);
                             }
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason)
+                        {
+                            super.onLoadingFailed(imageUri, view, failReason);
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
             photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            container.addView(photoView, layoutParams);
+            container.addView(view, layoutParams);
 //            photoView.setOnClickListener(
 //                    new View.OnClickListener()
 //                    {
@@ -210,7 +223,7 @@ public class PhotoViewFragment extends BaseFragment
 
                         }
                     });
-            return photoView;
+            return view;
 
         }
     }

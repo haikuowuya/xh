@@ -532,4 +532,6 @@ public class ShoppingCartFragment extends BaseFragment implements DataView
         mTvBalance.setText("结算（" + mCheckedCount + "）");
     }
 
+
+
 }

@@ -246,6 +246,10 @@ public class APIURL
      * 我的检查列表URL
      */
     public static final String USER_CHECK_LIST_URL = BASE_API_URL + "/interface/patient/mycheck/getlist";
+    /***
+     * 我的检查付款
+     */
+    public static final String USER_CHECK_PAY_URL = BASE_API_URL + "/interface/patient/mycheck/pay";
     /**
      * 我的处方列表URL
      */

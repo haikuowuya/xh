@@ -17,6 +17,7 @@ import com.xinheng.UserCheckDetailActivity;
 import com.xinheng.adapter.user.UserCheckListAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.eventbus.OnAddCheckEvent;
+import com.xinheng.eventbus.OnUserCheckPayEvent;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserChecktItem;
 import com.xinheng.mvp.model.user.UserMedicalItem;
@@ -123,6 +124,16 @@ public class UserCheckListFragment extends BaseFragment implements DataView
         }
     }
 
+    // 我的检查支付成功事件
+    @Subscribe
+    public void onEventMainThread(OnUserCheckPayEvent event)
+    {
+        if (null != event)
+        {
+            doRefresh();
+        }
+    }
+
     @Override
     public void onDestroy()
     {
@@ -139,6 +150,11 @@ public class UserCheckListFragment extends BaseFragment implements DataView
     protected void doRefresh()
     {
         mUserChecktItems.clear();
+        if (mUserCheckListAdapter != null)
+        {
+            mUserCheckListAdapter = null;
+            mListView.removeHeaderView(mListHeaderImageView);
+        }
         doGetData();
     }
 

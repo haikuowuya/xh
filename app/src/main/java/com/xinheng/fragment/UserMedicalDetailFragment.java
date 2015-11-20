@@ -9,7 +9,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.xinheng.R;
-import com.xinheng.adapter.user.UserMedicalImageGridAdapter;
+import com.xinheng.adapter.user.UserImageGridAdapter;
 import com.xinheng.base.BaseFragment;
 import com.xinheng.mvp.model.ResultItem;
 import com.xinheng.mvp.model.user.UserMedicalDetailItem;
@@ -171,39 +171,33 @@ public class UserMedicalDetailFragment extends BaseFragment implements DataView
         {
             mTvMedicalNo.setText("病历编号：" + userMedicalDetailItem.medicalrecord.id);
             mTvRecord.setText(userMedicalDetailItem.medicalrecord.record);
-            if (userMedicalDetailItem.medicalrecord.reportimgs != null && !userMedicalDetailItem.medicalrecord.reportimgs.isEmpty())
+            if (userMedicalDetailItem.medicalrecord.reportimg != null && !userMedicalDetailItem.medicalrecord.reportimg.isEmpty())
             {
                 mTvReportImgStatus.setVisibility(View.GONE);
                 mCustomReportGridView.setVisibility(View.VISIBLE);
-                mCustomReportGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.reportimgs));
+                mCustomReportGridView.setAdapter(new UserImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.reportimg));
             }
             else
             {
                 mTvReportImgStatus.setVisibility(View.VISIBLE);
                 mCustomReportGridView.setVisibility(View.GONE);
             }
-
-            //
-
-            if (userMedicalDetailItem.medicalrecord.illnessimgs != null && !userMedicalDetailItem.medicalrecord.illnessimgs.isEmpty())
+            if (userMedicalDetailItem.medicalrecord.illnessimg != null && !userMedicalDetailItem.medicalrecord.illnessimg.isEmpty())
             {
                 mTvIllnessImgStatus.setVisibility(View.GONE);
                 mCustomIllnessGridView.setVisibility(View.VISIBLE);
-                mCustomIllnessGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.illnessimgs));
+                mCustomIllnessGridView.setAdapter(new UserImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.illnessimg));
             }
             else
             {
                 mTvIllnessImgStatus.setVisibility(View.VISIBLE);
                 mCustomIllnessGridView.setVisibility(View.GONE);
             }
-
-            //
-
-            if (userMedicalDetailItem.medicalrecord.prescimgs != null && !userMedicalDetailItem.medicalrecord.prescimgs.isEmpty())
+            if (userMedicalDetailItem.medicalrecord.prescimg != null && !userMedicalDetailItem.medicalrecord.prescimg.isEmpty())
             {
                 mTvPresImgStatus.setVisibility(View.GONE);
                 mCustomPresGridView.setVisibility(View.VISIBLE);
-                mCustomPresGridView.setAdapter(new UserMedicalImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.prescimgs));
+                mCustomPresGridView.setAdapter(new UserImageGridAdapter(mActivity, userMedicalDetailItem.medicalrecord.prescimg));
             }
             else
             {

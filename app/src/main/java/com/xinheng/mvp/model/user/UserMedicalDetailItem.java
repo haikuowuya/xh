@@ -1,6 +1,7 @@
 package com.xinheng.mvp.model.user;
 
 import com.xinheng.mvp.model.BaseEmptyItem;
+import com.xinheng.mvp.model.ImageItem;
 
 import java.util.List;
 
@@ -27,10 +28,10 @@ public class UserMedicalDetailItem extends BaseEmptyItem
         public String department;
         public String doctName;
         public String id;
-        public List<String> illnessimgs;
-        public List<String> prescimgs;
+        public List<ImageItem> illnessimg;
+        public List<ImageItem> prescimg;
+        public List<ImageItem> reportimg;
         public String record;
-        public List<String> reportimgs;
         public String type;
     }
 

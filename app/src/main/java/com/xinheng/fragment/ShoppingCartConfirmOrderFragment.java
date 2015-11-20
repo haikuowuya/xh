@@ -548,6 +548,7 @@ public class ShoppingCartConfirmOrderFragment extends BaseFragment implements Da
                                 }).show();
                     }
                 });
+
     }
 
     private void payDispatch()

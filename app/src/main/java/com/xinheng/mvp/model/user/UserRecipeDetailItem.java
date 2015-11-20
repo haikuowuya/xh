@@ -10,7 +10,7 @@ import java.util.List;
 public class UserRecipeDetailItem extends BaseEmptyItem
 {
     //type=1 用户上传处方
-    public String prescimgs;//处方图片
+    public List<String> prescimgs;//处方图片
 
     public String id;//处方id
     public String name;//处方名称

@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 public class PhotoViewActivity extends BaseActivity
 {
-
     public static final String EXTRA_LIST_IMAGE_URL = "list_image_url";
     public static final String EXTRA_POSITION = "position";
 

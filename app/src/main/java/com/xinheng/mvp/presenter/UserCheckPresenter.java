@@ -6,4 +6,6 @@ package com.xinheng.mvp.presenter;
 public interface UserCheckPresenter
 {
     public void doGetUserCheck();
+
+    public void doUserCheckPay(String checkId);
 }

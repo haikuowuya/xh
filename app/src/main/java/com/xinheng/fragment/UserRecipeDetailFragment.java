@@ -169,7 +169,7 @@ public class UserRecipeDetailFragment extends BaseFragment implements DataView
             mTvDoctorName.setText("主治医师：" + userRecipeDetailItem.doctor);
             if (null != userRecipeDetailItem.prescription && null != userRecipeDetailItem.prescription.list && !userRecipeDetailItem.prescription.list.isEmpty())
             {
-                mLinearMoneyContainer.setVisibility(View.VISIBLE);
+             //   mLinearMoneyContainer.setVisibility(View.VISIBLE);
                 mTvQuantity.setText(userRecipeDetailItem.prescription.quantity + "剂");
                 for (int i = 0; i < userRecipeDetailItem.prescription.list.size(); i++)
                 {
