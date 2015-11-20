@@ -111,6 +111,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
         View view = inflater.inflate(R.layout.fragment_user_order, null);
         initView(view);
         mIsInit = true;
+        mPullToRefreshListView.setRefreshing();
         return view;
     }
 
@@ -143,6 +144,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
         mListView.setSelector(new ColorDrawable(0x00000000));
         mListView.setDividerHeight(DensityUtils.dpToPx(mActivity, 10.f));
         mListView.setDivider(new ColorDrawable(0x00000000));
+        mPullToRefreshListView.setOnRefreshListener(new OnRefreshListenerImpl());
 
     }
 
@@ -208,14 +210,18 @@ public class UserOrderFragment extends BaseFragment implements DataView
 
     private void initView(View view)
     {
-        mListView = (ListView) view.findViewById(R.id.lv_listview);
+       // mListView = (ListView) view.findViewById(R.id.lv_listview);
         mPullToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.ptr_listview);
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) view.findViewById(R.id.ptr_scrollview_container);
         mHeaderView = LayoutInflater.from(mActivity).inflate(R.layout.layout_user_order_search, null);
         mIvSearch = (ImageView) mHeaderView.findViewById(R.id.iv_search);
         mEtSearch = (EditText) mHeaderView.findViewById(R.id.et_search);
         mFooterView = LayoutInflater.from(mActivity).inflate(R.layout.layout_listview_footer, null);
+        mFooterView.setVisibility(View.GONE);
         mPullToRefreshListView.setMode(PullToRefreshBase.Mode.BOTH);
+        mListView = mPullToRefreshListView.getRefreshableView();
+
+
     }
 
     @Override
@@ -226,12 +232,13 @@ public class UserOrderFragment extends BaseFragment implements DataView
 
     protected void doRefresh()
     {
+        mPullToRefreshListView.setRefreshing();
         mUserOrderItems.clear();
         mUserOrderListAdapter = null;
+        mCurrentPage =0;
         mListView.removeHeaderView(mHeaderView);
         mListView.removeFooterView(mFooterView);
         mListView.setOnScrollListener(new OnScrollListenerImpl());
-        mPullToRefreshListView.setOnRefreshListener(new OnRefreshListenerImpl());
         doGetData();
     }
 
@@ -250,6 +257,7 @@ public class UserOrderFragment extends BaseFragment implements DataView
     public void onGetDataSuccess(ResultItem resultItem, String requestTag)
     {
         mPtrClassicFrameLayout.refreshComplete();
+        mPullToRefreshListView.onRefreshComplete();
         mIsLoadingData = false;
         if (null != resultItem)
         {
@@ -268,8 +276,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
                     if (null == mUserOrderListAdapter)
                     {
                         mListView.addHeaderView(mHeaderView);
-                        mListView.addFooterView(mFooterView);
-                        mPullToRefreshListView.getRefreshableView().addHeaderView(mHeaderView);
+                    //    mListView.addFooterView(mFooterView);
+                       // mPullToRefreshListView.getRefreshableView().addHeaderView(mHeaderView);
                         mUserOrderListAdapter = new UserOrderListAdapter(mActivity, mUserOrderItems);
                         mListView.setAdapter(mUserOrderListAdapter);
                         mPullToRefreshListView.setAdapter(mUserOrderListAdapter);
@@ -320,6 +328,8 @@ public class UserOrderFragment extends BaseFragment implements DataView
     @Override
     public void onGetDataFailured(String msg, String requestTag)
     {
+        mPtrClassicFrameLayout.refreshComplete();
+        mPullToRefreshListView.onRefreshComplete();
         mIsLoadingData = false;
         mCurrentPage = mCurrentPage - 1;
         if (mCurrentPage < 1)
@@ -367,10 +377,9 @@ public class UserOrderFragment extends BaseFragment implements DataView
 
     private class OnRefreshListenerImpl implements PullToRefreshBase.OnRefreshListener2<ListView>
     {
-
-        @Override
         public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView)
         {
+
             doRefresh();
         }
 
