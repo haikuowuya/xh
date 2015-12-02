@@ -10,7 +10,7 @@ import com.xinheng.mvp.model.city.CityItem;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 省份选择列表适配器
  */
 public class ProvinceListAdapter extends BaseAdapter<CityItem>
 {

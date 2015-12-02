@@ -9,7 +9,7 @@ import com.xinheng.base.BaseAdapter;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ *地区选择列表适配器
  */
 public class AreaListAdapter extends BaseAdapter<String>
 {

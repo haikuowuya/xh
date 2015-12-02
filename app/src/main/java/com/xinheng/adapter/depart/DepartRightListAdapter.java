@@ -10,7 +10,7 @@ import com.xinheng.mvp.model.DepartItem;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/9 0009.
+ *科室列表右侧适配器
  */
 public class DepartRightListAdapter extends BaseAdapter<DepartItem>
 {

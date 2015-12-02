@@ -13,7 +13,7 @@ import com.xinheng.mvp.model.address.AddressItem;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/9/20 0020.
+ * 收货地址列表适配器
  */
 public class AddressListAdapter extends BaseAdapter<AddressItem>
 {
