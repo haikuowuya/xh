@@ -1,7 +1,7 @@
 package com.xinheng.mvp.model;
 
 /**
- * Created by Steven on 2015/11/5 0005.
+ * 药品详情信息实体类
  */
 public class DrugDetailItem extends  BaseEmptyItem
 {

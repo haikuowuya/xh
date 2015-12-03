@@ -10,7 +10,7 @@ import com.xinheng.mvp.model.doctor.DoctorScheduleItem;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/24 0024.
+ * 排班列表适配器
  */
 public class ScheduleListAdapter extends BaseAdapter<DoctorScheduleItem>
 {

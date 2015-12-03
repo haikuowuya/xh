@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.depart;
 import com.xinheng.mvp.model.PostItem;
 
 /**
- * Created by Administrator on 2015/9/9 0009.
+ *  获取医生详情时向服务器端发送的post请求体
  */
 public class PostDoctorDetailItem extends PostItem
 {

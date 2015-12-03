@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.check;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Administrator on 2015/10/6 0006.
+ * 获取我的症状信息时向服务器端发送的post请求体
  */
 public class PostGetSymptomResultItem extends BaseEmptyItem
 {

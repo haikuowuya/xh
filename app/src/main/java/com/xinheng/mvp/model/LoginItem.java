@@ -4,7 +4,7 @@ package com.xinheng.mvp.model;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/24 0024
  * 时间： 15:33
- * 说明：
+ * 说明：登录实体类
  */
 public class LoginItem extends BaseEmptyItem
 {

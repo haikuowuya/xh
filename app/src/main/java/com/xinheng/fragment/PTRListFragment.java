@@ -18,7 +18,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/18 0018
  * 时间： 17:48
- * 说明：
+ * 说明：带有下拉刷新列表的基类
  */
 public class PTRListFragment extends BaseFragment
 {

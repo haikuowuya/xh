@@ -1,6 +1,5 @@
 package com.xinheng.adapter.user;
 
-import android.app.Activity;
 import android.view.View;
 
 import com.xinheng.R;
@@ -14,7 +13,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/19 0019
  * 时间： 13:22
- * 说明：
+ * 说明： 个人中心 列表栏目适配器(我的……)
  */
 public class CustomAdapter extends BaseAdapter<IconTextItem>
 {

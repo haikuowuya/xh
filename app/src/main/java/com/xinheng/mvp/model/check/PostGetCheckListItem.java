@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.check;
 import com.xinheng.mvp.model.PostItem;
 
 /**
- * Created by Administrator on 2015/10/5 0005.
+ * 获取我的检查列表时向服务器端发送的post请求体
  */
 public class PostGetCheckListItem extends PostItem
 {

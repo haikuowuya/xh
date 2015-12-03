@@ -3,7 +3,7 @@ package com.xinheng.eventbus;
 import com.xinheng.mvp.model.prescription.PostPayDespatchItem;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ *  选择支付方式事件
  */
 public class OnSelectPayDespatchEvent extends  BaseOnEvent
 {

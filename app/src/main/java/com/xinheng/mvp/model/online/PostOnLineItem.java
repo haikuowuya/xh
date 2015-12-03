@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.online;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Steven on 2015/8/31 0031.
+ *获取在线售药数据时向服务器端发送的post请求体
  */
 public class PostOnLineItem  extends BaseEmptyItem
 {

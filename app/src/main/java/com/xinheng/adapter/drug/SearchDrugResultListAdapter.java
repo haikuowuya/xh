@@ -17,7 +17,7 @@ import com.xinheng.mvp.model.prescription.DrugItem;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/9/15 0015.
+ * 药品搜索结果列表适配器
  */
 public class SearchDrugResultListAdapter extends BaseAdapter<DrugItem>
 {
@@ -25,6 +25,7 @@ public class SearchDrugResultListAdapter extends BaseAdapter<DrugItem>
     {
         super(activity, R.layout.list_search_drug_result_item, data);
     }
+
     @Override
     public void bindDataToView(View convertView, final DrugItem drugItem)
     {
@@ -40,24 +41,19 @@ public class SearchDrugResultListAdapter extends BaseAdapter<DrugItem>
                 img = APIURL.BASE_API_URL + img;
             }
             imageView.setTag(img);
-            ImageLoader.getInstance().loadImage(
-                    img, new AbsImageLoadingListener()
+            ImageLoader.getInstance().loadImage(img, new AbsImageLoadingListener()
+            {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
+                {
+                    if (null != loadedImage && imageUri.equals(imageView.getTag()))
                     {
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage)
-                        {
-                            if (null != loadedImage && imageUri.equals(imageView.getTag()))
-                            {
-                                imageView.setImageBitmap(loadedImage);
-                            }
-                        }
-                    });
+                        imageView.setImageBitmap(loadedImage);
+                    }
+                }
+            });
         }
 
-
-
     }
-
-
 
 }

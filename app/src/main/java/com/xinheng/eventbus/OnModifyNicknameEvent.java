@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/30 0030.
+ * 修改昵称事件
  */
 public class OnModifyNicknameEvent extends  BaseOnEvent
 {

@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/9/16 0016.
+ * 保存按方抓药时向服务器端发送的post请求体
  */
 public class PostSavePrescriptionItem extends BaseEmptyItem
 {

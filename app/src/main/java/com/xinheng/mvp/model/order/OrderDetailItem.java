@@ -6,7 +6,7 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/10/9 0009.
+ * 订单详情实体类
  */
 public class OrderDetailItem extends BaseEmptyItem
 {

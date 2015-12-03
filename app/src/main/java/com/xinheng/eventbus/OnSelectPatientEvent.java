@@ -3,7 +3,7 @@ package com.xinheng.eventbus;
 import com.xinheng.mvp.model.user.UserPatientItem;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ *  选择病人事件
  */
 public class OnSelectPatientEvent extends BaseOnEvent
 {

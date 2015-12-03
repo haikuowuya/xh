@@ -1,13 +1,12 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 用户坚持支付事件
  */
-public class OnUserCheckPayEvent extends  BaseOnEvent
+public class OnUserCheckPayEvent extends BaseOnEvent
 {
 
-
-    public OnUserCheckPayEvent(   )
+    public OnUserCheckPayEvent()
     {
 
     }

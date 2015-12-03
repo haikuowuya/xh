@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/30 0030.
+ * 绑定手机号码事件
  */
 public class OnBindPhoneModifyEvent extends BaseOnEvent
 {

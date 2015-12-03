@@ -5,7 +5,7 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 城市实体类
  */
 public class CityItem extends BaseEmptyItem
 {

@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Administrator on 2015/9/19 0019.
+ *  添加修改删除地址事件
  */
 public class OnAddOrModifyOrDelAddressEvent extends  BaseOnEvent
 {

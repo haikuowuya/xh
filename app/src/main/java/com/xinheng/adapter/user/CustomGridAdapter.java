@@ -13,7 +13,7 @@ import java.util.List;
  * 作者： raiyi-suzhou
  * 日期： 2015/8/19 0019
  * 时间： 13:22
- * 说明：
+ * 说明：个人中心 grid 适配器(我的订单、我的检测……)
  */
 public class CustomGridAdapter extends BaseAdapter<IconTextItem>
 {

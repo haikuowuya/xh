@@ -5,7 +5,7 @@ import com.xinheng.mvp.model.BaseEmptyItem;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 提交订单时向服务器端发送的post请求体
  */
 public class PostPayDespatchItem extends BaseEmptyItem
 {

@@ -1,7 +1,7 @@
 package com.xinheng.mvp.model.doctor;
 
 /**
- * Created by Steven on 2015/9/8 0008.
+ * 对医生评价时向服务器端发送的post请求体
  */
 public class PostDoctorEvaluationItem extends BasePostDoctorItem
 {

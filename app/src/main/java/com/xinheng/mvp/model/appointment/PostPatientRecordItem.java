@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.appointment;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Steven on 2015/9/24 0024.
+ *向服务器端提交病历信息的post实体类
  */
 public class PostPatientRecordItem extends BaseEmptyItem
 {

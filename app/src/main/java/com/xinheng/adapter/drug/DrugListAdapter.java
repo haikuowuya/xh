@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/9/15 0015.
+ * 药品搜索列表适配器
  */
 public class DrugListAdapter extends BaseAdapter<DrugItem>
 {

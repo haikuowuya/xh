@@ -1,7 +1,7 @@
 package com.xinheng.mvp.model.address;
 
 /**
- * Created by Administrator on 2015/9/20 0020.
+ * 向服务器端提交地址信息的post实体类
  */
 public class PostAddressItem extends  AddressItem
 {

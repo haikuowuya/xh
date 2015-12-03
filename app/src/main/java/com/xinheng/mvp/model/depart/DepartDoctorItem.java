@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.depart;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Administrator on 2015/9/9 0009.
+ * 科室医生实体类
  */
 public class DepartDoctorItem extends BaseEmptyItem
 {

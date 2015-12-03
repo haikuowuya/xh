@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.user;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Administrator on 2015/9/29 0029.
+ * 修改手机号码时向服务器端发送的post请求体
  */
 public class PostMobileItem extends BaseEmptyItem
 {

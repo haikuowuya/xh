@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/25 0025.
+ * 个人信息图片 grid 适配器
  */
 public class UserImageGridAdapter extends BaseAdapter<ImageItem>
 {

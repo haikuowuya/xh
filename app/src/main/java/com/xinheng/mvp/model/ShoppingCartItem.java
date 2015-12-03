@@ -3,7 +3,7 @@ package com.xinheng.mvp.model;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/11/5 0005.
+ * 购物车实体类
  */
 public class ShoppingCartItem extends BaseEmptyItem
 {

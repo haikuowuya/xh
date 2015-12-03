@@ -13,7 +13,7 @@ import com.xinheng.view.CircularImageView;
 import java.util.List;
 
 /**
- * Created by Steven on 2015/9/25 0025.
+ * 图片grid 适配器
  */
 public class ImageGridAdapter extends BaseAdapter<String>
 {

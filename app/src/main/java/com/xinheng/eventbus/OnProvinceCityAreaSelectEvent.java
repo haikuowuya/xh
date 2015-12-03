@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 省市地区选择后事件
  */
 public class OnProvinceCityAreaSelectEvent extends  BaseOnEvent
 {

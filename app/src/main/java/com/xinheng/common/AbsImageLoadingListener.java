@@ -8,7 +8,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xinheng.R;
 
 /**
- *
+ *      ImageLoadingListener的简化封装
  */
 public abstract class AbsImageLoadingListener  implements ImageLoadingListener
 {

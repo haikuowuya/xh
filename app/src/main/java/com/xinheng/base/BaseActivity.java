@@ -60,7 +60,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
 /**
- *
+ *所有activity的基类，便于统一管理
  */
 public abstract class BaseActivity extends AppCompatActivity implements IActivityTitle
 {

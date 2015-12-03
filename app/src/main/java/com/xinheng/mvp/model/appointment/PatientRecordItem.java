@@ -3,7 +3,7 @@ package com.xinheng.mvp.model.appointment;
 import com.xinheng.mvp.model.BaseEmptyItem;
 
 /**
- * Created by Steven on 2015/9/24 0024.
+ * 病历实体类
  */
 public class PatientRecordItem extends BaseEmptyItem
 {

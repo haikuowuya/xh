@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ *  购物车提交事件
  */
 public class OnShoppingCartSumbitEvent extends BaseOnEvent
 {

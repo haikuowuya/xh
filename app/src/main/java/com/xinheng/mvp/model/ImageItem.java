@@ -1,7 +1,7 @@
 package com.xinheng.mvp.model;
 
 /**
- * Created by Steven on 2015/11/20 0020.
+ * 图片实体类
  */
 public class ImageItem extends  BaseEmptyItem
 {

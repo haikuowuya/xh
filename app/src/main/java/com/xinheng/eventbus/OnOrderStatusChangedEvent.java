@@ -1,7 +1,7 @@
 package com.xinheng.eventbus;
 
 /**
- * Created by Steven on 2015/9/22 0022.
+ * 订单状态发生变化时的事件
  */
 public class OnOrderStatusChangedEvent extends BaseOnEvent
 {

@@ -1,7 +1,7 @@
 package com.xinheng.mvp.model.user;
 
 /**
- * Created by Steven on 2015/9/8 0008.
+ * 获取我的医生详情时向服务器端发送的post请求体
  */
 public class UserDoctorDetailItem extends UserDoctorItem
 {
